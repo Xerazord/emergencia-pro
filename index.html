@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergência Pro</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+
+:root{
+  --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --font-mono:'SFMono-Regular','Courier New',Courier,monospace;
+  --color-text-primary:#111827;
+  --color-text-secondary:#6b7280;
+  --color-background-primary:#ffffff;
+  --color-background-secondary:#f3f4f6;
+  --color-border-tertiary:#e5e7eb;
+  --color-border-secondary:#d1d5db;
+  --border-radius-md:8px;
+  --border-radius-lg:12px
+}
+body{background:#f3f4f6;font-family:var(--font-sans);color:var(--color-text-primary)}
+input,select,textarea{padding:7px 10px;border:.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-family:var(--font-sans);outline:none;transition:border-color .15s;box-sizing:border-box}
+input:focus,select:focus,textarea:focus{border-color:#a32d2d}
+.login-overlay{position:fixed;inset:0;background:#f3f4f6;display:flex;align-items:center;justify-content:center;z-index:1000;padding:1rem}
+.login-box{background:#fff;border-radius:12px;padding:2rem;width:100%;max-width:360px;border:.5px solid #e5e7eb;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem}
+.login-hico{width:44px;height:44px;background:#fcebeb;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.login-hico i{font-size:22px;color:#a32d2d}
+.login-fl{margin-bottom:12px}
+.login-fl label{display:block;font-size:12px;color:#6b7280;margin-bottom:4px;font-weight:500}
+.login-fl input{width:100%;padding:9px 12px;border:.5px solid #d1d5db;border-radius:8px;font-size:14px}
+.login-btn{width:100%;padding:10px;background:#a32d2d;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;margin-top:4px;font-family:inherit}
+.login-btn:hover{background:#791f1f}
+.login-btn:disabled{opacity:.6;cursor:not-allowed}
+.login-err{color:#a32d2d;font-size:12px;margin-top:8px;display:none}
+.login-loading{text-align:center;color:#6b7280;font-size:12px;padding:6px 0;display:none}
+.logout-btn{padding:6px 12px;background:#fcebeb;border:.5px solid #f09595;color:#a32d2d;border-radius:20px;font-size:12px;cursor:pointer;font-weight:500;margin-left:auto}
+.logout-btn:hover{background:#fad4d4}
+
+
+*{box-sizing:border-box;margin:0;padding:0}
+.app{max-width:680px;margin:0 auto;padding:1rem 0;font-family:var(--font-sans);color:var(--color-text-primary)}
+.hdr{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:.5px solid var(--color-border-tertiary)}
+.hico{width:40px;height:40px;background:#fcebeb;border-radius:var(--border-radius-md);display:flex;align-items:center;justify-content:center}
+.hico i{font-size:20px;color:#a32d2d}
+.steps{display:flex;gap:6px;margin-bottom:1.5rem;overflow-x:auto;padding-bottom:4px}
+.step{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;font-size:12px;border:.5px solid var(--color-border-tertiary);cursor:pointer;white-space:nowrap;background:var(--color-background-primary);color:var(--color-text-secondary)}
+.step.active{background:#fcebeb;border-color:#e24b4a;color:#a32d2d;font-weight:500}
+.step.done{background:#eaf3de;border-color:#639922;color:#3b6d11}
+.card{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:1rem}
+.st{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.st i{font-size:15px;color:#e24b4a}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.r5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:8px}
+label{display:block;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px}
+input,select,textarea{width:100%;font-size:14px}
+textarea{resize:vertical;min-height:60px}
+.age-ctrl{display:flex;align-items:center;gap:8px}
+.abtn{width:34px;height:34px;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--color-text-primary)}
+.abtn:hover{background:var(--color-background-secondary)}
+.aged{flex:1;text-align:center;font-size:22px;font-weight:500;padding:5px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)}
+.aged small{display:block;font-size:11px;font-weight:400;color:var(--color-text-secondary)}
+.qgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.qbtn{padding:9px 7px;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-tertiary);background:var(--color-background-primary);font-size:13px;cursor:pointer;text-align:center;color:var(--color-text-primary)}
+.qbtn:hover,.qbtn.sel{background:#fcebeb;border-color:#e24b4a;color:#a32d2d;font-weight:500}
+.selq{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:#fcebeb;border-radius:var(--border-radius-md);border:.5px solid #f09595;margin-bottom:10px}
+.selq span{font-weight:500;color:#a32d2d;font-size:14px}
+.selq button{background:none;border:none;color:#a32d2d;cursor:pointer;font-size:12px;padding:3px 7px;border-radius:4px}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:5px}
+.tag{padding:5px 11px;border-radius:20px;border:.5px solid var(--color-border-tertiary);font-size:13px;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-primary)}
+.tag.on{background:#fcebeb;border-color:#e24b4a;color:#a32d2d}
+.sl{font-size:12px;color:var(--color-text-secondary);margin:9px 0 5px;font-weight:500}
+.rg{display:flex;flex-wrap:wrap;gap:7px}
+.ro{padding:5px 11px;border-radius:20px;border:.5px solid var(--color-border-tertiary);font-size:13px;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-primary)}
+.ro.on{background:#e6f1fb;border-color:#378add;color:#185fa5}
+.abox{padding:9px 13px;border-radius:var(--border-radius-md);margin:9px 0;font-size:13px;display:flex;align-items:flex-start;gap:8px}
+.ad{background:#fcebeb;border:.5px solid #f09595;color:#a32d2d}
+.aw{background:#faeeda;border:.5px solid #fac775;color:#854f0b}
+.ai{background:#e6f1fb;border:.5px solid #85b7eb;color:#185fa5}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:1rem}
+.btnp{padding:9px 18px;background:#a32d2d;color:#fff;border:none;border-radius:var(--border-radius-md);font-size:14px;cursor:pointer;font-weight:500}
+.btnp:hover{background:#791f1f}
+.btns{padding:9px 18px;background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);color:var(--color-text-primary);border-radius:var(--border-radius-md);font-size:14px;cursor:pointer}
+.btns:hover{background:var(--color-background-secondary)}
+.btng{padding:9px 18px;background:#3b6d11;color:#fff;border:none;border-radius:var(--border-radius-md);font-size:14px;cursor:pointer;font-weight:500;display:flex;align-items:center;gap:7px}
+.btng:hover{background:#27500a}
+.vbars{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:7px}
+.vbar{padding:5px;border-radius:6px;text-align:center;font-size:11px}
+.vok{background:#eaf3de;color:#3b6d11}.vw{background:#faeeda;color:#854f0b}.vc{background:#fcebeb;color:#a32d2d}
+.sb{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:12px;font-weight:500}
+.sok{background:#eaf3de;color:#3b6d11}.smod{background:#faeeda;color:#854f0b}.sgr{background:#fcebeb;color:#a32d2d}
+.scard{border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:.75rem}
+.shdr{padding:9px 13px;background:var(--color-background-secondary);display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.sbd{padding:12px;display:none}.sbd.open{display:block}
+.srow{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:.5px solid var(--color-border-tertiary);gap:10px}
+.srow:last-child{border-bottom:none}
+.slbl{font-size:13px;flex:1}.sdsc{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.sopts{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.sopt{padding:3px 9px;border-radius:20px;border:.5px solid var(--color-border-tertiary);font-size:12px;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-primary)}
+.sopt.on{background:#e6f1fb;border-color:#378add;color:#185fa5;font-weight:500}
+.sopt.auto{background:#eaf3de;border-color:#639922;color:#3b6d11;font-weight:500;cursor:default}
+.sres{display:flex;gap:12px;align-items:center;padding:11px 13px;background:var(--color-background-secondary);border-top:.5px solid var(--color-border-tertiary)}
+.snum{font-size:26px;font-weight:500}
+.abcs{border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);margin-bottom:7px;overflow:hidden}
+.abch{padding:9px 13px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:var(--color-background-secondary);font-size:14px;font-weight:500}
+.abcb{padding:12px;border-top:.5px solid var(--color-border-tertiary);display:none}.abcb.open{display:block}
+.gcsg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:9px}
+.gcsc{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:9px;text-align:center}
+.gcsc label{font-size:11px;margin-bottom:5px}
+.gcst{text-align:center;padding:9px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin-bottom:10px}
+.gcst .big{font-size:24px;font-weight:500}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
+.xbtn{padding:9px 11px;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-tertiary);background:var(--color-background-primary);font-size:13px;cursor:pointer;text-align:left;color:var(--color-text-primary);line-height:1.4}
+.xbtn:hover,.xbtn.on{background:#e6f1fb;border-color:#378add;color:#185fa5}
+.xbtn.on{font-weight:500}
+.csec{border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);margin-bottom:7px;overflow:hidden}
+.csh{padding:9px 13px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:var(--color-background-secondary);font-size:14px;font-weight:500}
+.csb{padding:10px 13px;border-top:.5px solid var(--color-border-tertiary);display:none}.csb.open{display:block}
+.chk{display:flex;align-items:flex-start;gap:9px;padding:8px 9px;border-radius:var(--border-radius-md);cursor:pointer;margin-bottom:5px;border:.5px solid var(--color-border-tertiary);background:var(--color-background-primary)}
+.chk:hover{background:var(--color-background-secondary)}
+.chk.done{background:#eaf3de;border-color:#c0dd97}
+.chk.pend{background:#faeeda;border-color:#fac775}
+.cico{width:19px;height:19px;border-radius:4px;border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chk.done .cico{background:#3b6d11;border-color:#3b6d11}
+.chk.pend .cico{background:#854f0b;border-color:#854f0b}
+.cico i{font-size:11px;color:var(--color-text-secondary)}
+.chk.done .cico i,.chk.pend .cico i{color:#fff}
+.ctx{font-size:13px;line-height:1.5}
+.chk.done .ctx{color:#3b6d11}
+.chk.pend .ctx{color:#854f0b}
+.psm{display:flex;flex-wrap:wrap;gap:7px;padding:9px 13px;background:#faeeda;border-radius:var(--border-radius-md);border:.5px solid #fac775;margin-bottom:10px;align-items:center}
+.psml{font-size:12px;font-weight:500;color:#854f0b}
+.psmb{font-size:12px;font-weight:500;color:#854f0b;padding:2px 9px;background:rgba(250,199,117,.35);border-radius:20px}
+.relbox{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:1.25rem;font-family:var(--font-mono);font-size:12px;line-height:1.9;white-space:pre-wrap;border:.5px solid var(--color-border-tertiary);margin-bottom:10px}
+.dvd{margin:10px 0;border:none;border-top:.5px solid var(--color-border-tertiary)}
+.saved-item{padding:10px 13px;border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);margin-bottom:7px;cursor:pointer}
+.saved-item:hover{background:var(--color-background-secondary)}
+.saved-item .si-top{display:flex;justify-content:space-between;align-items:center}
+.saved-item .si-date{font-size:11px;color:var(--color-text-secondary)}
+.saved-item .si-name{font-size:13px;font-weight:500}
+.saved-item .si-preview{font-size:12px;color:var(--color-text-secondary);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem}
+.modal{background:var(--color-background-primary);border-radius:var(--border-radius-lg);max-width:660px;width:100%;max-height:90vh;overflow-y:auto;padding:1.5rem}
+.modal-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--color-text-secondary)}
+
+</style>
+</head>
+<body>
+<div class="login-overlay" id="loginOverlay" style="display:none">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-hico"><i class="ti ti-building-hospital" aria-hidden="true"></i></div>
+      <div>
+        <div style="font-size:18px;font-weight:600;color:#111827">Emergência Pro</div>
+        <div style="font-size:12px;color:#6b7280">Acesso restrito</div>
+      </div>
+    </div>
+    <div class="login-fl">
+      <label>E-mail</label>
+      <input type="email" id="loginEmail" placeholder="seu@email.com" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="login-fl">
+      <label>Senha</label>
+      <input type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" onclick="doLogin()" id="loginBtn">Entrar</button>
+    <div class="login-err" id="loginErr"></div>
+    <div class="login-loading" id="loginLoading">Verificando...</div>
+  </div>
+</div>
+
+<div class="app" id="mainApp" style="display:none">
+<div class="hdr">
+  <div class="hico"><i class="ti ti-building-hospital" aria-hidden="true"></i></div>
+  <div><div style="font-size:18px;font-weight:500">Emergência Pro</div><div style="font-size:13px;color:var(--color-text-secondary)">Admissão com condutas baseadas em evidências</div></div>
+  <button class="logout-btn" onclick="doLogout()"><i class="ti ti-logout" aria-hidden="true"></i> Sair</button>
+</div>
+<div class="steps" id="sBar"></div>
+<div id="con"></div>
+<div id="modalArea"></div>
+</div>
+<script>
+
+// ─── Supabase config ───────────────────────────────────────────────────────
+const SUPABASE_URL  = 'https://vysgohdcvtresrszvdft.supabase.co';
+const SUPABASE_ANON_KEY = 'COLE_SUA_CHAVE_ANON_AQUI';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ─── Auth ──────────────────────────────────────────────────────────────────
+async function initAuth(){
+  const {data:{session}} = await sb.auth.getSession();
+  if(session) showApp(); else showLoginScreen();
+  sb.auth.onAuthStateChange((_,s)=>{if(s)showApp();else showLoginScreen();});
+}
+
+function showApp(){
+  document.getElementById('loginOverlay').style.display='none';
+  document.getElementById('mainApp').style.display='block';
+  render();
+}
+function showLoginScreen(){
+  document.getElementById('loginOverlay').style.display='flex';
+  document.getElementById('mainApp').style.display='none';
+}
+
+async function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pwd=document.getElementById('loginPassword').value;
+  const errEl=document.getElementById('loginErr');
+  const loadEl=document.getElementById('loginLoading');
+  const btn=document.getElementById('loginBtn');
+  errEl.style.display='none';
+  loadEl.style.display='block';
+  btn.disabled=true;
+  const {error}=await sb.auth.signInWithPassword({email,password:pwd});
+  loadEl.style.display='none';
+  btn.disabled=false;
+  if(error){
+    const msg=error.message==='Invalid login credentials'?'E-mail ou senha incorretos':error.message;
+    errEl.textContent=msg;errEl.style.display='block';
+  }
+}
+
+async function doLogout(){
+  await sb.auth.signOut();
+}
+
+
+
+const S={step:0,nome:'',idade:30,orig:'Demanda Espontânea',queixa:null,tempo:'',
+  dt:{ini:'',sem:null,pal:null,irr:[],sin:[]},caract:[],
+  hpp:[],muc:'',ale:'Nega',fc:'',sat:'',pa:'',fr:'',gli:'',
+  ef:null,amb:{g:'',cv:'',re:'',ab:'',ne:'',pe:''},
+  abc:{va:'Pérvia e Patente',fon:'Preservada',col:'Não indicado',exp:'Simétrica',
+    mv:'Presente e Simétrico',rud:[],esf:[],tec:'< 3s',aus:[],pul:'Simétricos',
+    abd:[],ao:4,rv:5,rm:6,pup:'Isocóricas e Reativas',def:[],ede:'Ausente',cac:'Com cacifo',pel:[]},
+  hear:{h:null,e:null,r:null,t:null},
+  edacs:{sx:'M',cad:false,dia:false,rad:false,ins:false,pal:false,t0:'',t2:''},
+  sind:null,chk:{},nts:{},imp:'',poc:'',ecg:''};
+
+const QUEIXAS=['Dor torácica','Dispneia','Tosse','Febre','Dor abdominal','Sangramento','Dor lombar','Cefaleia','Déficit neurológico agudo','Vertigem','Rebaixamento de consciência','Agitação psicomotora','Convulsão','Síncope','Trauma','Palpitações','Edema de MMII','Dor em MMII'];
+const CMAP={'Dispneia':['Uso musc. acessória','Sibilos','Crepitações','Ortopneia','Início súbito','Progressiva','Hemoptise'],'Dor abdominal':['Difusa','FID','Murphy +','Defesa','Descompressão','Náuseas/Vômitos','Parada de flatos'],'Cefaleia':['Início trovão','Pior cefaleia da vida','Rigidez nuca','Fotofobia','Febre associada','Déficit focal'],'Convulsão':['1ª crise','Focal','TCG','Pós-ictal longo','Estado de mal','Febre'],'Síncope':['PCB','Palpitações prévias','Pós-esforço','Posicional','Sem pródromo','Trauma na queda'],'Déficit neurológico agudo':['Hemiparesia','Afasia','Desvio de rima','Janela < 4,5h','Hemihipoestesia','Diplopia','Ataxia'],'Trauma':['Alta energia','Queda nível','Atropelamento','TCE','Agressão','MOC','Deformidade']};
+const ALERTAS={'Déficit neurológico agudo':{m:'Protocolo AVC — verificar janela para trombólise (< 4,5h)',c:'ad'},'Cefaleia':{m:'Excluir HSA se pior cefaleia da vida — TC sem contraste urgente',c:'aw'},'Convulsão':{m:'Via aérea + acesso venoso. Se > 5 min: protocolo estado de mal',c:'aw'},'Dispneia':{m:'Oximetria contínua. Considerar: TEP, DPOC agudizado, EAP',c:'aw'}};
+const SLIST=[{id:'noca',l:'Dor torácica — provável NOCA'},{id:'oca',l:'Dor torácica — suspeita OCA'},{id:'iams',l:'OCA / IAM com SUPRA'},{id:'sep',l:'Sepse / Choque séptico'},{id:'hdg',l:'Hemorragia digestiva'},{id:'neu',l:'Síndrome neurovascular'},{id:'rnc',l:'Rebaixamento de consciência'},{id:'cef',l:'Cefaleia sem sinais de alarme'}];
+const STEPS=[{l:'Identificação',i:'ti-user'},{l:'Queixa',i:'ti-stethoscope'},{l:'Dados clínicos',i:'ti-heart-rate-monitor'},{l:'Exame físico',i:'ti-search'},{l:'Impressão / Conduta',i:'ti-clipboard-check'},{l:'Relatório',i:'ti-file-text'}];
+
+const CT={
+noca:{l:'Dor torácica — provável NOCA',s:[
+{id:'m',t:'Monitorização e acesso',it:[
+'Monitorização cardíaca contínua (ECG, SatO2, PA) — síndrome torácica sem diagnóstico exige vigilância de arritmias (ESC 2020)',
+'ECG 12 derivações em < 10 min; repetir em 30 min se sem alterações e dor persistente (ESC 2020, I-A)',
+'Acesso venoso periférico ≥ 18G',
+'O2 somente se SatO2 < 90% — uso rotineiro sem hipoxemia sem benefício (ESC 2020, Classe III)']},
+{id:'f',t:'Farmacológico',it:[
+'Dipirona 1g IV para analgesia — morfina reservada para dor intensa refratária (reduz absorção de antiplaquetários orais — ESC 2020)',
+'Nitrato SL (isossorbida 5 mg) se dor persistente, PAS > 90 mmHg e sem uso de inibidor de PDE-5 em 24–48h',
+'Evitar AINEs em suspeita coronariana — risco cardiovascular aumentado (ESC 2020)']},
+{id:'e',t:'Investigação',it:[
+'Troponina de alta sensibilidade (hs-Tn) basal e em 1h — protocolo 0h/1h ESC 2020: descarte em 2h, sensibilidade > 99%',
+'Hemograma, função renal, eletrólitos, glicemia',
+'Radiografia de tórax PA — excluir pneumotórax, dissecção, congestão',
+'D-dímero se Wells ≥ 2 ou suspeita clínica de TEP',
+'POCUS: função VE, derrame pericárdico, sobrecarga de VD']},
+{id:'d',t:'Disposição',it:[
+'HEART ≤ 3 + EDACS < 16 + delta hs-Tn < 3 ng/L em 2h → alta com retorno ambulatorial em < 72h (sensibilidade 99,7% para MACE — ESC 2020)',
+'HEART 4–6 → observação 3–6h, reteste de troponina; considerar teste de estresse antes da alta',
+'HEART ≥ 7 ou hs-Tn dinâmica → internação e estratégia invasiva em < 72h']}
+]},
+oca:{l:'Dor torácica — suspeita para OCA (NSTE-ACS)',s:[
+{id:'m',t:'Monitorização e acesso',it:[
+'Monitor cardíaco contínuo com desfibrilador à beira leito — risco elevado de arritmia ventricular em NSTE-ACS (ESC 2020)',
+'Dois acessos venosos periféricos ≥ 16G',
+'ECG seriado: basal, 30 min, 60 min e a qualquer piora — buscar depressão de ST ≥ 0,5 mm (ESC 2020)',
+'O2 somente se SatO2 < 90% — uso rotineiro não reduz MACE (ESC 2020, III-A)']},
+{id:'f',t:'Farmacológico',it:[
+'AAS 150–300 mg VO mastigado imediatamente se sem contraindicação (ESC 2020, I-A)',
+'Ticagrelor 180 mg VO se NSTE-ACS confirmado — superior ao clopidogrel (PLATO trial, ESC 2020 I-A); aguardar definição da anatomia se ICP imediata planejada',
+'HNF se ICP imediata planejada: 70–100 UI/kg IV bolus (máx 5.000 UI); ou HBPM (enoxaparina 1 mg/kg SC 12/12h) se estratégia conservadora sem ICP imediata — ajustar em ClCr < 30 mL/min (ESC 2020)',
+'Nitrato IV (nitroglicerina 10–200 mcg/min) se dor persistente e PAS > 90 mmHg; contraindicado em IAM de VD e uso recente de inibidores de PDE-5',
+'Betabloqueador VO precoce (metoprolol 25–50 mg) se FC > 100 bpm sem ICC descompensada, BAV ou broncoespasmo (ESC 2020)',
+'Morfina 2–4 mg IV apenas para dor intensa refratária — reduz biodisponibilidade do ticagrelor em ~30% (ESC 2020)']},
+{id:'e',t:'Investigação',it:[
+'Troponina hs protocolo 0h/1h — elevação ≥ 5 ng/L na 1h confirma NSTE-ACS com especificidade > 90%',
+'POCUS: função VE, hipocinesia segmentar, derrame pericárdico, função VD',
+'Hemograma, coagulograma, função renal — antes de anticoagulação e para ajuste de doses']},
+{id:'d',t:'Disposição',it:[
+'ICP muito precoce (< 2h): instabilidade hemodinâmica, arritmia grave, dor refratária, Killip III-IV ou supra transitório — ativar hemodinâmica imediatamente (ESC 2020, I-C)',
+'GRACE > 140 ou troponina dinâmica → ICP em < 24h (ESC 2020, I-A)',
+'GRACE 109–140 → ICP em < 72h; GRACE < 109 com Tn negativa → teste funcional antes da alta']}
+]},
+iams:{l:'IAM com SUPRA / OCA estabelecida',s:[
+{id:'m',t:'Ativação e monitorização',it:[
+'Ativar hemodinâmica imediatamente — alvo porta-balão < 90 min; notificar cardiologista intervencionista ao diagnóstico eletrocardiográfico (ESC 2023, I-A)',
+'Monitor com desfibrilador pronto — FV é principal causa de morte nas primeiras horas; não aguardar transferência para desfibrilar',
+'Dois acessos periféricos ≥ 16G — preferir membro superior direito (facilita acesso radial para ICP)',
+'O2 somente se SatO2 < 90% — hiperóxia associa-se a maior área de infarto (ESC 2023, Classe III)']},
+{id:'f',t:'Farmacológico',it:[
+'AAS 150–300 mg VO mastigado imediatamente — não aguardar exames para iniciar (ESC 2023, I-A)',
+'Ticagrelor 180 mg VO (1ª escolha) ou Prasugrel 60 mg se anatomia conhecida e sem AVC/AIT — Clopidogrel 300–600 mg se contraindicação aos anteriores (ESC 2023, I-A)',
+'HNF 70–100 UI/kg IV bolus (máx 5.000 UI) imediatamente antes da ICP primária (ESC 2023)',
+'Se trombólise com TNK indicada (ICP indisponível em < 120 min): enoxaparina IV bolus 30 mg + 1 mg/kg SC após 15 min se < 75 anos; sem bolus IV, 0,75 mg/kg SC 12/12h se ≥ 75 anos (máx 75 mg/dose) — ASSENT-3, ESC 2023',
+'Tenecteplase IV se ICP indisponível em < 120 min: <60kg→30mg; 60–70kg→35mg; 70–80kg→40mg; 80–90kg→45mg; >90kg→50mg — bolus único em < 10s, iniciar em < 30 min da chegada (ESC 2023, I-A)',
+'Nitrato contraindicado em IAM inferior com suspeita de VD — verificar V3R/V4R antes de administrar',
+'Não iniciar betabloqueador IV de rotina — risco de choque em disfunção VE não avaliada; VO precoce se hemodinâmica estável (ESC 2023)']},
+{id:'e',t:'Investigação',it:[
+'Derivações V3R/V4R e V7–V9 se supra inferior ou supra em aVR — IAM de VD e parede posterior frequentemente subdiagnosticados',
+'POCUS: função VE, hipocinesia regional, derrame — não atrasar ICP; fazer em paralelo',
+'Troponina, hemograma, coagulograma, função renal (pré-contraste para ICP) — não aguardar para ativar hemodinâmica']},
+{id:'d',t:'Disposição',it:[
+'ICP primária em < 90 min — transferência direta para hemodinâmica sem escala na UTI (ESC 2023, I-A)',
+'Sem ICP disponível em < 120 min: TNK em < 30 min + enoxaparina conforme peso/idade + transferência imediata para centro com hemodinâmica (ESC 2023, I-A)',
+'Pós-ICP: UTI coronariana, ecocardiograma em 24–48h para avaliação de FEVE',
+'Iniciar antes da alta: betabloqueador VO, IECA/BRA e estatina de alta potência (ESC 2023)']}
+]},
+sep:{l:'Sepse / Choque séptico',s:[
+{id:'m',t:'Monitorização e acesso',it:[
+'Monitor contínuo; reavaliação clínica a cada 30 min no choque',
+'Dois acessos periféricos ≥ 16G — acesso central não é pré-requisito para iniciar vasopressor (SSC 2021)',
+'Sonda vesical — débito urinário horário, meta ≥ 0,5 mL/kg/h',
+'Gasometria arterial + lactato basal — > 2 mmol/L define sepse mesmo sem hipotensão (SSC 2021)']},
+{id:'f',t:'Farmacológico',it:[
+'Norepinefrina como vasopressor de 1ª linha — iniciar precocemente se PAM < 65 mmHg ou PAD < 40 mmHg, sem aguardar refratariedade a volume (CENSER 2019, SSC 2021 I-B); início em acesso periférico calibroso é seguro',
+'Cristaloide balanceado 250–500 mL em bolus se hipoperfusão — reavaliar com elevação passiva de membros antes de reexpandir; evitar ressuscitação liberal (CLASSIC trial 2022)',
+'Antibiótico de amplo espectro IV em < 1h do diagnóstico — cada hora de atraso aumenta mortalidade em ~7% (SSC 2021, I-A)',
+'Hidrocortisona 200 mg/dia IV em infusão contínua se choque refratário a norepinefrina em dose crescente (SSC 2021, II-B)']},
+{id:'e',t:'Investigação',it:[
+'Hemoculturas (2 pares) antes do antibiótico — não atrasar ATB > 45 min para coleta (SSC 2021)',
+'Lactato seriado (0h e 2h) — clareamento ≥ 10% como meta de ressuscitação (SSC 2021)',
+'Hemograma, PCR, procalcitonina, coagulograma, função renal e hepática',
+'Urina I + urocultura, RX tórax, TC conforme foco suspeito']},
+{id:'d',t:'Disposição e metas',it:[
+'Meta PAM ≥ 65 mmHg; considerar 80–85 mmHg em HAS prévia (65PLUS trial)',
+'Transfusão se Hb < 7 g/dL (< 8 g/dL em DAC ou isquemia ativa) — estratégia restritiva (SSC 2021)',
+'Internação em UTI — choque séptico com mortalidade > 35–45% sem manejo intensivo',
+'Controle de foco: drenagem de coleções, remoção de dispositivos infectados']}
+]},
+hdg:{l:'Hemorragia digestiva',s:[
+{id:'m',t:'Monitorização e acesso',it:[
+'Dois acessos venosos periféricos ≥ 16G',
+'Monitor contínuo — FC > 100 com PA normal já indica choque classe II',
+'NPO absoluto — preparo para EDA de urgência']},
+{id:'f',t:'Farmacológico',it:[
+'Omeprazol 80 mg IV bolus → 8 mg/h — reduz ressangramento pós-hemostasia endoscópica (Cochrane 2010)',
+'Octreotida 50 mcg IV bolus → 50 mcg/h se suspeita varicosa — reduz pressão portal em 30–40 min (EASL 2018)',
+'Ceftriaxona 1g IV/dia se cirrose com HDA — profilaxia reduz mortalidade (EASL 2018, I-A)',
+'Hemotransfusão se Hb < 7 g/dL (< 8 g/dL em DAC) — estratégia restritiva (TRIGGER trial)']},
+{id:'e',t:'Investigação',it:[
+'Score Glasgow-Blatchford na admissão: < 1 → baixo risco; ≥ 6 → alto risco',
+'Hemograma, coagulograma, função hepática, ureia, creatinina',
+'Tipagem + reserva de CH se Hb < 8 ou instabilidade',
+'EDA em < 12h se instabilidade ou varizes; em < 24h nos demais (BSG/ESGE 2021)']},
+{id:'d',t:'Disposição',it:[
+'Glasgow-Blatchford 0 → alta com EDA eletiva em 24–48h',
+'Glasgow-Blatchford ≥ 1 → internação para EDA em < 24h',
+'Instabilidade ou varizes → EDA em < 12h + UTI/semi-intensivo']}
+]},
+neu:{l:'Síndrome neurovascular (AVC/AIT)',s:[
+{id:'m',t:'Ativação e monitorização',it:[
+'TC crânio sem contraste em < 25 min da chegada — não atrasar para coleta de exames (AHA/ASA 2019, I-A)',
+'Monitor cardíaco contínuo 24–48h — FA paroxística em 15–25% dos AVC criptogênicos',
+'Glicemia capilar imediata — hipoglicemia mimetiza AVC e é tratável',
+'NIHSS — documentar para elegibilidade de trombólise e trombectomia']},
+{id:'f',t:'Farmacológico',it:[
+'Alteplase 0,9 mg/kg IV (máx 90 mg) se janela ≤ 4,5h: 10% em bolus + 90% em 60 min (AHA/ASA 2019, I-A) — ou Tenecteplase 0,25 mg/kg bolus único (ESO 2021)',
+'PA pré-trombólise: alvo < 185/110 mmHg; labetalol 10–20 mg IV ou nicardipina em infusão',
+'AAS 100–300 mg VO em 24–48h se sem trombólise — não administrar nas primeiras 24h pós-alteplase',
+'Estatina de alta potência (atorvastatina 40–80 mg) em < 48h do AVC (SPARCL trial)']},
+{id:'e',t:'Investigação',it:[
+'TC sem contraste: excluir hemorragia; AngioTC se suspeita de oclusão de grande vaso para trombectomia',
+'Ecocardiograma — identificar fonte embólica cardíaca',
+'Hemograma, coagulograma, função renal — elegibilidade para trombólise']},
+{id:'d',t:'Disposição e metas',it:[
+'Trombectomia até 6h; até 24h com critérios DAWN/DEFUSE-3 (AHA/ASA 2019, I-A)',
+'Internação em Unidade de AVC — reduz mortalidade ~20% vs. enfermaria geral (Cochrane, I-A)',
+'Glicemia 140–180 mg/dL — hipo e hiperglicemia pioram prognóstico neurológico',
+'Cabeceira 0° até estabilização; elevar a 30° somente se ↑ PIC ou risco de broncoaspiração']}
+]},
+rnc:{l:'Rebaixamento do nível de consciência',s:[
+{id:'m',t:'Estabilização e monitorização',it:[
+'Posição lateral de segurança se sem trauma cervical — reduz risco de broncoaspiração',
+'IOT de sequência rápida se GCS ≤ 8 sem proteção de VA',
+'Monitor contínuo: ECG, SatO2, PA, temperatura',
+'Glicemia capilar em < 5 min — causa mais comum e tratável de RNC']},
+{id:'f',t:'Farmacológico',it:[
+'Glicose 50% 50 mL IV se glicemia < 60 mg/dL — corrigir antes de qualquer investigação',
+'Tiamina 100 mg IV antes ou junto com glicose se etilismo ou desnutrição — previne encefalopatia de Wernicke',
+'Naloxona 0,4–2 mg IV/IM/IN se suspeita de opioides — repetir a cada 2–3 min até resposta',
+'Manitol 1 g/kg IV ou SF 3% 150–250 mL se sinais de herniação (anisocoria, postura de descerebração)']},
+{id:'e',t:'Investigação',it:[
+'TC crânio urgente — excluir HSA, hematoma, hidrocefalia; precede PL',
+'EEG urgente se suspeita de status epiléptico não convulsivo',
+'Hemograma, função renal, hepática, eletrólitos, amônia, gasometria',
+'Toxicológico sérico e urinário; PL após TC normal se febre + RNC']},
+{id:'d',t:'Disposição',it:[
+'GCS ≤ 8 → UTI ou emergência com capacidade de IOT',
+'Causa reversível identificada e tratada com recuperação → observação mínima 6h',
+'Causa não estabelecida → internação para investigação']}
+]},
+cef:{l:'Cefaleia sem sinais de alarme',s:[
+{id:'m',t:'Avaliação inicial',it:[
+'Confirmar ausência de alarme: início trovão, febre + rigidez nuca, déficit focal, papiledema, imunossupressão, neoplasia, > 50a com 1ª crise',
+'EVA de dor — documentar para monitorização da resposta ao tratamento',
+'Frequência de analgésicos: > 10–15 dias/mês configura cefaleia por abuso (EAN 2022)']},
+{id:'f',t:'Farmacológico',it:[
+'Enxaqueca: sumatriptano 50–100 mg VO ou 6 mg SC na fase inicial (EAN 2022)',
+'Cefaleia tensional: AAS 500–1000 mg VO ou ibuprofeno 400–600 mg VO (EAN 2022)',
+'Crise intensa: dipirona 1g IV + metoclopramida 10 mg IV; dexametasona 4–8 mg IV reduz recorrência em 24h',
+'Em salvas: O2 100% por máscara 12–15 L/min por 15–20 min, eficaz em ~70% (EHF 2022)',
+'Evitar opioides em cefaleia primária — risco de abuso e cefaleia por uso excessivo (EAN 2022)']},
+{id:'e',t:'Investigação',it:[
+'Nenhum exame indicado em cefaleia primária típica sem sinais de alarme (EAN 2022)',
+'TC crânio somente se sinal de alarme presente']},
+{id:'d',t:'Disposição e orientação',it:[
+'Alta após resposta ao tratamento (EVA ≤ 3)',
+'Retorno imediato se: piora súbita, febre, rigidez cervical, déficit neurológico ou alteração de consciência',
+'Encaminhar neurologia se ≥ 4 crises/mês — profilaxia indicada (topiramato, propranolol, amitriptilina)',
+'Orientar diário de cefaleia e identificação de gatilhos']}
+]}
+};
+
+// helpers
+function ts(arr,v){const i=arr.indexOf(v);if(i>-1)arr.splice(i,1);else arr.push(v);render();}
+function tog(id){const b=document.getElementById(id);if(b)b.classList.toggle('open');}
+function cyc(k){const c=S.chk[k];if(!c)S.chk[k]='done';else if(c==='done')S.chk[k]='pend';else delete S.chk[k];render();}
+function cico(k){const c=S.chk[k];return c==='done'?'ti-check':c==='pend'?'ti-clock':'ti-minus';}
+function ccls(k){const c=S.chk[k];return c==='done'?'done':c==='pend'?'pend':'';}
+function chAge(){const a=S.idade;return a<45?0:a<65?1:2;}
+function hSc(){let t=chAge();const h=S.hear;if(h.h!==null)t+=+h.h;if(h.e!==null)t+=+h.e;if(h.r!==null)t+=+h.r;if(h.t!==null)t+=+h.t;return t;}
+function hC(){const n=hSc();return n<=3?'sok':n<=6?'smod':'sgr';}
+function hI(n){if(n<=3)return'Baixo risco — alta precoce considerável';if(n<=6)return'Risco intermediário — observação e reteste';return'Alto risco — hospitalização e estratégia invasiva';}
+function eAP(){const a=S.idade,m=S.edacs.sx==='M';if(m){if(a<45)return 2;if(a<=50)return 4;if(a<=55)return 6;if(a<=60)return 8;if(a<=65)return 10;if(a<=70)return 12;if(a<=75)return 14;if(a<=80)return 16;if(a<=85)return 18;return 20;}else{if(a<45)return 0;if(a<=50)return 3;if(a<=55)return 5;if(a<=60)return 7;if(a<=65)return 9;if(a<=70)return 11;if(a<=75)return 13;if(a<=80)return 15;if(a<=85)return 17;return 19;}}
+function eSc(){const e=S.edacs;let p=eAP();if(e.cad)p+=4;if(e.dia)p+=3;if(e.rad)p+=5;if(e.ins)p-=4;if(e.pal)p-=6;return p;}
+function eC(){return eSc()<16?'sok':'sgr';}
+function eI(){const p=eSc(),t0=parseFloat(S.edacs.t0),t2=parseFloat(S.edacs.t2);const d=!isNaN(t0)&&!isNaN(t2)?Math.abs(t2-t0):null;if(p<16&&d!==null&&d<3&&t0<16&&t2<16)return'Baixo risco — candidato a descarte acelerado em 2h';if(p<16)return'EDACS < 16 — aguardar troponina seriada';return'EDACS ≥ 16 — risco não baixo, observação';}
+function vC(k,v){const n=parseFloat(v);if(!v)return'vok';if(k==='fc')return(n<40||n>130)?'vc':(n<60||n>100)?'vw':'vok';if(k==='sat')return n<90?'vc':n<95?'vw':'vok';if(k==='fr')return(n<8||n>30)?'vc':(n<12||n>20)?'vw':'vok';if(k==='gli')return n<60?'vc':n<70||n>200?'vw':'vok';if(k==='pa'&&v){const s=parseFloat(v.split('/')[0]);return s<90?'vc':s>180?'vw':'vok';}return'vok';}
+function vA(){const a=[],fc=parseFloat(S.fc),sat=parseFloat(S.sat),fr=parseFloat(S.fr);if(S.fc&&(fc>120||fc<40))a.push('FC crítica');if(S.sat&&sat<90)a.push('Sat < 90%');if(S.fr&&(fr>30||fr<8))a.push('FR crítica');if(S.pa){const s=parseFloat(S.pa.split('/')[0]);if(s<90)a.push('Hipotensão');if(s>180)a.push('HAS grave');}return a;}
+function vBH(){return[{k:'fc',l:'FC',v:S.fc},{k:'sat',l:'Sat',v:S.sat},{k:'pa',l:'PA',v:S.pa},{k:'fr',l:'FR',v:S.fr},{k:'gli',l:'Glic',v:S.gli}].map(x=>`<div class="vbar ${vC(x.k,x.v)}">${x.l}<br><strong>${x.v||'—'}</strong></div>`).join('');}
+function uvb(){const b=document.getElementById('vbars');if(b)b.innerHTML=vBH();}
+function gcs(){return+S.abc.ao+ +S.abc.rv+ +S.abc.rm;}
+function gcsC(n){return n>=14?'sok':n>=9?'smod':'sgr';}
+function gcsL(n){return n>=14?'Leve':n>=9?'Moderado':'Grave';}
+function cAge(d){S.idade=Math.min(110,Math.max(0,S.idade+d));render();}
+function rs(){document.getElementById('sBar').innerHTML=STEPS.map((s,i)=>`<div class="step ${i===S.step?'active':i<S.step?'done':''}" onclick="if(${i}<=${S.step})gs(${i})"><i class="ti ${i<S.step?'ti-check':s.i}" aria-hidden="true"></i>${s.l}</div>`).join('');}
+function gs(n){S.step=n;render();}
+function nx(){if(S.step<5){S.step++;render();}}
+function pv(){if(S.step>0){S.step--;render();}}
+
+// storage — Supabase
+async function saveReport(txt){
+  try{
+    const {data:{user}}=await sb.auth.getUser();
+    if(!user){showToast('Faça login para salvar',false);return;}
+    const {error}=await sb.from('reports').insert({
+      key:'rel_'+Date.now(),
+      nome:S.nome||'Sem nome',
+      queixa:S.queixa||'—',
+      report_date:new Date().toLocaleString('pt-BR'),
+      txt
+    });
+    if(error)throw error;
+    showToast('Relatório salvo com sucesso!');
+  }catch(e){showToast('Erro ao salvar: '+e.message,false);}
+}
+function showToast(msg,ok=true){
+  const t=document.createElement('div');
+  t.style.cssText=`position:fixed;bottom:20px;right:20px;background:${ok?'#3b6d11':'#a32d2d'};color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;z-index:200;`;
+  t.textContent=msg;document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2500);
+}
+async function loadSaved(){
+  try{
+    const {data,error}=await sb.from('reports').select('*').order('created_at',{ascending:false});
+    if(error)throw error;
+    return(data||[]).map(r=>({key:r.key,data:{date:r.report_date,nome:r.nome,queixa:r.queixa,txt:r.txt}}));
+  }catch(e){return[];}
+}
+async function showSaved(){
+  const items=await loadSaved();
+  const modal=document.getElementById('modalArea');
+  if(!items.length){modal.innerHTML=`<div class="modal-bg" onclick="this.remove()"><div class="modal"><div class="modal-hdr"><strong>Relatórios salvos</strong><button class="modal-close" onclick="document.getElementById('modalArea').innerHTML=''">×</button></div><div style="color:var(--color-text-secondary);font-size:14px">Nenhum relatório salvo ainda.</div></div></div>`;return;}
+  const list=items.sort((a,b)=>b.key.localeCompare(a.key)).map(x=>`<div class="saved-item" onclick="showRel(${JSON.stringify(x.data.txt).replace(/'/g,'&#39;')})"><div class="si-top"><div class="si-name">${x.data.nome}</div><div class="si-date">${x.data.date}</div></div><div class="si-preview">${x.data.queixa}</div></div>`).join('');
+  modal.innerHTML=`<div class="modal-bg"><div class="modal"><div class="modal-hdr"><strong>Relatórios salvos</strong><button class="modal-close" onclick="document.getElementById('modalArea').innerHTML=''">×</button></div>${list}</div></div>`;
+}
+function showRel(txt){
+  document.getElementById('modalArea').innerHTML=`<div class="modal-bg"><div class="modal"><div class="modal-hdr"><strong>Relatório</strong><button class="modal-close" onclick="document.getElementById('modalArea').innerHTML=''">×</button></div><div class="relbox">${txt}</div><button class="btng" onclick="navigator.clipboard.writeText(${JSON.stringify(txt)}).then(()=>showToast('Copiado!'))"><i class='ti ti-copy' aria-hidden='true'></i> Copiar</button></div></div>`;
+}
+
+function rHear(){const H=S.hear;const aL=S.idade<45?'< 45a (0)':S.idade<65?'45–64a (1)':'≥ 65a (2)';const it=[{k:'h',l:'H — História',d:'Alt. suspeita=2 / Moderada=1 / Leve=0',o:[['0','Leve'],['1','Moderada'],['2','Alt. suspeita']]},{k:'e',l:'E — ECG',d:'Normal=0 / Inespecífico=1 / Isquemia nova=2',o:[['0','Normal'],['1','Inespec.'],['2','Isquemia']]},{k:'r',l:'R — Fatores de risco',d:'Sem FR=0 / 1–2=1 / ≥3 ou DAC=2',o:[['0','Sem FR'],['1','1–2 FR'],['2','≥3 FR']]},{k:'t',l:'T — Troponina',d:'≤ limite=0 / 1–3×=1 / >3×=2',o:[['0','Normal'],['1','1–3×'],['2','>3×']]}];return`<div class="srow"><div style="flex:1"><div class="slbl">A — Idade</div><div class="sdsc">Auto calculado</div></div><div class="sopts"><span class="sopt auto">${aL}</span></div></div>`+it.map(x=>`<div class="srow"><div style="flex:1"><div class="slbl">${x.l}</div><div class="sdsc">${x.d}</div></div><div class="sopts">${x.o.map(([v,lb])=>`<span class="sopt ${H[x.k]==v?'on':''}" onclick="S.hear['${x.k}']='${v}';render()">${lb} (${v})</span>`).join('')}</div></div>`).join('');}
+function rEdacs(){const e=S.edacs,ap=eAP();return`<div class="srow"><div style="flex:1"><div class="slbl">Idade / Sexo</div><div class="sdsc">Auto calculado (${S.idade} anos)</div></div><div style="display:flex;align-items:center;gap:6px"><span class="sopt auto">${ap} pts</span><div style="display:flex;gap:5px">${[['M','Masc'],['F','Fem']].map(([v,l])=>`<span class="sopt ${e.sx===v?'on':''}" onclick="S.edacs.sx='${v}';render()">${l}</span>`).join('')}</div></div></div>`+[{k:'cad',l:'DAC conhecida',d:'+4'},{k:'dia',l:'Diaforese',d:'+3'},{k:'rad',l:'Irradiação braço/ombro',d:'+5'},{k:'ins',l:'Piora à inspiração',d:'−4'},{k:'pal',l:'Reproduzida à palpação',d:'−6'}].map(x=>`<div class="srow"><div style="flex:1"><div class="slbl">${x.l}</div><div class="sdsc">${x.d} pts</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(e[x.k])===v?'on':''}" onclick="S.edacs['${x.k}']=${v};render()">${lb}</span>`).join('')}</div></div>`).join('')+`<div class="srow"><div style="flex:1"><div class="slbl">Troponina 0h / 2h</div></div><div style="display:flex;gap:5px"><input type="number" value="${e.t0}" oninput="S.edacs.t0=this.value;render()" style="width:62px" placeholder="0h"><input type="number" value="${e.t2}" oninput="S.edacs.t2=this.value;render()" style="width:62px" placeholder="2h"></div></div>`;}
+
+function rDT(){return`<div class="card"><div class="st"><i class="ti ti-activity" aria-hidden="true"></i> Características da dor torácica</div><div class="sl">Início</div><div class="rg">${['Súbito','Progressivo'].map(v=>`<span class="ro ${S.dt.ini===v?'on':''}" onclick="S.dt.ini='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Qualidade</div><div class="tags">${['Opressiva','Pleurítica','Em facada','Queimação','Em aperto','Difusa'].map(v=>`<span class="tag ${S.caract.includes(v)?'on':''}" onclick="ts(S.caract,'${v}')">${v}</span>`).join('')}</div><div class="sl">Irradiação</div><div class="tags">${['MMSS esquerdo','MMSS direito','Bilateral','Cervical/mandibular','Dorso/interescapular','Abdominal'].map(v=>`<span class="tag ${S.dt.irr.includes(v)?'on':''}" onclick="ts(S.dt.irr,'${v}')">${v}</span>`).join('')}</div><div class="sl">Fatores modificadores</div><div class="tags">${['Piora ao esforço','Melhora com repouso','Piora ao decúbito','Piora com inspiração','Piora com movimento','Melhora com nitrato'].map(v=>`<span class="tag ${S.caract.includes(v)?'on':''}" onclick="ts(S.caract,'${v}')">${v}</span>`).join('')}</div><hr class="dvd"><div class="r2" style="margin-top:8px"><div><div class="sl">Semelhante a evento prévio?</div><div class="rg">${['Sim','Não','Sem evento prévio'].map(v=>`<span class="ro ${S.dt.sem===v?'on':''}" onclick="S.dt.sem='${v}';render()">${v}</span>`).join('')}</div></div><div><div class="sl">Pior à palpação?</div><div class="rg">${['Sim','Não'].map(v=>`<span class="ro ${S.dt.pal===v?'on':''}" onclick="S.dt.pal='${v}';render()">${v}</span>`).join('')}</div></div></div><hr class="dvd"><div class="sl">Sintomas associados</div><div class="tags">${['Dispneia','Sudorese','Náuseas/Vômitos','Pré-síncope','Palpitações','Cefaleia','Parestesia MMSS','Parestesia perioral','Parestesia MMII','Febre','Tosse','Hemoptise'].map(v=>`<span class="tag ${S.dt.sin.includes(v)?'on':''}" onclick="ts(S.dt.sin,'${v}')">${v}</span>`).join('')}</div>${(S.dt.sin.includes('Parestesia perioral')||S.dt.sin.includes('Parestesia MMSS'))&&S.dt.ini==='Súbito'?`<div class="abox aw"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Considerar etiologia neurológica ou hiperventilação</div>`:''}${S.dt.irr.includes('Dorso/interescapular')?`<div class="abox aw"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Irradiação para dorso — excluir dissecção aórtica</div>`:''}<hr class="dvd"><label>Tempo de início</label><input type="text" value="${S.tempo}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min" style="margin-top:4px"></div><div class="scard"><div class="shdr" onclick="tog('hb')"><span style="font-weight:500">Score HEAR</span><span class="sb ${hC()}">${hSc()}/10</span></div><div class="sbd open" id="hb">${rHear()}<div class="sres"><div class="snum">${hSc()}<span style="font-size:13px;color:var(--color-text-secondary)">/10</span></div><div><span class="sb ${hC()}">${hI(hSc())}</span></div></div></div></div><div class="scard"><div class="shdr" onclick="tog('eb')"><span style="font-weight:500">Score EDACS</span><span class="sb ${eC()}">${eSc()} pts</span></div><div class="sbd open" id="eb">${rEdacs()}<div class="sres"><div class="snum">${eSc()}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${eI()}</div></div></div></div>`;}
+
+function s0(){return`<div class="card"><div class="st"><i class="ti ti-user" aria-hidden="true"></i> Identificação e origem</div><div style="margin-bottom:12px"><label>Nome do paciente</label><input type="text" value="${S.nome}" oninput="S.nome=this.value" placeholder="Nome completo"></div><div class="r2"><div><label>Idade</label><div class="age-ctrl"><button class="abtn" onclick="cAge(-1)"><i class="ti ti-chevron-left" aria-hidden="true"></i></button><div class="aged">${S.idade}<small>anos</small></div><button class="abtn" onclick="cAge(1)"><i class="ti ti-chevron-right" aria-hidden="true"></i></button></div></div><div><label>Origem</label><select onchange="S.orig=this.value">${['Demanda Espontânea','SAMU','Bombeiros','Vaga Zero','Transferência'].map(o=>`<option ${S.orig===o?'selected':''}>${o}</option>`).join('')}</select></div></div></div><div class="nav"><div></div><button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;}
+function s1(){const al=ALERTAS[S.queixa],isDT=S.queixa==='Dor torácica',cm=CMAP[S.queixa]||['Início súbito','Progressivo','Persistente','Febre'];return`<div class="card"><div class="st"><i class="ti ti-stethoscope" aria-hidden="true"></i> Queixa principal</div>${!S.queixa?`<div class="qgrid">${QUEIXAS.map(q=>`<button class="qbtn" onclick="S.queixa=\`${q}\`;S.caract=[];S.dt={ini:'',sem:null,pal:null,irr:[],sin:[]};render()">${q}</button>`).join('')}</div>`:`<div class="selq"><span><i class="ti ti-check" aria-hidden="true"></i> ${S.queixa}</span><button onclick="S.queixa=null;render()">Mudar</button></div>${al?`<div class="abox ${al.c}"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${al.m}</div>`:''}${isDT?rDT():`<div class="sl">Características:</div><div class="tags">${cm.map(c=>`<span class="tag ${S.caract.includes(c)?'on':''}" onclick="ts(S.caract,\`${c}\`)">${c}</span>`).join('')}</div><div style="margin-top:10px"><label>Tempo de início</label><input type="text" value="${S.tempo}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>`}`}</div><div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.queixa?`<button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
+function s2(){const va=vA();return`<div class="card"><div class="st"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i> Sinais vitais</div><div class="r5"><div><label>FC</label><input type="text" value="${S.fc}" oninput="S.fc=this.value;uvb()" placeholder="bpm"></div><div><label>SatO2</label><input type="text" value="${S.sat}" oninput="S.sat=this.value;uvb()" placeholder="%"></div><div><label>PA</label><input type="text" value="${S.pa}" oninput="S.pa=this.value;uvb()" placeholder="120/80"></div><div><label>FR</label><input type="text" value="${S.fr}" oninput="S.fr=this.value;uvb()" placeholder="irpm"></div><div><label>Glicemia</label><input type="text" value="${S.gli}" oninput="S.gli=this.value;uvb()" placeholder="mg/dL"></div></div><div class="vbars" id="vbars">${vBH()}</div>${va.length?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> ${va.join(' | ')}</div>`:''}</div><div class="card"><div class="st"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Antecedentes</div><div class="sl" style="margin-top:0">HPP:</div><div class="tags" style="margin-bottom:10px">${['HAS','DM2','ICC','AVC','DAC','IRC','DPOC','FA','Neo','Cirrose','HIV','Outras'].map(h=>`<span class="tag ${S.hpp.includes(h)?'on':''}" onclick="ts(S.hpp,'${h}')">${h}</span>`).join('')}</div><div class="r2"><div><label>Medicações em uso</label><input type="text" value="${S.muc}" oninput="S.muc=this.value" placeholder="Ex: Metoprolol, AAS"></div><div><label>Alergias</label><input type="text" value="${S.ale}" oninput="S.ale=this.value"></div></div></div><div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;}
+function abcH(){const a=S.abc,g=gcs();return`<div class="abcs"><div class="abch" onclick="tog('sa')"><strong>A</strong> — Via aérea <i class="ti ti-chevron-down" style="margin-left:auto" aria-hidden="true"></i></div><div class="abcb open" id="sa"><div class="sl">Estado:</div><div class="rg" style="margin-bottom:8px">${['Pérvia e Patente','Obstruída'].map(v=>`<span class="ro ${a.va===v?'on':''}" onclick="S.abc.va='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Fonação:</div><div class="rg" style="margin-bottom:8px">${['Preservada','Prejudicada/Ausente'].map(v=>`<span class="ro ${a.fon===v?'on':''}" onclick="S.abc.fon='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Colar cervical:</div><div class="rg">${['Não indicado','Colocado/Mantido'].map(v=>`<span class="ro ${a.col===v?'on':''}" onclick="S.abc.col='${v}';render()">${v}</span>`).join('')}</div>${a.va==='Obstruída'?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> VA comprometida — manejo imediato</div>`:''}</div></div><div class="abcs"><div class="abch" onclick="tog('sb')"><strong>B</strong> — Respiração <i class="ti ti-chevron-down" style="margin-left:auto" aria-hidden="true"></i></div><div class="abcb open" id="sb"><div class="sl">Expansibilidade:</div><div class="rg" style="margin-bottom:8px">${['Simétrica','Assimétrica'].map(v=>`<span class="ro ${a.exp===v?'on':''}" onclick="S.abc.exp='${v}';render()">${v}</span>`).join('')}</div><div class="sl">MV:</div><div class="rg" style="margin-bottom:8px">${['Presente e Simétrico','Reduzido','Abolido'].map(v=>`<span class="ro ${a.mv===v?'on':''}" onclick="S.abc.mv='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Ruídos:</div><div class="tags" style="margin-bottom:8px">${['Crépitos','Sibilos','Roncos','Atrito pleural'].map(v=>`<span class="tag ${a.rud.includes(v)?'on':''}" onclick="ts(S.abc.rud,'${v}')">${v}</span>`).join('')}</div><div class="sl">Esforço:</div><div class="tags">${['Taquipneia','Dispneia','Uso musc. acessória','Respiração paradoxal'].map(v=>`<span class="tag ${a.esf.includes(v)?'on':''}" onclick="ts(S.abc.esf,'${v}')">${v}</span>`).join('')}</div></div></div><div class="abcs"><div class="abch" onclick="tog('sc')"><strong>C</strong> — Circulação <i class="ti ti-chevron-down" style="margin-left:auto" aria-hidden="true"></i></div><div class="abcb open" id="sc"><div class="sl">TEC:</div><div class="rg" style="margin-bottom:8px">${['< 3s','> 3s','> 5s','Em flush'].map(v=>`<span class="ro ${a.tec===v?'on':''}" onclick="S.abc.tec='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Ausculta:</div><div class="tags" style="margin-bottom:8px">${['Regular','Irregular','Reduzida','Sopro','Bulhas hipofonéticas'].map(v=>`<span class="tag ${a.aus.includes(v)?'on':''}" onclick="ts(S.abc.aus,'${v}')">${v}</span>`).join('')}</div><div class="sl">Pulsos:</div><div class="rg" style="margin-bottom:8px">${['Simétricos','Assimétricos','Filiformes','Ausentes'].map(v=>`<span class="ro ${a.pul===v?'on':''}" onclick="S.abc.pul='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Abdome:</div><div class="tags">${['Flácido','Dor à palpação','Defesa','Descompressão dolorosa','Distendido','Ruídos abolidos'].map(v=>`<span class="tag ${a.abd.includes(v)?'on':''}" onclick="ts(S.abc.abd,'${v}')">${v}</span>`).join('')}</div>${(a.tec==='> 5s'||a.pul==='Filiformes'||a.pul==='Ausentes')?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> Sinais de choque — ressuscitação imediata</div>`:''}</div></div><div class="abcs"><div class="abch" onclick="tog('sd')"><strong>D</strong> — Neurológico (GCS: ${g}/15) <i class="ti ti-chevron-down" style="margin-left:auto" aria-hidden="true"></i></div><div class="abcb open" id="sd"><div class="gcsg"><div class="gcsc"><label>Ab. Ocular</label><select onchange="S.abc.ao=+this.value;render()"><option value="4" ${a.ao==4?'selected':''}>4-Espontânea</option><option value="3" ${a.ao==3?'selected':''}>3-Comando</option><option value="2" ${a.ao==2?'selected':''}>2-Dor</option><option value="1" ${a.ao==1?'selected':''}>1-Ausente</option></select></div><div class="gcsc"><label>R. Verbal</label><select onchange="S.abc.rv=+this.value;render()"><option value="5" ${a.rv==5?'selected':''}>5-Orientado</option><option value="4" ${a.rv==4?'selected':''}>4-Confuso</option><option value="3" ${a.rv==3?'selected':''}>3-Palavras</option><option value="2" ${a.rv==2?'selected':''}>2-Sons</option><option value="1" ${a.rv==1?'selected':''}>1-Ausente</option></select></div><div class="gcsc"><label>R. Motora</label><select onchange="S.abc.rm=+this.value;render()"><option value="6" ${a.rm==6?'selected':''}>6-Obedece</option><option value="5" ${a.rm==5?'selected':''}>5-Localiza</option><option value="4" ${a.rm==4?'selected':''}>4-Flex.N</option><option value="3" ${a.rm==3?'selected':''}>3-Flex.A</option><option value="2" ${a.rm==2?'selected':''}>2-Extensão</option><option value="1" ${a.rm==1?'selected':''}>1-Ausente</option></select></div></div><div class="gcst"><small style="color:var(--color-text-secondary)">Glasgow Coma Scale</small><div class="big">${g}/15</div><div style="margin-top:3px"><span class="sb ${gcsC(g)}">${gcsL(g)}</span></div></div>${g<=8?`<div class="abox ad"><i class="ti ti-alert-circle" aria-hidden="true"></i> GCS ≤ 8 — considerar IOT e proteção de VA</div>`:''}<div class="sl">Pupilas:</div><div class="rg" style="margin-bottom:8px">${['Isocóricas e Reativas','Anisocóricas','Midriáticas','Mióticas','Não reagentes'].map(v=>`<span class="ro ${a.pup===v?'on':''}" onclick="S.abc.pup='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Déficits:</div><div class="tags">${['Hemiparesia','Hemihipoestesia','PF central','Disartria','Afasia','Ataxia'].map(v=>`<span class="tag ${a.def.includes(v)?'on':''}" onclick="ts(S.abc.def,'${v}')">${v}</span>`).join('')}</div></div></div><div class="abcs"><div class="abch" onclick="tog('se')"><strong>E</strong> — Exposição <i class="ti ti-chevron-down" style="margin-left:auto" aria-hidden="true"></i></div><div class="abcb open" id="se"><div class="sl">Edema MMII:</div><div class="rg" style="margin-bottom:8px">${['Ausente','Presente'].map(v=>`<span class="ro ${a.ede===v?'on':''}" onclick="S.abc.ede='${v}';render()">${v}</span>`).join('')}</div>${a.ede==='Presente'?`<div class="sl">Cacifo:</div><div class="rg" style="margin-bottom:8px">${['Com cacifo','Sem cacifo'].map(v=>`<span class="ro ${a.cac===v?'on':''}" onclick="S.abc.cac='${v}';render()">${v}</span>`).join('')}</div>`:''}<div class="sl">Pele:</div><div class="tags">${['Palidez','Frialdade','Icterícia','Cianose','Lesões','Petéquias','Equimoses'].map(v=>`<span class="tag ${a.pel.includes(v)?'on':''}" onclick="ts(S.abc.pel,'${v}')">${v}</span>`).join('')}</div></div></div>`;}
+function s3(){return`<div class="card"><div class="st"><i class="ti ti-search" aria-hidden="true"></i> Tipo de exame físico</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem"><button class="xbtn ${S.ef==='amb'?'on':''}" onclick="S.ef='amb';render()"><i class="ti ti-walk" aria-hidden="true"></i> Ambulatorial</button><button class="xbtn ${S.ef==='crit'?'on':''}" onclick="S.ef='crit';render()"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Paciente crítico (ABCDE)</button></div></div>${S.ef==='amb'?`<div class="card"><div class="st">Padrão ambulatorial</div>${[['g','Geral'],['cv','AP Cardiovascular'],['re','AP Respiratório'],['ab','Abdome'],['ne','Neurológico'],['pe','Pele e MMII']].map(([k,l])=>`<div style="margin-bottom:10px"><label>${l}</label><input type="text" value="${S.amb[k]}" oninput="S.amb['${k}']=this.value" placeholder="${l}..."></div>`).join('')}</div>`:''}${S.ef==='crit'?`<div class="card"><div class="st">ABCDE — Avaliação primária</div>${abcH()}</div>`:''}${S.ef?`<div class="card"><div class="st"><i class="ti ti-activity" aria-hidden="true"></i> Complementares à beira leito</div><div class="r2"><div><label>POCUS</label><input type="text" value="${S.poc}" oninput="S.poc=this.value" placeholder="Achados do POCUS"></div><div><label>ECG</label><input type="text" value="${S.ecg}" oninput="S.ecg=this.value" placeholder="Ritmo, alterações"></div></div></div>`:''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.ef?`<button class="btnp" onclick="nx()">Impressão / Conduta <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
+
+function rCSec(sid,sec){const pc=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;const dc=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='done').length;return`<div class="csec"><div class="csh" onclick="tog('cs${sec.id}')"><span>${sec.t}</span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc}✓</span>`:''}${pc?`<span class="sb smod" style="font-size:11px">${pc}⏳</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb open" id="cs${sec.id}">${sec.it.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);return`<div class="chk ${cl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${S.nts[sid+'_'+sec.id]||''}</textarea></div></div></div>`;}
+
+function s4(){const T=S.sind?CT[S.sind]:null;const pt=T?T.s.reduce((a,sec)=>a+sec.it.filter((_,i)=>S.chk[S.sind+'_'+sec.id+'_'+i]==='pend').length,0):0;return`<div class="card"><div class="st"><i class="ti ti-clipboard-check" aria-hidden="true"></i> Impressão clínica e síndrome</div><div style="margin-bottom:12px"><label>Impressão clínica livre</label><textarea oninput="S.imp=this.value" placeholder="Descreva sua impressão diagnóstica...">${S.imp}</textarea></div><div class="sl">Síndrome clínica principal:</div><div class="sgrid">${SLIST.map(s=>`<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};render()">${s.l}</button>`).join('')}</div></div>${T?`<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="ai" style="margin-bottom:10px;font-size:12px"><i class="ti ti-info-circle" aria-hidden="true"></i> Clique para ciclar: ✓ Realizado → ⏳ Pendente → Não selecionado</div>${pt?`<div class="psm"><span class="psml"><i class="ti ti-clock" aria-hidden="true"></i> Pendentes:</span>${T.s.map(sec=>{const n=sec.it.filter((_,i)=>S.chk[S.sind+'_'+sec.id+'_'+i]==='pend').length;return n?`<span class="psmb">${sec.t}: ${n}</span>`:''}).join('')}</div>`:''}<div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px">Baseado em: ESC 2023, AHA/ACC 2022, SSC 2021, EASL 2018, AHA/ASA 2019, ASSENT-3</div>${T.s.map(sec=>rCSec(S.sind,sec)).join('')}</div>`:''}${!T&&S.imp?'':''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Gerar relatório <i class="ti ti-file-text" aria-hidden="true"></i></button></div>`;}
+
+function gRel(){
+  const g=gcs(),isDT=S.queixa==='Dor torácica';
+  let hda=`Paciente admitido(a) via ${S.orig}, com queixa de ${S.queixa}`;
+  if(S.tempo)hda+=`, com início há ${S.tempo}`;
+  if(isDT){if(S.dt.ini)hda+=`. Início ${S.dt.ini.toLowerCase()}`;if(S.caract.length)hda+=`. Dor de caráter ${S.caract.join(', ').toLowerCase()}`;if(S.dt.irr.length)hda+=`, com irradiação para ${S.dt.irr.join(', ').toLowerCase()}`;if(S.dt.pal)hda+=`. ${S.dt.pal==='Sim'?'Reproduzida':'Não reproduzida'} à palpação`;if(S.dt.sem)hda+=`. ${S.dt.sem==='Sim'?'Semelhante a evento cardíaco prévio':S.dt.sem==='Não'?'Não semelhante a evento prévio':'Sem evento cardíaco prévio'}`;if(S.dt.sin.length)hda+=`. Sintomas: ${S.dt.sin.join(', ').toLowerCase()}`;}
+  else if(S.caract.length)hda+=`. ${S.caract.join(', ').toLowerCase()}`;
+  hda+='.';
+  let ef='';
+  if(S.ef==='amb'){ef=`Geral: ${S.amb.g||'—'} | CV: ${S.amb.cv||'—'} | Resp: ${S.amb.re||'—'} | Abd: ${S.amb.ab||'—'} | Neuro: ${S.amb.ne||'—'} | Pele: ${S.amb.pe||'—'}`;}
+  else if(S.ef==='crit'){const a=S.abc;ef=`A: VA ${a.va.toLowerCase()}, fonação ${a.fon.toLowerCase()}. Colar: ${a.col.toLowerCase()}.\nB: Expansibilidade ${a.exp.toLowerCase()}, MV ${a.mv.toLowerCase()}. ${a.esf.join(', ')||'—'}. Ruídos: ${a.rud.join(', ')||'ausentes'}.\nC: TEC ${a.tec}. ${a.aus.join(', ')||'—'}. Pulsos ${a.pul.toLowerCase()}. Abdome: ${a.abd.join(', ')||'—'}.\nD: GCS ${g}/15 (O:${a.ao} V:${a.rv} M:${a.rm}) — ${gcsL(g)}. Pupilas ${a.pup.toLowerCase()}. Déficits: ${a.def.join(', ')||'ausentes'}.\nE: Edema MMII ${a.ede.toLowerCase()}${a.ede==='Presente'?' ('+a.cac.toLowerCase()+')':''}. Pele: ${a.pel.join(', ')||'sem alterações'}.`;}
+  let sc='';
+  if(isDT){sc=`\n${'='.repeat(40)}\nSCORES PREDITIVOS\nHEAR: ${hSc()}/10 — ${hI(hSc())}\nEDACS: ${eSc()} pts — ${eI()}${S.edacs.t0||S.edacs.t2?'\n  Troponina 0h: '+(S.edacs.t0||'—')+' | 2h: '+(S.edacs.t2||'—'):''}`;}
+  let ct='';
+  const T=S.sind?CT[S.sind]:null;
+  if(T){
+    const pd=[],dn=[];
+    T.s.forEach(sec=>{
+      const pi=sec.it.filter((_,i)=>S.chk[S.sind+'_'+sec.id+'_'+i]==='pend');
+      const di=sec.it.filter((_,i)=>S.chk[S.sind+'_'+sec.id+'_'+i]==='done');
+      const nt=S.nts[S.sind+'_'+sec.id]||'';
+      if(pi.length)pd.push({t:sec.t,it:pi,nt});
+      if(di.length)dn.push({t:sec.t,it:di,nt});
+    });
+    ct=`\n${'='.repeat(40)}\nIMPRESSÃO E CONDUTA\nSíndrome: ${T.l}`;
+    if(S.imp)ct+=`\nImpressão: ${S.imp}`;
+    if(pd.length){ct+=`\n\n⏳ PENDENTES:`;pd.forEach(s=>{ct+=`\n${s.t.toUpperCase()}:\n`+s.it.map(x=>`  - ${x}`).join('\n');if(s.nt)ct+=`\n  Obs: ${s.nt}`;});}
+    if(dn.length){ct+=`\n\n✓ REALIZADAS:`;dn.forEach(s=>{ct+=`\n${s.t.toUpperCase()}:\n`+s.it.map(x=>`  - ${x}`).join('\n');});}
+  }else if(S.imp)ct=`\n${'='.repeat(40)}\nIMPRESSÃO CLÍNICA\n${S.imp}`;
+  const va=vA();
+  return`## ADMISSÃO EM SALA DE EMERGÊNCIA ##\n${'='.repeat(40)}\nNome: ${S.nome||'Não informado'} | Idade: ${S.idade} anos | Origem: ${S.orig}\n${'='.repeat(40)}\nHDA\n${hda}\n${'='.repeat(40)}\nANTECEDENTES\nHPP: ${S.hpp.join(', ')||'Nega'} | MUC: ${S.muc||'Nega'} | Alergias: ${S.ale}\n${'='.repeat(40)}\nSINAIS VITAIS\nFC: ${S.fc||'—'} | SatO2: ${S.sat||'—'}% | PA: ${S.pa||'—'} | FR: ${S.fr||'—'} irpm | Gli: ${S.gli||'—'} mg/dL${va.length?'\n⚠ ALERTAS: '+va.join(' | '):''}\n${'='.repeat(40)}\nEXAME FÍSICO (${S.ef==='amb'?'Ambulatorial':S.ef==='crit'?'Crítico ABCDE':'não selecionado'})\n${ef}${sc}${ct}\n${'='.repeat(40)}\nCOMPLEMENTARES\nPOCUS: ${S.poc||'Não realizado'} | ECG: ${S.ecg||'Não realizado'}\n${'='.repeat(40)}`;}
+
+function pSumH(){const T=S.sind?CT[S.sind]:null;if(!T)return'';const pd=T.s.filter(sec=>sec.it.some((_,i)=>S.chk[S.sind+'_'+sec.id+'_'+i]==='pend'));if(!pd.length)return'';return`<div class="psm" style="margin-bottom:12px"><span class="psml"><i class="ti ti-clock" aria-hidden="true"></i> Pendências:</span>${pd.map(s=>{const n=s.it.filter((_,i)=>S.chk[S.sind+'_'+s.id+'_'+i]==='pend').length;return`<span class="psmb">${s.t}: ${n}</span>`;}).join('')}</div>`;}
+
+function s5(){const rel=gRel();return`<div class="card"><div class="st"><i class="ti ti-file-text" aria-hidden="true"></i> Relatório de admissão</div>${pSumH()}<div class="relbox" id="relTxt">${rel}</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btng" onclick="navigator.clipboard.writeText(document.getElementById('relTxt').innerText).then(()=>showToast('Copiado!'))"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button><button class="btng" style="background:#185fa5" onclick="saveReport(document.getElementById('relTxt').innerText)"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar</button><button class="btns" onclick="showSaved()"><i class="ti ti-history" aria-hidden="true"></i> Ver salvos</button><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Editar</button></div></div>`;}
+
+function render(){rs();const c=document.getElementById('con');if(S.step===0)c.innerHTML=s0();else if(S.step===1)c.innerHTML=s1();else if(S.step===2)c.innerHTML=s2();else if(S.step===3)c.innerHTML=s3();else if(S.step===4)c.innerHTML=s4();else c.innerHTML=s5();}
+initAuth();
+</script>
+</body>
+</html>
