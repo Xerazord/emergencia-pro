@@ -244,12 +244,40 @@ const S={step:0,nome:'',idade:30,orig:'Demanda Espontânea',origInst:'',origMoti
     abd:[],ao:4,rv:5,rm:6,pup:'Isocóricas e Reativas',def:[],ede:'Ausente',cac:'Com cacifo',pel:[]},
   hear:{h:null,e:null,r:null,t:null},
   edacs:{sx:'M',cad:false,dia:false,rad:false,ins:false,pal:false,t0:'',t2:''},
-  sind:null,chk:{},nts:{},imp:'',poc:'',ecg:''};
+  sind:null,subsind:null,subsinds:[],chk:{},nts:{},imp:'',poc:'',ecg:'',itDrug:''};
 
-const QUEIXAS=['Dor torácica','Dispneia','Tosse','Febre','Dor abdominal','Sangramento','Dor lombar','Cefaleia','Déficit neurológico agudo','Vertigem','Rebaixamento de consciência','Agitação psicomotora','Convulsão','Síncope','Trauma','Palpitações','Edema de MMII','Dor em MMII'];
-const CMAP={'Dispneia':['Uso musc. acessória','Sibilos','Crepitações','Ortopneia','Início súbito','Progressiva','Hemoptise'],'Dor abdominal':['Difusa','FID','Murphy +','Defesa','Descompressão','Náuseas/Vômitos','Parada de flatos'],'Cefaleia':['Início trovão','Pior cefaleia da vida','Rigidez nuca','Fotofobia','Febre associada','Déficit focal'],'Convulsão':['1ª crise','Focal','TCG','Pós-ictal longo','Estado de mal','Febre'],'Síncope':['PCB','Palpitações prévias','Pós-esforço','Posicional','Sem pródromo','Trauma na queda'],'Déficit neurológico agudo':['Hemiparesia','Afasia','Desvio de rima','Janela < 4,5h','Hemihipoestesia','Diplopia','Ataxia'],'Trauma':['Alta energia','Queda nível','Atropelamento','TCE','Agressão','MOC','Deformidade']};
-const ALERTAS={'Déficit neurológico agudo':{m:'Protocolo AVC — verificar janela para trombólise (< 4,5h)',c:'ad'},'Cefaleia':{m:'Excluir HSA se pior cefaleia da vida — TC sem contraste urgente',c:'aw'},'Convulsão':{m:'Via aérea + acesso venoso. Se > 5 min: protocolo estado de mal',c:'aw'},'Dispneia':{m:'Oximetria contínua. Considerar: TEP, DPOC agudizado, EAP',c:'aw'}};
-const SLIST=[{id:'noca',l:'Dor torácica — provável NOCA'},{id:'oca',l:'Dor torácica — suspeita OCA'},{id:'iams',l:'OCA / IAM com SUPRA'},{id:'sep',l:'Sepse / Choque séptico'},{id:'hdg',l:'Hemorragia digestiva'},{id:'neu',l:'Síndrome neurovascular'},{id:'rnc',l:'Rebaixamento de consciência'},{id:'cef',l:'Cefaleia sem sinais de alarme'}];
+const QUEIXAS=['Dor torácica','Dispneia','Tosse','Febre','Dor abdominal','Náusea e Vômitos','Diarreia','Sangramento','Dor lombar','Icterícia','Cefaleia','Déficit neurológico agudo','Vertigem','Rebaixamento de consciência','Agitação psicomotora','Convulsão','Síncope','Trauma','Palpitações','Edema / Dor em MMII','Intoxicação exógena'];
+const CMAP={
+'Dispneia':['Início súbito','Progressiva','Crônica agudizada','Ortopneia','DPN','Aos esforços','Em repouso','Edema de MMII associado','Dor torácica associada','Sibilos','Crepitações','Uso musc. acessória','Febre associada','Hemoptise','Prostração'],
+'Tosse':['Seca','Produtiva','Hemoptise','Febre associada','Início súbito','Progressiva','Noturna','Pós-infecciosa'],
+'Febre':['Início agudo (< 3 dias)','Subagudo (3–14 dias)','Crônico (> 14 dias)','Calafrios / Tremores','Tosse associada','Dor abdominal associada','Náusea / Vômitos','Diarreia','Lesões cutâneas','Hipotensão','Disúria','Rigidez de nuca','Fotofobia'],
+'Dor abdominal':['Em cólica','Contínua','Em queimação','Em pontada','Epigástrio','FID','FIE','Hipocôndrio D','Hipocôndrio E','Periumbilical','Difusa','Hipogástrio','Irradiação para dorso','Irradiação para MMII','Murphy +','Defesa','Descompressão dolorosa','Sinal de Psoas','Náusea / Vômitos','Parada de flatos','Febre','Icterícia','Hematúria'],
+'Náusea e Vômitos':['Início agudo','Repetido','Incoercível','Conteúdo alimentar','Conteúdo bilioso','Conteúdo hemático','Dor abdominal associada','Febre associada','Cefaleia associada','Vertigem associada'],
+'Diarreia':['Início agudo (< 14 dias)','Persistente (> 14 dias)','Aquosa','Mucossanguinolenta','Com sangue','> 6 episódios/dia','3–6 episódios/dia','Febre associada','Dor abdominal associada','Sinais de desidratação'],
+'Sangramento':['Epistaxe','Gengivorragia','Hematúria','Hematêmese','Melena','Hematoquezia','Sangramento vaginal','Equimoses espontâneas','Hematoma'],
+'Dor lombar':['Início súbito','Progressiva','Pós-trauma','Irradiação para MMII','Irradiação para virilha','Déficit neurológico','Febre associada','Hematúria','Massa pulsátil palpável'],
+'Icterícia':['Início agudo (< 4 sem)','Progressiva','Colúria','Acolia','Prurido','Perda de peso','Encefalopatia hepática','Coagulopatia','Ascite','Febre associada','Dor abdominal associada'],
+'Cefaleia':['Início trovão','Pior cefaleia da vida','Rigidez nuca','Fotofobia','Febre associada','Déficit focal'],
+'Déficit neurológico agudo':['Hemiparesia','Afasia','Desvio de rima','Janela < 4,5h','Hemihipoestesia','Diplopia','Ataxia'],
+'Vertigem':['Início súbito','Posicional','Contínua','Náusea / Vômitos','Déficit auditivo','Nistagmo','Ataxia','Déficit neurológico focal'],
+'Rebaixamento de consciência':['Início súbito','Progressivo','Febre associada','Trauma prévio','Uso de drogas / álcool','Convulsão prévia','Cefaleia prévia','Déficit focal'],
+'Agitação psicomotora':['Início agudo','Antecedente psiquiátrico','Uso de drogas','Febre associada','Déficit neurológico','Agressividade','Alucinações'],
+'Convulsão':['1ª crise','Crise recorrente','Focal','Generalizada / TCG','Pós-ictal prolongado','Estado de mal (> 5 min)','Febre associada','Trauma na queda','Uso de drogas / álcool'],
+'Síncope':['PCB','Palpitações prévias','Pós-esforço','Posicional','Sem pródromo','Trauma na queda'],
+'Trauma':['Alta energia','Queda de nível','Atropelamento','TCE','Agressão','MOC','Deformidade'],
+'Palpitações':['Início súbito','Ritmo irregular','Regular','Duração em segundos','Duração em minutos','Horas / Contínua','Síncope associada','Pré-síncope','Dor torácica associada','Dispneia','Em repouso','Ao esforço'],
+'Intoxicação exógena':['Acidental','Intencional','Tentativa de autoextermínio','Via oral','Via inalatória','Via cutânea','Via IV','Toxíndrome simpaticomimética','Toxíndrome colinérgica','Toxíndrome anticolinérgica','Síndrome opioide','Síndrome sedativo-hipnótica'],
+'Edema / Dor em MMII':['Unilateral','Bilateral','Edema predominante','Dor predominante','Eritema / Calor local','Assimetria de membros','Início agudo','Progressivo','Dispneia associada','Dor torácica associada','Imobilização recente','Cirurgia recente']};
+const ALERTAS={'Déficit neurológico agudo':{m:'Protocolo AVC — verificar janela para trombólise (< 4,5h)',c:'ad'},'Cefaleia':{m:'Excluir HSA se pior cefaleia da vida — TC sem contraste urgente',c:'aw'},'Convulsão':{m:'Via aérea + acesso venoso. Se > 5 min: protocolo estado de mal epiléptico',c:'aw'},'Dispneia':{m:'Oximetria contínua. Considerar: TEP, DPOC agudizado, EAP',c:'aw'},'Intoxicação exógena':{m:'Avaliar nível de consciência e via aérea — depressão respiratória pode ser rápida',c:'ad'},'Icterícia':{m:'Verificar INR e nível de consciência — encefalopatia + icterícia recente pode indicar IHA',c:'aw'},'Edema / Dor em MMII':{m:'Excluir TVP — D-dímero se Wells baixo; Doppler venoso se suspeita moderada/alta',c:'aw'}};
+const SLIST=[
+{id:'noca',l:'Dor torácica — NOCA'},{id:'oca',l:'Dor torácica — NSTE-ACS'},{id:'iams',l:'IAM com SUPRA'},
+{id:'cho',l:'Choque indiferenciado'},
+{id:'dsp',l:'Síndrome dispneica'},
+{id:'neu',l:'Síndrome neurovascular'},{id:'rnc',l:'Rebaixamento de consciência'},{id:'cef',l:'Cefaleia'},{id:'con',l:'Convulsão'},
+{id:'pal',l:'Palpitações / Arritmia'},{id:'sin',l:'Síncope'},
+{id:'abd',l:'Síndrome abdominal'},{id:'hdg',l:'Hemorragia digestiva'},{id:'ict',l:'Icterícia / IHA'},
+{id:'feb',l:'Síndrome febril / Infecciosa'},
+{id:'int',l:'Intoxicação exógena'},{id:'dlb',l:'Dor lombar'},{id:'emmi',l:'Edema / Dor em MMII'}];
 const STEPS=[{l:'Identificação',i:'ti-user'},{l:'Queixa',i:'ti-stethoscope'},{l:'Dados clínicos',i:'ti-heart-rate-monitor'},{l:'Exame físico',i:'ti-search'},{l:'Impressão / Conduta',i:'ti-clipboard-check'},{l:'Relatório',i:'ti-file-text'}];
 
 const CT={
@@ -404,7 +432,7 @@ rnc:{l:'Rebaixamento do nível de consciência',s:[
 'Causa reversível identificada e tratada com recuperação → observação mínima 6h',
 'Causa não estabelecida → internação para investigação']}
 ]},
-cef:{l:'Cefaleia sem sinais de alarme',s:[
+cef:{l:'Cefaleia',s:[
 {id:'m',t:'Avaliação inicial',it:[
 'Confirmar ausência de alarme: início trovão, febre + rigidez nuca, déficit focal, papiledema, imunossupressão, neoplasia, > 50a com 1ª crise',
 'EVA de dor — documentar para monitorização da resposta ao tratamento',
@@ -423,13 +451,330 @@ cef:{l:'Cefaleia sem sinais de alarme',s:[
 'Retorno imediato se: piora súbita, febre, rigidez cervical, déficit neurológico ou alteração de consciência',
 'Encaminhar neurologia se ≥ 4 crises/mês — profilaxia indicada (topiramato, propranolol, amitriptilina)',
 'Orientar diário de cefaleia e identificação de gatilhos']}
+]},
+cho:{l:'Choque indiferenciado',excl:true,sub:[{id:'cho_sep',l:'Séptico / Distributivo'},{id:'cho_hip',l:'Hipovolêmico'},{id:'cho_car',l:'Cardiogênico'},{id:'cho_obs',l:'Obstrutivo (TEP / Tamponamento)'}],s:[
+{id:'m',t:'Monitorização e acesso',it:[
+'Monitor contínuo: ECG, SatO2, PA não invasiva contínua',
+'Dois acessos venosos periféricos ≥ 16G — acesso central não é pré-requisito para vasopressor',
+'Sonda vesical — débito urinário meta ≥ 0,5 mL/kg/h como marcador de perfusão',
+'Gasometria arterial e lactato basal — lactato > 2 mmol/L indica hipoperfusão tecidual',
+'O2 com alvo SatO2 94–98% — IOT precoce se rebaixamento de consciência ou falha ventilatória']},
+{id:'f',t:'Ressuscitação inicial',it:[
+'Cristaloide balanceado 250–500 mL IV em bolus — reavaliar com elevação passiva de pernas antes de reexpandir',
+'Norepinefrina 1ª linha se PAM < 65 mmHg — início seguro em acesso periférico calibroso (CENSER 2019)',
+'Meta PAM ≥ 65 mmHg — considerar 80–85 mmHg em HAS prévia (65PLUS trial)',
+'Transfusão se Hb < 7 g/dL (< 8 g/dL em DAC ou isquemia ativa) — estratégia restritiva']},
+{id:'e',t:'Investigação',it:[
+'Lactato seriado (0h e 2h) — clareamento ≥ 10% como meta de ressuscitação',
+'Hemograma, coagulograma, função renal e hepática, glicemia',
+'POCUS: função VE, IVC, derrame pericárdico, pneumotórax, distensão VD — diagnóstico diferencial de choque',
+'ECG 12D — excluir IAM, TEP (S1Q3T3), tamponamento (alternância elétrica)']}
+]},
+cho_hip:{l:'Choque hipovolêmico',s:[
+{id:'f',t:'Controle da perda e reposição',it:[
+'Identificar e controlar fonte de sangramento — hemostasia cirúrgica ou endoscópica quando indicado',
+'Cristaloide balanceado 1–2 L rápido; se hemorrágico grave → ativar protocolo de transfusão maciça (PTM)',
+'PTM: concentrado de hemácias + plasma fresco + plaquetas na proporção 1:1:1 (PROPPR trial)',
+'Ácido tranexâmico 1 g IV em 10 min se sangramento ativo — iniciar em < 3h do trauma (CRASH-2)',
+'Hipotensão permissiva em trauma com hemorragia ativa — alvo PAS 80–90 mmHg até hemostasia definitiva']},
+{id:'e',t:'Investigação',it:[
+'Tipagem sanguínea e reserva de concentrado de hemácias',
+'Coagulograma, TEG/ROTEM se disponível — guia reposição hemostática',
+'POCUS FAST estendido — líquido livre em abdome e tórax']}
+]},
+cho_car:{l:'Choque cardiogênico',s:[
+{id:'f',t:'Suporte hemodinâmico',it:[
+'Evitar ressuscitação volêmica agressiva — pode piorar congestão pulmonar',
+'Dobutamina 2,5–20 mcg/kg/min se débito cardíaco baixo sem hipotensão grave — inotrópico de 1ª linha',
+'Norepinefrina associada se PAM < 65 mmHg — manter perfusão coronariana',
+'Furosemida 40–80 mg IV se congestão pulmonar — titular conforme débito urinário',
+'Considerar IABP ou suporte mecânico se refratário — ativar cardiologia intervencionista']},
+{id:'e',t:'Investigação',it:[
+'ECG 12D imediato — excluir IAM como causa (supra = ativar hemodinâmica)',
+'Ecocardiograma / POCUS urgente — FEVE, valvopatia aguda, tamponamento',
+'Troponina hs, BNP/NT-proBNP, hemograma, função renal']}
+]},
+cho_obs:{l:'Choque obstrutivo',s:[
+{id:'f',t:'Tratamento específico pela etiologia',it:[
+'TEP de alto risco (choque + TEP confirmado): alteplase 100 mg IV em 2h — se contraindicação: embolectomia cirúrgica',
+'Tamponamento cardíaco: pericardiocentese de emergência guiada por POCUS — 50 mL já aliviam hemodinâmica',
+'Pneumotórax hipertensivo: descompressão imediata com agulha 14G (2º EIC linha hemiclavicular) → dreno torácico',
+'NÃO ventilar com pressão positiva antes de descomprimir pneumotórax hipertensivo — risco de PCR']},
+{id:'e',t:'Investigação',it:[
+'POCUS: derrame pericárdico, colapso de câmaras D, distensão VD, ausência de deslizamento pleural',
+'AngioTC de tórax se hemodinamicamente estável — confirmar TEP antes de trombólise',
+'ECG: S1Q3T3, BRD novo — sugestivos de TEP maciço']}
+]},
+dsp:{l:'Síndrome dispneica',s:[
+{id:'m',t:'Monitorização e suporte ventilatório',it:[
+'Oximetria contínua; O2 titulado para SatO2 94–98% (88–92% em DPOC)',
+'Posição sentada (Fowler 45°) — reduz trabalho respiratório',
+'Monitor cardíaco — dispneia aguda pode ser manifestação de arritmia',
+'CPAP/BiPAP se SatO2 < 92% com O2 em alto fluxo — VNI reduz intubação em EAP e DPOC (Cochrane I-A)',
+'IOT precoce se falha da VNI, rebaixamento de consciência, apneia iminente ou instabilidade hemodinâmica']},
+{id:'f',t:'Farmacológico conforme etiologia',it:[
+'Broncoespasmo: salbutamol 2,5 mg nebulizado + ipratrópio 0,5 mg — repetir a cada 20 min se necessário',
+'EAP hipertensivo: furosemida 40–80 mg IV + nitroglicerina 10–200 mcg/min se PAS > 100 mmHg',
+'DPOC agudizado: prednisolona 40 mg VO ou metilprednisolona 40 mg IV + ATB se sinais infecciosos (GOLD 2024)',
+'Pneumonia grave: ATB IV precoce conforme foco e perfil de resistência local']},
+{id:'e',t:'Investigação',it:[
+'POCUS: linhas B (EAP), consolidação (pneumonia), derrame pleural, pneumotórax, distensão VD (TEP)',
+'RX tórax PA — congestão, pneumotórax, consolidação, derrame',
+'BNP/NT-proBNP — diferenciação cardíaca vs. pulmonar',
+'D-dímero se Wells ≥ 2 ou PERC positivo — angioTC se elevado',
+'Gasometria arterial se grave ou dúvida diagnóstica']},
+{id:'d',t:'Disposição',it:[
+'TEP confirmado: anticoagulação imediata — HNF IV se instável (permite trombólise rápida)',
+'IOT: suporte ventilatório protetor — VC 6 mL/kg peso predito, PEEP 5–8 cmH2O',
+'Pneumonia grave (PSI IV/V ou CURB-65 ≥ 3): internação + ATB IV']}
+]},
+feb:{l:'Síndrome febril / Infecciosa',s:[
+{id:'m',t:'Triagem de gravidade',it:[
+'Sinais vitais completos — identificar SIRS: FC > 90, FR > 20, Temp > 38°C ou < 36°C',
+'Avaliar nível de consciência — alteração + febre = alarme para meningite/encefalite ou sepse com disfunção orgânica',
+'Lactato sérico — se > 2 mmol/L: hipoperfusão, ativar protocolo de choque']},
+{id:'f',t:'Farmacológico',it:[
+'Antitérmico: dipirona 1 g IV ou paracetamol 1 g IV — não usar AAS em febre',
+'ATB IV em < 1h se critérios de sepse — não aguardar culturas para iniciar',
+'Cobertura empírica conforme foco suspeito — rever com culturas e antibiograma']},
+{id:'e',t:'Investigação',it:[
+'Hemoculturas (2 pares) antes do ATB — não atrasar ATB > 45 min para coleta',
+'Urina I + urocultura, RX tórax',
+'Hemograma, PCR, procalcitonina, função renal',
+'TC crânio + punção lombar se meningite suspeita — iniciar ATB antes se houver retardo > 30 min']},
+{id:'d',t:'Disposição',it:[
+'Sepse (SOFA ≥ 2 + suspeita infecciosa): ativar protocolo → Choque indiferenciado > Séptico',
+'Febre sem foco em imunossuprimido: internação e investigação ampla',
+'Foco identificado, estável, baixo risco: ATB oral com retorno em 48h']}
+]},
+abd:{l:'Síndrome abdominal',excl:false,sub:[{id:'dab',l:'Dor abdominal'},{id:'nv',l:'Náusea e Vômitos'},{id:'dia',l:'Diarreia'}],s:[
+{id:'m',t:'Monitorização e acesso',it:[
+'Monitor contínuo se instabilidade hemodinâmica',
+'Dois acessos venosos periféricos se suspeita cirúrgica',
+'NPO se suspeita cirúrgica, obstrução ou procedimento iminente',
+'Analgesia não retarda diagnóstico — morfina ou dipirona IV para conforto (evidência contrária ao mito clássico)']},
+{id:'f',t:'Analgesia e suporte',it:[
+'Dipirona 1 g IV ou cetorolaco 30 mg IV para dor moderada',
+'Morfina 2–4 mg IV se dor intensa',
+'Ondansetrona 4–8 mg IV se náusea / vômito associado',
+'SNG se vômitos incoercíveis, obstrução ou peritonite']},
+{id:'e',t:'Investigação',it:[
+'POCUS: líquido livre, vesícula/colédoco, aorta, bexiga',
+'Hemograma, função renal, lipase, bilirrubinas, coagulograma',
+'β-hCG em mulheres em idade fértil — excluir gravidez ectópica',
+'RX abdome se suspeita de obstrução ou perfuração',
+'TC abdome com contraste se dor grave, sinais peritoneais ou dúvida diagnóstica']},
+{id:'d',t:'Disposição',it:[
+'Sinais peritoneais, instabilidade ou suspeita cirúrgica: acionar cirurgião imediatamente',
+'Gravidez ectópica com instabilidade: cirurgia de emergência']}
+]},
+dab:{l:'Dor abdominal',s:[
+{id:'loc',t:'Localização e etiologias suspeitas',it:[
+'QSD / Hipocôndrio D — pensar: colecistite, coledocolitíase, hepatite aguda',
+'Epigástrio — pensar: úlcera péptica, pancreatite, IAM inferior, RGE',
+'QIE / FIE — pensar: diverticulite, torção ovariana, hérnia',
+'QID / FID — pensar: apendicite, ileíte terminal, torção ovariana D',
+'Periumbilical — pensar: apendicite precoce, obstrução intestinal, isquemia mesentérica',
+'Hipogástrio — pensar: ITU, doença inflamatória pélvica, globo vesical',
+'Difusa — pensar: peritonite, isquemia mesentérica, obstrução, gastroenterite']}
+]},
+nv:{l:'Náusea e Vômitos',s:[
+{id:'f',t:'Manejo',it:[
+'Ondansetrona 4–8 mg IV — antiemético de 1ª linha, mínimos efeitos adversos',
+'Metoclopramida 10 mg IV se vômitos associados a gastroparesia ou estimulação central',
+'Hidratação IV com ringer lactato 500 mL se intolerância oral',
+'Omeprazol 40 mg IV se conteúdo hemático ou úlcera suspeita']},
+{id:'e',t:'Investigação conforme contexto',it:[
+'Glicemia — cetoacidose diabética com náusea/vômito',
+'β-hCG — hiperemese gravídica',
+'Lipase se dor epigástrica — pancreatite',
+'Eletrólitos — hipocalemia por vômitos repetidos']}
+]},
+dia:{l:'Diarreia',s:[
+{id:'f',t:'Manejo',it:[
+'Hidratação oral ou IV conforme grau de desidratação — ringer lactato ou SRO',
+'Loperamida 2–4 mg VO se diarreia não complicada sem sangue — contraindicado em disenteria',
+'ATB empírico se: febre + diarreia mucossanguinolenta, imunossuprimido ou grave — ciprofloxacina ou azitromicina',
+'Reposição de potássio se hipocalemia confirmada']},
+{id:'e',t:'Investigação',it:[
+'Coprocultura + protoparasitológico se suspeita infecciosa grave ou prolongada',
+'Hemograma, função renal, eletrólitos',
+'Pesquisa de toxina C. difficile se uso recente de antibiótico']}
+]},
+sin:{l:'Síncope',s:[
+{id:'m',t:'Monitorização e avaliação',it:[
+'ECG 12D imediato — excluir BAV, QTc longo, WPW, Brugada, supradesnivelamento',
+'Monitor cardíaco contínuo',
+'Glicemia capilar — excluir hipoglicemia',
+'PA em decúbito e ortostase (1 e 3 min) — hipotensão ortostática ≥ 20/10 mmHg']},
+{id:'e',t:'Investigação',it:[
+'Hemograma, função renal, eletrólitos — causas metabólicas',
+'Troponina se dor torácica associada ou ECG alterado',
+'Ecocardiograma se suspeita estrutural — estenose aórtica, miocardiopatia hipertrófica']},
+{id:'d',t:'Estratificação de risco',it:[
+'Alto risco (internação): ECG alterado, PA < 90 mmHg, IC conhecida, BRE novo, QTc > 460 ms',
+'San Francisco Rule: ICC, Hematócrito < 30%, PAS < 90 mmHg, ECG alterado, dispneia — qualquer item = alto risco',
+'Baixo risco: síncope vasovagal típica com pródromo, jovem sem comorbidade, ECG normal — alta com seguimento']}
+]},
+con:{l:'Convulsão',s:[
+{id:'m',t:'Manejo inicial',it:[
+'Posição lateral de segurança se sem trauma cervical — reduz risco de broncoaspiração',
+'O2 por máscara 10 L/min — hipóxia agrava lesão neuronal',
+'Acesso venoso periférico — colher glicemia antes de administrar glicose',
+'Glicemia capilar: se < 60 mg/dL → tiamina 100 mg IV + glicose 50% 50 mL IV',
+'Monitor cardíaco contínuo']},
+{id:'f',t:'Sequência farmacológica (estado de mal)',it:[
+'1ª linha (0–5 min): diazepam 0,15–0,2 mg/kg IV (máx 10 mg) ou midazolam 10 mg IM se sem acesso',
+'2ª linha (5–20 min): fenitoína 20 mg/kg IV ou ácido valproico 40 mg/kg IV ou levetiracetam 60 mg/kg IV',
+'3ª linha (> 20 min — estado refratário): propofol 1–2 mg/kg IV + IOT ou midazolam em infusão contínua',
+'Crise febril simples: benzodiazepínico apenas se crise ativa > 5 min']},
+{id:'e',t:'Investigação',it:[
+'Glicemia, sódio, cálcio, magnésio, ureia, creatinina — convulsão metabólica',
+'Nível sérico de antiepilépticos em uso — subdosagem',
+'TC crânio sem contraste — 1ª crise, déficit pós-ictal, trauma ou suspeita estrutural',
+'EEG urgente se status não convulsivo suspeito ou alteração persistente da consciência']}
+]},
+pal:{l:'Palpitações / Arritmia',s:[
+{id:'m',t:'Monitorização',it:[
+'ECG 12D imediato — documentar arritmia em curso ou alterações de base',
+'Monitor contínuo com impressão do ritmo no momento dos sintomas',
+'Medir QTc — risco de torsades de pointes se > 500 ms',
+'Desfibrilador disponível à beira leito']},
+{id:'f',t:'Farmacológico por ritmo',it:[
+'TSV: manobra vagal → adenosina 6 mg IV rápido (12 mg se falha — pode repetir 12 mg)',
+'FA/Flutter com instabilidade: cardioversão elétrica sincronizada 100–200 J (bifásico)',
+'FA estável (< 48h): controle de FC com metoprolol 5 mg IV ou diltiazem; cardioversão se < 48h',
+'FA estável (> 48h ou duração incerta): controle de FC + anticoagulação — não cardioverter sem ETE ou ≥ 3 sem de anticoagulação',
+'TV monomórfica estável: amiodarona 150 mg IV em 10 min',
+'TV polimórfica (Torsades): MgSO4 2 g IV em 10 min',
+'FV/TV sem pulso: desfibrilação imediata — sem sincronização']},
+{id:'e',t:'Investigação',it:[
+'K+ e Mg2+ — hipocalemia e hipomagnesemia são causas reversíveis',
+'Troponina se dor torácica associada — SCA como causa de arritmia',
+'TSH — FA por hipertireoidismo']},
+{id:'d',t:'Disposição',it:[
+'Instabilidade hemodinâmica: cardioversão / desfibrilação antes de qualquer fármaco',
+'WPW + FA: evitar adenosina, digoxina, verapamil — risco de FV; usar procainamida ou cardioversão',
+'Alta: Holter 24h ou event monitor se sem documentação arrítmica']}
+]},
+int:{l:'Intoxicação exógena',s:[
+{id:'m',t:'Avaliação e monitorização',it:[
+'ABCDE imediato — intoxicações graves cursam com rebaixamento de consciência e falência respiratória',
+'Glicemia capilar — hipoglicemia por insulina, antidiabéticos orais ou álcool',
+'ECG 12D — alargamento de QRS (tricíclicos, antiarrítmicos), QTc longo (antipsicóticos)',
+'Temperatura — hipertermia em síndrome serotoninérgica/anticolinérgica; hipotermia em opioides/sedativos']},
+{id:'f',t:'Antídotos e descontaminação',it:[
+'Naloxona 0,4–2 mg IV/IM/IN se síndrome opioide — repetir até resposta; infusão se recorrência',
+'Flumazenil 0,2 mg IV (máx 1 mg) se síndrome sedativo-hipnótica PURA — contraindicado se convulsão ou dependência de BZD',
+'Atropina 2 mg IV se síndrome colinérgica — titular até secreções reduzidas (não usar FC como alvo)',
+'Carvão ativado 1 g/kg VO/SNG se < 1h da ingestão oral, VA protegida, sem contraindicação (corrosivo, hidrocarboneto)',
+'Bicarbonato de sódio 1–2 mEq/kg IV se QRS > 120 ms por antidepressivo tricíclico — alvo pH 7,45–7,55',
+'N-acetilcisteína IV se intoxicação por paracetamol — iniciar mesmo tardiamente (reduz mortalidade)',
+'Contato CIT: 0800 722 6001 — orientação toxicológica 24h']},
+{id:'e',t:'Investigação',it:[
+'Nível sérico: paracetamol, etanol, salicilatos — triagem de rotina em intoxicações intencionais',
+'Gasometria arterial — acidose com ânion gap elevado em salicilatos, metanol, etilenoglicol',
+'Função renal, hepática e coagulograma',
+'Toxicológico qualitativo urinário — confirma classe, não exclui exposição']},
+{id:'d',t:'Disposição',it:[
+'Tentativa de autoextermínio: internação obrigatória — alta somente após avaliação psiquiátrica e plano de segurança',
+'Observação mínima 6–8h após intoxicação aguda — algumas substâncias têm ação prolongada']}
+]},
+dlb:{l:'Dor lombar',s:[
+{id:'m',t:'Triagem de emergências',it:[
+'Palpar pulsos abdominais — massa pulsátil sugere AAA: risco de rotura iminente',
+'Avaliar déficit neurológico em MMII — síndrome da cauda equina (retenção urinária + anestesia em sela + paraparesia) = emergência cirúrgica',
+'Temperatura e sinais infecciosos — espondilodiscite ou abscesso epidural',
+'PA bilateral se dissecção aórtica suspeita']},
+{id:'f',t:'Analgesia',it:[
+'Dipirona 1 g IV ou cetorolaco 30 mg IV — 1ª linha para dor lombar aguda não complicada',
+'Ciclobenzaprina 5–10 mg VO se componente de espasmo muscular',
+'Morfina 2–4 mg IV se dor intensa ou etiologia grave suspeita',
+'Mobilização precoce — repouso prolongado não é indicado na lombalgia mecânica']},
+{id:'e',t:'Investigação conforme suspeita',it:[
+'Urina I + urocultura se febre ou disúria — pielonefrite',
+'TC abdome e pelve com contraste se suspeita de AAA, dissecção ou cólica renal complicada',
+'RNM de coluna se déficit neurológico, febre + lombalgia ou suspeita de compressão medular',
+'Hemograma, PCR, VHS se suspeita infecciosa ou neoplásica']},
+{id:'d',t:'Disposição',it:[
+'Síndrome da cauda equina: neurocirurgia de emergência — descompressão em < 6h reduz sequelas',
+'AAA > 5,5 cm ou sintomático: cirurgia vascular de emergência',
+'Sinais de alarme (red flags): déficit neurológico, febre, perda de peso, neoplasia, trauma de alta energia',
+'Lombalgia mecânica sem red flags: alta com AINE oral, calor local e retorno se piora']}
+]},
+ict:{l:'Icterícia / Insuficiência Hepática Aguda',s:[
+{id:'m',t:'Avaliação de gravidade',it:[
+'Avaliar encefalopatia hepática (EH): asterixe, confusão, sonolência — EH + icterícia < 26 semanas = IHA (critério King\'s College)',
+'INR em IHA: INR > 1,5 com EH define insuficiência hepática aguda — internação imediata',
+'Glicemia horária em IHA — hipoglicemia grave por falência da gliconeogênese',
+'PA, FC e consciência — choque hepatorrenal e edema cerebral são emergências']},
+{id:'f',t:'Suporte específico',it:[
+'Vitamina K 10 mg IV se coagulopatia — corrigir com plasma apenas se sangramento ativo',
+'Lactulose 15–30 mL 8/8h VO/SNG se EH — alvo 2–3 evacuações pastosas/dia',
+'Rifaximina 550 mg 12/12h VO como adjuvante na EH grau II–IV',
+'N-acetilcisteína IV em IHA por paracetamol — iniciar mesmo além de 24h',
+'Suspender hepatotóxicos: paracetamol, AINEs, estatinas',
+'Glicose IV se hipoglicemia — SG10% ou SG50% conforme gravidade']},
+{id:'e',t:'Investigação',it:[
+'Bilirrubinas (total, direta, indireta), TGO, TGP, GGT, FA — perfil hepatocelular vs. colestático',
+'INR, TTPa — gravidade da coagulopatia',
+'Amônia sérica — correlaciona com grau de EH',
+'Sorologias: HBsAg, Anti-HBc IgM, Anti-HAV IgM, Anti-HCV, Anti-HEV IgM',
+'Ceruloplasmina/cobre urinário em < 40 anos — doença de Wilson',
+'USG abdome com Doppler — fluxo portal, vias biliares, lesão focal']},
+{id:'d',t:'Critérios de internação e transferência',it:[
+'IHA confirmada: UTI + avaliação imediata para transplante hepático de urgência',
+'King\'s (paracetamol): pH < 7,3 OU [INR > 6,5 + creatinina > 3,4 + EH III-IV] → indicação de transplante',
+'King\'s (não-paracetamol): etiologia desfavorável + ≥ 3 de: idade < 10 ou > 40a, bilirrubina > 17 mg/dL, INR > 3,5, icterícia > 7 dias antes de EH',
+'Colangite aguda (Tríade de Charcot: febre + icterícia + dor abdominal): ATB IV + drenagem biliar em < 24h (Tokyo 2018)']}
+]},
+emmi:{l:'Edema / Dor em MMII',excl:false,sub:[{id:'emmi_tvp',l:'TVP / TEP suspeitos'},{id:'emmi_art',l:'Isquemia arterial aguda'},{id:'emmi_edem',l:'Edema bilateral (cardíaco/renal/hepático)'}],s:[
+{id:'m',t:'Avaliação inicial',it:[
+'Palpar panturrilha bilateralmente — dor à compressão; medir circunferências (assimetria ≥ 3 cm sugere TVP)',
+'Avaliar coloração, temperatura e pulsos — diferencial entre TVP e isquemia arterial aguda',
+'Score de Wells para TVP — estratificação de risco pré-teste']},
+{id:'e',t:'Investigação',it:[
+'Duplex scan venoso de MMII — padrão-ouro para TVP',
+'D-dímero se Wells baixo — valor normal exclui TVP em baixo risco (sensibilidade > 95%)',
+'BNP/NT-proBNP se edema bilateral — etiologia cardíaca',
+'Albumina, ureia, creatinina — hipoproteinemia, síndrome nefrótica',
+'AngioTC tórax se sintomas de TEP — dispneia, dor pleurítica, hipoxemia']}
+]},
+emmi_tvp:{l:'TVP / TEP',s:[
+{id:'f',t:'Anticoagulação',it:[
+'Rivaroxabana 15 mg 12/12h por 21 dias (sem heparina ponte) — 1ª opção em TVP/TEP estável',
+'HNF IV se instabilidade hemodinâmica — permite trombólise rápida se necessário',
+'TEP alto risco (instabilidade): alteplase 100 mg IV em 2h',
+'Filtro de veia cava apenas se contraindicação absoluta à anticoagulação']}
+]},
+emmi_art:{l:'Isquemia arterial aguda',s:[
+{id:'f',t:'Manejo de emergência',it:[
+'Cirurgia vascular de emergência — janela de viabilidade 6h; após isto reperfusão pode causar síndrome compartimental',
+'HNF 5.000 UI IV bolus imediato — prevenir extensão do trombo',
+'Não elevar o membro — agrava isquemia distal',
+'Morfina IV para analgesia — dor intensa é característica da isquemia aguda']},
+{id:'e',t:'Avaliação',it:[
+'ITO (índice tornozelo-braquial) — < 0,9 DAP; < 0,4 isquemia crítica',
+'Angiotomografia arterial — localização da oclusão antes de embolectomia ou trombólise local']}
+]},
+emmi_edem:{l:'Edema bilateral',s:[
+{id:'e',t:'Investigação por etiologia',it:[
+'BNP/NT-proBNP + ecocardiograma — insuficiência cardíaca',
+'Albumina, proteinúria 24h — síndrome nefrótica ou hipoalbuminemia hepática',
+'Creatinina, ureia — síndrome nefrítica ou IRC',
+'TSH — mixedema']}
 ]}
 };
+
+CT.cho_sep=CT.sep;
 
 // helpers
 function ts(arr,v){const i=arr.indexOf(v);if(i>-1)arr.splice(i,1);else arr.push(v);render();}
 function tog(id){const b=document.getElementById(id);if(b)b.classList.toggle('open');}
 function cyc(k){const c=S.chk[k];if(!c)S.chk[k]='done';else if(c==='done')S.chk[k]='pend';else delete S.chk[k];render();}
+function selSub(id){S.subsind=S.subsind===id?null:id;render();}
+function toggleSub(id){const i=S.subsinds.indexOf(id);if(i>-1)S.subsinds.splice(i,1);else S.subsinds.push(id);render();}
+function rSindBlock(sid){const T=CT[sid];if(!T)return'';const pt=T.s.reduce((a,sec)=>a+sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length,0);return`<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="ai" style="margin-bottom:10px;font-size:12px"><i class="ti ti-info-circle" aria-hidden="true"></i> Clique para ciclar: ✓ Realizado → ⏳ Pendente → Não selecionado</div>${pt?`<div class="psm"><span class="psml"><i class="ti ti-clock" aria-hidden="true"></i> Pendentes:</span>${T.s.map(sec=>{const n=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;return n?`<span class="psmb">${sec.t}: ${n}</span>`:''}).join('')}</div>`:''}<div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px">Baseado em evidências — ESC 2023, AHA/ACC 2022, SSC 2021, GOLD 2024, EASL 2018, AHA/ASA 2019, Tokyo 2018</div>${T.s.map(sec=>rCSec(sid,sec)).join('')}</div>`;}
 function cico(k){const c=S.chk[k];return c==='done'?'ti-check':c==='pend'?'ti-clock':'ti-minus';}
 function ccls(k){const c=S.chk[k];return c==='done'?'done':c==='pend'?'pend':'';}
 function chAge(){const a=S.idade;return a<45?0:a<65?1:2;}
@@ -500,14 +845,14 @@ function rEdacs(){const e=S.edacs,ap=eAP();return`<div class="srow"><div style="
 function rDT(){return`<div class="card"><div class="st"><i class="ti ti-activity" aria-hidden="true"></i> Características da dor torácica</div><div class="sl">Início</div><div class="rg">${['Súbito','Progressivo'].map(v=>`<span class="ro ${S.dt.ini===v?'on':''}" onclick="S.dt.ini='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Qualidade</div><div class="tags">${['Opressiva','Pleurítica','Em facada','Queimação','Em aperto','Difusa'].map(v=>`<span class="tag ${S.caract.includes(v)?'on':''}" onclick="ts(S.caract,'${v}')">${v}</span>`).join('')}</div><div class="sl">Irradiação</div><div class="tags">${['MMSS esquerdo','MMSS direito','Bilateral','Cervical/mandibular','Dorso/interescapular','Abdominal'].map(v=>`<span class="tag ${S.dt.irr.includes(v)?'on':''}" onclick="ts(S.dt.irr,'${v}')">${v}</span>`).join('')}</div><div class="sl">Fatores modificadores</div><div class="tags">${['Piora ao esforço','Melhora com repouso','Piora ao decúbito','Piora com inspiração','Piora com movimento','Melhora com nitrato'].map(v=>`<span class="tag ${S.caract.includes(v)?'on':''}" onclick="ts(S.caract,'${v}')">${v}</span>`).join('')}</div><hr class="dvd"><div class="r2" style="margin-top:8px"><div><div class="sl">Semelhante a evento prévio?</div><div class="rg">${['Sim','Não','Sem evento prévio'].map(v=>`<span class="ro ${S.dt.sem===v?'on':''}" onclick="S.dt.sem='${v}';render()">${v}</span>`).join('')}</div></div><div><div class="sl">Pior à palpação?</div><div class="rg">${['Sim','Não'].map(v=>`<span class="ro ${S.dt.pal===v?'on':''}" onclick="S.dt.pal='${v}';render()">${v}</span>`).join('')}</div></div></div><hr class="dvd"><div class="sl">Sintomas associados</div><div class="tags">${['Dispneia','Sudorese','Náuseas/Vômitos','Pré-síncope','Palpitações','Cefaleia','Parestesia MMSS','Parestesia perioral','Parestesia MMII','Febre','Tosse','Hemoptise'].map(v=>`<span class="tag ${S.dt.sin.includes(v)?'on':''}" onclick="ts(S.dt.sin,'${v}')">${v}</span>`).join('')}</div>${(S.dt.sin.includes('Parestesia perioral')||S.dt.sin.includes('Parestesia MMSS'))&&S.dt.ini==='Súbito'?`<div class="abox aw"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Considerar etiologia neurológica ou hiperventilação</div>`:''}${S.dt.irr.includes('Dorso/interescapular')?`<div class="abox aw"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Irradiação para dorso — excluir dissecção aórtica</div>`:''}<hr class="dvd"><label>Tempo de início</label><input type="text" value="${S.tempo}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min" style="margin-top:4px"></div><div class="scard"><div class="shdr" onclick="tog('hb')"><span style="font-weight:500">Score HEAR</span><span class="sb ${hC()}">${hSc()}/10</span></div><div class="sbd open" id="hb">${rHear()}<div class="sres"><div class="snum">${hSc()}<span style="font-size:13px;color:var(--color-text-secondary)">/10</span></div><div><span class="sb ${hC()}">${hI(hSc())}</span></div></div></div></div><div class="scard"><div class="shdr" onclick="tog('eb')"><span style="font-weight:500">Score EDACS</span><span class="sb ${eC()}">${eSc()} pts</span></div><div class="sbd open" id="eb">${rEdacs()}<div class="sres"><div class="snum">${eSc()}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${eI()}</div></div></div></div>`;}
 
 function s0(){const t=Math.floor(S.idade/10),u=S.idade%10,needsInfo=['Vaga Zero','Transferência'].includes(S.orig);return`<div class="card"><div class="st"><i class="ti ti-user" aria-hidden="true"></i> Identificação e origem</div><div style="margin-bottom:12px"><label>Nome do paciente</label><input type="text" value="${S.nome}" oninput="S.nome=this.value" placeholder="Nome completo"></div><div class="r2"><div><label>Idade</label><div class="age-drums"><div class="drum"><button class="drum-btn" onclick="cAgeDig(10,1)"><i class="ti ti-chevron-up" aria-hidden="true"></i></button><div class="drum-dig">${t}</div><button class="drum-btn" onclick="cAgeDig(10,-1)"><i class="ti ti-chevron-down" aria-hidden="true"></i></button></div><div class="drum"><button class="drum-btn" onclick="cAgeDig(1,1)"><i class="ti ti-chevron-up" aria-hidden="true"></i></button><div class="drum-dig">${u}</div><button class="drum-btn" onclick="cAgeDig(1,-1)"><i class="ti ti-chevron-down" aria-hidden="true"></i></button></div><span class="drum-unit">anos</span></div></div><div><label>Origem</label><select onchange="S.orig=this.value;render()">${['Demanda Espontânea','SAMU','Bombeiros','Vaga Zero','Transferência'].map(o=>`<option ${S.orig===o?'selected':''}>${o}</option>`).join('')}</select></div></div>${needsInfo?`<div style="margin-top:10px"><div style="margin-bottom:8px"><label>Instituição de origem</label><input type="text" value="${S.origInst}" oninput="S.origInst=this.value" placeholder="Nome da instituição"></div><div><label>Motivo da transferência / vaga zero</label><input type="text" value="${S.origMotivo}" oninput="S.origMotivo=this.value" placeholder="Diagnóstico / motivo da solicitação"></div></div>`:''}</div><div class="nav"><div></div><button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;}
-function s1(){const al=ALERTAS[S.queixa],isDT=S.queixa==='Dor torácica',cm=CMAP[S.queixa]||['Início súbito','Progressivo','Persistente','Febre'];return`<div class="card"><div class="st"><i class="ti ti-stethoscope" aria-hidden="true"></i> Queixa principal</div>${!S.queixa?`<div class="qgrid">${QUEIXAS.map(q=>`<button class="qbtn" onclick="S.queixa=\`${q}\`;S.caract=[];S.dt={ini:'',sem:null,pal:null,irr:[],sin:[]};render()">${q}</button>`).join('')}</div>`:`<div class="selq"><span><i class="ti ti-check" aria-hidden="true"></i> ${S.queixa}</span><button onclick="S.queixa=null;render()">Mudar</button></div>${al?`<div class="abox ${al.c}"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${al.m}</div>`:''}${isDT?rDT():`<div class="sl">Características:</div><div class="tags">${cm.map(c=>`<span class="tag ${S.caract.includes(c)?'on':''}" onclick="ts(S.caract,\`${c}\`)">${c}</span>`).join('')}</div><div style="margin-top:10px"><label>Tempo de início</label><input type="text" value="${S.tempo}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>`}`}</div><div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.queixa?`<button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
+function s1(){const al=ALERTAS[S.queixa],isDT=S.queixa==='Dor torácica',isIT=S.queixa==='Intoxicação exógena',cm=CMAP[S.queixa]||['Início súbito','Progressivo','Persistente','Febre'];return`<div class="card"><div class="st"><i class="ti ti-stethoscope" aria-hidden="true"></i> Queixa principal</div>${!S.queixa?`<div class="qgrid">${QUEIXAS.map(q=>`<button class="qbtn" onclick="S.queixa=\`${q}\`;S.caract=[];S.dt={ini:'',sem:null,pal:null,irr:[],sin:[]};render()">${q}</button>`).join('')}</div>`:`<div class="selq"><span><i class="ti ti-check" aria-hidden="true"></i> ${S.queixa}</span><button onclick="S.queixa=null;render()">Mudar</button></div>${al?`<div class="abox ${al.c}"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${al.m}</div>`:''}${isDT?rDT():`<div class="sl">Características:</div><div class="tags">${cm.map(c=>`<span class="tag ${S.caract.includes(c)?'on':''}" onclick="ts(S.caract,\`${c}\`)">${c}</span>`).join('')}</div><div style="margin-top:10px"><label>Tempo de início</label><input type="text" value="${S.tempo}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>${isIT?`<div style="margin-top:8px"><label>Substâncias suspeitas</label><input type="text" value="${S.itDrug}" oninput="S.itDrug=this.value" placeholder="Ex: benzodiazepínico, antidepressivo tricíclico, álcool..."></div>`:''}`}`}</div><div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.queixa?`<button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
 function s2(){const va=vA();return`<div class="card"><div class="st"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i> Sinais vitais</div><div class="r5"><div><label>FC</label><input type="text" value="${S.fc}" oninput="S.fc=this.value;uvb()" placeholder="bpm"></div><div><label>SatO2</label><input type="text" value="${S.sat}" oninput="S.sat=this.value;uvb()" placeholder="%"></div><div><label>PA</label><input type="text" value="${S.pa}" oninput="S.pa=this.value;uvb()" placeholder="120/80"></div><div><label>FR</label><input type="text" value="${S.fr}" oninput="S.fr=this.value;uvb()" placeholder="irpm"></div><div><label>Glicemia</label><input type="text" value="${S.gli}" oninput="S.gli=this.value;uvb()" placeholder="mg/dL"></div></div><div class="vbars" id="vbars">${vBH()}</div>${va.length?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> ${va.join(' | ')}</div>`:''}</div><div class="card"><div class="st"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Antecedentes</div><div class="sl" style="margin-top:0">HPP:</div><div class="tags" style="margin-bottom:10px">${['HAS','DM2','ICC','AVC','DAC','IRC','DPOC','FA','Neo','Cirrose','HIV','Outras'].map(h=>`<span class="tag ${S.hpp.includes(h)?'on':''}" onclick="ts(S.hpp,'${h}')">${h}</span>`).join('')}</div><div class="r2"><div><label>Medicações em uso</label><input type="text" value="${S.muc}" oninput="S.muc=this.value" placeholder="Ex: Metoprolol, AAS"></div><div><label>Alergias</label><input type="text" value="${S.ale}" oninput="S.ale=this.value"></div></div></div><div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;}
 function abcH(){const a=S.abc,g=gcs();return`<div class="abcs"><div class="abch" onclick="tog('sa')"><strong>A</strong> — Via aérea <i class="ti ti-chevron-down" style="margin-left:auto" aria-hidden="true"></i></div><div class="abcb open" id="sa"><div class="sl">Estado:</div><div class="rg" style="margin-bottom:8px">${['Pérvia e Patente','Obstruída'].map(v=>`<span class="ro ${a.va===v?'on':''}" onclick="S.abc.va='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Fonação:</div><div class="rg" style="margin-bottom:8px">${['Preservada','Prejudicada/Ausente'].map(v=>`<span class="ro ${a.fon===v?'on':''}" onclick="S.abc.fon='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Colar cervical:</div><div class="rg">${['Não indicado','Colocado/Mantido'].map(v=>`<span class="ro ${a.col===v?'on':''}" onclick="S.abc.col='${v}';render()">${v}</span>`).join('')}</div>${a.va==='Obstruída'?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> VA comprometida — manejo imediato</div>`:''}</div></div><div class="abcs"><div class="abch" onclick="tog('sb')"><strong>B</strong> — Respiração <i class="ti ti-chevron-down" style="margin-left:auto" aria-hidden="true"></i></div><div class="abcb open" id="sb"><div class="sl">Expansibilidade:</div><div class="rg" style="margin-bottom:8px">${['Simétrica','Assimétrica'].map(v=>`<span class="ro ${a.exp===v?'on':''}" onclick="S.abc.exp='${v}';render()">${v}</span>`).join('')}</div><div class="sl">MV:</div><div class="rg" style="margin-bottom:8px">${['Presente e Simétrico','Reduzido','Abolido'].map(v=>`<span class="ro ${a.mv===v?'on':''}" onclick="S.abc.mv='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Ruídos:</div><div class="tags" style="margin-bottom:8px">${['Crépitos','Sibilos','Roncos','Atrito pleural'].map(v=>`<span class="tag ${a.rud.includes(v)?'on':''}" onclick="ts(S.abc.rud,'${v}')">${v}</span>`).join('')}</div><div class="sl">Esforço:</div><div class="tags">${['Taquipneia','Dispneia','Uso musc. acessória','Respiração paradoxal'].map(v=>`<span class="tag ${a.esf.includes(v)?'on':''}" onclick="ts(S.abc.esf,'${v}')">${v}</span>`).join('')}</div></div></div><div class="abcs"><div class="abch" onclick="tog('sc')"><strong>C</strong> — Circulação <i class="ti ti-chevron-down" style="margin-left:auto" aria-hidden="true"></i></div><div class="abcb open" id="sc"><div class="sl">TEC:</div><div class="rg" style="margin-bottom:8px">${['< 3s','> 3s','> 5s','Em flush'].map(v=>`<span class="ro ${a.tec===v?'on':''}" onclick="S.abc.tec='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Ausculta:</div><div class="tags" style="margin-bottom:8px">${['Regular','Irregular','Reduzida','Sopro','Bulhas hipofonéticas'].map(v=>`<span class="tag ${a.aus.includes(v)?'on':''}" onclick="ts(S.abc.aus,'${v}')">${v}</span>`).join('')}</div><div class="sl">Pulsos:</div><div class="rg" style="margin-bottom:8px">${['Simétricos','Assimétricos','Filiformes','Ausentes'].map(v=>`<span class="ro ${a.pul===v?'on':''}" onclick="S.abc.pul='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Abdome:</div><div class="tags">${['Flácido','Dor à palpação','Defesa','Descompressão dolorosa','Distendido','Ruídos abolidos'].map(v=>`<span class="tag ${a.abd.includes(v)?'on':''}" onclick="ts(S.abc.abd,'${v}')">${v}</span>`).join('')}</div>${(a.tec==='> 5s'||a.pul==='Filiformes'||a.pul==='Ausentes')?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> Sinais de choque — ressuscitação imediata</div>`:''}</div></div><div class="abcs"><div class="abch" onclick="tog('sd')"><strong>D</strong> — Neurológico (GCS: ${g}/15) <i class="ti ti-chevron-down" style="margin-left:auto" aria-hidden="true"></i></div><div class="abcb open" id="sd"><div class="gcsg"><div class="gcsc"><label>Ab. Ocular</label><select onchange="S.abc.ao=+this.value;render()"><option value="4" ${a.ao==4?'selected':''}>4-Espontânea</option><option value="3" ${a.ao==3?'selected':''}>3-Comando</option><option value="2" ${a.ao==2?'selected':''}>2-Dor</option><option value="1" ${a.ao==1?'selected':''}>1-Ausente</option></select></div><div class="gcsc"><label>R. Verbal</label><select onchange="S.abc.rv=+this.value;render()"><option value="5" ${a.rv==5?'selected':''}>5-Orientado</option><option value="4" ${a.rv==4?'selected':''}>4-Confuso</option><option value="3" ${a.rv==3?'selected':''}>3-Palavras</option><option value="2" ${a.rv==2?'selected':''}>2-Sons</option><option value="1" ${a.rv==1?'selected':''}>1-Ausente</option></select></div><div class="gcsc"><label>R. Motora</label><select onchange="S.abc.rm=+this.value;render()"><option value="6" ${a.rm==6?'selected':''}>6-Obedece</option><option value="5" ${a.rm==5?'selected':''}>5-Localiza</option><option value="4" ${a.rm==4?'selected':''}>4-Flex.N</option><option value="3" ${a.rm==3?'selected':''}>3-Flex.A</option><option value="2" ${a.rm==2?'selected':''}>2-Extensão</option><option value="1" ${a.rm==1?'selected':''}>1-Ausente</option></select></div></div><div class="gcst"><small style="color:var(--color-text-secondary)">Glasgow Coma Scale</small><div class="big">${g}/15</div><div style="margin-top:3px"><span class="sb ${gcsC(g)}">${gcsL(g)}</span></div></div>${g<=8?`<div class="abox ad"><i class="ti ti-alert-circle" aria-hidden="true"></i> GCS ≤ 8 — considerar IOT e proteção de VA</div>`:''}<div class="sl">Pupilas:</div><div class="rg" style="margin-bottom:8px">${['Isocóricas e Reativas','Anisocóricas','Midriáticas','Mióticas','Não reagentes'].map(v=>`<span class="ro ${a.pup===v?'on':''}" onclick="S.abc.pup='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Déficits:</div><div class="tags">${['Hemiparesia','Hemihipoestesia','PF central','Disartria','Afasia','Ataxia'].map(v=>`<span class="tag ${a.def.includes(v)?'on':''}" onclick="ts(S.abc.def,'${v}')">${v}</span>`).join('')}</div></div></div><div class="abcs"><div class="abch" onclick="tog('se')"><strong>E</strong> — Exposição <i class="ti ti-chevron-down" style="margin-left:auto" aria-hidden="true"></i></div><div class="abcb open" id="se"><div class="sl">Edema MMII:</div><div class="rg" style="margin-bottom:8px">${['Ausente','Presente'].map(v=>`<span class="ro ${a.ede===v?'on':''}" onclick="S.abc.ede='${v}';render()">${v}</span>`).join('')}</div>${a.ede==='Presente'?`<div class="sl">Cacifo:</div><div class="rg" style="margin-bottom:8px">${['Com cacifo','Sem cacifo'].map(v=>`<span class="ro ${a.cac===v?'on':''}" onclick="S.abc.cac='${v}';render()">${v}</span>`).join('')}</div>`:''}<div class="sl">Pele:</div><div class="tags">${['Palidez','Frialdade','Icterícia','Cianose','Lesões','Petéquias','Equimoses'].map(v=>`<span class="tag ${a.pel.includes(v)?'on':''}" onclick="ts(S.abc.pel,'${v}')">${v}</span>`).join('')}</div></div></div>`;}
 function s3(){return`<div class="card"><div class="st"><i class="ti ti-search" aria-hidden="true"></i> Tipo de exame físico</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem"><button class="xbtn ${S.ef==='amb'?'on':''}" onclick="S.ef='amb';render()"><i class="ti ti-walk" aria-hidden="true"></i> Ambulatorial</button><button class="xbtn ${S.ef==='crit'?'on':''}" onclick="S.ef='crit';render()"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Paciente crítico (ABCDE)</button></div></div>${S.ef==='amb'?`<div class="card"><div class="st">Padrão ambulatorial</div>${[['g','Geral'],['cv','AP Cardiovascular'],['re','AP Respiratório'],['ab','Abdome'],['ne','Neurológico'],['pe','Pele e MMII']].map(([k,l])=>`<div style="margin-bottom:10px"><label>${l}</label><input type="text" value="${S.amb[k]}" oninput="S.amb['${k}']=this.value" placeholder="${l}..."></div>`).join('')}</div>`:''}${S.ef==='crit'?`<div class="card"><div class="st">ABCDE — Avaliação primária</div>${abcH()}</div>`:''}${S.ef?`<div class="card"><div class="st"><i class="ti ti-activity" aria-hidden="true"></i> Complementares à beira leito</div><div class="r2"><div><label>POCUS</label><input type="text" value="${S.poc}" oninput="S.poc=this.value" placeholder="Achados do POCUS"></div><div><label>ECG</label><input type="text" value="${S.ecg}" oninput="S.ecg=this.value" placeholder="Ritmo, alterações"></div></div></div>`:''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.ef?`<button class="btnp" onclick="nx()">Impressão / Conduta <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
 
 function rCSec(sid,sec){const pc=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;const dc=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='done').length;return`<div class="csec"><div class="csh" onclick="tog('cs${sec.id}')"><span>${sec.t}</span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc}✓</span>`:''}${pc?`<span class="sb smod" style="font-size:11px">${pc}⏳</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb open" id="cs${sec.id}">${sec.it.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);return`<div class="chk ${cl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${S.nts[sid+'_'+sec.id]||''}</textarea></div></div></div>`;}
 
-function s4(){const T=S.sind?CT[S.sind]:null;const pt=T?T.s.reduce((a,sec)=>a+sec.it.filter((_,i)=>S.chk[S.sind+'_'+sec.id+'_'+i]==='pend').length,0):0;return`<div class="card"><div class="st"><i class="ti ti-clipboard-check" aria-hidden="true"></i> Impressão clínica e síndrome</div><div style="margin-bottom:12px"><label>Impressão clínica livre</label><textarea oninput="S.imp=this.value" placeholder="Descreva sua impressão diagnóstica...">${S.imp}</textarea></div><div class="sl">Síndrome clínica principal:</div><div class="sgrid">${SLIST.map(s=>`<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};render()">${s.l}</button>`).join('')}</div></div>${T?`<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="ai" style="margin-bottom:10px;font-size:12px"><i class="ti ti-info-circle" aria-hidden="true"></i> Clique para ciclar: ✓ Realizado → ⏳ Pendente → Não selecionado</div>${pt?`<div class="psm"><span class="psml"><i class="ti ti-clock" aria-hidden="true"></i> Pendentes:</span>${T.s.map(sec=>{const n=sec.it.filter((_,i)=>S.chk[S.sind+'_'+sec.id+'_'+i]==='pend').length;return n?`<span class="psmb">${sec.t}: ${n}</span>`:''}).join('')}</div>`:''}<div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px">Baseado em: ESC 2023, AHA/ACC 2022, SSC 2021, EASL 2018, AHA/ASA 2019, ASSENT-3</div>${T.s.map(sec=>rCSec(S.sind,sec)).join('')}</div>`:''}${!T&&S.imp?'':''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Gerar relatório <i class="ti ti-file-text" aria-hidden="true"></i></button></div>`;}
+function s4(){const T=S.sind?CT[S.sind]:null;const hasSub=T&&T.sub;const isExcl=!T||T.excl!==false;return`<div class="card"><div class="st"><i class="ti ti-clipboard-check" aria-hidden="true"></i> Impressão clínica e síndrome</div><div style="margin-bottom:12px"><label>Impressão clínica livre</label><textarea oninput="S.imp=this.value" placeholder="Descreva sua impressão diagnóstica...">${S.imp}</textarea></div><div class="sl">Síndrome clínica suspeita:</div><div class="sgrid">${SLIST.map(s=>`<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};S.subsind=null;S.subsinds=[];render()">${s.l}</button>`).join('')}</div></div>${T?rSindBlock(S.sind):''}${hasSub?`<div class="card"><div class="st"><i class="ti ti-git-branch" aria-hidden="true"></i> ${isExcl?'Subtipo clínico:':'Subsíndromes presentes:'}</div><div class="sgrid">${T.sub.map(s=>`<button class="xbtn ${isExcl?S.subsind===s.id?'on':'':S.subsinds.includes(s.id)?'on':''}" onclick="${isExcl?`selSub('${s.id}')`:`toggleSub('${s.id}')`}">${s.l}</button>`).join('')}</div></div>`:''}${isExcl&&S.subsind&&CT[S.subsind]?rSindBlock(S.subsind):''}${!isExcl?S.subsinds.filter(sid=>CT[sid]).map(sid=>rSindBlock(sid)).join(''):''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Gerar relatório <i class="ti ti-file-text" aria-hidden="true"></i></button></div>`;}
 
 function gRel(){
   const g=gcs(),isDT=S.queixa==='Dor torácica';
@@ -515,7 +860,7 @@ function gRel(){
   if(['Vaga Zero','Transferência'].includes(S.orig)){
     origText=`proveniente de ${S.orig.toLowerCase()}${S.origInst?' da instituição '+S.origInst:''}${S.origMotivo?' por motivo de '+S.origMotivo:''}`;
   }else{origText=`via ${S.orig}`;}
-  let hda=`Paciente admitido(a) ${origText}, com queixa de ${S.queixa}`;
+  let hda=`Paciente admitido(a) ${origText}, com queixa de ${S.queixa}${S.queixa==='Intoxicação exógena'&&S.itDrug?' (substâncias suspeitas: '+S.itDrug+')':''}`;
   if(S.tempo)hda+=`, com início há ${S.tempo}`;
   if(isDT){if(S.dt.ini)hda+=`. Início ${S.dt.ini.toLowerCase()}`;if(S.caract.length)hda+=`. Dor de caráter ${S.caract.join(', ').toLowerCase()}`;if(S.dt.irr.length)hda+=`, com irradiação para ${S.dt.irr.join(', ').toLowerCase()}`;if(S.dt.pal)hda+=`. ${S.dt.pal==='Sim'?'Reproduzida':'Não reproduzida'} à palpação`;if(S.dt.sem)hda+=`. ${S.dt.sem==='Sim'?'Semelhante a evento cardíaco prévio':S.dt.sem==='Não'?'Não semelhante a evento prévio':'Sem evento cardíaco prévio'}`;if(S.dt.sin.length)hda+=`. Sintomas: ${S.dt.sin.join(', ').toLowerCase()}`;}
   else if(S.caract.length)hda+=`. ${S.caract.join(', ').toLowerCase()}`;
@@ -527,6 +872,7 @@ function gRel(){
   if(isDT){sc=`\n${'='.repeat(40)}\nSCORES PREDITIVOS\nHEAR: ${hSc()}/10 — ${hI(hSc())}\nEDACS: ${eSc()} pts — ${eI()}${S.edacs.t0||S.edacs.t2?'\n  Troponina 0h: '+(S.edacs.t0||'—')+' | 2h: '+(S.edacs.t2||'—'):''}`;}
   let ct='';
   const T=S.sind?CT[S.sind]:null;
+  const subLabel=S.subsind&&CT[S.subsind]?` / ${CT[S.subsind].l}`:S.subsinds.length?` / ${S.subsinds.map(id=>CT[id]?CT[id].l:'').filter(Boolean).join(' + ')}`:''
   if(T){
     const pd=[],dn=[];
     T.s.forEach(sec=>{
@@ -536,7 +882,7 @@ function gRel(){
       if(pi.length)pd.push({t:sec.t,it:pi,nt});
       if(di.length)dn.push({t:sec.t,it:di,nt});
     });
-    ct=`\n${'='.repeat(40)}\nIMPRESSÃO E CONDUTA\nSíndrome: ${T.l}`;
+    ct=`\n${'='.repeat(40)}\nIMPRESSÃO E CONDUTA\nSíndrome: ${T.l}${subLabel}`;
     if(S.imp)ct+=`\nImpressão: ${S.imp}`;
     if(pd.length){ct+=`\n\n⏳ PENDENTES:`;pd.forEach(s=>{ct+=`\n${s.t.toUpperCase()}:\n`+s.it.map(x=>`  - ${x}`).join('\n');if(s.nt)ct+=`\n  Obs: ${s.nt}`;});}
     if(dn.length){ct+=`\n\n✓ REALIZADAS:`;dn.forEach(s=>{ct+=`\n${s.t.toUpperCase()}:\n`+s.it.map(x=>`  - ${x}`).join('\n');});}
