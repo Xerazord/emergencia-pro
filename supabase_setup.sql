@@ -1,5 +1,5 @@
 -- ============================================================
--- Emergência Pro — Supabase setup
+-- Emergência Pro — Supabase setup (idempotente — pode rodar várias vezes)
 -- Cole este SQL no Editor SQL do seu projeto Supabase
 -- ============================================================
 
@@ -16,7 +16,9 @@ create table if not exists reports (
 
 alter table reports enable row level security;
 
--- Cada usuário vê e insere apenas seus próprios relatórios
+drop policy if exists "own_select" on reports;
+drop policy if exists "own_insert" on reports;
+
 create policy "own_select" on reports
   for select using (auth.uid() = user_id);
 
