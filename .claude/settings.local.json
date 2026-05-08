@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -X POST https://vysgohdcvtresrszvdft.supabase.co/rest/v1/rpc/version -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5c2dvaGRjdnRyZXNyc3p2ZGZ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxMjE2NzUsImV4cCI6MjA5MzY5NzY3NX0.XpgRd1RYp6ej_uwcBLEBOvGyAFqcT32_oy1P1MqVHm8' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5c2dvaGRjdnRyZXNyc3p2ZGZ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxMjE2NzUsImV4cCI6MjA5MzY5NzY3NX0.XpgRd1RYp6ej_uwcBLEBOvGyAFqcT32_oy1P1MqVHm8')"
+    ]
+  }
+}

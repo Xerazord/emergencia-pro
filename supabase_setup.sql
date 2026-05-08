@@ -18,9 +18,17 @@ alter table reports enable row level security;
 
 drop policy if exists "own_select" on reports;
 drop policy if exists "own_insert" on reports;
+drop policy if exists "own_update" on reports;
+drop policy if exists "own_delete" on reports;
 
 create policy "own_select" on reports
   for select using (auth.uid() = user_id);
 
 create policy "own_insert" on reports
   for insert with check (auth.uid() = user_id);
+
+create policy "own_update" on reports
+  for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+create policy "own_delete" on reports
+  for delete using (auth.uid() = user_id);
