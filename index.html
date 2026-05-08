@@ -253,7 +253,8 @@ const S={step:0,nome:'',idade:30,orig:'Demanda Espontânea',origInst:'',origMoti
   ecgS:{normal:false,ritmo:'',fcEcg:'',pr:'',qrs:'',qtc:'',st:[],ondaT:[],padroes:[]},
   itDrug:'',
   dsp:{inicio:'',padrao:[],modif:[],assocCV:[],assocResp:[],assocInf:[],ctx:[]},
-  dspEF:{fala:'',posic:'',cianose:'',aus:[],sinaisCV:[]}};
+  dspEF:{fala:'',posic:'',cianose:'',aus:[],sinaisCV:[]},
+  relMode:'full'};
 
 
 const QUEIXAS=['Dor torácica','Dispneia','Tosse','Febre','Dor abdominal','Náusea e Vômitos','Diarreia','Sangramento','Dor lombar','Icterícia','Cefaleia','Déficit neurológico agudo','Vertigem','Rebaixamento de consciência','Agitação psicomotora','Convulsão','Síncope','Trauma','Palpitações','Edema / Dor em MMII','Intoxicação exógena'];
@@ -280,7 +281,7 @@ const CMAP={
 'Edema / Dor em MMII':['Unilateral','Bilateral','Edema predominante','Dor predominante','Eritema / Calor local','Assimetria de membros','Início agudo','Progressivo','Dispneia associada','Dor torácica associada','Imobilização recente','Cirurgia recente']};
 const ALERTAS={'Déficit neurológico agudo':{m:'Protocolo AVC — verificar janela para trombólise (< 4,5h)',c:'ad'},'Cefaleia':{m:'Excluir HSA se pior cefaleia da vida — TC sem contraste urgente',c:'aw'},'Convulsão':{m:'Via aérea + acesso venoso. Se > 5 min: protocolo estado de mal epiléptico',c:'aw'},'Dispneia':{m:'Oximetria contínua. Considerar: TEP, DPOC agudizado, EAP',c:'aw'},'Intoxicação exógena':{m:'Avaliar nível de consciência e via aérea — depressão respiratória pode ser rápida',c:'ad'},'Icterícia':{m:'Verificar INR e nível de consciência — encefalopatia + icterícia recente pode indicar IHA',c:'aw'},'Edema / Dor em MMII':{m:'Excluir TVP — D-dímero se Wells baixo; Doppler venoso se suspeita moderada/alta',c:'aw'}};
 const SLIST=[
-{id:'noca',l:'Dor torácica — NOCA'},{id:'oca',l:'Dor torácica — NSTE-ACS'},{id:'iams',l:'IAM com SUPRA'},
+{id:'dtx',l:'Dor torácica (sindrômica)'},{id:'sca',l:'Síndrome coronariana aguda'},
 {id:'cho',l:'Choque indiferenciado'},
 {id:'dsp',l:'Síndrome dispneica'},
 {id:'neu',l:'Síndrome neurovascular'},{id:'rnc',l:'Rebaixamento de consciência'},{id:'cef',l:'Cefaleia'},{id:'con',l:'Convulsão'},
@@ -291,74 +292,7 @@ const SLIST=[
 const STEPS=[{l:'Identificação',i:'ti-user'},{l:'Queixa',i:'ti-stethoscope'},{l:'Dados clínicos',i:'ti-heart-rate-monitor'},{l:'Exame físico',i:'ti-search'},{l:'Impressão / Conduta',i:'ti-clipboard-check'},{l:'Relatório',i:'ti-file-text'}];
 
 const CT={
-noca:{l:'Dor torácica — provável NOCA',s:[
-{id:'m',t:'Monitorização e acesso',it:[
-'Monitorização cardíaca contínua (ECG, SatO2, PA) — síndrome torácica sem diagnóstico exige vigilância de arritmias (ESC 2020)',
-'ECG 12 derivações em < 10 min; repetir em 30 min se sem alterações e dor persistente (ESC 2020, I-A)',
-'Acesso venoso periférico ≥ 18G',
-'O2 somente se SatO2 < 90% — uso rotineiro sem hipoxemia sem benefício (ESC 2020, Classe III)']},
-{id:'f',t:'Farmacológico',it:[
-'Dipirona 1g IV para analgesia — morfina reservada para dor intensa refratária (reduz absorção de antiplaquetários orais — ESC 2020)',
-'Nitrato SL (isossorbida 5 mg) se dor persistente, PAS > 90 mmHg e sem uso de inibidor de PDE-5 em 24–48h',
-'Evitar AINEs em suspeita coronariana — risco cardiovascular aumentado (ESC 2020)']},
-{id:'e',t:'Investigação',it:[
-'Troponina de alta sensibilidade (hs-Tn) basal e em 1h — protocolo 0h/1h ESC 2020: descarte em 2h, sensibilidade > 99%',
-'Hemograma, função renal, eletrólitos, glicemia',
-'Radiografia de tórax PA — excluir pneumotórax, dissecção, congestão',
-'D-dímero se Wells ≥ 2 ou suspeita clínica de TEP',
-'POCUS: função VE, derrame pericárdico, sobrecarga de VD']},
-{id:'d',t:'Disposição',it:[
-'HEART ≤ 3 + EDACS < 16 + delta hs-Tn < 3 ng/L em 2h → alta com retorno ambulatorial em < 72h (sensibilidade 99,7% para MACE — ESC 2020)',
-'HEART 4–6 → observação 3–6h, reteste de troponina; considerar teste de estresse antes da alta',
-'HEART ≥ 7 ou hs-Tn dinâmica → internação e estratégia invasiva em < 72h']}
-]},
-oca:{l:'Dor torácica — suspeita para OCA (NSTE-ACS)',s:[
-{id:'m',t:'Monitorização e acesso',it:[
-'Monitor cardíaco contínuo com desfibrilador à beira leito — risco elevado de arritmia ventricular em NSTE-ACS (ESC 2020)',
-'Dois acessos venosos periféricos ≥ 16G',
-'ECG seriado: basal, 30 min, 60 min e a qualquer piora — buscar depressão de ST ≥ 0,5 mm (ESC 2020)',
-'O2 somente se SatO2 < 90% — uso rotineiro não reduz MACE (ESC 2020, III-A)']},
-{id:'f',t:'Farmacológico',it:[
-'AAS 150–300 mg VO mastigado imediatamente se sem contraindicação (ESC 2020, I-A)',
-'Ticagrelor 180 mg VO se NSTE-ACS confirmado — superior ao clopidogrel (PLATO trial, ESC 2020 I-A); aguardar definição da anatomia se ICP imediata planejada',
-'HNF se ICP imediata planejada: 70–100 UI/kg IV bolus (máx 5.000 UI); ou HBPM (enoxaparina 1 mg/kg SC 12/12h) se estratégia conservadora sem ICP imediata — ajustar em ClCr < 30 mL/min (ESC 2020)',
-'Nitrato IV (nitroglicerina 10–200 mcg/min) se dor persistente e PAS > 90 mmHg; contraindicado em IAM de VD e uso recente de inibidores de PDE-5',
-'Betabloqueador VO precoce (metoprolol 25–50 mg) se FC > 100 bpm sem ICC descompensada, BAV ou broncoespasmo (ESC 2020)',
-'Morfina 2–4 mg IV apenas para dor intensa refratária — reduz biodisponibilidade do ticagrelor em ~30% (ESC 2020)']},
-{id:'e',t:'Investigação',it:[
-'Troponina hs protocolo 0h/1h — elevação ≥ 5 ng/L na 1h confirma NSTE-ACS com especificidade > 90%',
-'POCUS: função VE, hipocinesia segmentar, derrame pericárdico, função VD',
-'Hemograma, coagulograma, função renal — antes de anticoagulação e para ajuste de doses']},
-{id:'d',t:'Disposição',it:[
-'ICP muito precoce (< 2h): instabilidade hemodinâmica, arritmia grave, dor refratária, Killip III-IV ou supra transitório — ativar hemodinâmica imediatamente (ESC 2020, I-C)',
-'GRACE > 140 ou troponina dinâmica → ICP em < 24h (ESC 2020, I-A)',
-'GRACE 109–140 → ICP em < 72h; GRACE < 109 com Tn negativa → teste funcional antes da alta']}
-]},
-iams:{l:'IAM com SUPRA / OCA estabelecida',s:[
-{id:'m',t:'Ativação e monitorização',it:[
-'Ativar hemodinâmica imediatamente — alvo porta-balão < 90 min; notificar cardiologista intervencionista ao diagnóstico eletrocardiográfico (ESC 2023, I-A)',
-'Monitor com desfibrilador pronto — FV é principal causa de morte nas primeiras horas; não aguardar transferência para desfibrilar',
-'Dois acessos periféricos ≥ 16G — preferir membro superior direito (facilita acesso radial para ICP)',
-'O2 somente se SatO2 < 90% — hiperóxia associa-se a maior área de infarto (ESC 2023, Classe III)']},
-{id:'f',t:'Farmacológico',it:[
-'AAS 150–300 mg VO mastigado imediatamente — não aguardar exames para iniciar (ESC 2023, I-A)',
-'Ticagrelor 180 mg VO (1ª escolha) ou Prasugrel 60 mg se anatomia conhecida e sem AVC/AIT — Clopidogrel 300–600 mg se contraindicação aos anteriores (ESC 2023, I-A)',
-'HNF 70–100 UI/kg IV bolus (máx 5.000 UI) imediatamente antes da ICP primária (ESC 2023)',
-'Se trombólise com TNK indicada (ICP indisponível em < 120 min): enoxaparina IV bolus 30 mg + 1 mg/kg SC após 15 min se < 75 anos; sem bolus IV, 0,75 mg/kg SC 12/12h se ≥ 75 anos (máx 75 mg/dose) — ASSENT-3, ESC 2023',
-'Tenecteplase IV se ICP indisponível em < 120 min: <60kg→30mg; 60–70kg→35mg; 70–80kg→40mg; 80–90kg→45mg; >90kg→50mg — bolus único em < 10s, iniciar em < 30 min da chegada (ESC 2023, I-A)',
-'Nitrato contraindicado em IAM inferior com suspeita de VD — verificar V3R/V4R antes de administrar',
-'Não iniciar betabloqueador IV de rotina — risco de choque em disfunção VE não avaliada; VO precoce se hemodinâmica estável (ESC 2023)']},
-{id:'e',t:'Investigação',it:[
-'Derivações V3R/V4R e V7–V9 se supra inferior ou supra em aVR — IAM de VD e parede posterior frequentemente subdiagnosticados',
-'POCUS: função VE, hipocinesia regional, derrame — não atrasar ICP; fazer em paralelo',
-'Troponina, hemograma, coagulograma, função renal (pré-contraste para ICP) — não aguardar para ativar hemodinâmica']},
-{id:'d',t:'Disposição',it:[
-'ICP primária em < 90 min — transferência direta para hemodinâmica sem escala na UTI (ESC 2023, I-A)',
-'Sem ICP disponível em < 120 min: TNK em < 30 min + enoxaparina conforme peso/idade + transferência imediata para centro com hemodinâmica (ESC 2023, I-A)',
-'Pós-ICP: UTI coronariana, ecocardiograma em 24–48h para avaliação de FEVE',
-'Iniciar antes da alta: betabloqueador VO, IECA/BRA e estatina de alta potência (ESC 2023)']}
-]},
-sep:{l:'Sepse / Choque séptico',s:[
+cho_sep:{l:'Sepse / Choque séptico',s:[
 {id:'m',t:'Monitorização e acesso',it:[
 'Monitor contínuo; reavaliação clínica a cada 30 min no choque',
 'Dois acessos periféricos ≥ 16G — acesso central não é pré-requisito para iniciar vasopressor (SSC 2021)',
@@ -462,7 +396,7 @@ cef:{l:'Cefaleia',s:[
 'Encaminhar neurologia se ≥ 4 crises/mês — profilaxia indicada (topiramato, propranolol, amitriptilina)',
 'Orientar diário de cefaleia e identificação de gatilhos']}
 ]},
-cho:{l:'Choque indiferenciado',excl:true,sub:[{id:'cho_sep',l:'Séptico / Distributivo'},{id:'cho_hip',l:'Hipovolêmico'},{id:'cho_car',l:'Cardiogênico'},{id:'cho_obs',l:'Obstrutivo (TEP / Tamponamento)'}],s:[
+cho:{l:'Choque indiferenciado',subExcl:[{id:'cho_sep',l:'Séptico / Distributivo'},{id:'cho_hip',l:'Hipovolêmico'},{id:'cho_car',l:'Cardiogênico'},{id:'cho_obs',l:'Obstrutivo (Tamponamento / Pneumotórax)'}],s:[
 {id:'m',t:'Monitorização e acesso',it:[
 'Monitor contínuo: ECG, SatO2, PA não invasiva contínua',
 'Dois acessos venosos periféricos ≥ 16G — acesso central não é pré-requisito para vasopressor',
@@ -504,18 +438,18 @@ cho_car:{l:'Choque cardiogênico',s:[
 'Ecocardiograma / POCUS urgente — FEVE, valvopatia aguda, tamponamento',
 'Troponina hs, BNP/NT-proBNP, hemograma, função renal']}
 ]},
-cho_obs:{l:'Choque obstrutivo',s:[
+cho_obs:{l:'Choque obstrutivo (Tamponamento / Pneumotórax)',s:[
 {id:'f',t:'Tratamento específico pela etiologia',it:[
-'TEP de alto risco (choque + TEP confirmado): alteplase 100 mg IV em 2h — se contraindicação: embolectomia cirúrgica',
 'Tamponamento cardíaco: pericardiocentese de emergência guiada por POCUS — 50 mL já aliviam hemodinâmica',
 'Pneumotórax hipertensivo: descompressão imediata com agulha 14G (2º EIC linha hemiclavicular) → dreno torácico',
-'NÃO ventilar com pressão positiva antes de descomprimir pneumotórax hipertensivo — risco de PCR']},
+'NÃO ventilar com pressão positiva antes de descomprimir pneumotórax hipertensivo — risco de PCR',
+'Se TEP de alto risco como causa do choque: selecionar adicionalmente "TEP suspeito" (ver Síndrome dispneica ou Dor torácica) para acessar conduta de trombólise']},
 {id:'e',t:'Investigação',it:[
 'POCUS: derrame pericárdico, colapso de câmaras D, distensão VD, ausência de deslizamento pleural',
-'AngioTC de tórax se hemodinamicamente estável — confirmar TEP antes de trombólise',
-'ECG: S1Q3T3, BRD novo — sugestivos de TEP maciço']}
+'RX tórax / TC se estabilidade — confirmar pneumotórax e excluir outras etiologias',
+'ECG: alternância elétrica (tamponamento), baixa voltagem']}
 ]},
-dsp:{l:'Síndrome dispneica',excl:true,sub:[{id:'eap',l:'EAP / IC descompensada'},{id:'dpoc_ag',l:'Agudização de DPOC'},{id:'asma',l:'Crise asmática'},{id:'pnm',l:'Pneumonia grave'},{id:'dep',l:'Derrame pleural sintomático'},{id:'tep_dsp',l:'TEP suspeito'}],s:[
+dsp:{l:'Síndrome dispneica',subExcl:[{id:'eap',l:'EAP / IC descompensada'},{id:'dpoc_ag',l:'Agudização de DPOC'},{id:'asma',l:'Crise asmática'},{id:'pnm',l:'Pneumonia grave'},{id:'dep',l:'Derrame pleural sintomático'},{id:'tep',l:'TEP suspeito'}],s:[
 {id:'m',t:'Monitorização e suporte ventilatório',it:[
 'Oximetria contínua; O2 titulado para SatO2 94–98% (88–92% em DPOC)',
 'Posição sentada (Fowler 45°) — reduz trabalho respiratório',
@@ -557,7 +491,7 @@ feb:{l:'Síndrome febril / Infecciosa',s:[
 'Febre sem foco em imunossuprimido: internação e investigação ampla',
 'Foco identificado, estável, baixo risco: ATB oral com retorno em 48h']}
 ]},
-abd:{l:'Síndrome abdominal',excl:false,sub:[{id:'dab',l:'Dor abdominal'},{id:'nv',l:'Náusea e Vômitos'},{id:'dia',l:'Diarreia'}],s:[
+abd:{l:'Síndrome abdominal',subAdd:[{id:'dab',l:'Dor abdominal'},{id:'nv',l:'Náusea e Vômitos'},{id:'dia',l:'Diarreia'}],s:[
 {id:'m',t:'Monitorização e acesso',it:[
 'Monitor contínuo se instabilidade hemodinâmica',
 'Dois acessos venosos periféricos se suspeita cirúrgica',
@@ -738,7 +672,7 @@ ict:{l:'Icterícia / Insuficiência Hepática Aguda',s:[
 'King\'s (não-paracetamol): etiologia desfavorável + ≥ 3 de: idade < 10 ou > 40a, bilirrubina > 17 mg/dL, INR > 3,5, icterícia > 7 dias antes de EH',
 'Colangite aguda (Tríade de Charcot: febre + icterícia + dor abdominal): ATB IV + drenagem biliar em < 24h (Tokyo 2018)']}
 ]},
-emmi:{l:'Edema / Dor em MMII',excl:false,sub:[{id:'emmi_tvp',l:'TVP / TEP suspeitos'},{id:'emmi_art',l:'Isquemia arterial aguda'},{id:'emmi_edem',l:'Edema bilateral (cardíaco/renal/hepático)'}],s:[
+emmi:{l:'Edema / Dor em MMII',subAdd:[{id:'emmi_tvp',l:'TVP isolada (sem TEP)'},{id:'tep',l:'TEP suspeito'},{id:'emmi_art',l:'Isquemia arterial aguda'},{id:'emmi_edem',l:'Edema bilateral (cardíaco/renal/hepático)'}],s:[
 {id:'m',t:'Avaliação inicial',it:[
 'Palpar panturrilha bilateralmente — dor à compressão; medir circunferências (assimetria ≥ 3 cm sugere TVP)',
 'Avaliar coloração, temperatura e pulsos — diferencial entre TVP e isquemia arterial aguda',
@@ -882,7 +816,7 @@ dep:{l:'Derrame pleural sintomático',s:[
 'Citologia oncótica se derrame suspeito de maligno',
 'ADA ≥ 40 U/L — alta sensibilidade/especificidade para tuberculose pleural (endemia)']}
 ]},
-tep_dsp:{l:'TEP suspeito',s:[
+tep:{l:'TEP suspeito',s:[
 {id:'m',t:'Avaliação e monitorização',it:[
 'POCUS: distensão VD, septo paradoxal (McConnell sign), IVC dilatada sem colapso — sugere TEP com sobrecarga VD',
 'ECG: taquicardia sinusal (mais comum), S1Q3T3, BRD novo, inversão de T de V1–V4 — inespecíficos mas sugestivos',
@@ -899,10 +833,152 @@ tep_dsp:{l:'TEP suspeito',s:[
 'AngioTC de tórax — padrão ouro diagnóstico; 1ª escolha se instabilidade ou Wells alto',
 'Troponina + BNP — estratificação de gravidade; elevados = disfunção VD = pior prognóstico',
 'Gasometria: hipóxia + hipocapnia + alcalose resp. — sugestivo mas inespecífico; PaO2/FiO2 < 300 = grave']}
+]},
+dtx:{l:'Dor torácica',
+subExcl:[{id:'dt_card',l:'Provavelmente cardíaca'},{id:'dt_ncard',l:'Provavelmente não cardíaca'},{id:'dt_def_ncard',l:'Definitivamente não cardíaca'}],
+subAdd:[{id:'diss',l:'Dissecção de aorta'},{id:'tep',l:'TEP'},{id:'pntx',l:'Pneumotórax'},{id:'esof',l:'Sd. esofágica aguda'},{id:'peri',l:'Pericardite'},{id:'pnm',l:'Pneumonia'},{id:'disp',l:'Dispepsia'},{id:'ansi',l:'Ansiedade'},{id:'inesp',l:'Dor torácica inespecífica'}],
+s:[
+{id:'m',t:'Monitorização e acesso',it:[
+'Monitorização cardíaca contínua (ECG, SatO2, PA) — síndrome torácica sem diagnóstico exige vigilância de arritmias (ESC 2020)',
+'ECG 12 derivações em < 10 min; repetir em 30 min se sem alterações e dor persistente (ESC 2020, I-A)',
+'Acesso venoso periférico ≥ 18G',
+'O2 somente se SatO2 < 90% — uso rotineiro sem hipoxemia sem benefício (ESC 2020, Classe III)']},
+{id:'f',t:'Analgesia e farmacológico inicial',it:[
+'Dipirona 1g IV para analgesia — morfina reservada para dor intensa refratária (reduz absorção de antiplaquetários orais — ESC 2020)',
+'Nitrato SL (isossorbida 5 mg) se dor persistente, PAS > 90 mmHg e sem uso de inibidor de PDE-5 em 24–48h',
+'Evitar AINEs em suspeita coronariana — risco cardiovascular aumentado (ESC 2020)']},
+{id:'e',t:'Investigação inicial',it:[
+'Troponina de alta sensibilidade (hs-Tn) basal e em 1h — protocolo 0h/1h ESC 2020: descarte em 2h, sensibilidade > 99%',
+'Hemograma, função renal, eletrólitos, glicemia',
+'Radiografia de tórax PA — excluir pneumotórax, dissecção, congestão',
+'D-dímero se Wells ≥ 2 ou suspeita clínica de TEP / dissecção (ADD-RS)',
+'POCUS: função VE, derrame pericárdico, sobrecarga de VD']},
+{id:'d',t:'Estratificação e disposição',it:[
+'HEART ≤ 3 + EDACS < 16 + delta hs-Tn < 3 ng/L em 2h → alta com retorno ambulatorial em < 72h (sensibilidade 99,7% para MACE — ESC 2020)',
+'HEART 4–6 → observação 3–6h, reteste de troponina; considerar teste de estresse antes da alta',
+'HEART ≥ 7 ou hs-Tn dinâmica → internação e estratégia invasiva em < 72h',
+'Suspeita de SCA confirmada → migrar para síndrome SCA (subtipo OCA ou NOCA conforme ECG/troponina)']}
+]},
+sca:{l:'Síndrome coronariana aguda',
+subExcl:[{id:'sca_oca',l:'OCA (oclusão / equivalente STEMI)'},{id:'sca_noca',l:'NOCA (não-oclusão / NSTEMI)'}],
+s:[
+{id:'m',t:'Monitorização e acesso',it:[
+'Monitor cardíaco contínuo com desfibrilador à beira leito — risco elevado de arritmia ventricular (ESC 2023)',
+'Dois acessos venosos periféricos ≥ 16G — preferir membro superior direito (facilita acesso radial para ICP)',
+'ECG seriado: basal, 30 min, 60 min e a qualquer piora',
+'O2 somente se SatO2 < 90% — uso rotineiro não reduz MACE (ESC 2023, III-A)']},
+{id:'f',t:'Antiplaquetários e anticoagulação',it:[
+'AAS 150–300 mg VO mastigado imediatamente se sem contraindicação (ESC 2023, I-A)',
+'Ticagrelor 180 mg VO (1ª escolha) ou Prasugrel 60 mg se anatomia conhecida e sem AVC/AIT — Clopidogrel 300–600 mg se contraindicação',
+'HNF 70–100 UI/kg IV bolus (máx 5.000 UI) imediatamente antes da ICP primária; ou enoxaparina 1 mg/kg SC 12/12h se estratégia conservadora — ajustar em ClCr < 30 mL/min',
+'Morfina 2–4 mg IV apenas para dor intensa refratária — reduz biodisponibilidade do ticagrelor em ~30% (ESC 2023)']},
+{id:'e',t:'Investigação',it:[
+'Troponina hs protocolo 0h/1h — elevação ≥ 5 ng/L na 1h confirma SCA com especificidade > 90%',
+'POCUS: função VE, hipocinesia segmentar, derrame pericárdico, função VD',
+'Hemograma, coagulograma, função renal — antes de anticoagulação e para ajuste de doses',
+'Função hepática + perfil lipídico para iniciar estatina de alta potência']},
+{id:'d',t:'Disposição comum',it:[
+'Pós-ICP: UTI coronariana, ecocardiograma em 24–48h para avaliação de FEVE',
+'Iniciar antes da alta: betabloqueador VO (se hemodinâmica estável), IECA/BRA e estatina de alta potência (atorvastatina 40–80 mg)',
+'Educar sobre dupla antiagregação por 12 meses (DAPT) e adesão à reabilitação cardíaca']}
+]},
+sca_oca:{l:'OCA (oclusão / equivalente STEMI)',s:[
+{id:'m',t:'Ativação e monitorização',it:[
+'Ativar hemodinâmica imediatamente — alvo porta-balão < 90 min; notificar cardiologista intervencionista ao diagnóstico eletrocardiográfico (ESC 2023, I-A)',
+'Monitor com desfibrilador pronto — FV é principal causa de morte nas primeiras horas; não aguardar transferência para desfibrilar',
+'O2 somente se SatO2 < 90% — hiperóxia associa-se a maior área de infarto (ESC 2023, Classe III)']},
+{id:'f',t:'Reperfusão e adjuvantes',it:[
+'Se trombólise com TNK indicada (ICP indisponível em < 120 min): enoxaparina IV bolus 30 mg + 1 mg/kg SC após 15 min se < 75 anos; sem bolus IV, 0,75 mg/kg SC 12/12h se ≥ 75 anos (máx 75 mg/dose) — ASSENT-3, ESC 2023',
+'Tenecteplase IV se ICP indisponível em < 120 min: <60kg→30mg; 60–70kg→35mg; 70–80kg→40mg; 80–90kg→45mg; >90kg→50mg — bolus único em < 10s, iniciar em < 30 min da chegada (ESC 2023, I-A)',
+'Nitrato contraindicado em IAM inferior com suspeita de VD — verificar V3R/V4R antes de administrar',
+'Não iniciar betabloqueador IV de rotina — risco de choque em disfunção VE não avaliada; VO precoce se hemodinâmica estável (ESC 2023)']},
+{id:'e',t:'Investigação adicional',it:[
+'Derivações V3R/V4R e V7–V9 se supra inferior ou supra em aVR — IAM de VD e parede posterior frequentemente subdiagnosticados',
+'POCUS: função VE, hipocinesia regional, derrame — não atrasar ICP; fazer em paralelo',
+'Função renal pré-contraste para ICP — não aguardar para ativar hemodinâmica']},
+{id:'d',t:'Reperfusão e disposição',it:[
+'ICP primária em < 90 min — transferência direta para hemodinâmica sem escala na UTI (ESC 2023, I-A)',
+'Sem ICP disponível em < 120 min: TNK em < 30 min + enoxaparina conforme peso/idade + transferência imediata para centro com hemodinâmica (ESC 2023, I-A)',
+'Equivalentes-STEMI a tratar como OCA: De Winter, Wellens evolutivo, Sgarbossa positivo em BRE, supra em aVR + infra difuso']}
+]},
+sca_noca:{l:'NOCA (não-oclusão / NSTEMI)',s:[
+{id:'m',t:'Estratificação',it:[
+'Calcular GRACE: idade, FC, PAS, creatinina, Killip, parada cardíaca à admissão, ECG, troponina',
+'GRACE > 140 → estratégia invasiva em < 24h; GRACE 109–140 → ICP em < 72h; GRACE < 109 → teste funcional antes da alta',
+'Reavaliação de ECG e troponina em qualquer mudança clínica']},
+{id:'f',t:'Farmacológico específico',it:[
+'Anticoagulação: HNF se ICP imediata planejada; enoxaparina 1 mg/kg SC 12/12h se estratégia conservadora — ajustar em ClCr < 30 mL/min (ESC 2020)',
+'Nitrato IV (nitroglicerina 10–200 mcg/min) se dor persistente e PAS > 90 mmHg; contraindicado em IAM de VD e uso recente de inibidores de PDE-5',
+'Betabloqueador VO precoce (metoprolol 25–50 mg) se FC > 100 bpm sem ICC descompensada, BAV ou broncoespasmo (ESC 2020)']},
+{id:'d',t:'Disposição',it:[
+'ICP muito precoce (< 2h): instabilidade hemodinâmica, arritmia grave, dor refratária, Killip III-IV ou supra transitório (ESC 2020, I-C)',
+'GRACE > 140 ou troponina dinâmica → ICP em < 24h (ESC 2020, I-A)',
+'Após reperfusão: avaliar FEVE em 24–48h e iniciar otimização farmacológica antes da alta']}
+]},
+diss:{l:'Dissecção de aorta',s:[
+{id:'m',t:'Monitorização e estabilização',it:[
+'Dois acessos calibrosos ≥ 16G; PA não invasiva contínua em ambos os MMSS (assimetria > 20 mmHg sugestiva)',
+'Suporte O2 alvo SatO2 ≥ 94%; analgesia agressiva (morfina 2–5 mg IV) reduz tônus simpático e progressão',
+'Avaliar comprometimento de ramos: pulsos distais, déficit neurológico, isquemia visceral']},
+{id:'f',t:'Controle de pressão e FC (alvo PAS 100–120, FC < 60)',it:[
+'1ª linha: beta-bloqueador IV ANTES de qualquer vasodilatador — esmolol 500 mcg/kg em 1 min + 50–200 mcg/kg/min ou labetalol 10–20 mg IV repetir até 80 mg (ESC 2014, AHA 2022)',
+'2ª linha após beta-bloqueador: nitroprussiato 0,3–10 mcg/kg/min ou nicardipina IV se PAS persistir > 120 mmHg',
+'NUNCA iniciar vasodilatador sem beta-bloqueador prévio — taquicardia reflexa propaga a dissecção',
+'Evitar anticoagulação até descartar dissecção em qualquer suspeita de dor torácica + alarme']},
+{id:'e',t:'Diagnóstico',it:[
+'AngioTC tórax + abdome com contraste — padrão-ouro; sensibilidade ≥ 98%; classificação Stanford A (aorta ascendente) vs B (descendente)',
+'D-dímero negativo + ADD-RS ≤ 1 → exclusão razoável em baixo risco; D-dímero positivo ou ADD-RS ≥ 2 → AngioTC obrigatória',
+'Ecocardiograma transtorácico: derrame pericárdico, insuficiência aórtica, retalho intimal proximal — útil mas menor sensibilidade',
+'ECG e troponina — excluir IAM concomitante por dissecção do óstio coronariano']},
+{id:'d',t:'Disposição',it:[
+'Stanford A: cirurgia cardíaca de emergência — mortalidade 1–2%/h sem cirurgia; transferir imediatamente se centro sem capacidade',
+'Stanford B não complicada: tratamento clínico em UTI; cirurgia/TEVAR se isquemia visceral, expansão rápida ou refratariedade',
+'Toda dissecção deve ir para UTI cardiovascular com PA invasiva']}
+]},
+peri:{l:'Pericardite',s:[
+{id:'m',t:'Avaliação inicial',it:[
+'Confirmar critérios diagnósticos (≥ 2): dor pleurítica torácica, atrito pericárdico, alterações ECG difusas (supra côncavo + depressão PR), derrame pericárdico novo (ESC 2015)',
+'Ecocardiograma transtorácico em todos os casos — excluir tamponamento e derrame moderado-grande',
+'PA, FC, JVP — sinais de tamponamento (pulso paradoxal, hipotensão, JVP elevada)']},
+{id:'f',t:'Farmacológico',it:[
+'AINE alta dose: ibuprofeno 600 mg VO 8/8h ou AAS 750–1000 mg VO 8/8h por 1–2 semanas, redução gradual (ESC 2015, I-A)',
+'Colchicina 0,5 mg VO 12/12h por 3 meses (0,5 mg/dia se < 70 kg) — reduz recorrência em 50% (CORP, COPE trials, I-A)',
+'Corticoide (prednisona 0,2–0,5 mg/kg/dia) apenas se contraindicação aos AINEs ou doença autoimune; risco de cronificação',
+'EVITAR anticoagulação — risco de hemopericárdio',
+'Restrição de exercício até resolução de sintomas e biomarcadores (mínimo 3 meses se atleta)']},
+{id:'e',t:'Investigação',it:[
+'Troponina — pericardite com elevação = miopericardite; necessita internação',
+'Hemograma, PCR, VHS — guia resposta ao tratamento',
+'Ecocardiograma seriado se derrame moderado',
+'Investigação etiológica conforme contexto: TST/IGRA (TB), FAN (autoimune), HIV, painel viral, função tireoidiana']},
+{id:'d',t:'Disposição',it:[
+'Internar se ≥ 1 fator de mau prognóstico: febre > 38°C, início subagudo, derrame moderado-grande, tamponamento, miopericardite, falha ao AINE em 7 dias, imunossuprimido, anticoagulação, trauma',
+'Sem fatores: tratamento ambulatorial com retorno em 7 dias para reavaliação clínica e PCR']}
+]},
+esof:{l:'Síndrome esofágica aguda',s:[
+{id:'m',t:'Avaliação',it:[
+'Diferenciar etiologias: Boerhaave (ruptura espontânea pós-vômito), impactação alimentar, laceração de Mallory-Weiss, ingestão cáustica, perfuração iatrogênica',
+'Sinais de Boerhaave: dor torácica/epigástrica intensa pós-vômito + enfisema subcutâneo + sinal de Hamman (atrito mediastinal) — emergência cirúrgica',
+'NPO absoluto até definir etiologia; posição semi-sentada se cáustico (não induzir vômito)']},
+{id:'f',t:'Suporte e ATB se perfuração',it:[
+'Acesso venoso ≥ 18G; analgesia (morfina 2–5 mg IV) e antiemético (ondansetrona 4 mg IV)',
+'Boerhaave / perfuração: ATB IV amplo espectro (piperacilina-tazobactam 4,5 g 6/6h ou meropenem 1 g 8/8h) + IBP IV (omeprazol 80 mg bolus → 8 mg/h)',
+'Mallory-Weiss: suporte, IBP IV, EDA se sangramento ativo (hemoclipagem, escleroterapia)',
+'Cáustico: NÃO induzir vômito, NÃO usar carvão ativado; EDA em < 24h para classificação de Zargar']},
+{id:'e',t:'Investigação',it:[
+'TC tórax e abdome com contraste hidrossolúvel oral — padrão para Boerhaave (pneumomediastino, derrame pleural esquerdo, extravasamento)',
+'RX tórax: sinal de Naclerio (V invertido), pneumomediastino, derrame pleural — sensibilidade limitada',
+'EDA é diagnóstica em impactação, Mallory-Weiss e cáusticos; contraindicada em Boerhaave (risco de ampliar perfuração)',
+'Hemograma, lactato, função renal/hepática — perfusão e gravidade']},
+{id:'d',t:'Disposição',it:[
+'Boerhaave / perfuração: cirurgia em < 24h reduz mortalidade de > 50% para < 10% — acionar cirurgia geral imediatamente',
+'Impactação alimentar: EDA em < 24h (< 6h se obstrução completa, sialorreia ou desconforto respiratório)',
+'Mallory-Weiss: alta após 24h se sangramento contido e Hb estável',
+'Cáustico: internação em UTI, jejum, NUTRI, EDA classificação, vigilância de estenose tardia']}
 ]}
 };
 
-CT.cho_sep=CT.sep;
+CT.tep_dsp=CT.tep;
 
 // helpers
 const ESC_MAP={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','`':'&#96;'};
@@ -1027,7 +1103,7 @@ function s3(){const isDsp=S.queixa==='Dispneia';const badge=isDsp?dispGravBadge(
 
 function rCSec(sid,sec){const pc=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;const dc=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='done').length;return`<div class="csec"><div class="csh" onclick="tog('cs${sec.id}')"><span>${sec.t}</span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc}✓</span>`:''}${pc?`<span class="sb smod" style="font-size:11px">${pc}⏳</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb open" id="cs${sec.id}">${sec.it.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);return`<div class="chk ${cl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${esc(S.nts[sid+'_'+sec.id]||'')}</textarea></div></div></div>`;}
 
-function s4(){const T=S.sind?CT[S.sind]:null;const hasSub=T&&T.sub;const isExcl=!T||T.excl!==false;return`<div class="card"><div class="st"><i class="ti ti-clipboard-check" aria-hidden="true"></i> Impressão clínica e síndrome</div><div style="margin-bottom:12px"><label>Impressão clínica livre</label><textarea oninput="S.imp=this.value" placeholder="Descreva sua impressão diagnóstica...">${esc(S.imp)}</textarea></div><div class="sl">Síndrome clínica suspeita:</div><div class="sgrid">${SLIST.map(s=>`<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};S.subsind=null;S.subsinds=[];render()">${s.l}</button>`).join('')}</div></div>${T?rSindBlock(S.sind):''}${hasSub?`<div class="card"><div class="st"><i class="ti ti-git-branch" aria-hidden="true"></i> ${isExcl?'Subtipo clínico:':'Subsíndromes presentes:'}</div><div class="sgrid">${T.sub.map(s=>`<button class="xbtn ${isExcl?S.subsind===s.id?'on':'':S.subsinds.includes(s.id)?'on':''}" onclick="${isExcl?`selSub('${s.id}')`:`toggleSub('${s.id}')`}">${s.l}</button>`).join('')}</div></div>`:''}${isExcl&&S.subsind&&CT[S.subsind]?rSindBlock(S.subsind):''}${!isExcl?S.subsinds.filter(sid=>CT[sid]).map(sid=>rSindBlock(sid)).join(''):''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Gerar relatório <i class="ti ti-file-text" aria-hidden="true"></i></button></div>`;}
+function s4(){const T=S.sind?CT[S.sind]:null;const hasExcl=T&&T.subExcl;const hasAdd=T&&T.subAdd;return`<div class="card"><div class="st"><i class="ti ti-clipboard-check" aria-hidden="true"></i> Impressão clínica e síndrome</div><div style="margin-bottom:12px"><label>Impressão clínica livre</label><textarea oninput="S.imp=this.value" placeholder="Descreva sua impressão diagnóstica...">${esc(S.imp)}</textarea></div><div class="sl">Síndrome clínica suspeita:</div><div class="sgrid">${SLIST.map(s=>`<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};S.subsind=null;S.subsinds=[];render()">${s.l}</button>`).join('')}</div></div>${T?rSindBlock(S.sind):''}${hasExcl?`<div class="card"><div class="st"><i class="ti ti-git-branch" aria-hidden="true"></i> ${S.sind==='dtx'?'Probabilidade clínica:':'Subtipo clínico:'}</div><div class="sgrid">${T.subExcl.map(s=>`<button class="xbtn ${S.subsind===s.id?'on':''}" onclick="selSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`:''}${hasExcl&&S.subsind&&CT[S.subsind]?rSindBlock(S.subsind):''}${hasAdd?`<div class="card"><div class="st"><i class="ti ti-list-tree" aria-hidden="true"></i> ${S.sind==='dtx'?'Diagnósticos diferenciais (em ordem de gravidade):':'Subsíndromes presentes:'}</div><div class="sgrid">${T.subAdd.map(s=>`<button class="xbtn ${S.subsinds.includes(s.id)?'on':''}" onclick="toggleSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`:''}${hasAdd?S.subsinds.filter(sid=>CT[sid]).map(sid=>rSindBlock(sid)).join(''):''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Gerar relatório <i class="ti ti-file-text" aria-hidden="true"></i></button></div>`;}
 
 function gRel(){
   const g=gcs(),isDT=S.queixa==='Dor torácica';
@@ -1048,29 +1124,52 @@ function gRel(){
   if(isDT){sc=`\n${'='.repeat(40)}\nSCORES PREDITIVOS\nHEAR: ${hSc()}/10 — ${hI(hSc())}\nEDACS: ${eSc()} pts — ${eI()}${S.edacs.t0||S.edacs.t2?'\n  Troponina 0h: '+(S.edacs.t0||'—')+' | 2h: '+(S.edacs.t2||'—'):''}`;}
   let ct='';
   const T=S.sind?CT[S.sind]:null;
-  const subLabel=S.subsind&&CT[S.subsind]?` / ${CT[S.subsind].l}`:S.subsinds.length?` / ${S.subsinds.map(id=>CT[id]?CT[id].l:'').filter(Boolean).join(' + ')}`:''
+  let subLabel='';
+  if(T&&T.subExcl&&S.subsind){const sx=T.subExcl.find(x=>x.id===S.subsind);if(sx)subLabel+=` (${sx.l.toLowerCase()})`;}
+  if(T&&T.subAdd&&S.subsinds.length){const labels=S.subsinds.map(id=>{const sa=T.subAdd.find(x=>x.id===id);return sa?sa.l:'';}).filter(Boolean);if(labels.length)subLabel+=`\nDiferenciais considerados: ${labels.join(', ')}`;}
   if(T){
     const pd=[],dn=[];
-    T.s.forEach(sec=>{
-      const pi=sec.it.filter((_,i)=>S.chk[S.sind+'_'+sec.id+'_'+i]==='pend');
-      const di=sec.it.filter((_,i)=>S.chk[S.sind+'_'+sec.id+'_'+i]==='done');
-      const nt=S.nts[S.sind+'_'+sec.id]||'';
-      if(pi.length)pd.push({t:sec.t,it:pi,nt});
-      if(di.length)dn.push({t:sec.t,it:di,nt});
-    });
+    const collect=(sid,sindObj)=>{sindObj.s.forEach(sec=>{const pi=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend');const di=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='done');const nt=S.nts[sid+'_'+sec.id]||'';if(pi.length)pd.push({src:sindObj.l,t:sec.t,it:pi,nt});if(di.length)dn.push({src:sindObj.l,t:sec.t,it:di,nt});});};
+    collect(S.sind,T);
+    if(T.subExcl&&S.subsind&&CT[S.subsind])collect(S.subsind,CT[S.subsind]);
+    if(T.subAdd)S.subsinds.forEach(id=>{if(CT[id])collect(id,CT[id]);});
     ct=`\n${'='.repeat(40)}\nIMPRESSÃO E CONDUTA\nSíndrome: ${T.l}${subLabel}`;
     if(S.imp)ct+=`\nImpressão: ${S.imp}`;
-    if(pd.length){ct+=`\n\n⏳ PENDENTES:`;pd.forEach(s=>{ct+=`\n${s.t.toUpperCase()}:\n`+s.it.map(x=>`  - ${x}`).join('\n');if(s.nt)ct+=`\n  Obs: ${s.nt}`;});}
-    if(dn.length){ct+=`\n\n✓ REALIZADAS:`;dn.forEach(s=>{ct+=`\n${s.t.toUpperCase()}:\n`+s.it.map(x=>`  - ${x}`).join('\n');});}
+    const fmt=arr=>arr.map(s=>`\n[${s.src}] ${s.t.toUpperCase()}:\n`+s.it.map(x=>`  - ${x}`).join('\n')+(s.nt?`\n  Obs: ${s.nt}`:'')).join('');
+    if(pd.length)ct+=`\n\n⏳ PENDENTES:${fmt(pd)}`;
+    if(dn.length)ct+=`\n\n✓ REALIZADAS:${fmt(dn)}`;
   }else if(S.imp)ct=`\n${'='.repeat(40)}\nIMPRESSÃO CLÍNICA\n${S.imp}`;
   const va=vA();
   return`## ADMISSÃO EM SALA DE EMERGÊNCIA ##\n${'='.repeat(40)}\nNome: ${S.nome||'Não informado'} | Idade: ${S.idade} anos | Origem: ${S.orig}${['Vaga Zero','Transferência'].includes(S.orig)&&(S.origInst||S.origMotivo)?' ('+[S.origInst,S.origMotivo].filter(Boolean).join(' / ')+')':''}\n${'='.repeat(40)}\nHDA\n${hda}\n${'='.repeat(40)}\nANTECEDENTES\nHPP: ${S.hpp.join(', ')||'Nega'} | MUC: ${S.muc||'Nega'} | Alergias: ${S.ale}${S.tab||S.etil||S.drog?'\nHábitos: '+[S.tab&&'Tabagismo: '+S.tab,S.etil&&'Etilismo: '+S.etil,S.drog&&'Drogas: '+S.drog].filter(Boolean).join(' | ')  :''}\n${'='.repeat(40)}\nSINAIS VITAIS\nFC: ${S.fc||'—'} bpm | SatO2: ${S.sat||'—'}% | PA: ${S.pa||'—'} mmHg | FR: ${S.fr||'—'} irpm | Temp: ${S.temp||'—'}°C | Gli: ${S.gli||'—'} mg/dL${S.peso?' | Peso: '+S.peso+' kg':''}${S.eva!==''&&S.eva!==null?' | EVA: '+S.eva+'/10':''}${va.length?'\n⚠ ALERTAS: '+va.join(' | '):''}\n${'='.repeat(40)}\nEXAME FÍSICO (${S.ef==='amb'?'Ambulatorial':S.ef==='crit'?'Crítico ABCDE':'não selecionado'})\n${ef}${sc}\n${'='.repeat(40)}\nECG\n${buildEcgText()}\n${'='.repeat(40)}\nPOCUS\n${buildPocText()}${ct}\n${'='.repeat(40)}`;}
 
+function gResumo(){
+  const T=S.sind?CT[S.sind]:null;
+  const ts=new Date().toLocaleString('pt-BR');
+  const id=`${S.nome||'Paciente'}, ${S.idade}a`;
+  const queixa=S.queixa||'sem queixa registrada';
+  const tempo=S.tempo?` há ${S.tempo}`:'';
+  const va=vA();
+  const vitais=`FC ${S.fc||'—'} | Sat ${S.sat||'—'}% | PA ${S.pa||'—'} | FR ${S.fr||'—'} | T ${S.temp||'—'}°C${va.length?'  ⚠ '+va.join('; '):''}`;
+  let dx='(sem hipótese)';
+  if(T){
+    let sub='';
+    if(T.subExcl&&S.subsind){const sx=T.subExcl.find(x=>x.id===S.subsind);if(sx)sub+=` (${sx.l.toLowerCase()})`;}
+    if(T.subAdd&&S.subsinds.length){const labs=S.subsinds.map(id=>{const sa=T.subAdd.find(x=>x.id===id);return sa?sa.l:'';}).filter(Boolean);if(labs.length)sub+=` + dif: ${labs.join(', ')}`;}
+    dx=T.l+sub;
+  }
+  const imp=S.imp?` — ${S.imp.length>120?S.imp.slice(0,117)+'...':S.imp}`:'';
+  const pendList=[];
+  const collectPend=(sid,sindObj)=>{if(!sindObj)return;sindObj.s.forEach(sec=>{sec.it.forEach((it,i)=>{if(S.chk[sid+'_'+sec.id+'_'+i]==='pend')pendList.push(it);});});};
+  if(T){collectPend(S.sind,T);if(T.subExcl&&S.subsind&&CT[S.subsind])collectPend(S.subsind,CT[S.subsind]);if(T.subAdd)S.subsinds.forEach(id=>{if(CT[id])collectPend(id,CT[id]);});}
+  const pTop=pendList.slice(0,3).map(p=>p.length>90?p.slice(0,87)+'...':p);
+  const pendStr=pendList.length?`Pendentes (${pendList.length})${pendList.length>3?', top 3':''}:\n  - ${pTop.join('\n  - ')}`:'Pendentes: nenhum item marcado';
+  return `RESUMO DE PLANTÃO (${ts})\n${id} — ${queixa}${tempo}\nVitais: ${vitais}\nDx: ${dx}${imp}\n${pendStr}`;
+}
 function pSumH(){const T=S.sind?CT[S.sind]:null;if(!T)return'';const pd=T.s.filter(sec=>sec.it.some((_,i)=>S.chk[S.sind+'_'+sec.id+'_'+i]==='pend'));if(!pd.length)return'';return`<div class="psm" style="margin-bottom:12px"><span class="psml"><i class="ti ti-clock" aria-hidden="true"></i> Pendências:</span>${pd.map(s=>{const n=s.it.filter((_,i)=>S.chk[S.sind+'_'+s.id+'_'+i]==='pend').length;return`<span class="psmb">${s.t}: ${n}</span>`;}).join('')}</div>`;}
 
-function s5(){return`<div class="card"><div class="st"><i class="ti ti-file-text" aria-hidden="true"></i> Relatório de admissão</div>${pSumH()}<div class="relbox" id="relTxt"></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btng" onclick="navigator.clipboard.writeText(document.getElementById('relTxt').textContent).then(()=>showToast('Copiado!'))"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button><button class="btng" style="background:#185fa5" onclick="saveReport(document.getElementById('relTxt').textContent)"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar</button><button class="btns" onclick="showSaved()"><i class="ti ti-history" aria-hidden="true"></i> Ver salvos</button><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Editar</button></div></div>`;}
+function s5(){return`<div class="card"><div class="st"><i class="ti ti-file-text" aria-hidden="true"></i> Relatório de admissão</div>${pSumH()}<div class="rg" style="margin-bottom:10px"><span class="ro ${S.relMode==='full'?'on':''}" onclick="S.relMode='full';render()"><i class="ti ti-file-text" aria-hidden="true"></i> Completo</span><span class="ro ${S.relMode==='resumo'?'on':''}" onclick="S.relMode='resumo';render()"><i class="ti ti-list" aria-hidden="true"></i> Resumo de plantão</span></div><div class="relbox" id="relTxt"></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btng" onclick="navigator.clipboard.writeText(document.getElementById('relTxt').textContent).then(()=>showToast('Copiado!'))"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button><button class="btng" style="background:#185fa5" onclick="saveReport(document.getElementById('relTxt').textContent)"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar</button><button class="btns" onclick="showSaved()"><i class="ti ti-history" aria-hidden="true"></i> Ver salvos</button><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Editar</button></div></div>`;}
 
-function render(){rs();const c=document.getElementById('con');if(S.step===0)c.innerHTML=s0();else if(S.step===1)c.innerHTML=s1();else if(S.step===2)c.innerHTML=s2();else if(S.step===3)c.innerHTML=s3();else if(S.step===4)c.innerHTML=s4();else{c.innerHTML=s5();const rt=document.getElementById('relTxt');if(rt)rt.textContent=gRel();}}
+function render(){rs();const c=document.getElementById('con');if(S.step===0)c.innerHTML=s0();else if(S.step===1)c.innerHTML=s1();else if(S.step===2)c.innerHTML=s2();else if(S.step===3)c.innerHTML=s3();else if(S.step===4)c.innerHTML=s4();else{c.innerHTML=s5();const rt=document.getElementById('relTxt');if(rt)rt.textContent=S.relMode==='resumo'?gResumo():gRel();}}
 initAuth();
 </script>
 </body>
