@@ -256,6 +256,8 @@ const S={step:0,nome:'',idade:30,orig:'Demanda Espontânea',origInst:'',origMoti
   dspEF:{fala:'',posic:'',cianose:'',aus:[],sinaisCV:[]},
   cef:{inicio:'',loc:[],qual:[],modif:[],precip:[],assoc:[],alarm:[],antec:[],descr:{auraMot:'',deficit:'',conv:'',sinc:''}},
   cefOpen:{inicio:true},
+  cefEF:{mental:[],motor:[],coord:[],regional:[]},
+  cefEFOpen:{mental:true},
   abcOpen:{a:true},
   relMode:'full'};
 
@@ -994,6 +996,8 @@ function setQueixa(q){
   S.dspEF={fala:'',posic:'',cianose:'',aus:[],sinaisCV:[]};
   S.cef={inicio:'',loc:[],qual:[],modif:[],precip:[],assoc:[],alarm:[],antec:[],descr:{auraMot:'',deficit:'',conv:'',sinc:''}};
   S.cefOpen={inicio:true};
+  S.cefEF={mental:[],motor:[],coord:[],regional:[]};
+  S.cefEFOpen={mental:true};
   S.itDrug='';
   S.imp='';
   S.chk={};
@@ -1103,6 +1107,63 @@ function cefHda(S){
   return out;
 }
 function cefHpp(S){return S.cef.antec.slice();}
+
+// Cefaleia EF — accordion progressivo (4 blocos)
+const CEF_EF_NEXT={mental:'motor',motor:'coord',coord:'regional'};
+const CEF_EF_MENTAL=['Alerta e orientado','Sonolento','Confuso / desorientado','Disartria','Afasia de expressão','Afasia de compreensão','Afasia global','Discurso incoerente'];
+const CEF_EF_MOTOR=['Normal','Hemiparesia D','Hemiparesia E','Hemiplegia D','Hemiplegia E','Paraparesia'];
+const CEF_EF_COORD=['Normal','Dismetria índex-nariz','Dismetria calcanhar-joelho','Disdiadocodinésia','Ataxia de tronco','Ataxia de marcha'];
+const CEF_EF_REGIONAL=['Artéria temporal dolorosa / endurecida','Sensibilidade ATM','Dor à digitopressão de seios paranasais','Sinais autonômicos craniofaciais ipsilaterais (cluster)'];
+function cefEFAutoOpen(key){if(key&&S.cefEFOpen[key]===undefined)S.cefEFOpen[key]=true;}
+function cefEFTag(key,val){
+  const arr=S.cefEF[key];
+  const i=arr.indexOf(val);
+  if(i>-1){arr.splice(i,1);}
+  else{
+    arr.push(val);
+    if(key==='mental'&&val==='Alerta e orientado'){S.abc.ao=4;S.abc.rv=5;S.abc.rm=6;}
+  }
+  if(arr.length>0)cefEFAutoOpen(CEF_EF_NEXT[key]);
+  render();
+}
+function cefEFToggle(key){S.cefEFOpen[key]=!S.cefEFOpen[key];render();}
+function cefEFBlock(key,label,content){const isOpen=S.cefEFOpen[key];return `<div class="abcs"><div class="abch" onclick="cefEFToggle('${key}')"><span style="font-weight:500">${label}</span><i class="ti ti-chevron-${isOpen?'up':'down'}" style="margin-left:auto" aria-hidden="true"></i></div>${isOpen?`<div class="abcb open">${content}</div>`:''}</div>`;}
+function rCefEF(){
+  if(!S.ef)return '';
+  const e=S.cefEF;
+  let out=`<div class="card"><div class="st"><i class="ti ti-brain" aria-hidden="true"></i> Exame físico específico — Cefaleia</div>`;
+  out+=cefEFBlock('mental','Estado mental e fala',tags('',CEF_EF_MENTAL,e.mental,"cefEFTag('mental','%V')"));
+  out+=cefEFBlock('motor','Força motora',tags('',CEF_EF_MOTOR,e.motor,"cefEFTag('motor','%V')"));
+  out+=cefEFBlock('coord','Coordenação',tags('',CEF_EF_COORD,e.coord,"cefEFTag('coord','%V')"));
+  out+=cefEFBlock('regional','Achados regionais',tags('',CEF_EF_REGIONAL,e.regional,"cefEFTag('regional','%V')"));
+  out+=`</div>`;
+  return out;
+}
+function cefEFText(S){
+  const e=S.cefEF;
+  const parts=[];
+  if(e.mental.length){
+    const mapM=m=>m==='Alerta e orientado'?'alerta e orientado em tempo, espaço e pessoa':m.toLowerCase();
+    parts.push(`Estado mental: ${e.mental.map(mapM).join(', ')}`);
+  }
+  if(e.motor.length){
+    const mapMo=m=>m==='Normal'?'Força Grau V nos 4 membros':m;
+    parts.push(`Motor: ${e.motor.map(mapMo).join(', ')}`);
+  }
+  if(e.coord.length){
+    const mapC=m=>m==='Normal'?'coordenação preservada às manobras índex-nariz':m;
+    parts.push(`Coordenação: ${e.coord.map(mapC).join(', ')}`);
+  }
+  if(e.regional.length){
+    parts.push(`Achados regionais: ${e.regional.join(', ')}`);
+  }
+  return parts.length?`Cefaleia — exame específico: ${parts.join(' | ')}`:'';
+}
+
+const QX_EF_TEXT={};
+QX_EF['Cefaleia']=rCefEF;
+QX_EF['Dispneia']=rDspEF;
+QX_EF_TEXT['Cefaleia']=cefEFText;
 
 QX_ANAMNESE['Dor torácica']=rDT;
 QX_ANAMNESE['Dispneia']=rDispneia;
@@ -1218,8 +1279,8 @@ function rPOCUS(){const p=S.pocS;return`<div class="card"><div class="st"><i cla
 function dispGrav(){const fr=parseFloat(S.fr),sat=parseFloat(S.sat),fala=S.dspEF.fala,cian=S.dspEF.cianose;let pts=0;if(S.fr&&(fr>30||fr<12))pts+=2;else if(S.fr&&fr>24)pts+=1;if(S.sat&&sat<90)pts+=2;else if(S.sat&&sat<94)pts+=1;if(fala==='Palavras soltas'||fala==='Impossível falar')pts+=2;else if(fala==='Frases incompletas')pts+=1;if(cian==='Central (lábios/língua)')pts+=2;if(pts>=4)return'grave';if(pts>=2)return'mod';return'leve';}
 function dispGravBadge(){if(S.queixa!=='Dispneia')return'';const hasData=S.fr||S.sat||S.dspEF.fala||S.dspEF.cianose;if(!hasData)return'';const g=dispGrav();const[cls,ico,txt]=g==='grave'?['grav-grave','ti-alert-triangle','Gravidade sugerida: GRAVE — IOT/VNI considerar imediatamente']:g==='mod'?['grav-mod','ti-alert-circle','Gravidade sugerida: MODERADA — monitorização intensa, O2 alto fluxo']:['grav-leve','ti-info-circle','Gravidade sugerida: LEVE — tratar e reavaliar'];return`<div class="grav-badge ${cls}"><i class="ti ${ico}" aria-hidden="true"></i> ${txt}</div>`;}
 function rDispneia(){const d=S.dsp;return`<div class="sl">Início:</div><div class="rg" style="margin-bottom:8px">${['Súbito','Progressivo','Crônico agudizado','Oscilante'].map(v=>`<span class="ro ${d.inicio===v?'on':''}" onclick="S.dsp.inicio='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Padrão:</div><div class="tags" style="margin-bottom:8px">${['Ortopneia','DPN (paroxística noturna)','Aos esforços','Em repouso','Posicional'].map(v=>`<span class="tag ${d.padrao.includes(v)?'on':''}" onclick="ts(S.dsp.padrao,'${v}')">${v}</span>`).join('')}</div><div class="sl">Modificadores:</div><div class="tags" style="margin-bottom:8px">${['Piora ao decúbito','Melhora sentado/Fowler','Piora ao esforço','Melhora com O2','Piora noturna'].map(v=>`<span class="tag ${d.modif.includes(v)?'on':''}" onclick="ts(S.dsp.modif,'${v}')">${v}</span>`).join('')}</div><div class="sl">Associado — cardiovascular:</div><div class="tags" style="margin-bottom:8px">${['Edema MMII','Palpitações','Dor torácica','Síncope/pré-síncope'].map(v=>`<span class="tag ${d.assocCV.includes(v)?'on':''}" onclick="ts(S.dsp.assocCV,'${v}')">${v}</span>`).join('')}</div><div class="sl">Associado — respiratório:</div><div class="tags" style="margin-bottom:8px">${['Sibilos','Crepitações','Uso musc. acessória','Hemoptise','Tosse produtiva','Estridor'].map(v=>`<span class="tag ${d.assocResp.includes(v)?'on':''}" onclick="ts(S.dsp.assocResp,'${v}')">${v}</span>`).join('')}</div><div class="sl">Associado — infeccioso:</div><div class="tags" style="margin-bottom:8px">${['Febre','Calafrios','Expectoração purulenta','Coriza / mialgia'].map(v=>`<span class="tag ${d.assocInf.includes(v)?'on':''}" onclick="ts(S.dsp.assocInf,'${v}')">${v}</span>`).join('')}</div><div class="sl">Contexto clínico:</div><div class="tags" style="margin-bottom:10px">${['IC prévia','Asma/DPOC conhecido','Tabagismo importante','Imobilização recente','Cirurgia recente','TVP/TEP prévio','Neoplasia ativa','Imunossupressão'].map(v=>`<span class="tag ${d.ctx.includes(v)?'on':''}" onclick="ts(S.dsp.ctx,'${v}')">${v}</span>`).join('')}</div><div style="margin-top:6px"><label>Tempo de início</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>`;}
-function rDspEF(){const e=S.dspEF;return`<div class="card"><div class="st"><i class="ti ti-lungs" aria-hidden="true"></i> Exame físico específico — Dispneia</div><div class="sl">Capacidade de falar:</div><div class="rg" style="margin-bottom:8px">${['Frases completas','Frases incompletas','Palavras soltas','Impossível falar'].map(v=>`<span class="ro ${e.fala===v?'on':''}" onclick="S.dspEF.fala='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Posição preferencial:</div><div class="rg" style="margin-bottom:8px">${['Decúbito tolerado','Sentado (Fowler)','Tripé','Decúbito não tolerado'].map(v=>`<span class="ro ${e.posic===v?'on':''}" onclick="S.dspEF.posic='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Cianose:</div><div class="rg" style="margin-bottom:8px">${['Ausente','Periférica (acrocianose)','Central (lábios/língua)'].map(v=>`<span class="ro ${e.cianose===v?'on':''}" onclick="S.dspEF.cianose='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Ausculta pulmonar:</div><div class="tags" style="margin-bottom:8px">${['MV normal','Estertores crepitantes bilaterais','Estertores unilaterais','Sibilos difusos','Roncos','MV reduzido D','MV reduzido E','Atrito pleural','Tórax silencioso'].map(v=>`<span class="tag ${e.aus.includes(v)?'on':''}" onclick="ts(S.dspEF.aus,'${v}')">${v}</span>`).join('')}</div><div class="sl">Sinais cardiovasculares:</div><div class="tags">${['Turgência jugular','Galope (B3)','Edema MMII com cacifo','Cianose central','Pulso paradoxal','Sopro cardíaco audível'].map(v=>`<span class="tag ${e.sinaisCV.includes(v)?'on':''}" onclick="ts(S.dspEF.sinaisCV,'${v}')">${v}</span>`).join('')}</div></div>`;}
-function s3(){const isDsp=S.queixa==='Dispneia';const badge=isDsp?dispGravBadge():'';return`${badge}<div class="card"><div class="st"><i class="ti ti-search" aria-hidden="true"></i> Tipo de exame físico</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem"><button class="xbtn ${S.ef==='amb'?'on':''}" onclick="S.ef='amb';render()"><i class="ti ti-walk" aria-hidden="true"></i> Ambulatorial</button><button class="xbtn ${S.ef==='crit'?'on':''}" onclick="S.ef='crit';render()"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Paciente crítico (ABCDE)</button></div></div>${S.ef==='amb'?`<div class="card"><div class="st">Padrão ambulatorial</div>${[['g','Geral'],['cv','AP Cardiovascular'],['re','AP Respiratório'],['ab','Abdome'],['ne','Neurológico'],['pe','Pele e MMII']].map(([k,l])=>`<div style="margin-bottom:10px"><label>${l}</label><input type="text" value="${esc(S.amb[k])}" oninput="S.amb['${k}']=this.value" placeholder="${l}..."></div>`).join('')}</div>`:''}${S.ef==='crit'?`<div class="card"><div class="st">ABCDE — Avaliação primária</div>${abcH()}</div>`:''}${S.ef==='crit'&&isDsp?rDspEF():''}${S.ef?rECG()+''+rPOCUS():''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.ef?`<button class="btnp" onclick="nx()">Impressão / Conduta <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
+function rDspEF(){if(S.ef!=='crit')return '';const e=S.dspEF;return`<div class="card"><div class="st"><i class="ti ti-lungs" aria-hidden="true"></i> Exame físico específico — Dispneia</div><div class="sl">Capacidade de falar:</div><div class="rg" style="margin-bottom:8px">${['Frases completas','Frases incompletas','Palavras soltas','Impossível falar'].map(v=>`<span class="ro ${e.fala===v?'on':''}" onclick="S.dspEF.fala='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Posição preferencial:</div><div class="rg" style="margin-bottom:8px">${['Decúbito tolerado','Sentado (Fowler)','Tripé','Decúbito não tolerado'].map(v=>`<span class="ro ${e.posic===v?'on':''}" onclick="S.dspEF.posic='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Cianose:</div><div class="rg" style="margin-bottom:8px">${['Ausente','Periférica (acrocianose)','Central (lábios/língua)'].map(v=>`<span class="ro ${e.cianose===v?'on':''}" onclick="S.dspEF.cianose='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Ausculta pulmonar:</div><div class="tags" style="margin-bottom:8px">${['MV normal','Estertores crepitantes bilaterais','Estertores unilaterais','Sibilos difusos','Roncos','MV reduzido D','MV reduzido E','Atrito pleural','Tórax silencioso'].map(v=>`<span class="tag ${e.aus.includes(v)?'on':''}" onclick="ts(S.dspEF.aus,'${v}')">${v}</span>`).join('')}</div><div class="sl">Sinais cardiovasculares:</div><div class="tags">${['Turgência jugular','Galope (B3)','Edema MMII com cacifo','Cianose central','Pulso paradoxal','Sopro cardíaco audível'].map(v=>`<span class="tag ${e.sinaisCV.includes(v)?'on':''}" onclick="ts(S.dspEF.sinaisCV,'${v}')">${v}</span>`).join('')}</div></div>`;}
+function s3(){const isDsp=S.queixa==='Dispneia';const badge=isDsp?dispGravBadge():'';return`${badge}<div class="card"><div class="st"><i class="ti ti-search" aria-hidden="true"></i> Tipo de exame físico</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem"><button class="xbtn ${S.ef==='amb'?'on':''}" onclick="S.ef='amb';render()"><i class="ti ti-walk" aria-hidden="true"></i> Ambulatorial</button><button class="xbtn ${S.ef==='crit'?'on':''}" onclick="S.ef='crit';render()"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Paciente crítico (ABCDE)</button></div></div>${S.ef==='amb'?`<div class="card"><div class="st">Padrão ambulatorial</div>${[['g','Geral'],['cv','AP Cardiovascular'],['re','AP Respiratório'],['ab','Abdome'],['ne','Neurológico'],['pe','Pele e MMII']].map(([k,l])=>`<div style="margin-bottom:10px"><label>${l}</label><input type="text" value="${esc(S.amb[k])}" oninput="S.amb['${k}']=this.value" placeholder="${l}..."></div>`).join('')}</div>`:''}${S.ef==='crit'?`<div class="card"><div class="st">ABCDE — Avaliação primária</div>${abcH()}</div>`:''}${S.ef&&QX_EF[S.queixa]?QX_EF[S.queixa]():''}${S.ef?rECG()+''+rPOCUS():''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.ef?`<button class="btnp" onclick="nx()">Impressão / Conduta <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
 
 function rCSec(sid,sec){const pc=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;const dc=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='done').length;return`<div class="csec"><div class="csh" onclick="tog('cs${sec.id}')"><span>${sec.t}</span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc}✓</span>`:''}${pc?`<span class="sb smod" style="font-size:11px">${pc}⏳</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb open" id="cs${sec.id}">${sec.it.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);return`<div class="chk ${cl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${esc(S.nts[sid+'_'+sec.id]||'')}</textarea></div></div></div>`;}
 
@@ -1241,6 +1302,7 @@ function gRel(){
   let ef='';
   if(S.ef==='amb'){ef=`Geral: ${S.amb.g||'—'} | CV: ${S.amb.cv||'—'} | Resp: ${S.amb.re||'—'} | Abd: ${S.amb.ab||'—'} | Neuro: ${S.amb.ne||'—'} | Pele: ${S.amb.pe||'—'}`;}
   else if(S.ef==='crit'){const a=S.abc;ef=`A: VA ${a.va.toLowerCase()}, fonação ${a.fon.toLowerCase()}. Colar: ${a.col.toLowerCase()}.\nB: Expansibilidade ${a.exp.toLowerCase()}, MV ${a.mv.toLowerCase()}. ${a.esf.join(', ')||'—'}. Ruídos: ${a.rud.join(', ')||'ausentes'}.\nC: TEC ${a.tec}. ${a.aus.join(', ')||'—'}. Pulsos ${a.pul.toLowerCase()}. Abdome: ${a.abd.join(', ')||'—'}.\nD: GCS ${g}/15 (O:${a.ao} V:${a.rv} M:${a.rm}) — ${gcsL(g)}. Pupilas ${a.pup.toLowerCase()}. Déficits: ${a.def.join(', ')||'ausentes'}.\nE: Edema MMII ${a.ede.toLowerCase()}${a.ede==='Presente'?' ('+a.cac.toLowerCase()+')':''}. Pele: ${a.pel.join(', ')||'sem alterações'}.`;if(S.queixa==='Dispneia'){const e=S.dspEF;const dp=[];if(e.fala)dp.push(`Fala: ${e.fala.toLowerCase()}`);if(e.posic)dp.push(`Posição: ${e.posic.toLowerCase()}`);if(e.cianose)dp.push(`Cianose: ${e.cianose.toLowerCase()}`);if(e.aus.length)dp.push(`Ausculta: ${e.aus.join(', ').toLowerCase()}`);if(e.sinaisCV.length)dp.push(`Sinais CV: ${e.sinaisCV.join(', ').toLowerCase()}`);if(dp.length)ef+=`\nDispneia — sinais específicos: ${dp.join(' | ')}`;}}
+  if(QX_EF_TEXT[S.queixa]){const extra=QX_EF_TEXT[S.queixa](S);if(extra)ef+=(ef?'\n':'')+extra;}
   let sc='';
   if(isDT){sc=`\n${'='.repeat(40)}\nSCORES PREDITIVOS\nHEAR: ${hSc()}/10 — ${hI(hSc())}\nEDACS: ${eSc()} pts — ${eI()}${S.edacs.t0||S.edacs.t2?'\n  Troponina 0h: '+(S.edacs.t0||'—')+' | 2h: '+(S.edacs.t2||'—'):''}`;}
   let ct='';
