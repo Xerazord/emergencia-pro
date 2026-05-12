@@ -36,8 +36,11 @@ input:focus,select:focus,textarea:focus{border-color:#a32d2d}
 .login-btn:disabled{opacity:.6;cursor:not-allowed}
 .login-err{color:#a32d2d;font-size:12px;margin-top:8px;display:none}
 .login-loading{text-align:center;color:#6b7280;font-size:12px;padding:6px 0;display:none}
-.logout-btn{padding:6px 12px;background:#fcebeb;border:.5px solid #f09595;color:#a32d2d;border-radius:20px;font-size:12px;cursor:pointer;font-weight:500;margin-left:auto}
+.logout-btn{padding:6px 12px;background:#fcebeb;border:.5px solid #f09595;color:#a32d2d;border-radius:20px;font-size:12px;cursor:pointer;font-weight:500}
 .logout-btn:hover{background:#fad4d4}
+.reset-btn{padding:6px 12px;background:#faeeda;border:.5px solid #fac775;color:#854f0b;border-radius:20px;font-size:12px;cursor:pointer;font-weight:500;margin-left:auto}
+.reset-btn:hover{background:#f5dba5}
+.app-footer{text-align:center;font-size:10px;color:#9ca3af;margin-top:24px;padding:8px}
 .age-drums{display:flex;align-items:center;gap:5px}
 .drum{display:flex;flex-direction:column;align-items:center;background:var(--color-background-secondary);border:.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);overflow:hidden;width:40px}
 .drum-btn{width:100%;padding:3px 0;border:none;background:none;cursor:pointer;color:var(--color-text-secondary);display:flex;align-items:center;justify-content:center;font-size:14px}.drum-btn:hover{background:var(--color-border-tertiary)}
@@ -185,11 +188,13 @@ textarea{resize:vertical;min-height:60px}
 <div class="hdr">
  <div class="hico"><i class="ti ti-building-hospital" aria-hidden="true"></i></div>
  <div><div style="font-size:18px;font-weight:500">Emergência Pro</div><div style="font-size:13px;color:var(--color-text-secondary)">Admissão com condutas baseadas em evidências</div></div>
- <button class="logout-btn" onclick="doLogout()"><i class="ti ti-logout" aria-hidden="true"></i> Sair</button>
+ <button class="reset-btn" onclick="resetCase()"><i class="ti ti-refresh" aria-hidden="true"></i> Reiniciar</button>
+ <button class="logout-btn" onclick="doLogout()" style="margin-left:8px"><i class="ti ti-logout" aria-hidden="true"></i> Sair</button>
 </div>
 <div class="steps" id="sBar"></div>
 <div id="con"></div>
 <div id="modalArea"></div>
+<div class="app-footer">Emergência Pro • v2026.05.12</div>
 </div>
 <script>
 
@@ -208,6 +213,7 @@ async function initAuth(){
 function showApp(){
  document.getElementById('loginOverlay').style.display='none';
  document.getElementById('mainApp').style.display='block';
+ if(typeof autoLoad==='function')autoLoad();
  render();
 }
 function showLoginScreen(){
@@ -260,6 +266,37 @@ const S={step:0,nome:'',idade:30,orig:'Demanda Espontânea',origInst:'',origMoti
  cefEFOpen:{mental:true},
  abcOpen:{a:true},
  relMode:'full'};
+
+// Snapshot do estado inicial para resetCase()
+const INITIAL_S=JSON.parse(JSON.stringify(S));
+const DRAFT_KEY='emergencia_draft_v1';
+const BUILD_VERSION='2026.05.12';
+
+function autoSave(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify(S));}catch(e){}}
+function autoLoad(){
+  try{
+    const saved=localStorage.getItem(DRAFT_KEY);
+    if(!saved)return false;
+    const parsed=JSON.parse(saved);
+    // Só restaurar se houver conteúdo significativo
+    if(parsed&&(parsed.nome||parsed.queixa||parsed.step>0||parsed.imp)){
+      if(confirm('Há um caso anterior em andamento. Deseja continuá-lo?')){
+        Object.assign(S,parsed);
+        return true;
+      }else{
+        localStorage.removeItem(DRAFT_KEY);
+      }
+    }
+  }catch(e){}
+  return false;
+}
+function clearDraft(){try{localStorage.removeItem(DRAFT_KEY);}catch(e){}}
+function resetCase(){
+  if(!confirm('Reiniciar caso? Todos os dados do paciente atual serão perdidos.'))return;
+  Object.assign(S,JSON.parse(JSON.stringify(INITIAL_S)));
+  clearDraft();
+  render();
+}
 
 
 const QUEIXAS=['Dor torácica','Dispneia','Tosse','Febre','Dor abdominal','Náusea e Vômitos','Diarreia','Sangramento','Dor lombar','Icterícia','Cefaleia','Déficit neurológico agudo','Vertigem','Rebaixamento de consciência','Agitação psicomotora','Convulsão','Síncope','Trauma','Palpitações','Edema / Dor em MMII','Intoxicação exógena'];
@@ -1014,7 +1051,6 @@ sca_oca:{l:'OCA (oclusão / equivalente STEMI)',s:[
 'Ativar hemodinâmica imediatamente — alvo porta-balão < 90 min',
 'Desfibrilador pronto à beira leito — FV é principal causa de morte nas primeiras horas']},
 {id:'f',t:'P2Y12, trombólise e adjuvantes',alerts:[
-'Nitrato contraindicado em IAM inferior com suspeita de VD — verificar V3R/V4R antes de administrar',
 'Não iniciar betabloqueador IV de rotina — risco de choque em VE não avaliado; VO precoce se hemodinâmica estável'
 ],it:[
 'P2Y12 load imediato pois cath é iminente: Ticagrelor 180 mg VO (1ª escolha) ou Prasugrel 60 mg se anatomia conhecida + sem AVC/AIT. Clopidogrel 300–600 mg se contraindicação aos anteriores',
@@ -1036,7 +1072,7 @@ sca_noca:{l:'NOCA (não-oclusão / NSTEMI)',s:[
 'Trombólise NÃO indicada em NOCA, mesmo refratária'
 ],it:[
 'P2Y12 conforme estratégia: se invasiva precoce (< 24h) — NÃO pré-tratar antes da anatomia conhecida; se conservadora ou diferida — Ticagrelor 180 mg VO ao confirmar diagnóstico',
-'Nitrato IV (nitroglicerina 10–200 mcg/min) se dor persistente e PAS > 90 mmHg; contraindicado em IAM de VD e uso recente de inibidores de PDE-5',
+'Nitrato IV (nitroglicerina 10–200 mcg/min) se dor persistente e PAS > 90 mmHg; contraindicado em uso recente de inibidores de PDE-5',
 'Betabloqueador VO precoce (metoprolol 25–50 mg) se FC > 100 bpm sem ICC descompensada, BAV ou broncoespasmo']},
 {id:'d',t:'Timing de ICP por GRACE',it:[
 'ICP muito precoce (< 2h) se instabilidade hemodinâmica, arritmia grave, dor refratária, Killip III-IV ou supra transitório',
@@ -1107,8 +1143,6 @@ esof:{l:'Síndrome esofágica aguda',s:[
 ]}
 };
 
-CT.tep_dsp=CT.tep;
-
 // helpers
 const ESC_MAP={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','`':'&#96;'};
 function esc(s){return s==null?'':String(s).replace(/[&<>"'`]/g,c=>ESC_MAP[c]);}
@@ -1141,12 +1175,36 @@ function tags(label,opts,arrRef,action){return `${label?`<div class="sl">${label
 function radio(label,opts,curr,action){return `${label?`<div class="sl">${label}</div>`:''}<div class="rg" style="margin-bottom:8px">${opts.map(v=>{const s=String(v).replace(/'/g,"\\'");return `<span class="ro ${curr===v?'on':''}" onclick="${action.replace(/%V/g,s)}">${esc(v)}</span>`;}).join('')}</div>`;}
 
 // Accordion progressivo — Cefaleia
+// Factory para blocos com accordion progressivo (queixas que usam padrão hierárquico)
+function makeBlockSet(state,openState,nextMap,toggleFnName,hooks){
+  hooks=hooks||{};
+  return {
+    autoOpen(k){if(k&&openState[k]===undefined)openState[k]=true;},
+    tag(k,v){
+      const arr=state[k],i=arr.indexOf(v);
+      if(i>-1){arr.splice(i,1);if(hooks.onRemove)hooks.onRemove(k,v);}
+      else{arr.push(v);if(hooks.onAdd)hooks.onAdd(k,v);}
+      if(arr.length>0)this.autoOpen(nextMap[k]);
+      render();
+    },
+    radio(k,v){state[k]=v;if(hooks.onAdd)hooks.onAdd(k,v);this.autoOpen(nextMap[k]);render();},
+    toggle(k){openState[k]=!openState[k];render();},
+    block(k,label,content){
+      const isOpen=openState[k];
+      return `<div class="abcs"><div class="abch" onclick="${toggleFnName}('${k}')"><span style="font-weight:500">${label}</span><i class="ti ti-chevron-${isOpen?'up':'down'}" style="margin-left:auto" aria-hidden="true"></i></div>${isOpen?`<div class="abcb open">${content}</div>`:''}</div>`;
+    }
+  };
+}
+
 const CEF_NEXT={inicio:'loc',loc:'qual',qual:'modif',modif:'precip',precip:'assoc',assoc:'alarm',alarm:'antec',antec:'tempo'};
-function cefAutoOpen(key){if(key&&S.cefOpen[key]===undefined)S.cefOpen[key]=true;}
-function cefTag(key,val){const arr=S.cef[key];const i=arr.indexOf(val);if(i>-1)arr.splice(i,1);else arr.push(val);if(arr.length>0)cefAutoOpen(CEF_NEXT[key]);render();}
-function cefRadio(key,val){S.cef[key]=val;cefAutoOpen(CEF_NEXT[key]);render();}
-function cefToggle(key){S.cefOpen[key]=!S.cefOpen[key];render();}
-function cefBlock(key,label,content){const isOpen=S.cefOpen[key];return `<div class="abcs"><div class="abch" onclick="cefToggle('${key}')"><span style="font-weight:500">${label}</span><i class="ti ti-chevron-${isOpen?'up':'down'}" style="margin-left:auto" aria-hidden="true"></i></div>${isOpen?`<div class="abcb open">${content}</div>`:''}</div>`;}
+const CEF_DESCR_MAP={'Aura motora / disfasia':'auraMot','Déficit neurológico focal':'deficit','Convulsão':'conv','Síncope ou pré-síncope':'sinc'};
+const CEFB=makeBlockSet(S.cef,S.cefOpen,CEF_NEXT,'cefToggle',{
+  onRemove(k,v){if(k==='assoc'&&CEF_DESCR_MAP[v])S.cef.descr[CEF_DESCR_MAP[v]]='';}
+});
+function cefTag(k,v){return CEFB.tag(k,v);}
+function cefRadio(k,v){return CEFB.radio(k,v);}
+function cefToggle(k){return CEFB.toggle(k);}
+function cefBlock(k,l,c){return CEFB.block(k,l,c);}
 
 // Accordion progressivo — ABCDE
 function abcToggle(key){S.abcOpen[key]=!S.abcOpen[key];render();}
@@ -1234,24 +1292,16 @@ function cefHpp(S){return S.cef.antec.slice();}
 
 // Cefaleia EF — accordion progressivo (4 blocos)
 const CEF_EF_NEXT={mental:'motor',motor:'coord',coord:'regional'};
+const CEFEFB=makeBlockSet(S.cefEF,S.cefEFOpen,CEF_EF_NEXT,'cefEFToggle',{
+  onAdd(k,v){if(k==='mental'&&v==='Alerta e orientado'&&S.ef==='crit'){S.abc.ao=4;S.abc.rv=5;S.abc.rm=6;}}
+});
+function cefEFTag(k,v){return CEFEFB.tag(k,v);}
+function cefEFToggle(k){return CEFEFB.toggle(k);}
+function cefEFBlock(k,l,c){return CEFEFB.block(k,l,c);}
 const CEF_EF_MENTAL=['Alerta e orientado','Sonolento','Confuso / desorientado','Disartria','Afasia de expressão','Afasia de compreensão','Afasia global','Discurso incoerente'];
 const CEF_EF_MOTOR=['Normal','Hemiparesia D','Hemiparesia E','Hemiplegia D','Hemiplegia E','Paraparesia'];
 const CEF_EF_COORD=['Normal','Dismetria índex-nariz','Dismetria calcanhar-joelho','Disdiadocodinésia','Ataxia de tronco','Ataxia de marcha'];
 const CEF_EF_REGIONAL=['Artéria temporal dolorosa / endurecida','Sensibilidade ATM','Dor à digitopressão de seios paranasais','Sinais autonômicos craniofaciais ipsilaterais (cluster)'];
-function cefEFAutoOpen(key){if(key&&S.cefEFOpen[key]===undefined)S.cefEFOpen[key]=true;}
-function cefEFTag(key,val){
- const arr=S.cefEF[key];
- const i=arr.indexOf(val);
- if(i>-1){arr.splice(i,1);}
- else{
- arr.push(val);
- if(key==='mental'&&val==='Alerta e orientado'){S.abc.ao=4;S.abc.rv=5;S.abc.rm=6;}
- }
- if(arr.length>0)cefEFAutoOpen(CEF_EF_NEXT[key]);
- render();
-}
-function cefEFToggle(key){S.cefEFOpen[key]=!S.cefEFOpen[key];render();}
-function cefEFBlock(key,label,content){const isOpen=S.cefEFOpen[key];return `<div class="abcs"><div class="abch" onclick="cefEFToggle('${key}')"><span style="font-weight:500">${label}</span><i class="ti ti-chevron-${isOpen?'up':'down'}" style="margin-left:auto" aria-hidden="true"></i></div>${isOpen?`<div class="abcb open">${content}</div>`:''}</div>`;}
 function cefEFBlocks(){
  const e=S.cefEF;
  let out='';
@@ -1308,7 +1358,7 @@ function tog(id){const b=document.getElementById(id);if(b)b.classList.toggle('op
 function cyc(k){const c=S.chk[k];if(!c)S.chk[k]='done';else if(c==='done')S.chk[k]='pend';else delete S.chk[k];render();}
 function selSub(id){S.subsind=S.subsind===id?null:id;render();}
 function toggleSub(id){const i=S.subsinds.indexOf(id);if(i>-1)S.subsinds.splice(i,1);else S.subsinds.push(id);render();}
-function rSindBlock(sid){const T=CT[sid];if(!T)return'';const pt=T.s.reduce((a,sec)=>a+sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length,0);return`<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="ai" style="margin-bottom:10px;font-size:12px"><i class="ti ti-info-circle" aria-hidden="true"></i> Clique para ciclar: ✓ Realizado → ⏳ Pendente → Não selecionado</div>${pt?`<div class="psm"><span class="psml"><i class="ti ti-clock" aria-hidden="true"></i> Pendentes:</span>${T.s.map(sec=>{const n=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;return n?`<span class="psmb">${sec.t}: ${n}</span>`:''}).join('')}</div>`:''}${T.s.map(sec=>rCSec(sid,sec)).join('')}</div>`;}
+function rSindBlock(sid){const T=CT[sid];if(!T)return'';if(!T.s||T.s.length===0)return `<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="abox ai"><i class="ti ti-info-circle" aria-hidden="true"></i> Conduta em desenvolvimento. Registre a abordagem específica no campo "Impressão clínica livre" acima.</div></div>`;const pt=T.s.reduce((a,sec)=>a+sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length,0);return`<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="ai" style="margin-bottom:10px;font-size:12px"><i class="ti ti-info-circle" aria-hidden="true"></i> Clique para ciclar: ✓ Realizado → ⏳ Pendente → Não selecionado</div>${pt?`<div class="psm"><span class="psml"><i class="ti ti-clock" aria-hidden="true"></i> Pendentes:</span>${T.s.map(sec=>{const n=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;return n?`<span class="psmb">${sec.t}: ${n}</span>`:''}).join('')}</div>`:''}${T.s.map(sec=>rCSec(sid,sec)).join('')}</div>`;}
 function cico(k){const c=S.chk[k];return c==='done'?'ti-check':c==='pend'?'ti-clock':'ti-minus';}
 function ccls(k){const c=S.chk[k];return c==='done'?'done':c==='pend'?'pend':'';}
 function chAge(){const a=S.idade;return a<45?0:a<65?1:2;}
@@ -1347,6 +1397,7 @@ async function saveReport(txt){
  });
  if(error)throw error;
  showToast('Relatório salvo com sucesso!');
+ clearDraft();
  }catch(e){showToast('Erro ao salvar: '+e.message,false);}
 }
 function showToast(msg,ok=true){
@@ -1486,7 +1537,7 @@ function pSumH(){const T=S.sind?CT[S.sind]:null;if(!T)return'';const pd=T.s.filt
 
 function s5(){return`<div class="card"><div class="st"><i class="ti ti-file-text" aria-hidden="true"></i> Relatório de admissão</div>${pSumH()}${QX_BADGE[S.queixa]?QX_BADGE[S.queixa]():''}<div class="rg" style="margin-bottom:10px"><span class="ro ${S.relMode==='full'?'on':''}" onclick="S.relMode='full';render()"><i class="ti ti-file-text" aria-hidden="true"></i> Completo</span><span class="ro ${S.relMode==='resumo'?'on':''}" onclick="S.relMode='resumo';render()"><i class="ti ti-list" aria-hidden="true"></i> Resumo de plantão</span></div><div class="relbox" id="relTxt"></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btng" onclick="navigator.clipboard.writeText(document.getElementById('relTxt').textContent).then(()=>showToast('Copiado!'))"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button><button class="btng" style="background:#185fa5" onclick="saveReport(document.getElementById('relTxt').textContent)"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar</button><button class="btns" onclick="showSaved()"><i class="ti ti-history" aria-hidden="true"></i> Ver salvos</button><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Editar</button></div></div>`;}
 
-function render(){rs();const c=document.getElementById('con');if(S.step===0)c.innerHTML=s0();else if(S.step===1)c.innerHTML=s1();else if(S.step===2)c.innerHTML=s2();else if(S.step===3)c.innerHTML=s3();else if(S.step===4)c.innerHTML=s4();else{c.innerHTML=s5();const rt=document.getElementById('relTxt');if(rt)rt.textContent=S.relMode==='resumo'?gResumo():gRel();}}
+function render(){rs();const c=document.getElementById('con');if(S.step===0)c.innerHTML=s0();else if(S.step===1)c.innerHTML=s1();else if(S.step===2)c.innerHTML=s2();else if(S.step===3)c.innerHTML=s3();else if(S.step===4)c.innerHTML=s4();else{c.innerHTML=s5();const rt=document.getElementById('relTxt');if(rt)rt.textContent=S.relMode==='resumo'?gResumo():gRel();}if(typeof autoSave==='function')autoSave();}
 initAuth();
 </script>
 </body>
