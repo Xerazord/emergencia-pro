@@ -66,7 +66,7 @@ Cada queixa pode definir sua própria contagem de alarmes. Badge mostra "Queixa 
 |---|---|---|---|---|---|
 | Dor torácica | refinada | `rDT` | inline `gRel` | — | — |
 | Dispneia | refinada | `rDispneia` | inline `gRel` | — | `dispGravBadge` (severidade) |
-| Cefaleia | **em andamento** | `rCefaleia` | `cefHda` | `cefHpp` | `cefAlarmBadge` (contagem) |
+| Cefaleia | **conduta em andamento (3/11 subtipos)** | `rCefaleia` + `rCefEF` (em D do ABCDE) | `cefHda` | `cefHpp` | `cefAlarmBadge` (contagem) |
 | Síncope | pendente | — | — | — | — |
 | Convulsão | pendente | — | — | — | — |
 | Síndrome abdominal | pendente | — | — | — | — |
@@ -87,6 +87,27 @@ Trauma, Vertigem: deferred.
 - **Fase 1 (em curso):** refinar cada queixa individualmente (anamnese + exame físico + conduta).
 - **Fase 2:** otimizar geração de texto e proposta de condutas — reaproveitamento de dados entre passos, auto-sugestão de síndrome, prescrição por peso, modo de disposição explícito.
 - **Fase 3:** evolução clínica detalhada (reavaliações pós-admissão), edição de relatórios salvos, memória/timeline por paciente.
+
+## Cronograma Fase 1 — uma síndrome por dia (a partir de 12/05/2026)
+
+| Dia | Síndrome |
+|---|---|
+| 12/05 (hoje) | Cefaleia — encerrar os 8 subtipos restantes (`cef_tvc`, `cef_dac`, `cef_avch`, `cef_ppl`, `cef_hii`, `cef_tce`, `cef_sin`, `cef_trig`) |
+| 13/05 | Convulsão |
+| 14/05 | Síncope |
+| 15/05 | Síndrome neurovascular (AVC) |
+| 16/05 | Rebaixamento de consciência |
+| 17/05 | Choque indiferenciado (+ 4 subtipos) |
+| 18/05 | Síndrome abdominal (+ 3 subtipos) |
+| 19/05 | Hemorragia digestiva |
+| 20/05 | Icterícia / IHA |
+| 21/05 | Síndrome febril / Infecciosa |
+| 22/05 | Intoxicação exógena |
+| 23/05 | Dor lombar |
+| 24/05 | Palpitações / Arritmia |
+| 25/05 | Edema / Dor MMII (+ 3 subtipos) |
+
+Cefaleia já tem `cef_prim`, `cef_hsa`, `cef_men` preenchidos. Quando todos os subtipos do dia da Cefaleia estiverem fechados, atualizar status da tabela acima e prosseguir.
 
 ## Padrões de redação clínica
 

@@ -381,26 +381,148 @@ rnc:{l:'Rebaixamento do nível de consciência',s:[
 'Causa reversível identificada e tratada com recuperação → observação mínima 6h',
 'Causa não estabelecida → internação para investigação']}
 ]},
-cef:{l:'Cefaleia',s:[
-{id:'m',t:'Avaliação inicial',it:[
-'Confirmar ausência de alarme: início trovão, febre + rigidez nuca, déficit focal, papiledema, imunossupressão, neoplasia, > 50a com 1ª crise',
-'EVA de dor — documentar para monitorização da resposta ao tratamento',
-'Frequência de analgésicos: > 10–15 dias/mês configura cefaleia por abuso (EAN 2022)']},
-{id:'f',t:'Farmacológico',it:[
-'Enxaqueca: sumatriptano 50–100 mg VO ou 6 mg SC na fase inicial (EAN 2022)',
-'Cefaleia tensional: AAS 500–1000 mg VO ou ibuprofeno 400–600 mg VO (EAN 2022)',
-'Crise intensa: dipirona 1g IV + metoclopramida 10 mg IV; dexametasona 4–8 mg IV reduz recorrência em 24h',
-'Em salvas: O2 100% por máscara 12–15 L/min por 15–20 min, eficaz em ~70% (EHF 2022)',
-'Evitar opioides em cefaleia primária — risco de abuso e cefaleia por uso excessivo (EAN 2022)']},
+cef:{l:'Cefaleia',
+subExcl:[
+  {id:'cef_prim',l:'Suspeita de cefaleia primária'},
+  {id:'cef_hsa',l:'Suspeita de HSA'},
+  {id:'cef_men',l:'Meningoencefalite'},
+  {id:'cef_tvc',l:'Trombose venosa cerebral'},
+  {id:'cef_dac',l:'Dissecção de artéria cervical'},
+  {id:'cef_avch',l:'AVC hemorrágico'},
+  {id:'cef_ppl',l:'Cefaleia pós-punção dural'},
+  {id:'cef_hii',l:'Hipertensão intracraniana idiopática'},
+  {id:'cef_tce',l:'Cefaleia pós-TCE'},
+  {id:'cef_sin',l:'Rinossinusite aguda'},
+  {id:'cef_trig',l:'Neuralgia do trigêmeo'}
+],
+s:[
+{id:'m',t:'Triagem / monitorização',it:[
+'Monitor de sinais vitais e EVA na chegada',
+'Documentar escala de dor e resposta à analgesia a cada 30 minutos',
+'Acesso venoso periférico se houver indicação de medicação IV ou exames com contraste',
+'Avaliação neurológica focada (GCS, pupilas, força, fala, marcha) — usar EF específico em D',
+'Alocar em ambiente calmo, com pouca luz e sem ruídos, se hipótese de cefaleia migranosa']},
+{id:'f',t:'Analgesia inespecífica',alerts:[
+'EVITAR opioides como primeira linha — risco de cefaleia por uso excessivo, dependência e mascaramento de sinais',
+'EVITAR dexametasona empírica em suspeita de meningite ou HSA — pode mascarar diagnóstico',
+'EVITAR AINE em suspeita de HSA ou plaquetopenia — risco hemorrágico'
+],it:[
+'Dipirona 2 g EV agora',
+'Cetoprofeno 100 mg EV agora (ou outro AINE) — opção para analgesia de cefaleia primária',
+'Dexametasona 10 mg EV agora se suspeita de cefaleia migranosa',
+'Metoclopramida 10 mg IV — antiemese + ação adjuvante na enxaqueca',
+'Hidratação EV parcimoniosa se sinais de desidratação']},
 {id:'e',t:'Investigação',it:[
-'Nenhum exame indicado em cefaleia primária típica sem sinais de alarme (EAN 2022)',
-'TC crânio somente se sinal de alarme presente']},
-{id:'d',t:'Disposição e orientação',it:[
-'Alta após resposta ao tratamento (EVA ≤ 3)',
-'Retorno imediato se: piora súbita, febre, rigidez cervical, déficit neurológico ou alteração de consciência',
-'Encaminhar neurologia se ≥ 4 crises/mês — profilaxia indicada (topiramato, propranolol, amitriptilina)',
-'Orientar diário de cefaleia e identificação de gatilhos']}
+'TC de crânio sem contraste em < 1h se ≥ 1 sinal de alarme (SNNOOP10)',
+'Punção lombar após TC normal se HSA suspeita (especialmente > 6h do início) — buscar xantocromia',
+'Laboratório de admissão completo para triagem de disfunções orgânicas; coagulograma e culturas se suspeita de meningite ou sepse',
+'AngioTC se TC normal mas suspeita persistente de HSA, dissecção ou TVC',
+'Glicemia capilar — descartar hipo/hiperglicemia',
+'Considerar NS1 se clínica sugestiva de dengue']},
+{id:'d',t:'Disposição',it:[
+'Alta médica após melhora da queixa',
+'Observação 4–6h se alarme isolado com TC negativa, melhora parcial ou dúvida diagnóstica',
+'Internação se GCS alterado, déficit focal, suspeita de HSA / meningite / TVC / dissecção ou dor refratária',
+'Encaminhamento à neurologia ambulatorial se ≥ 4 crises/mês, cefaleia diária persistente, padrão atípico ou primeira crise > 50 anos',
+'Retorno imediato se cefaleia que piora, febre, déficit novo ou alteração de consciência',
+'Orientar diário de cefaleia, identificação de gatilhos e uso racional de analgésicos']}
 ]},
+cef_prim:{l:'Suspeita de cefaleia primária',s:[
+{id:'m',t:'Avaliação específica',it:[],alerts:[
+'Avaliar abuso de analgésico: > 10–15 dias/mês configura cefaleia por uso excessivo (rebote)',
+'Identificar gatilhos relatados (sono, alimentos, álcool, estresse, ciclo menstrual)']},
+{id:'f',t:'Terapia direcionada',alerts:[
+'Contraindicações de triptano: DAC, HAS não controlada, gravidez, isquemia cerebral, uso de ergotamínico ou outro triptano nas últimas 24h',
+'Não associar triptano + ergotamínico na mesma crise'
+],it:[
+'Sumatriptano 6 mg SC ou 50–100 mg VO se enxaqueca provável e sem contraindicações',
+'Clorpromazina 12,5–25 mg EV em 100 mL SF em 30 min — alternativa em refratariedade. Atenção: hipotensão e reação distônica',
+'O₂ 100% por máscara não-reinalante 12–15 L/min por 15–20 min — específico para cluster',
+'Bloqueio do nervo occipital maior com lidocaína 2% (2–3 mL bilateral) — opção em cefaleia cervicogênica e enxaqueca refratária',
+'Considerar bloqueio do gânglio esfenopalatino — opção em enxaqueca refratária e cefaleia em salvas']},
+{id:'d',t:'Alta e orientação',it:[
+'Receita de analgésico de resgate (paracetamol 750 mg ou ibuprofeno 400 mg até 8/8h por ≤ 2–3 dias)',
+'Receita de antiemético VO/SL (metoclopramida ou ondansetrona) se vômitos',
+'Receita de triptano de resgate VO se padrão migranoso recorrente',
+'Orientar diário de cefaleia (frequência, intensidade, gatilhos, resposta)',
+'Limitar analgésicos a < 10–15 dias/mês para evitar cefaleia por uso excessivo',
+'Encaminhar à neurologia ambulatorial se ≥ 4 crises/mês, refratariedade ou indicação de profilaxia',
+'Medidas não farmacológicas: sono regular, hidratação, manejo de estresse, evitar gatilhos']}
+]},
+cef_hsa:{l:'Suspeita de HSA',s:[
+{id:'m',t:'Avaliação imediata',it:[
+'Monitor cardíaco + oximetria contínua + acesso venoso ≥ 18G em todos os casos',
+'Aferir PA em ambos os MMSS — alvo PAS < 160 mmHg (evitar < 120 mmHg pelo risco de hipoperfusão)',
+'Glasgow + escala WFNS (Hunt-Hess) para estratificação prognóstica',
+'Cabeceira elevada a 30° se rebaixamento ou suspeita de PIC alta',
+'Jejum até definição de procedimento']},
+{id:'f',t:'Manejo medicamentoso',alerts:[
+'Evitar redução agressiva de PA (PAS < 120) — risco de isquemia em zona de penumbra',
+'Não administrar antiplaquetário / AINE até cirurgia / embolização e estabilização'
+],it:[
+'Nimodipina 60 mg VO 4/4h por 21 dias — reduz vasoespasmo e isquemia tardia (iniciar < 96h)',
+'Controle pressórico se PAS > 160 mmHg: nitroprussiato de sódio 0,5–10 mcg/kg/min EV contínuo, titulado conforme alvo. Alvo PAS 140–160 antes do clipping; depois, 140–180',
+'Analgesia: dipirona 2 g EV + paracetamol 1 g EV. Evitar AAS / AINE (risco hemorrágico)',
+'Antiemético: ondansetrona 4–8 mg EV (preferência sobre metoclopramida em pacientes com risco neurológico)',
+'Anticonvulsivante profilático NÃO rotineiro — usar apenas se convulsão presente (fenitoína 20 mg/kg EV ou levetiracetam 60 mg/kg EV)',
+'Reversão de anticoagulação se em uso (vitamina K, complexo protrombínico, idarucizumabe, andexanet — conforme agente)']},
+{id:'e',t:'Investigação',it:[
+'TC de crânio sem contraste em < 30 min da chegada — sensibilidade ~ 100% se feita em < 6h por radiologista treinado',
+'Punção lombar se TC negativa e suspeita persistente, especialmente > 6h do início — buscar xantocromia (≥ 12h da ictus para maturação do pigmento)',
+'AngioTC cerebral assim que HSA confirmada — localizar e caracterizar aneurisma',
+'Arteriografia digital se AngioTC inconclusiva ou planejamento endovascular',
+'Hemograma, eletrólitos (incluindo Na — risco de SIADH / cerebral salt wasting), coagulograma, gasometria',
+'ECG e troponina — alterações neurogênicas frequentes (T invertida, QT longo, lesão miocárdica)',
+'Doppler transcraniano seriado para monitorar vasoespasmo (dia 3–14)']},
+{id:'d',t:'Disposição',it:[
+'Ativar neurocirurgia / hemodinâmica imediatamente após confirmação — clipping ou embolização em < 24–48h reduz ressangramento',
+'Internação em UTI neurológica em todos os casos',
+'Hidratação para euvolemia (não hipervolemia — abandonada nos guidelines recentes)',
+'Monitorar diurese, Na sérico 6/6h, lactato',
+'Iniciar prevenção de TVP com compressão pneumática; HBPM somente após segurança da hemostasia (geralmente > 24h pós-tratamento do aneurisma)',
+'Comunicação com família — discutir prognóstico e suporte conforme escala WFNS']}
+]},
+cef_men:{l:'Meningoencefalite',s:[
+{id:'m',t:'Avaliação imediata',alerts:[
+'Não atrasar antibiótico para coleta de LP — iniciar em < 1h da suspeita',
+'Não retardar antibiótico para realização de TC se houver indicação clínica de LP segura',
+'Avaliar GCS, sinais focais e papiledema (fundoscopia se disponível)',
+'Verificar sinais de sepse / choque: lactato, perfusão, hipotensão, taquicardia',
+'Identificar imunossupressão (HIV, neoplasia, corticoide crônico, transplante) — orienta cobertura ampliada'
+],it:[
+'Isolamento respiratório por gotículas até descartar meningite meningocócica (primeiras 24h de ATB)',
+'Monitor + acesso venoso ≥ 18G + jejum']},
+{id:'f',t:'Manejo medicamentoso',alerts:[
+'Dexametasona perde benefício se administrada > 1h após ATB — programar simultânea',
+'Ajustar doses para função renal e peso'
+],it:[
+'Dexametasona 10 mg EV imediatamente antes ou junto da 1ª dose de ATB — reduz mortalidade e sequelas em meningite pneumocócica do adulto',
+'Ceftriaxona 2 g EV 12/12h + Vancomicina 15–20 mg/kg EV 8/8h — cobertura empírica para pneumococo (alta prevalência local de resistência), meningococo e H. influenzae',
+'Adicionar Ampicilina 2 g EV 4/4h se > 50 anos, imunossuprimido ou gestante (cobertura para Listeria)',
+'Aciclovir 10 mg/kg EV 8/8h se suspeita de encefalite herpética (alteração de comportamento/cognição, convulsão, febre, LP com perfil viral)']},
+{id:'e',t:'Investigação',it:[
+'TC de crânio antes da LP se: GCS < 11, déficit focal, papiledema, convulsão recente, imunossupressão grave, > 60 anos',
+'Punção lombar com manometria assim que possível — citometria, bioquímica, Gram, cultura, lactato, PCR multiplex (HSV, enterovírus, pneumococo, meningococo)',
+'Hemoculturas (2 pares) antes do ATB se sem atraso > 45 min',
+'Hemograma, função renal, hepática, eletrólitos, lactato sérico, gasometria, coagulograma',
+'NS1 / sorologia para dengue se contexto epidemiológico',
+'Considerar HIV teste rápido se status sorológico desconhecido']},
+{id:'d',t:'Disposição',it:[
+'Internação em UTI se GCS ≤ 12, convulsão, sinais de choque, instabilidade hemodinâmica ou sinais de HIC',
+'Internação em enfermaria com isolamento se estável',
+'Notificação compulsória à vigilância epidemiológica (meningite é doença de notificação imediata)',
+'Profilaxia para contatos íntimos se meningite meningocócica confirmada: rifampicina 600 mg VO 12/12h por 2 dias OU ciprofloxacino 500 mg VO dose única OU ceftriaxona 250 mg IM dose única',
+'Acompanhamento neurológico após alta (avaliar sequelas auditivas, cognitivas, motoras)',
+'Considerar vacinação após recuperação se etiologia bacteriana imunoprevenível']}
+]},
+cef_tvc:{l:'Trombose venosa cerebral',s:[]},
+cef_dac:{l:'Dissecção de artéria cervical',s:[]},
+cef_avch:{l:'AVC hemorrágico',s:[]},
+cef_ppl:{l:'Cefaleia pós-punção dural',s:[]},
+cef_hii:{l:'Hipertensão intracraniana idiopática',s:[]},
+cef_tce:{l:'Cefaleia pós-TCE',s:[]},
+cef_sin:{l:'Rinossinusite aguda',s:[]},
+cef_trig:{l:'Neuralgia do trigêmeo',s:[]},
 cho:{l:'Choque indiferenciado',subExcl:[{id:'cho_sep',l:'Séptico / Distributivo'},{id:'cho_hip',l:'Hipovolêmico'},{id:'cho_car',l:'Cardiogênico'},{id:'cho_obs',l:'Obstrutivo (Tamponamento / Pneumotórax)'}],s:[
 {id:'m',t:'Monitorização e acesso',it:[
 'Monitor contínuo: ECG, SatO2, PA não invasiva contínua',
@@ -1290,7 +1412,7 @@ function rDispneia(){const d=S.dsp;return`<div class="sl">Início:</div><div cla
 function rDspEF(){if(S.ef!=='crit')return '';const e=S.dspEF;return`<div class="card"><div class="st"><i class="ti ti-lungs" aria-hidden="true"></i> Exame físico específico — Dispneia</div><div class="sl">Capacidade de falar:</div><div class="rg" style="margin-bottom:8px">${['Frases completas','Frases incompletas','Palavras soltas','Impossível falar'].map(v=>`<span class="ro ${e.fala===v?'on':''}" onclick="S.dspEF.fala='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Posição preferencial:</div><div class="rg" style="margin-bottom:8px">${['Decúbito tolerado','Sentado (Fowler)','Tripé','Decúbito não tolerado'].map(v=>`<span class="ro ${e.posic===v?'on':''}" onclick="S.dspEF.posic='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Cianose:</div><div class="rg" style="margin-bottom:8px">${['Ausente','Periférica (acrocianose)','Central (lábios/língua)'].map(v=>`<span class="ro ${e.cianose===v?'on':''}" onclick="S.dspEF.cianose='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Ausculta pulmonar:</div><div class="tags" style="margin-bottom:8px">${['MV normal','Estertores crepitantes bilaterais','Estertores unilaterais','Sibilos difusos','Roncos','MV reduzido D','MV reduzido E','Atrito pleural','Tórax silencioso'].map(v=>`<span class="tag ${e.aus.includes(v)?'on':''}" onclick="ts(S.dspEF.aus,'${v}')">${v}</span>`).join('')}</div><div class="sl">Sinais cardiovasculares:</div><div class="tags">${['Turgência jugular','Galope (B3)','Edema MMII com cacifo','Cianose central','Pulso paradoxal','Sopro cardíaco audível'].map(v=>`<span class="tag ${e.sinaisCV.includes(v)?'on':''}" onclick="ts(S.dspEF.sinaisCV,'${v}')">${v}</span>`).join('')}</div></div>`;}
 function s3(){const isDsp=S.queixa==='Dispneia';const badge=isDsp?dispGravBadge():'';return`${badge}<div class="card"><div class="st"><i class="ti ti-search" aria-hidden="true"></i> Tipo de exame físico</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem"><button class="xbtn ${S.ef==='amb'?'on':''}" onclick="S.ef='amb';render()"><i class="ti ti-walk" aria-hidden="true"></i> Ambulatorial</button><button class="xbtn ${S.ef==='crit'?'on':''}" onclick="S.ef='crit';render()"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Paciente crítico (ABCDE)</button></div></div>${S.ef==='amb'?`<div class="card"><div class="st">Padrão ambulatorial</div>${[['g','Geral'],['cv','AP Cardiovascular'],['re','AP Respiratório'],['ab','Abdome'],['ne','Neurológico'],['pe','Pele e MMII']].map(([k,l])=>`<div style="margin-bottom:10px"><label>${l}</label><input type="text" value="${esc(S.amb[k])}" oninput="S.amb['${k}']=this.value" placeholder="${l}..."></div>`).join('')}</div>`:''}${S.ef==='crit'?`<div class="card"><div class="st">ABCDE — Avaliação primária</div>${abcH()}</div>`:''}${S.ef&&QX_EF[S.queixa]?QX_EF[S.queixa]():''}${S.ef?rECG()+''+rPOCUS():''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.ef?`<button class="btnp" onclick="nx()">Impressão / Conduta <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
 
-function rCSec(sid,sec){const pc=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;const dc=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='done').length;return`<div class="csec"><div class="csh" onclick="tog('cs${sec.id}')"><span>${sec.t}</span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc}✓</span>`:''}${pc?`<span class="sb smod" style="font-size:11px">${pc}⏳</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb open" id="cs${sec.id}">${sec.it.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);return`<div class="chk ${cl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${esc(S.nts[sid+'_'+sec.id]||'')}</textarea></div></div></div>`;}
+function rCSec(sid,sec){const pc=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;const dc=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='done').length;const alertsHtml=(sec.alerts||[]).map(a=>`<div class="abox aw" style="margin-bottom:6px;font-size:12px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${a}</div>`).join('');return`<div class="csec"><div class="csh" onclick="tog('cs${sec.id}')"><span>${sec.t}</span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc}✓</span>`:''}${pc?`<span class="sb smod" style="font-size:11px">${pc}⏳</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb open" id="cs${sec.id}">${alertsHtml}${sec.it.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);return`<div class="chk ${cl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${esc(S.nts[sid+'_'+sec.id]||'')}</textarea></div></div></div>`;}
 
 function s4(){const T=S.sind?CT[S.sind]:null;const hasExcl=T&&T.subExcl;const hasAdd=T&&T.subAdd;return`<div class="card"><div class="st"><i class="ti ti-clipboard-check" aria-hidden="true"></i> Impressão clínica e síndrome</div><div style="margin-bottom:12px"><label>Impressão clínica livre</label><textarea oninput="S.imp=this.value" placeholder="Descreva sua impressão diagnóstica...">${esc(S.imp)}</textarea></div><div class="sl">Síndrome clínica suspeita:</div><div class="sgrid">${SLIST.map(s=>`<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};S.subsind=null;S.subsinds=[];render()">${s.l}</button>`).join('')}</div></div>${T?rSindBlock(S.sind):''}${hasExcl?`<div class="card"><div class="st"><i class="ti ti-git-branch" aria-hidden="true"></i> ${S.sind==='dtx'?'Probabilidade clínica:':'Subtipo clínico:'}</div><div class="sgrid">${T.subExcl.map(s=>`<button class="xbtn ${S.subsind===s.id?'on':''}" onclick="selSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`:''}${hasExcl&&S.subsind&&CT[S.subsind]?rSindBlock(S.subsind):''}${hasAdd?`<div class="card"><div class="st"><i class="ti ti-list-tree" aria-hidden="true"></i> ${S.sind==='dtx'?'Diagnósticos diferenciais (em ordem de gravidade):':'Subsíndromes presentes:'}</div><div class="sgrid">${T.subAdd.map(s=>`<button class="xbtn ${S.subsinds.includes(s.id)?'on':''}" onclick="toggleSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`:''}${hasAdd?S.subsinds.filter(sid=>CT[sid]).map(sid=>rSindBlock(sid)).join(''):''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Gerar relatório <i class="ti ti-file-text" aria-hidden="true"></i></button></div>`;}
 
