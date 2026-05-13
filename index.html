@@ -266,9 +266,14 @@ const S={step:0,nome:'',idade:30,orig:'Demanda Espontânea',origInst:'',origMoti
  sind:null,subsind:null,subsinds:[],chk:{},nts:{},imp:'',
  pocS:{pulmao:'',coracao:'',abdome:'',mmii:'',outros:''},
  ecgS:{normal:false,ritmo:'',fcEcg:'',pr:'',qrs:'',qtc:'',st:[],ondaT:[],padroes:[]},
+ ecgOpen:{ritmo:true},
  itDrug:'',
+ dt:{ini:'',qual:[],irr:[],modif:[],sem:null,pal:null,sin:[]},
+ dtOpen:{ini:true},
  dsp:{inicio:'',padrao:[],modif:[],assocCV:[],assocResp:[],assocInf:[],ctx:[]},
+ dspOpen:{inicio:true},
  dspEF:{fala:'',posic:'',cianose:'',aus:[],sinaisCV:[]},
+ dspEFOpen:{fala:true},
  cef:{inicio:'',loc:[],qual:[],modif:[],precip:[],assoc:[],alarm:[],antec:[],descr:{auraMot:'',deficit:'',conv:'',sinc:''}},
  cefOpen:{inicio:true},
  cefEF:{mental:[],motor:[],coord:[],regional:[]},
@@ -278,8 +283,8 @@ const S={step:0,nome:'',idade:30,orig:'Demanda Espontânea',origInst:'',origMoti
 
 // Snapshot do estado inicial para resetCase()
 const INITIAL_S=JSON.parse(JSON.stringify(S));
-const DRAFT_KEY='emergencia_draft_v1';
-const BUILD_VERSION='2026.05.12';
+const DRAFT_KEY='emergencia_draft_v2';
+const BUILD_VERSION='2026.05.13';
 
 function autoSave(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify(S));}catch(e){}}
 function autoLoad(){
@@ -1163,9 +1168,12 @@ function esc(s){return s==null?'':String(s).replace(/[&<>"'`]/g,c=>ESC_MAP[c]);}
 function setQueixa(q){
  S.queixa=q;
  S.caract=[];
- S.dt={ini:'',sem:null,pal:null,irr:[],sin:[]};
+ S.dt={ini:'',qual:[],irr:[],modif:[],sem:null,pal:null,sin:[]};
+ S.dtOpen={ini:true};
  S.dsp={inicio:'',padrao:[],modif:[],assocCV:[],assocResp:[],assocInf:[],ctx:[]};
+ S.dspOpen={inicio:true};
  S.dspEF={fala:'',posic:'',cianose:'',aus:[],sinaisCV:[]};
+ S.dspEFOpen={fala:true};
  S.cef={inicio:'',loc:[],qual:[],modif:[],precip:[],assoc:[],alarm:[],antec:[],descr:{auraMot:'',deficit:'',conv:'',sinc:''}};
  S.cefOpen={inicio:true};
  S.cefEF={mental:[],motor:[],coord:[],regional:[]};
@@ -1214,9 +1222,10 @@ function registerQx(name,spec){
  if(spec.ef){
   QX_SPEC_BY_SIGLA[spec.ef.sigla]=spec.ef;
   QX_EF[name]=()=>{
-   if(S.ef!=='amb')return '';
-   const ttl=spec.ef.ambTitle||`Exame físico específico — ${name}`;
-   const ico=spec.ef.ambIcon||'ti-stethoscope';
+   const modes=spec.ef.showIn||['amb']; // 'amb' (card abaixo do EF ambulatorial), 'crit' (card depois do ABCDE), ou ambos
+   if(!modes.includes(S.ef))return '';
+   const ttl=(S.ef==='crit'?spec.ef.critTitle:spec.ef.ambTitle)||spec.ef.ambTitle||`Exame físico específico — ${name}`;
+   const ico=(S.ef==='crit'?spec.ef.critIcon:spec.ef.ambIcon)||spec.ef.ambIcon||'ti-stethoscope';
    return `<div class="card"><div class="st"><i class="ti ${ico}" aria-hidden="true"></i> ${esc(ttl)}</div>${accordionRender(spec.ef.sigla)}</div>`;
   };
  }
@@ -1367,10 +1376,122 @@ registerQx('Cefaleia',{
  efText:cefEFText
 });
 
-// Registros de queixas ainda não migradas para o framework declarativo
-QX_ANAMNESE['Dor torácica']=rDT;
-QX_ANAMNESE['Dispneia']=rDispneia;
-QX_EF['Dispneia']=rDspEF;
+// ─── Dispneia ──────────────────────────────────────────────────────────────
+const DSP_INICIO=['Súbito','Progressivo','Crônico agudizado','Oscilante'];
+const DSP_PADRAO=['Ortopneia','DPN (paroxística noturna)','Aos esforços','Em repouso','Posicional'];
+const DSP_MODIF=['Piora ao decúbito','Melhora sentado/Fowler','Piora ao esforço','Melhora com O2','Piora noturna'];
+const DSP_ASSOC_CV=['Edema MMII','Palpitações','Dor torácica','Síncope/pré-síncope'];
+const DSP_ASSOC_RESP=['Sibilos','Crepitações','Uso musc. acessória','Hemoptise','Tosse produtiva','Estridor'];
+const DSP_ASSOC_INF=['Febre','Calafrios','Expectoração purulenta','Coriza / mialgia'];
+const DSP_CTX=['IC prévia','Asma/DPOC conhecido','Tabagismo importante','Imobilização recente','Cirurgia recente','TVP/TEP prévio','Neoplasia ativa','Imunossupressão'];
+const DSP_EF_FALA=['Frases completas','Frases incompletas','Palavras soltas','Impossível falar'];
+const DSP_EF_POSIC=['Decúbito tolerado','Sentado (Fowler)','Tripé','Decúbito não tolerado'];
+const DSP_EF_CIANOSE=['Ausente','Periférica (acrocianose)','Central (lábios/língua)'];
+const DSP_EF_AUS=['MV normal','Estertores crepitantes bilaterais','Estertores unilaterais','Sibilos difusos','Roncos','MV reduzido D','MV reduzido E','Atrito pleural','Tórax silencioso'];
+const DSP_EF_SINAIS_CV=['Turgência jugular','Galope (B3)','Edema MMII com cacifo','Cianose central','Pulso paradoxal','Sopro cardíaco audível'];
+
+function dspHda(S){
+ const d=S.dsp;let out='';
+ if(d.inicio)out+=`. Início ${d.inicio.toLowerCase()}`;
+ if(d.padrao.length)out+=`. Padrão: ${d.padrao.join(', ').toLowerCase()}`;
+ if(d.modif.length)out+=`. ${d.modif.join(', ').toLowerCase()}`;
+ if(d.assocCV.length)out+=`. Associado (CV): ${d.assocCV.join(', ').toLowerCase()}`;
+ if(d.assocResp.length)out+=`. Associado (resp): ${d.assocResp.join(', ').toLowerCase()}`;
+ if(d.assocInf.length)out+=`. Associado (infec): ${d.assocInf.join(', ').toLowerCase()}`;
+ if(d.ctx.length)out+=`. Contexto: ${d.ctx.join(', ').toLowerCase()}`;
+ return out;
+}
+function dspEFText(S){
+ if(S.ef!=='crit')return '';
+ const e=S.dspEF;const dp=[];
+ if(e.fala)dp.push(`Fala: ${e.fala.toLowerCase()}`);
+ if(e.posic)dp.push(`Posição: ${e.posic.toLowerCase()}`);
+ if(e.cianose)dp.push(`Cianose: ${e.cianose.toLowerCase()}`);
+ if(e.aus.length)dp.push(`Ausculta: ${e.aus.join(', ').toLowerCase()}`);
+ if(e.sinaisCV.length)dp.push(`Sinais CV: ${e.sinaisCV.join(', ').toLowerCase()}`);
+ return dp.length?`Dispneia — sinais específicos: ${dp.join(' | ')}`:'';
+}
+function dspAfter(S){
+ return `<div style="margin-top:6px"><label>Tempo de início</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>`;
+}
+
+registerQx('Dispneia',{
+ anamnese:{
+  sigla:'dsp',
+  blocks:[
+   {key:'inicio',label:'Início',type:'radio',options:DSP_INICIO,autoOpenNext:'padrao'},
+   {key:'padrao',label:'Padrão',type:'tags',options:DSP_PADRAO,autoOpenNext:'modif'},
+   {key:'modif',label:'Modificadores',type:'tags',options:DSP_MODIF,autoOpenNext:'assocCV'},
+   {key:'assocCV',label:'Associado — cardiovascular',type:'tags',options:DSP_ASSOC_CV,autoOpenNext:'assocResp'},
+   {key:'assocResp',label:'Associado — respiratório',type:'tags',options:DSP_ASSOC_RESP,autoOpenNext:'assocInf'},
+   {key:'assocInf',label:'Associado — infeccioso',type:'tags',options:DSP_ASSOC_INF,autoOpenNext:'ctx'},
+   {key:'ctx',label:'Contexto clínico',type:'tags',options:DSP_CTX}
+  ],
+  after:dspAfter
+ },
+ ef:{
+  sigla:'dspEF',
+  showIn:['crit'],
+  ambIcon:'ti-lungs',
+  ambTitle:'Exame físico específico — Dispneia',
+  blocks:[
+   {key:'fala',label:'Capacidade de falar',type:'radio',options:DSP_EF_FALA,autoOpenNext:'posic'},
+   {key:'posic',label:'Posição preferencial',type:'radio',options:DSP_EF_POSIC,autoOpenNext:'cianose'},
+   {key:'cianose',label:'Cianose',type:'radio',options:DSP_EF_CIANOSE,autoOpenNext:'aus'},
+   {key:'aus',label:'Ausculta pulmonar',type:'tags',options:DSP_EF_AUS,autoOpenNext:'sinaisCV'},
+   {key:'sinaisCV',label:'Sinais cardiovasculares',type:'tags',options:DSP_EF_SINAIS_CV}
+  ]
+ },
+ hda:dspHda,
+ efText:dspEFText
+});
+
+// ─── Dor torácica ──────────────────────────────────────────────────────────
+const DT_INI=['Súbito','Progressivo'];
+const DT_QUAL=['Opressiva','Pleurítica','Em facada','Queimação','Em aperto','Difusa'];
+const DT_IRR=['MMSS esquerdo','MMSS direito','Bilateral','Cervical/mandibular','Dorso/interescapular','Abdominal'];
+const DT_MODIF=['Piora ao esforço','Melhora com repouso','Piora ao decúbito','Piora com inspiração','Piora com movimento','Melhora com nitrato'];
+const DT_SEM=['Sim','Não','Sem evento prévio'];
+const DT_PAL=['Sim','Não'];
+const DT_SIN=['Dispneia','Sudorese','Náuseas/Vômitos','Pré-síncope','Palpitações','Cefaleia','Parestesia MMSS','Parestesia perioral','Parestesia MMII','Febre','Tosse','Hemoptise'];
+
+function dtHda(S){
+ const d=S.dt;let out='';
+ if(d.ini)out+=`. Início ${d.ini.toLowerCase()}`;
+ const car=[...d.qual,...d.modif];
+ if(car.length)out+=`. Dor de caráter ${car.join(', ').toLowerCase()}`;
+ if(d.irr.length)out+=`, com irradiação para ${d.irr.join(', ').toLowerCase()}`;
+ if(d.pal)out+=`. ${d.pal==='Sim'?'Reproduzida':'Não reproduzida'} à palpação`;
+ if(d.sem)out+=`. ${d.sem==='Sim'?'Semelhante a evento cardíaco prévio':d.sem==='Não'?'Não semelhante a evento prévio':'Sem evento cardíaco prévio'}`;
+ if(d.sin.length)out+=`. Sintomas: ${d.sin.join(', ').toLowerCase()}`;
+ return out;
+}
+function dtAfter(S){
+ const d=S.dt;let out='';
+ if((d.sin.includes('Parestesia perioral')||d.sin.includes('Parestesia MMSS'))&&d.ini==='Súbito')out+=`<div class="abox aw"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Considerar etiologia neurológica ou hiperventilação</div>`;
+ if(d.irr.includes('Dorso/interescapular'))out+=`<div class="abox aw"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Irradiação para dorso — excluir dissecção aórtica</div>`;
+ out+=`<div style="margin-top:8px"><label>Tempo de início</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>`;
+ out+=`<div class="scard"><div class="shdr" onclick="tog('hb')"><span style="font-weight:500">Score HEAR</span><span class="sb ${hC()}">${hSc()}/10</span></div><div class="sbd open" id="hb">${rHear()}<div class="sres"><div class="snum">${hSc()}<span style="font-size:13px;color:var(--color-text-secondary)">/10</span></div><div><span class="sb ${hC()}">${hI(hSc())}</span></div></div></div></div>`;
+ out+=`<div class="scard"><div class="shdr" onclick="tog('eb')"><span style="font-weight:500">Score EDACS</span><span class="sb ${eC()}">${eSc()} pts</span></div><div class="sbd open" id="eb">${rEdacs()}<div class="sres"><div class="snum">${eSc()}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${eI()}</div></div></div></div>`;
+ return out;
+}
+
+registerQx('Dor torácica',{
+ anamnese:{
+  sigla:'dt',
+  blocks:[
+   {key:'ini',label:'Início',type:'radio',options:DT_INI,autoOpenNext:'qual'},
+   {key:'qual',label:'Qualidade',type:'tags',options:DT_QUAL,autoOpenNext:'irr'},
+   {key:'irr',label:'Irradiação',type:'tags',options:DT_IRR,autoOpenNext:'modif'},
+   {key:'modif',label:'Fatores modificadores',type:'tags',options:DT_MODIF,autoOpenNext:'sem'},
+   {key:'sem',label:'Semelhante a evento prévio?',type:'radio',options:DT_SEM,autoOpenNext:'pal'},
+   {key:'pal',label:'Pior à palpação?',type:'radio',options:DT_PAL,autoOpenNext:'sin'},
+   {key:'sin',label:'Sintomas associados',type:'tags',options:DT_SIN}
+  ],
+  after:dtAfter
+ },
+ hda:dtHda
+});
 
 function tog(id){const b=document.getElementById(id);if(b)b.classList.toggle('open');}
 function cyc(k){const c=S.chk[k];if(!c)S.chk[k]='done';else if(c==='done')S.chk[k]='pend';else delete S.chk[k];render();}
@@ -1459,7 +1580,6 @@ function showRel(txt){
 function rHear(){const H=S.hear;const aL=S.idade<45?'< 45a (0)':S.idade<65?'45–64a (1)':'≥ 65a (2)';const it=[{k:'h',l:'H — História',d:'Alt. suspeita=2 / Moderada=1 / Leve=0',o:[['0','Leve'],['1','Moderada'],['2','Alt. suspeita']]},{k:'e',l:'E — ECG',d:'Normal=0 / Inespecífico=1 / Isquemia nova=2',o:[['0','Normal'],['1','Inespec.'],['2','Isquemia']]},{k:'r',l:'R — Fatores de risco',d:'Sem FR=0 / 1–2=1 / ≥3 ou DAC=2',o:[['0','Sem FR'],['1','1–2 FR'],['2','≥3 FR']]},{k:'t',l:'T — Troponina',d:'≤ limite=0 / 1–3×=1 / >3×=2',o:[['0','Normal'],['1','1–3×'],['2','>3×']]}];return`<div class="srow"><div style="flex:1"><div class="slbl">A — Idade</div><div class="sdsc">Auto calculado</div></div><div class="sopts"><span class="sopt auto">${aL}</span></div></div>`+it.map(x=>`<div class="srow"><div style="flex:1"><div class="slbl">${x.l}</div><div class="sdsc">${x.d}</div></div><div class="sopts">${x.o.map(([v,lb])=>`<span class="sopt ${H[x.k]==v?'on':''}" onclick="S.hear['${x.k}']='${v}';render()">${lb} (${v})</span>`).join('')}</div></div>`).join('');}
 function rEdacs(){const e=S.edacs,ap=eAP();return`<div class="srow"><div style="flex:1"><div class="slbl">Idade / Sexo</div><div class="sdsc">Auto calculado (${S.idade} anos)</div></div><div style="display:flex;align-items:center;gap:6px"><span class="sopt auto">${ap} pts</span><div style="display:flex;gap:5px">${[['M','Masc'],['F','Fem']].map(([v,l])=>`<span class="sopt ${e.sx===v?'on':''}" onclick="S.edacs.sx='${v}';render()">${l}</span>`).join('')}</div></div></div>`+[{k:'cad',l:'DAC conhecida',d:'+4'},{k:'dia',l:'Diaforese',d:'+3'},{k:'rad',l:'Irradiação braço/ombro',d:'+5'},{k:'ins',l:'Piora à inspiração',d:'−4'},{k:'pal',l:'Reproduzida à palpação',d:'−6'}].map(x=>`<div class="srow"><div style="flex:1"><div class="slbl">${x.l}</div><div class="sdsc">${x.d} pts</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(e[x.k])===v?'on':''}" onclick="S.edacs['${x.k}']=${v};render()">${lb}</span>`).join('')}</div></div>`).join('')+`<div class="srow"><div style="flex:1"><div class="slbl">Troponina 0h / 2h</div></div><div style="display:flex;gap:5px"><input type="number" inputmode="decimal" step="0.1" min="0" value="${esc(e.t0)}" oninput="S.edacs.t0=this.value;render()" style="width:62px" placeholder="0h"><input type="number" inputmode="decimal" step="0.1" min="0" value="${esc(e.t2)}" oninput="S.edacs.t2=this.value;render()" style="width:62px" placeholder="2h"></div></div>`;}
 
-function rDT(){return`<div class="card"><div class="st"><i class="ti ti-activity" aria-hidden="true"></i> Características da dor torácica</div><div class="sl">Início</div><div class="rg">${['Súbito','Progressivo'].map(v=>`<span class="ro ${S.dt.ini===v?'on':''}" onclick="S.dt.ini='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Qualidade</div><div class="tags">${['Opressiva','Pleurítica','Em facada','Queimação','Em aperto','Difusa'].map(v=>`<span class="tag ${S.caract.includes(v)?'on':''}" onclick="ts(S.caract,'${v}')">${v}</span>`).join('')}</div><div class="sl">Irradiação</div><div class="tags">${['MMSS esquerdo','MMSS direito','Bilateral','Cervical/mandibular','Dorso/interescapular','Abdominal'].map(v=>`<span class="tag ${S.dt.irr.includes(v)?'on':''}" onclick="ts(S.dt.irr,'${v}')">${v}</span>`).join('')}</div><div class="sl">Fatores modificadores</div><div class="tags">${['Piora ao esforço','Melhora com repouso','Piora ao decúbito','Piora com inspiração','Piora com movimento','Melhora com nitrato'].map(v=>`<span class="tag ${S.caract.includes(v)?'on':''}" onclick="ts(S.caract,'${v}')">${v}</span>`).join('')}</div><hr class="dvd"><div class="r2" style="margin-top:8px"><div><div class="sl">Semelhante a evento prévio?</div><div class="rg">${['Sim','Não','Sem evento prévio'].map(v=>`<span class="ro ${S.dt.sem===v?'on':''}" onclick="S.dt.sem='${v}';render()">${v}</span>`).join('')}</div></div><div><div class="sl">Pior à palpação?</div><div class="rg">${['Sim','Não'].map(v=>`<span class="ro ${S.dt.pal===v?'on':''}" onclick="S.dt.pal='${v}';render()">${v}</span>`).join('')}</div></div></div><hr class="dvd"><div class="sl">Sintomas associados</div><div class="tags">${['Dispneia','Sudorese','Náuseas/Vômitos','Pré-síncope','Palpitações','Cefaleia','Parestesia MMSS','Parestesia perioral','Parestesia MMII','Febre','Tosse','Hemoptise'].map(v=>`<span class="tag ${S.dt.sin.includes(v)?'on':''}" onclick="ts(S.dt.sin,'${v}')">${v}</span>`).join('')}</div>${(S.dt.sin.includes('Parestesia perioral')||S.dt.sin.includes('Parestesia MMSS'))&&S.dt.ini==='Súbito'?`<div class="abox aw"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Considerar etiologia neurológica ou hiperventilação</div>`:''}${S.dt.irr.includes('Dorso/interescapular')?`<div class="abox aw"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Irradiação para dorso — excluir dissecção aórtica</div>`:''}<hr class="dvd"><label>Tempo de início</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min" style="margin-top:4px"></div><div class="scard"><div class="shdr" onclick="tog('hb')"><span style="font-weight:500">Score HEAR</span><span class="sb ${hC()}">${hSc()}/10</span></div><div class="sbd open" id="hb">${rHear()}<div class="sres"><div class="snum">${hSc()}<span style="font-size:13px;color:var(--color-text-secondary)">/10</span></div><div><span class="sb ${hC()}">${hI(hSc())}</span></div></div></div></div><div class="scard"><div class="shdr" onclick="tog('eb')"><span style="font-weight:500">Score EDACS</span><span class="sb ${eC()}">${eSc()} pts</span></div><div class="sbd open" id="eb">${rEdacs()}<div class="sres"><div class="snum">${eSc()}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${eI()}</div></div></div></div>`;}
 
 function s0(){const t=Math.floor(S.idade/10),u=S.idade%10,needsInfo=['Vaga Zero','Transferência'].includes(S.orig);return`<div class="card"><div class="st"><i class="ti ti-user" aria-hidden="true"></i> Identificação e origem</div><div style="margin-bottom:12px"><label>Nome do paciente</label><input type="text" value="${esc(S.nome)}" oninput="S.nome=this.value" placeholder="Nome completo"></div><div class="r2"><div><label>Idade</label><div class="age-drums"><div class="drum"><button class="drum-btn" onclick="cAgeDig(10,1)"><i class="ti ti-chevron-up" aria-hidden="true"></i></button><div class="drum-dig">${t}</div><button class="drum-btn" onclick="cAgeDig(10,-1)"><i class="ti ti-chevron-down" aria-hidden="true"></i></button></div><div class="drum"><button class="drum-btn" onclick="cAgeDig(1,1)"><i class="ti ti-chevron-up" aria-hidden="true"></i></button><div class="drum-dig">${u}</div><button class="drum-btn" onclick="cAgeDig(1,-1)"><i class="ti ti-chevron-down" aria-hidden="true"></i></button></div><span class="drum-unit">anos</span></div></div><div><label>Origem</label><select onchange="S.orig=this.value;render()">${['Demanda Espontânea','SAMU','Bombeiros','Vaga Zero','Transferência'].map(o=>`<option ${S.orig===o?'selected':''}>${o}</option>`).join('')}</select></div></div>${needsInfo?`<div style="margin-top:10px"><div style="margin-bottom:8px"><label>Instituição de origem</label><input type="text" value="${esc(S.origInst)}" oninput="S.origInst=this.value" placeholder="Nome da instituição"></div><div><label>Motivo da transferência / vaga zero</label><input type="text" value="${esc(S.origMotivo)}" oninput="S.origMotivo=this.value" placeholder="Diagnóstico / motivo da solicitação"></div></div>`:''}</div><div class="nav"><div></div><button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;}
 function s1(){const al=ALERTAS[S.queixa],isIT=S.queixa==='Intoxicação exógena',renderQx=QX_ANAMNESE[S.queixa],cm=CMAP[S.queixa]||['Início súbito','Progressivo','Persistente','Febre'];return`<div class="card"><div class="st"><i class="ti ti-stethoscope" aria-hidden="true"></i> Queixa principal</div>${!S.queixa?QX_CATS.map(cat=>`<div class="qcat qcat-${cat.id}"><div class="qcat-lbl">${cat.label}</div><div class="qgrid">${cat.items.map(q=>`<button class="qbtn" onclick="setQueixa('${q.replace(/'/g,"\\'")}')">${esc(q)}</button>`).join('')}</div></div>`).join(''):`<div class="selq"><span><i class="ti ti-check" aria-hidden="true"></i> ${esc(S.queixa)}</span><button onclick="setQueixa(null)">Mudar</button></div>${al?`<div class="abox ${al.c}"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${al.m}</div>`:''}${renderQx?renderQx():`<div class="sl">Características:</div><div class="tags">${cm.map(c=>`<span class="tag ${S.caract.includes(c)?'on':''}" onclick="ts(S.caract,\`${c}\`)">${c}</span>`).join('')}</div><div style="margin-top:10px"><label>Tempo de início</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>${isIT?`<div style="margin-top:8px"><label>Substâncias suspeitas</label><input type="text" value="${esc(S.itDrug)}" oninput="S.itDrug=this.value" placeholder="Ex: benzodiazepínico, antidepressivo tricíclico, álcool..."></div>`:''}`}`}</div><div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.queixa?`<button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
@@ -1475,12 +1595,38 @@ function abcH(){
 }
 function buildEcgText(){const e=S.ecgS;if(e.normal)return'Ritmo sinusal, FC normal, PR normal, QRS de eixo e duração normais, sem alterações de repolarização sugestivas de isquemia ou DHE.';const p=[];if(e.ritmo)p.push(`Ritmo: ${e.ritmo}`);if(e.fcEcg)p.push(`FC ${e.fcEcg} bpm`);if(e.pr)p.push(`PR: ${e.pr}`);if(e.qrs)p.push(`QRS: ${e.qrs}`);if(e.qtc)p.push(`QTc: ${e.qtc}`);if(e.st&&e.st.length)p.push(`ST: ${e.st.join(', ')}`);if(e.ondaT&&e.ondaT.length)p.push(`Onda T: ${e.ondaT.join(', ')}`);if(e.padroes&&e.padroes.length)p.push(e.padroes.join(', '));return p.length?p.join('. ').replace(/\.+$/,'')+'.' :'Não realizado.';}
 function buildPocText(){const p=S.pocS;const segs=[p.pulmao&&`Pulmão: ${p.pulmao}`,p.coracao&&`Coração: ${p.coracao}`,p.abdome&&`Abdome: ${p.abdome}`,p.mmii&&`MMII: ${p.mmii}`,p.outros&&`Outros: ${p.outros}`].filter(Boolean);return segs.length?segs.join('\n'):'Não realizado.';}
-function rECG(){const e=S.ecgS;return`<div class="card"><div class="st"><i class="ti ti-activity-heartbeat" aria-hidden="true"></i> ECG</div><button class="xbtn ${e.normal?'on':''}" style="width:100%;margin-bottom:12px" onclick="S.ecgS={normal:true,ritmo:'Sinusal',fcEcg:'',pr:'Normal',qrs:'Normal',qtc:'Normal',st:[],ondaT:[],padroes:[]};render()"><i class="ti ti-check" aria-hidden="true"></i> ECG Normal</button><div class="sl">Ritmo</div><div class="rg" style="margin-bottom:10px">${['Sinusal','FA','Flutter atrial','TSV','TV monomórfica','TV polimórfica','FV','BAV 2º Mobitz I','BAV 2º Mobitz II','BAVT','Marca-passo','Outro'].map(v=>`<span class="ro ${!e.normal&&e.ritmo===v?'on':''}" onclick="S.ecgS.normal=false;S.ecgS.ritmo='${v}';render()">${v}</span>`).join('')}</div><div class="r2" style="margin-bottom:10px"><div><label>FC (bpm)</label><input type="number" inputmode="numeric" min="0" max="300" value="${esc(e.fcEcg)}" oninput="S.ecgS.normal=false;S.ecgS.fcEcg=this.value" placeholder="bpm"></div><div><div class="sl" style="margin-bottom:4px">Intervalo PR</div><div class="rg">${['Normal','BAV 1º grau','Curto (< 120 ms)'].map(v=>`<span class="ro ${!e.normal&&e.pr===v?'on':''}" onclick="S.ecgS.normal=false;S.ecgS.pr='${v}';render()">${v}</span>`).join('')}</div></div></div><div class="sl">QRS</div><div class="rg" style="margin-bottom:10px">${['Normal','BRE','BRD','Delta (WPW)','Largo inespecífico'].map(v=>`<span class="ro ${!e.normal&&e.qrs===v?'on':''}" onclick="S.ecgS.normal=false;S.ecgS.qrs='${v}';render()">${v}</span>`).join('')}</div><div class="sl">QTc</div><div class="rg" style="margin-bottom:10px">${['Normal','Limítrofe (440–500 ms)','Prolongado (> 500 ms)'].map(v=>`<span class="ro ${!e.normal&&e.qtc===v?'on':''}" onclick="S.ecgS.normal=false;S.ecgS.qtc='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Segmento ST</div><div class="tags" style="margin-bottom:10px">${['Supra anterior (V1–V4)','Supra inferior (II,III,aVF)','Supra lateral (I,aVL,V5–V6)','Supra posterior (V7–V9)','Supra aVR','Infradesnivelamento difuso','Infradesnivelamento anterior','Normal'].map(v=>`<span class="tag ${!e.normal&&e.st.includes(v)?'on':''}" onclick="S.ecgS.normal=false;ts(S.ecgS.st,'${v}')">${v}</span>`).join('')}</div><div class="sl">Onda T</div><div class="tags" style="margin-bottom:10px">${['Normal','Inversão anterior (Wellens)','Inversão difusa','Apiculada (De Winter)','Achatada','Negativação transitória'].map(v=>`<span class="tag ${!e.normal&&e.ondaT.includes(v)?'on':''}" onclick="S.ecgS.normal=false;ts(S.ecgS.ondaT,'${v}')">${v}</span>`).join('')}</div><div class="sl">Padrões específicos</div><div class="tags">${['Brugada tipo 1','Sgarbossa','Repolarização precoce','Alternância elétrica'].map(v=>`<span class="tag ${!e.normal&&e.padroes.includes(v)?'on':''}" onclick="S.ecgS.normal=false;ts(S.ecgS.padroes,'${v}')">${v}</span>`).join('')}</div></div>`;}
+const ECG_RITMO=['Sinusal','FA','Flutter atrial','TSV','TV monomórfica','TV polimórfica','FV','BAV 2º Mobitz I','BAV 2º Mobitz II','BAVT','Marca-passo','Outro'];
+const ECG_PR=['Normal','BAV 1º grau','Curto (< 120 ms)'];
+const ECG_QRS=['Normal','BRE','BRD','Delta (WPW)','Largo inespecífico'];
+const ECG_QTC=['Normal','Limítrofe (440–500 ms)','Prolongado (> 500 ms)'];
+const ECG_ST=['Supra anterior (V1–V4)','Supra inferior (II,III,aVF)','Supra lateral (I,aVL,V5–V6)','Supra posterior (V7–V9)','Supra aVR','Infradesnivelamento difuso','Infradesnivelamento anterior','Normal'];
+const ECG_T=['Normal','Inversão anterior (Wellens)','Inversão difusa','Apiculada (De Winter)','Achatada','Negativação transitória'];
+const ECG_PADROES=['Brugada tipo 1','Sgarbossa','Repolarização precoce','Alternância elétrica'];
+QX_SPEC_BY_SIGLA['ecgS']={
+ sigla:'ecgS',
+ blocks:[
+  {key:'ritmo',label:'Ritmo',type:'radio',options:ECG_RITMO,autoOpenNext:'pr'},
+  {key:'pr',label:'Intervalo PR',type:'radio',options:ECG_PR,autoOpenNext:'qrs'},
+  {key:'qrs',label:'QRS',type:'radio',options:ECG_QRS,autoOpenNext:'qtc'},
+  {key:'qtc',label:'QTc',type:'radio',options:ECG_QTC,autoOpenNext:'st'},
+  {key:'st',label:'Segmento ST',type:'tags',options:ECG_ST,autoOpenNext:'ondaT'},
+  {key:'ondaT',label:'Onda T',type:'tags',options:ECG_T,autoOpenNext:'padroes'},
+  {key:'padroes',label:'Padrões específicos',type:'tags',options:ECG_PADROES}
+ ],
+ onAdd(){S.ecgS.normal=false;}
+};
+function ecgSetNormal(){
+ S.ecgS={normal:true,ritmo:'Sinusal',fcEcg:'',pr:'Normal',qrs:'Normal',qtc:'Normal',st:[],ondaT:[],padroes:[]};
+ S.ecgOpen={};
+ render();
+}
+function rECG(){
+ const e=S.ecgS;
+ return `<div class="card"><div class="st"><i class="ti ti-activity-heartbeat" aria-hidden="true"></i> ECG</div><button class="xbtn ${e.normal?'on':''}" style="width:100%;margin-bottom:10px" onclick="ecgSetNormal()"><i class="ti ti-check" aria-hidden="true"></i> ECG Normal</button><div style="margin-bottom:10px"><label>FC (bpm)</label><input type="number" inputmode="numeric" min="0" max="300" value="${esc(e.fcEcg)}" oninput="S.ecgS.normal=false;S.ecgS.fcEcg=this.value" placeholder="bpm"></div>${accordionRender('ecgS')}</div>`;
+}
 function rPOCUS(){const p=S.pocS;return`<div class="card"><div class="st"><i class="ti ti-wave-sine" aria-hidden="true"></i> POCUS</div>${[['pulmao','Pulmão'],['coracao','Coração'],['abdome','Abdome'],['mmii','MMII'],['outros','Outros']].map(([k,l])=>`<div style="margin-bottom:8px"><label>${l}</label><input type="text" value="${esc(p[k])}" oninput="S.pocS['${k}']=this.value" placeholder="${l}..."></div>`).join('')}</div>`;}
 function dispGrav(){const fr=parseFloat(S.fr),sat=parseFloat(S.sat),fala=S.dspEF.fala,cian=S.dspEF.cianose;let pts=0;if(S.fr&&(fr>30||fr<12))pts+=2;else if(S.fr&&fr>24)pts+=1;if(S.sat&&sat<90)pts+=2;else if(S.sat&&sat<94)pts+=1;if(fala==='Palavras soltas'||fala==='Impossível falar')pts+=2;else if(fala==='Frases incompletas')pts+=1;if(cian==='Central (lábios/língua)')pts+=2;if(pts>=4)return'grave';if(pts>=2)return'mod';return'leve';}
 function dispGravBadge(){if(S.queixa!=='Dispneia')return'';const hasData=S.fr||S.sat||S.dspEF.fala||S.dspEF.cianose;if(!hasData)return'';const g=dispGrav();const[cls,ico,txt]=g==='grave'?['grav-grave','ti-alert-triangle','Gravidade sugerida: GRAVE — IOT/VNI considerar imediatamente']:g==='mod'?['grav-mod','ti-alert-circle','Gravidade sugerida: MODERADA — monitorização intensa, O2 alto fluxo']:['grav-leve','ti-info-circle','Gravidade sugerida: LEVE — tratar e reavaliar'];return`<div class="grav-badge ${cls}"><i class="ti ${ico}" aria-hidden="true"></i> ${txt}</div>`;}
-function rDispneia(){const d=S.dsp;return`<div class="sl">Início:</div><div class="rg" style="margin-bottom:8px">${['Súbito','Progressivo','Crônico agudizado','Oscilante'].map(v=>`<span class="ro ${d.inicio===v?'on':''}" onclick="S.dsp.inicio='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Padrão:</div><div class="tags" style="margin-bottom:8px">${['Ortopneia','DPN (paroxística noturna)','Aos esforços','Em repouso','Posicional'].map(v=>`<span class="tag ${d.padrao.includes(v)?'on':''}" onclick="ts(S.dsp.padrao,'${v}')">${v}</span>`).join('')}</div><div class="sl">Modificadores:</div><div class="tags" style="margin-bottom:8px">${['Piora ao decúbito','Melhora sentado/Fowler','Piora ao esforço','Melhora com O2','Piora noturna'].map(v=>`<span class="tag ${d.modif.includes(v)?'on':''}" onclick="ts(S.dsp.modif,'${v}')">${v}</span>`).join('')}</div><div class="sl">Associado — cardiovascular:</div><div class="tags" style="margin-bottom:8px">${['Edema MMII','Palpitações','Dor torácica','Síncope/pré-síncope'].map(v=>`<span class="tag ${d.assocCV.includes(v)?'on':''}" onclick="ts(S.dsp.assocCV,'${v}')">${v}</span>`).join('')}</div><div class="sl">Associado — respiratório:</div><div class="tags" style="margin-bottom:8px">${['Sibilos','Crepitações','Uso musc. acessória','Hemoptise','Tosse produtiva','Estridor'].map(v=>`<span class="tag ${d.assocResp.includes(v)?'on':''}" onclick="ts(S.dsp.assocResp,'${v}')">${v}</span>`).join('')}</div><div class="sl">Associado — infeccioso:</div><div class="tags" style="margin-bottom:8px">${['Febre','Calafrios','Expectoração purulenta','Coriza / mialgia'].map(v=>`<span class="tag ${d.assocInf.includes(v)?'on':''}" onclick="ts(S.dsp.assocInf,'${v}')">${v}</span>`).join('')}</div><div class="sl">Contexto clínico:</div><div class="tags" style="margin-bottom:10px">${['IC prévia','Asma/DPOC conhecido','Tabagismo importante','Imobilização recente','Cirurgia recente','TVP/TEP prévio','Neoplasia ativa','Imunossupressão'].map(v=>`<span class="tag ${d.ctx.includes(v)?'on':''}" onclick="ts(S.dsp.ctx,'${v}')">${v}</span>`).join('')}</div><div style="margin-top:6px"><label>Tempo de início</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>`;}
-function rDspEF(){if(S.ef!=='crit')return '';const e=S.dspEF;return`<div class="card"><div class="st"><i class="ti ti-lungs" aria-hidden="true"></i> Exame físico específico — Dispneia</div><div class="sl">Capacidade de falar:</div><div class="rg" style="margin-bottom:8px">${['Frases completas','Frases incompletas','Palavras soltas','Impossível falar'].map(v=>`<span class="ro ${e.fala===v?'on':''}" onclick="S.dspEF.fala='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Posição preferencial:</div><div class="rg" style="margin-bottom:8px">${['Decúbito tolerado','Sentado (Fowler)','Tripé','Decúbito não tolerado'].map(v=>`<span class="ro ${e.posic===v?'on':''}" onclick="S.dspEF.posic='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Cianose:</div><div class="rg" style="margin-bottom:8px">${['Ausente','Periférica (acrocianose)','Central (lábios/língua)'].map(v=>`<span class="ro ${e.cianose===v?'on':''}" onclick="S.dspEF.cianose='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Ausculta pulmonar:</div><div class="tags" style="margin-bottom:8px">${['MV normal','Estertores crepitantes bilaterais','Estertores unilaterais','Sibilos difusos','Roncos','MV reduzido D','MV reduzido E','Atrito pleural','Tórax silencioso'].map(v=>`<span class="tag ${e.aus.includes(v)?'on':''}" onclick="ts(S.dspEF.aus,'${v}')">${v}</span>`).join('')}</div><div class="sl">Sinais cardiovasculares:</div><div class="tags">${['Turgência jugular','Galope (B3)','Edema MMII com cacifo','Cianose central','Pulso paradoxal','Sopro cardíaco audível'].map(v=>`<span class="tag ${e.sinaisCV.includes(v)?'on':''}" onclick="ts(S.dspEF.sinaisCV,'${v}')">${v}</span>`).join('')}</div></div>`;}
 function s3(){const isDsp=S.queixa==='Dispneia';const badge=isDsp?dispGravBadge():'';return`${badge}<div class="card"><div class="st"><i class="ti ti-search" aria-hidden="true"></i> Tipo de exame físico</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem"><button class="xbtn ${S.ef==='amb'?'on':''}" onclick="S.ef='amb';render()"><i class="ti ti-walk" aria-hidden="true"></i> Ambulatorial</button><button class="xbtn ${S.ef==='crit'?'on':''}" onclick="S.ef='crit';render()"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Paciente crítico (ABCDE)</button></div></div>${S.ef==='amb'?`<div class="card"><div class="st">Padrão ambulatorial</div>${[['g','Geral'],['cv','AP Cardiovascular'],['re','AP Respiratório'],['ab','Abdome'],['ne','Neurológico'],['pe','Pele e MMII']].map(([k,l])=>`<div style="margin-bottom:10px"><label>${l}</label><input type="text" value="${esc(S.amb[k])}" oninput="S.amb['${k}']=this.value" placeholder="${l}..."></div>`).join('')}</div>`:''}${S.ef==='crit'?`<div class="card"><div class="st">ABCDE — Avaliação primária</div>${abcH()}</div>`:''}${S.ef&&QX_EF[S.queixa]?QX_EF[S.queixa]():''}${S.ef?rECG()+''+rPOCUS():''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.ef?`<button class="btnp" onclick="nx()">Impressão / Conduta <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
 
 function rCSec(sid,sec){const items=sec.it||[];const pc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;const dc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='done').length;const alertsHtml=(sec.alerts||[]).map(a=>`<div class="abox aw" style="margin-bottom:6px;font-size:12px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${a}</div>`).join('');return`<div class="csec"><div class="csh" onclick="tog('cs${sec.id}')"><span>${sec.t}</span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc}✓</span>`:''}${pc?`<span class="sb smod" style="font-size:11px">${pc}⏳</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb open" id="cs${sec.id}">${alertsHtml}${items.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);return`<div class="chk ${cl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${esc(S.nts[sid+'_'+sec.id]||'')}</textarea></div></div></div>`;}
@@ -1495,14 +1641,12 @@ function gRel(){
  }else{origText=`via ${S.orig}`;}
  let hda=`Paciente admitido(a) ${origText}, com queixa de ${S.queixa}${S.queixa==='Intoxicação exógena'&&S.itDrug?' (substâncias suspeitas: '+S.itDrug+')':''}`;
  if(S.tempo)hda+=`, com início há ${S.tempo}`;
- if(isDT){if(S.dt.ini)hda+=`. Início ${S.dt.ini.toLowerCase()}`;if(S.caract.length)hda+=`. Dor de caráter ${S.caract.join(', ').toLowerCase()}`;if(S.dt.irr.length)hda+=`, com irradiação para ${S.dt.irr.join(', ').toLowerCase()}`;if(S.dt.pal)hda+=`. ${S.dt.pal==='Sim'?'Reproduzida':'Não reproduzida'} à palpação`;if(S.dt.sem)hda+=`. ${S.dt.sem==='Sim'?'Semelhante a evento cardíaco prévio':S.dt.sem==='Não'?'Não semelhante a evento prévio':'Sem evento cardíaco prévio'}`;if(S.dt.sin.length)hda+=`. Sintomas: ${S.dt.sin.join(', ').toLowerCase()}`;}
- else if(S.queixa==='Dispneia'){const d=S.dsp;if(d.inicio)hda+=`. Início ${d.inicio.toLowerCase()}`;if(d.padrao.length)hda+=`. Padrão: ${d.padrao.join(', ').toLowerCase()}`;if(d.modif.length)hda+=`. ${d.modif.join(', ').toLowerCase()}`;if(d.assocCV.length)hda+=`. Associado (CV): ${d.assocCV.join(', ').toLowerCase()}`;if(d.assocResp.length)hda+=`. Associado (resp): ${d.assocResp.join(', ').toLowerCase()}`;if(d.assocInf.length)hda+=`. Associado (infec): ${d.assocInf.join(', ').toLowerCase()}`;if(d.ctx.length)hda+=`. Contexto: ${d.ctx.join(', ').toLowerCase()}`;}
- else if(QX_HDA[S.queixa])hda+=QX_HDA[S.queixa](S);
+ if(QX_HDA[S.queixa])hda+=QX_HDA[S.queixa](S);
  else if(S.caract.length)hda+=`. ${S.caract.join(', ').toLowerCase()}`;
  hda+='.';
  let ef='';
  if(S.ef==='amb'){ef=`Geral: ${S.amb.g||'—'} | CV: ${S.amb.cv||'—'} | Resp: ${S.amb.re||'—'} | Abd: ${S.amb.ab||'—'} | Neuro: ${S.amb.ne||'—'} | Pele: ${S.amb.pe||'—'}`;}
- else if(S.ef==='crit'){const a=S.abc;ef=`A: VA ${a.va.toLowerCase()}, fonação ${a.fon.toLowerCase()}. Colar: ${a.col.toLowerCase()}.\nB: Expansibilidade ${a.exp.toLowerCase()}, MV ${a.mv.toLowerCase()}. ${a.esf.join(', ')||'—'}. Ruídos: ${a.rud.join(', ')||'ausentes'}.\nC: TEC ${a.tec}. ${a.aus.join(', ')||'—'}. Pulsos ${a.pul.toLowerCase()}. Abdome: ${a.abd.join(', ')||'—'}.\nD: GCS ${g}/15 (O:${a.ao} V:${a.rv} M:${a.rm}) — ${gcsL(g)}. Pupilas ${a.pup.toLowerCase()}. Déficits: ${a.def.join(', ')||'ausentes'}.\nE: Edema MMII ${a.ede.toLowerCase()}${a.ede==='Presente'?' ('+a.cac.toLowerCase()+')':''}. Pele: ${a.pel.join(', ')||'sem alterações'}.`;if(S.queixa==='Dispneia'){const e=S.dspEF;const dp=[];if(e.fala)dp.push(`Fala: ${e.fala.toLowerCase()}`);if(e.posic)dp.push(`Posição: ${e.posic.toLowerCase()}`);if(e.cianose)dp.push(`Cianose: ${e.cianose.toLowerCase()}`);if(e.aus.length)dp.push(`Ausculta: ${e.aus.join(', ').toLowerCase()}`);if(e.sinaisCV.length)dp.push(`Sinais CV: ${e.sinaisCV.join(', ').toLowerCase()}`);if(dp.length)ef+=`\nDispneia — sinais específicos: ${dp.join(' | ')}`;}}
+ else if(S.ef==='crit'){const a=S.abc;ef=`A: VA ${a.va.toLowerCase()}, fonação ${a.fon.toLowerCase()}. Colar: ${a.col.toLowerCase()}.\nB: Expansibilidade ${a.exp.toLowerCase()}, MV ${a.mv.toLowerCase()}. ${a.esf.join(', ')||'—'}. Ruídos: ${a.rud.join(', ')||'ausentes'}.\nC: TEC ${a.tec}. ${a.aus.join(', ')||'—'}. Pulsos ${a.pul.toLowerCase()}. Abdome: ${a.abd.join(', ')||'—'}.\nD: GCS ${g}/15 (O:${a.ao} V:${a.rv} M:${a.rm}) — ${gcsL(g)}. Pupilas ${a.pup.toLowerCase()}. Déficits: ${a.def.join(', ')||'ausentes'}.\nE: Edema MMII ${a.ede.toLowerCase()}${a.ede==='Presente'?' ('+a.cac.toLowerCase()+')':''}. Pele: ${a.pel.join(', ')||'sem alterações'}.`;}
  if(QX_EF_TEXT[S.queixa]){const extra=QX_EF_TEXT[S.queixa](S);if(extra)ef+=(ef?'\n':'')+extra;}
  let sc='';
  if(isDT){sc=`\n${'='.repeat(40)}\nSCORES PREDITIVOS\nHEAR: ${hSc()}/10 — ${hI(hSc())}\nEDACS: ${eSc()} pts — ${eI()}${S.edacs.t0||S.edacs.t2?'\n Troponina 0h: '+(S.edacs.t0||'—')+' | 2h: '+(S.edacs.t2||'—'):''}`;}
