@@ -255,7 +255,7 @@ async function doLogout(){
 
 
 const S={step:0,nome:'',idade:30,orig:'Demanda Espontânea',origInst:'',origMotivo:'',queixa:null,tempo:'',
- dt:{ini:'',sem:null,pal:null,irr:[],sin:[]},caract:[],
+ caract:[],
  hpp:[],muc:'',ale:'Nega',tab:'',etil:'',drog:'',fc:'',sat:'',pa:'',fr:'',gli:'',temp:'',eva:'',peso:'',
  ef:null,amb:{g:'',cv:'',re:'',ab:'',ne:'',pe:''},
  abc:{va:'Pérvia e Patente',fon:'Preservada',col:'Não indicado',exp:'Simétrica',
@@ -291,6 +291,16 @@ const S={step:0,nome:'',idade:30,orig:'Demanda Espontânea',origInst:'',origMoti
 
 // Snapshot do estado inicial para resetCase()
 const INITIAL_S=JSON.parse(JSON.stringify(S));
+function deepMergeDefaults(defaults,override){
+ if(override===null||override===undefined)return defaults;
+ if(typeof defaults!=='object'||defaults===null)return override;
+ if(Array.isArray(defaults))return Array.isArray(override)?override:defaults;
+ if(typeof override!=='object'||override===null||Array.isArray(override))return defaults;
+ const out={};
+ for(const k in defaults)out[k]=deepMergeDefaults(defaults[k],override[k]);
+ for(const k in override)if(!(k in defaults))out[k]=override[k];
+ return out;
+}
 const DRAFT_KEY='emergencia_draft_v2';
 const BUILD_VERSION='2026.05.13';
 
@@ -303,7 +313,7 @@ function autoLoad(){
     // Só restaurar se houver conteúdo significativo
     if(parsed&&(parsed.nome||parsed.queixa||parsed.step>0||parsed.imp)){
       if(confirm('Há um caso anterior em andamento. Deseja continuá-lo?')){
-        Object.assign(S,parsed);
+        Object.assign(S, deepMergeDefaults(INITIAL_S, parsed));
         return true;
       }else{
         localStorage.removeItem(DRAFT_KEY);
@@ -1699,8 +1709,8 @@ function eAP(){const a=S.idade,m=S.edacs.sx==='M';if(m){if(a<45)return 2;if(a<=5
 function eSc(){const e=S.edacs;let p=eAP();if(e.cad)p+=4;if(e.dia)p+=3;if(e.rad)p+=5;if(e.ins)p-=4;if(e.pal)p-=6;return p;}
 function eC(){return eSc()<16?'sok':'sgr';}
 function eI(){const p=eSc(),t0=parseFloat(S.edacs.t0),t2=parseFloat(S.edacs.t2);const d=!isNaN(t0)&&!isNaN(t2)?Math.abs(t2-t0):null;if(p<16&&d!==null&&d<3&&t0<16&&t2<16)return'Baixo risco — candidato a descarte acelerado em 2h';if(p<16)return'EDACS < 16 — aguardar troponina seriada';return'EDACS ≥ 16 — risco não baixo, observação';}
-function vC(k,v){const n=parseFloat(v);if(!v)return'vok';if(k==='fc')return(n<40||n>130)?'vc':(n<60||n>100)?'vw':'vok';if(k==='sat')return n<90?'vc':n<95?'vw':'vok';if(k==='fr')return(n<8||n>30)?'vc':(n<12||n>20)?'vw':'vok';if(k==='gli')return n<60?'vc':n<70||n>200?'vw':'vok';if(k==='pa'&&v){const s=parseFloat(v.split('/')[0]);return s<90?'vc':s>180?'vw':'vok';}return'vok';}
-function vA(){const a=[],fc=parseFloat(S.fc),sat=parseFloat(S.sat),fr=parseFloat(S.fr);if(S.fc&&(fc>120||fc<40))a.push('FC crítica');if(S.sat&&sat<90)a.push('Sat < 90%');if(S.fr&&(fr>30||fr<8))a.push('FR crítica');if(S.pa){const s=parseFloat(S.pa.split('/')[0]);if(s<90)a.push('Hipotensão');if(s>180)a.push('HAS grave');}return a;}
+function vC(k,v){const n=parseFloat(v);if(!v)return'vok';if(k==='fc')return(n<40||n>130)?'vc':(n<60||n>100)?'vw':'vok';if(k==='sat')return n<90?'vc':n<95?'vw':'vok';if(k==='fr')return(n<8||n>30)?'vc':(n<12||n>20)?'vw':'vok';if(k==='gli')return n<60?'vc':n<70||n>200?'vw':'vok';if(k==='pa'&&v&&v.includes('/')){const s=parseFloat(v.split('/')[0]);return isNaN(s)?'vok':s<90?'vc':s>180?'vw':'vok';}return'vok';}
+function vA(){const a=[],fc=parseFloat(S.fc),sat=parseFloat(S.sat),fr=parseFloat(S.fr);if(S.fc&&(fc>120||fc<40))a.push('FC crítica');if(S.sat&&sat<90)a.push('Sat < 90%');if(S.fr&&(fr>30||fr<8))a.push('FR crítica');if(S.pa&&S.pa.includes('/')){const s=parseFloat(S.pa.split('/')[0]);if(!isNaN(s)){if(s<90)a.push('Hipotensão');if(s>180)a.push('HAS grave');}}return a;}
 function vBH(){return[{k:'fc',l:'FC',v:S.fc},{k:'sat',l:'Sat',v:S.sat},{k:'pa',l:'PA',v:S.pa},{k:'fr',l:'FR',v:S.fr},{k:'gli',l:'Glic',v:S.gli}].map(x=>`<div class="vbar ${vC(x.k,x.v)}">${x.l}<br><strong>${x.v||'—'}</strong></div>`).join('');}
 function uvb(){const b=document.getElementById('vbars');if(b)b.innerHTML=vBH();}
 function gcs(){return+S.abc.ao+ +S.abc.rv+ +S.abc.rm;}
