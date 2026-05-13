@@ -278,6 +278,10 @@ const S={step:0,nome:'',idade:30,orig:'Demanda Espontânea',origInst:'',origMoti
  cefOpen:{inicio:true},
  cefEF:{mental:[],motor:[],coord:[],regional:[]},
  cefEFOpen:{mental:true},
+ sinc:{prod:null,post:null,gat:[],car:[],rec:null,alar:[],ante:[]},
+ sincOpen:{prod:true,post:false,gat:false,car:false,rec:false,alar:false,ante:false},
+ sincEF:{orto:null,sop:[],nf:[]},
+ sincEFOpen:{orto:true,sop:false,nf:false},
  abcOpen:{a:true},
  relMode:'full'};
 
@@ -1178,6 +1182,10 @@ function setQueixa(q){
  S.cefOpen={inicio:true};
  S.cefEF={mental:[],motor:[],coord:[],regional:[]};
  S.cefEFOpen={mental:true};
+ S.sinc={prod:null,post:null,gat:[],car:[],rec:null,alar:[],ante:[]};
+ S.sincOpen={prod:true,post:false,gat:false,car:false,rec:false,alar:false,ante:false};
+ S.sincEF={orto:null,sop:[],nf:[]};
+ S.sincEFOpen={orto:true,sop:false,nf:false};
  S.itDrug='';
  S.imp='';
  S.chk={};
@@ -1444,6 +1452,86 @@ registerQx('Dispneia',{
  },
  hda:dspHda,
  efText:dspEFText
+});
+
+// ─── Síncope ───────────────────────────────────────────────────────────────
+const SINC_PROD=['Ausente','Autonômico (sudorese, náusea, turvação visual)','Palpitação','Dor torácica','Cefaleia','Aura epiléptica'];
+const SINC_POST=['Em pé','Sentado','Deitado / supina','Durante esforço','Pós-esforço imediato'];
+const SINC_GAT=['Ortostase (ao levantar)','Micção','Defecação','Tosse / Valsalva','Dor / estímulo doloroso','Calor / ambiente fechado','Emoção intensa / visão de sangue','Esforço físico'];
+const SINC_CAR=['Queda sem proteção (sem reação de defesa)','Mordedura lateral de língua','Liberação esfincteriana (urina/fezes)','Abalos musculares breves (< 15 s)','Cianose facial durante o evento','Olhos abertos e desviados'];
+const SINC_REC=['Imediata (< 30 s)','Lenta (30 s – 5 min)','Confusão pós-ictal (> 5 min)','Não recuperou / ainda inconsciente'];
+const SINC_ALAR=['Durante esforço físico','Em posição supina / deitado','Palpitação imediatamente antes','Morte súbita familiar (< 50 anos)','Cardiopatia estrutural conhecida','Sem pródromos (queda abrupta)','Mais de 1 episódio no último mês','> 65 anos com comorbidades'];
+const SINC_ANTE=['Cardiopatia estrutural (ICC, miocardiopatia, valvopatia)','Arritmia documentada','DAC / IAM prévio','Síndrome de Brugada','Síncope ou MCE familiar','QT longo congênito ou adquirido','Marca-passo / CDI implantado','Anti-hipertensivos / diuréticos em uso','Antiarrítmicos em uso','Síncopes prévias recorrentes'];
+const SINC_EF_ORTO=['Normal (queda PA < 20/10 mmHg)','Hipotensão ortostática (queda ≥ 20/10 mmHg)','Não realizado / paciente acamado'];
+const SINC_EF_SOP=['Sopro sistólico (EAo suspeito)','Sopro diastólico','Sopro em regurgitação mitral','Ausência de sopros','B3 / B4 audível'];
+const SINC_EF_NF=['Sem déficit focal','Hemiparesia','Afasia','Nistagmo','Disartria','Ataxia de marcha'];
+
+// Builders — Síncope
+function sincCalgarySc(){
+ // Calgary score simplificado: ≥ 1 dos critérios abaixo = alto risco cardiogênico
+ const a=S.sinc.alar;
+ const highRisk=['Durante esforço físico','Em posição supina / deitado','Palpitação imediatamente antes','Morte súbita familiar (< 50 anos)','Cardiopatia estrutural conhecida'];
+ return a.filter(x=>highRisk.includes(x)).length;
+}
+function sincBadge(){
+ if(S.queixa!=='Síncope')return '';
+ const sc=sincCalgarySc();
+ if(sc===0){return `<div class="grav-badge grav-leve" style="margin-top:10px"><i class="ti ti-info-circle" aria-hidden="true"></i> Sem critérios Calgary de alto risco</div>`;}
+ return `<div class="grav-badge grav-grave" style="margin-top:10px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Síncope de alto risco — ${sc} critério${sc>1?'s':''} Calgary (ECG urgente + monitorização)</div>`;
+}
+function sincHda(S){
+ const c=S.sinc;const out=[];
+ if(c.prod)out.push(`pródromos: ${c.prod.toLowerCase()}`);
+ if(c.post)out.push(`postura no evento: ${c.post.toLowerCase()}`);
+ if(c.gat.length)out.push(`gatilho: ${c.gat.join(', ').toLowerCase()}`);
+ if(c.car.length)out.push(`características: ${c.car.join(', ').toLowerCase()}`);
+ if(c.rec)out.push(`recuperação: ${c.rec.toLowerCase()}`);
+ if(!out.length)return '';
+ let txt=`. Perda de consciência com ${out.join('; ')}`;
+ if(c.alar.length)txt+=`. Alarmes: ${c.alar.join(', ').toLowerCase()}`;
+ return txt;
+}
+function sincHpp(S){return S.sinc.ante.slice();}
+function sincEFText(S){
+ const e=S.sincEF;const parts=[];
+ if(e.orto)parts.push(`PA ortostática: ${e.orto.toLowerCase()}`);
+ if(e.sop.length)parts.push(`Ausculta cardíaca: ${e.sop.join(', ').toLowerCase()}`);
+ if(e.nf.length){const mapN=v=>v==='Sem déficit focal'?'sem déficit neurológico focal':v.toLowerCase();parts.push(`Neuro: ${e.nf.map(mapN).join(', ')}`);}
+ return parts.length?`Síncope — exame específico: ${parts.join(' | ')}`:'';
+}
+function sincAfter(S){return sincBadge();}
+
+registerQx('Síncope',{
+ anamnese:{
+  sigla:'sinc',
+  blocks:[
+   {key:'prod',label:'Pródromos',type:'radio',options:SINC_PROD,autoOpenNext:'post'},
+   {key:'post',label:'Postura no evento',type:'radio',options:SINC_POST,autoOpenNext:'gat'},
+   {key:'gat',label:'Gatilhos',type:'tags',options:SINC_GAT,autoOpenNext:'car'},
+   {key:'car',label:'Características do evento (testemunho)',type:'tags',options:SINC_CAR,autoOpenNext:'rec'},
+   {key:'rec',label:'Recuperação',type:'radio',options:SINC_REC,autoOpenNext:'alar'},
+   {key:'alar',label:'Sinais de alarme',type:'tags',options:SINC_ALAR,autoOpenNext:'ante'},
+   {key:'ante',label:'Antecedentes específicos (vão para HPP)',type:'tags',options:SINC_ANTE}
+  ],
+  after:sincAfter
+ },
+ ef:{
+  sigla:'sincEF',
+  showIn:['crit'],
+  ambIcon:'ti-heart',
+  ambTitle:'Exame físico específico — Síncope',
+  critIcon:'ti-heart',
+  critTitle:'Avaliação Cardiológica — Síncope',
+  blocks:[
+   {key:'orto',label:'PA ortostática',type:'radio',options:SINC_EF_ORTO,autoOpenNext:'sop'},
+   {key:'sop',label:'Ausculta cardíaca',type:'tags',options:SINC_EF_SOP,autoOpenNext:'nf'},
+   {key:'nf',label:'Exame neurológico focal',type:'tags',options:SINC_EF_NF}
+  ]
+ },
+ hda:sincHda,
+ hpp:sincHpp,
+ badge:sincBadge,
+ efText:sincEFText
 });
 
 // ─── Dor torácica ──────────────────────────────────────────────────────────
