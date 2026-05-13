@@ -304,7 +304,8 @@ function deepMergeDefaults(defaults,override){
 const DRAFT_KEY='emergencia_draft_v2';
 const BUILD_VERSION='2026.05.13';
 
-function autoSave(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify(S));}catch(e){}}
+let _saveTimer=null;
+function autoSave(){clearTimeout(_saveTimer);_saveTimer=setTimeout(()=>{try{localStorage.setItem(DRAFT_KEY,JSON.stringify(S));}catch(e){}},600);}
 function autoLoad(){
   try{
     const saved=localStorage.getItem(DRAFT_KEY);
@@ -1183,6 +1184,14 @@ esof:{l:'Síndrome esofágica aguda',s:[
 // helpers
 const ESC_MAP={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','`':'&#96;'};
 function esc(s){return s==null?'':String(s).replace(/[&<>"'`]/g,c=>ESC_MAP[c]);}
+function gravBadge(level,label,opts){
+ const o=opts||{};
+ const cls={leve:'grav-leve',mod:'grav-mod',grave:'grav-grave'}[level]||'grav-leve';
+ const ico={leve:'ti-info-circle',mod:'ti-alert-circle',grave:'ti-alert-triangle'}[level]||'ti-info-circle';
+ const mt=o.noMargin?'':' style="margin-top:10px"';
+ const sub=o.sublabel?`<div style="margin-top:4px;font-weight:600">${o.sublabel}</div>`:'';
+ return `<div class="grav-badge ${cls}"${mt}><i class="ti ${ico}" aria-hidden="true"></i> ${label}${sub}</div>`;
+}
 function setQueixa(q){
  S.queixa=q;
  S.caract=[];
@@ -1312,9 +1321,8 @@ function cefAlarmCount(){return S.cef.alarm.length;}
 function cefAlarmBadge(){
  if(S.queixa!=='Cefaleia')return '';
  const n=cefAlarmCount();
- const cls=n===0?'grav-leve':n<=2?'grav-mod':'grav-grave';
- const ico=n===0?'ti-info-circle':n<=2?'ti-alert-circle':'ti-alert-triangle';
- return `<div class="grav-badge ${cls}" style="margin-top:10px"><i class="ti ${ico}" aria-hidden="true"></i> Cefaleia com ${n} ${n===1?'sinal':'sinais'} de alarme</div>`;
+ const level=n===0?'leve':n<=2?'mod':'grave';
+ return gravBadge(level,`Cefaleia com ${n} ${n===1?'sinal':'sinais'} de alarme`);
 }
 function cefHda(S){
  const c=S.cef;
@@ -1494,8 +1502,8 @@ function sincCalgarySc(){
 function sincBadge(){
  if(S.queixa!=='Síncope')return '';
  const sc=sincCalgarySc();
- if(sc===0){return `<div class="grav-badge grav-leve" style="margin-top:10px"><i class="ti ti-info-circle" aria-hidden="true"></i> Sem critérios Calgary de alto risco</div>`;}
- return `<div class="grav-badge grav-grave" style="margin-top:10px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Síncope de alto risco — ${sc} critério${sc>1?'s':''} Calgary (ECG urgente + monitorização)</div>`;
+ if(sc===0)return gravBadge('leve','Sem critérios Calgary de alto risco');
+ return gravBadge('grave',`Síncope de alto risco — ${sc} critério${sc>1?'s':''} Calgary (ECG urgente + monitorização)`);
 }
 function sincHda(S){
  const c=S.sinc;const out=[];
@@ -1585,9 +1593,9 @@ function cvHpp(S){return S.cv.antec.slice();}
 function cvBadge(){
  if(S.queixa!=='Convulsão')return '';
  const c=S.cv;const n=c.alarm.length;
- if(cvHasGrave()){const statusMsg=cvHasStatus()?'<div style="margin-top:4px;font-weight:600">Status epilepticus — protocolo BZD imediato</div>':'';return `<div class="grav-badge grav-grave" style="margin-top:10px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Convulsão de alto risco — status epilepticus / RNC persistente / crises em salva${statusMsg}</div>`;}
- if(n===0)return `<div class="grav-badge grav-leve" style="margin-top:10px"><i class="ti ti-info-circle" aria-hidden="true"></i> Convulsão sem sinais de alarme</div>`;
- return `<div class="grav-badge grav-mod" style="margin-top:10px"><i class="ti ti-alert-circle" aria-hidden="true"></i> Convulsão com ${n} ${n===1?'sinal':'sinais'} de alarme</div>`;
+ if(cvHasGrave())return gravBadge('grave','Convulsão de alto risco — status epilepticus / RNC persistente / crises em salva',{sublabel:cvHasStatus()?'Status epilepticus — protocolo BZD imediato':''});
+ if(n===0)return gravBadge('leve','Convulsão sem sinais de alarme');
+ return gravBadge('mod',`Convulsão com ${n} ${n===1?'sinal':'sinais'} de alarme`);
 }
 function cvEFText(S){
  if(S.ef!=='crit')return '';
@@ -1827,7 +1835,7 @@ function rECG(){
 }
 function rPOCUS(){const p=S.pocS;return`<div class="card"><div class="st"><i class="ti ti-wave-sine" aria-hidden="true"></i> POCUS</div>${[['pulmao','Pulmão'],['coracao','Coração'],['abdome','Abdome'],['mmii','MMII'],['outros','Outros']].map(([k,l])=>`<div style="margin-bottom:8px"><label>${l}</label><input type="text" value="${esc(p[k])}" oninput="S.pocS['${k}']=this.value" placeholder="${l}..."></div>`).join('')}</div>`;}
 function dispGrav(){const fr=parseFloat(S.fr),sat=parseFloat(S.sat),fala=S.dspEF.fala,cian=S.dspEF.cianose;let pts=0;if(S.fr&&(fr>30||fr<12))pts+=2;else if(S.fr&&fr>24)pts+=1;if(S.sat&&sat<90)pts+=2;else if(S.sat&&sat<94)pts+=1;if(fala==='Palavras soltas'||fala==='Impossível falar')pts+=2;else if(fala==='Frases incompletas')pts+=1;if(cian==='Central (lábios/língua)')pts+=2;if(pts>=4)return'grave';if(pts>=2)return'mod';return'leve';}
-function dispGravBadge(){if(S.queixa!=='Dispneia')return'';const hasData=S.fr||S.sat||S.dspEF.fala||S.dspEF.cianose;if(!hasData)return'';const g=dispGrav();const[cls,ico,txt]=g==='grave'?['grav-grave','ti-alert-triangle','Gravidade sugerida: GRAVE — IOT/VNI considerar imediatamente']:g==='mod'?['grav-mod','ti-alert-circle','Gravidade sugerida: MODERADA — monitorização intensa, O2 alto fluxo']:['grav-leve','ti-info-circle','Gravidade sugerida: LEVE — tratar e reavaliar'];return`<div class="grav-badge ${cls}"><i class="ti ${ico}" aria-hidden="true"></i> ${txt}</div>`;}
+function dispGravBadge(){if(S.queixa!=='Dispneia')return'';const hasData=S.fr||S.sat||S.dspEF.fala||S.dspEF.cianose;if(!hasData)return'';const g=dispGrav();const[level,txt]=g==='grave'?['grave','Gravidade sugerida: GRAVE — IOT/VNI considerar imediatamente']:g==='mod'?['mod','Gravidade sugerida: MODERADA — monitorização intensa, O2 alto fluxo']:['leve','Gravidade sugerida: LEVE — tratar e reavaliar'];return gravBadge(level,txt,{noMargin:true});}
 function s3(){const isDsp=S.queixa==='Dispneia';const badge=isDsp?dispGravBadge():'';return`${badge}<div class="card"><div class="st"><i class="ti ti-search" aria-hidden="true"></i> Tipo de exame físico</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem"><button class="xbtn ${S.ef==='amb'?'on':''}" onclick="S.ef='amb';render()"><i class="ti ti-walk" aria-hidden="true"></i> Ambulatorial</button><button class="xbtn ${S.ef==='crit'?'on':''}" onclick="S.ef='crit';render()"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Paciente crítico (ABCDE)</button></div></div>${S.ef==='amb'?`<div class="card"><div class="st">Padrão ambulatorial</div>${[['g','Geral'],['cv','AP Cardiovascular'],['re','AP Respiratório'],['ab','Abdome'],['ne','Neurológico'],['pe','Pele e MMII']].map(([k,l])=>`<div style="margin-bottom:10px"><label>${l}</label><input type="text" value="${esc(S.amb[k])}" oninput="S.amb['${k}']=this.value" placeholder="${l}..."></div>`).join('')}</div>`:''}${S.ef==='crit'?`<div class="card"><div class="st">ABCDE — Avaliação primária</div>${abcH()}</div>`:''}${S.ef&&QX_EF[S.queixa]?QX_EF[S.queixa]():''}${S.ef?rECG()+''+rPOCUS():''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.ef?`<button class="btnp" onclick="nx()">Impressão / Conduta <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
 
 function rCSec(sid,sec){const items=sec.it||[];const pc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;const dc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='done').length;const alertsHtml=(sec.alerts||[]).map(a=>`<div class="abox aw" style="margin-bottom:6px;font-size:12px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${a}</div>`).join('');return`<div class="csec"><div class="csh" onclick="tog('cs${sec.id}')"><span>${sec.t}</span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc}✓</span>`:''}${pc?`<span class="sb smod" style="font-size:11px">${pc}⏳</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb open" id="cs${sec.id}">${alertsHtml}${items.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);return`<div class="chk ${cl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${esc(S.nts[sid+'_'+sec.id]||'')}</textarea></div></div></div>`;}
