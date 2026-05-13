@@ -282,6 +282,10 @@ const S={step:0,nome:'',idade:30,orig:'Demanda Espontânea',origInst:'',origMoti
  sincOpen:{prod:true,post:false,gat:false,car:false,rec:false,alar:false,ante:false},
  sincEF:{orto:null,sop:[],nf:[]},
  sincEFOpen:{orto:true,sop:false,nf:false},
+ cv:{inicio:null,padrao:[],dur:null,pos:[],evento:[],alarm:[],antec:[],descrAura:''},
+ cvOpen:{inicio:true,padrao:false,dur:false,pos:false,evento:false,alarm:false,antec:false},
+ cvEF:{nivel:null,foco:[],men:[]},
+ cvEFOpen:{nivel:true,foco:false,men:false},
  abcOpen:{a:true},
  relMode:'full'};
 
@@ -1186,6 +1190,10 @@ function setQueixa(q){
  S.sincOpen={prod:true,post:false,gat:false,car:false,rec:false,alar:false,ante:false};
  S.sincEF={orto:null,sop:[],nf:[]};
  S.sincEFOpen={orto:true,sop:false,nf:false};
+ S.cv={inicio:null,padrao:[],dur:null,pos:[],evento:[],alarm:[],antec:[],descrAura:''};
+ S.cvOpen={inicio:true,padrao:false,dur:false,pos:false,evento:false,alarm:false,antec:false};
+ S.cvEF={nivel:null,foco:[],men:[]};
+ S.cvEFOpen={nivel:true,foco:false,men:false};
  S.itDrug='';
  S.imp='';
  S.chk={};
@@ -1532,6 +1540,101 @@ registerQx('Síncope',{
  hpp:sincHpp,
  badge:sincBadge,
  efText:sincEFText
+});
+
+// ─── Convulsão ────────────────────────────────────────────────────────────
+const CV_INICIO=['Súbito sem aura','Súbito com aura','Após gatilho identificado (febre, privação de sono, álcool, abstinência)','Não testemunhado (achado pós-evento)'];
+const CV_PADRAO=['Tônico-clônico generalizado (TCG)','Tônico isolado (rigidez)','Clônico isolado (abalos rítmicos)','Mioclônico (abalos breves)','Atônico (perda súbita de tônus)','Focal motor com preservação da consciência','Focal motor com comprometimento da consciência','Focal evoluindo para bilateral tônico-clônico','Ausência (parada comportamental breve)','Crise não convulsiva (estado confusional)'];
+const CV_DUR=['< 1 minuto','1–5 minutos','> 5 minutos (status epilepticus)','Crises em salva sem recuperação intercrítica (status)','Duração desconhecida / não testemunhada'];
+const CV_POS=['Recuperação imediata (< 1 min)','Sonolência / lentificação por minutos','Confusão pós-ictal prolongada (> 15 min)','Paralisia de Todd (déficit focal pós-ictal)','Afasia / disartria pós-ictal','Cefaleia pós-ictal','Vômitos pós-ictais','Agitação / agressividade pós-ictal','Persistência de RNC (não recobrou consciência)','Amnésia retrógrada do evento'];
+const CV_EVENTO=['Mordedura lateral de língua','Mordedura de ponta de língua','Liberação esfincteriana (urina)','Liberação esfincteriana (fezes)','Desvio do olhar / olhar fixo durante o evento','Cianose facial durante o evento','Sialorreia / espuma oral','Versão cefálica forçada (cabeça desviada lateralmente)','Postura tônica unilateral (sinal de 4)','Vocalização ictal (grito, gemido)','Queda sem proteção (sem reação de defesa)','Trauma craniano durante a queda','Abalos breves (< 15 s) sugerindo síncope convulsiva','Palidez imediatamente antes (sugere síncope)','Recuperação imediata sem confusão (sugere síncope)'];
+const CV_ALARM=['Status epilepticus (> 5 min ou sem recuperação intercrítica)','Primeira crise da vida','Primeira crise em > 40 anos','Gestação atual','Puerpério < 6 semanas','Febre associada ao evento','Sinais meníngeos / cefaleia intensa associada','TCE recente (< 7 dias)','Imunossupressão / HIV / neoplasia ativa','Anticoagulação em uso','Etilismo crônico / suspeita de abstinência alcoólica','Hipoglicemia documentada na chegada','Distúrbio hidroeletrolítico conhecido (Na, Ca, Mg)','Persistência de RNC após o evento','Déficit focal novo pós-ictal','Múltiplas crises em 24 h'];
+const CV_ANTEC=['Epilepsia conhecida','Crises não-controladas (última crise < 30 dias)','Em uso de DAE (drogas antiepilépticas)','Suspeita de má adesão à DAE','Troca recente de DAE (< 30 dias)','Nível sérico de DAE recente (informar valor em campo livre)','AVC prévio','TCE prévio com sequela','Neurocirurgia prévia','Neoplasia SNC conhecida','Neurocisticercose conhecida','Etilismo crônico','Uso de cocaína / anfetaminas','Privação de sono nas últimas 24 h','Eclâmpsia prévia / pré-eclâmpsia em gestação atual','Antecedente familiar de epilepsia'];
+const CV_EF_NIVEL=['Alerta e orientado (Glasgow 15)','Sonolento, despertável ao chamado (Glasgow 13–14)','Despertável apenas à dor (Glasgow 9–12)','Coma (Glasgow ≤ 8)','Estado pós-ictal ainda em curso (recuperando)','Crise ativa no momento do exame'];
+const CV_EF_FOCO=['Sem déficit focal','Paralisia de Todd — hemiparesia D','Paralisia de Todd — hemiparesia E','Afasia residual','Disartria residual','Desvio conjugado do olhar','Hemianopsia','Ataxia de marcha','Hiperreflexia / Babinski ipsilateral'];
+const CV_EF_MEN=['Sem sinais meníngeos','Rigidez de nuca','Kernig +','Brudzinski +','Lesão de couro cabeludo / hematoma','Ferimento de língua (mordedura lateral)','Ferimento de língua (mordedura de ponta)','Liberação esfincteriana evidente (roupa molhada/suja)','Sinais de trauma compatível com queda'];
+
+const CV_STATUS_DUR=['> 5 minutos (status epilepticus)','Crises em salva sem recuperação intercrítica (status)'];
+const CV_GRAVE_ALARM=['Status epilepticus (> 5 min ou sem recuperação intercrítica)','Persistência de RNC após o evento','Múltiplas crises em 24 h'];
+
+function cvHasStatus(){const c=S.cv;return CV_STATUS_DUR.includes(c.dur)||c.alarm.includes('Status epilepticus (> 5 min ou sem recuperação intercrítica)');}
+function cvHasGrave(){const c=S.cv;return cvHasStatus()||c.alarm.some(a=>CV_GRAVE_ALARM.includes(a));}
+
+function cvHda(S){
+ const c=S.cv;const segs=[];
+ if(c.inicio){let ini=`início ${c.inicio.toLowerCase()}`;if(c.inicio==='Súbito com aura'&&c.descrAura)ini+=` (${c.descrAura.toLowerCase()})`;segs.push(ini);}
+ if(c.padrao.length)segs.push(`padrão motor: ${c.padrao.join(', ').toLowerCase()}`);
+ if(c.dur)segs.push(`duração: ${c.dur.toLowerCase()}`);
+ if(c.pos.length)segs.push(`pós-ictal: ${c.pos.join(', ').toLowerCase()}`);
+ if(c.evento.length)segs.push(`eventos associados: ${c.evento.join(', ').toLowerCase()}`);
+ if(c.alarm.length)segs.push(`sinais de alarme: ${c.alarm.join(', ').toLowerCase()}`);
+ if(!segs.length)return '';
+ return `. Crise descrita pelo acompanhante, com ${segs.join('. ')}`;
+}
+function cvHpp(S){return S.cv.antec.slice();}
+function cvBadge(){
+ if(S.queixa!=='Convulsão')return '';
+ const c=S.cv;const n=c.alarm.length;
+ if(cvHasGrave()){const statusMsg=cvHasStatus()?'<div style="margin-top:4px;font-weight:600">Status epilepticus — protocolo BZD imediato</div>':'';return `<div class="grav-badge grav-grave" style="margin-top:10px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Convulsão de alto risco — status epilepticus / RNC persistente / crises em salva${statusMsg}</div>`;}
+ if(n===0)return `<div class="grav-badge grav-leve" style="margin-top:10px"><i class="ti ti-info-circle" aria-hidden="true"></i> Convulsão sem sinais de alarme</div>`;
+ return `<div class="grav-badge grav-mod" style="margin-top:10px"><i class="ti ti-alert-circle" aria-hidden="true"></i> Convulsão com ${n} ${n===1?'sinal':'sinais'} de alarme</div>`;
+}
+function cvEFText(S){
+ if(S.ef!=='crit')return '';
+ const e=S.cvEF;const parts=[];
+ if(e.nivel)parts.push(`Nível de consciência: ${e.nivel.toLowerCase().replace('glasgow','Glasgow')}`);
+ if(e.foco.length){if(e.foco.length===1&&e.foco[0]==='Sem déficit focal')parts.push('sem déficit focal residual');else parts.push(`Déficit focal residual: ${e.foco.filter(x=>x!=='Sem déficit focal').join(', ').toLowerCase()}`);}
+ if(e.men.length){if(e.men.length===1&&e.men[0]==='Sem sinais meníngeos')parts.push('Brudzinski/Kernig negativos, sem rigidez de nuca');else parts.push(`Sinais meníngeos: ${e.men.filter(x=>x!=='Sem sinais meníngeos').join(', ').toLowerCase()}`);}
+ return parts.length?`Convulsão — exame específico: ${parts.join(' | ')}`:'';
+}
+function cvAfter(S){
+ const c=S.cv;let out='';
+ if(c.inicio==='Súbito com aura')out+=`<div style="margin-top:8px"><label>Descrever aura</label><input type="text" value="${esc(c.descrAura)}" oninput="S.cv.descrAura=this.value" placeholder="Visual, olfativa, gustativa, epigástrica, déjà vu, medo súbito..."></div>`;
+ out+=`<div style="margin-top:8px"><label>Tempo de início</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>`;
+ // Alertas inline — ordem: gestação > status > infecção > abstinência > metabólica > 1ª crise
+ if(c.alarm.includes('Gestação atual')||c.alarm.includes('Puerpério < 6 semanas'))out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Convulsão em gestante/puérpera = eclâmpsia até prova em contrário (independente de PA). Sulfato de magnésio: ataque 4–6 g IV em 20 min, manutenção 1–2 g/h IV em BI. Antídoto: Gluconato de cálcio 1 g IV se hiporreflexia/depressão respiratória. Controle de PA se PAS ≥ 160 ou PAD ≥ 110 (Hidralazina 5 mg IV ou Labetalol). Avaliação obstétrica imediata. (ACOG 2020 / SBC 2020)</div>`;
+ if(cvHasStatus())out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Status epilepticus — iniciar imediatamente: Diazepam 10 mg IV bolus (ou Midazolam 10 mg IM se sem acesso). Se persistir 5 min após 1ª dose: repetir BZD + Fenitoína 20 mg/kg IV em 20 min (ou Ácido valproico 40 mg/kg IV). Se refratário > 30 min: IOT + sedação contínua (Midazolam ou Propofol). (NEJM 2025 / BTLS-Status 2016)</div>`;
+ if(c.alarm.includes('Febre associada ao evento')||c.alarm.includes('Sinais meníngeos / cefaleia intensa associada'))out+=`<div class="abox aw" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Convulsão febril em adulto — considerar meningite/encefalite (HSV) ou sepse com disfunção SNC. Iniciar empírico precoce: Ceftriaxona 2 g IV 12/12h + Vancomicina 15–20 mg/kg IV 8/8h + Ampicilina 2 g IV 4/4h (se > 50a ou imunossuprimido) + Aciclovir 10 mg/kg IV 8/8h. Coletar hemoculturas e punção lombar (após TC se déficit focal/RNC). (IDSA 2017)</div>`;
+ if(c.alarm.includes('Etilismo crônico / suspeita de abstinência alcoólica'))out+=`<div class="abox aw" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Suspeita de crise por abstinência alcoólica — Diazepam 10 mg IV/VO repetível + Tiamina 100 mg IV antes de qualquer glicose. Avaliar CIWA-Ar. Evitar Fenitoína (não previne recorrência nesta etiologia). (ASAM 2020)</div>`;
+ if(c.alarm.includes('Hipoglicemia documentada na chegada')||c.alarm.includes('Distúrbio hidroeletrolítico conhecido (Na, Ca, Mg)'))out+=`<div class="abox aw" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Causa metabólica suspeita — corrigir glicemia (Glicose 50% 50 mL IV se < 60), checar Na, Ca, Mg, ureia. Tiamina 100 mg IV antes de glicose se etilismo/desnutrição. Crise por hipoglicemia/DHE não responde duradouramente a BZD sem correção do distúrbio.</div>`;
+ if(c.alarm.includes('Primeira crise da vida')||c.alarm.includes('Primeira crise em > 40 anos')){out+=`<div class="abox aw" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Primeira crise — solicitar TC de crânio sem contraste, glicemia, Na/K/Ca/Mg, função renal, hemograma, β-hCG (mulher em idade fértil), screening toxicológico. Considerar punção lombar se febre / cefaleia / imunossupressão. RM eletiva ambulatorial. (ILAE 2014 / ACEP 2014)</div>`;if(c.alarm.includes('Imunossupressão / HIV / neoplasia ativa')||c.alarm.includes('Anticoagulação em uso'))out+=`<div class="abox aw" style="margin-top:6px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Imunossupressão/anticoagulação — TC + punção lombar de alta prioridade.</div>`;}
+ out+=cvBadge();
+ return out;
+}
+
+registerQx('Convulsão',{
+ anamnese:{
+  sigla:'cv',
+  blocks:[
+   {key:'inicio',label:'Início e aura',type:'radio',options:CV_INICIO,autoOpenNext:'padrao'},
+   {key:'padrao',label:'Padrão motor',type:'tags',options:CV_PADRAO,autoOpenNext:'dur'},
+   {key:'dur',label:'Duração do evento',type:'radio',options:CV_DUR,autoOpenNext:'pos'},
+   {key:'pos',label:'Pós-ictal',type:'tags',options:CV_POS,autoOpenNext:'evento'},
+   {key:'evento',label:'Eventos associados (testemunho)',type:'tags',options:CV_EVENTO,autoOpenNext:'alarm'},
+   {key:'alarm',label:'Sinais de alarme',type:'tags',options:CV_ALARM,autoOpenNext:'antec'},
+   {key:'antec',label:'Antecedentes específicos (vão para HPP)',type:'tags',options:CV_ANTEC}
+  ],
+  after:cvAfter,
+  onAdd(k,v){if(k==='inicio'&&v!=='Súbito com aura')S.cv.descrAura='';}
+ },
+ ef:{
+  sigla:'cvEF',
+  showIn:['crit'],
+  critIcon:'ti-brain',
+  critTitle:'Exame específico — Convulsão',
+  ambIcon:'ti-brain',
+  ambTitle:'Exame específico — Convulsão',
+  blocks:[
+   {key:'nivel',label:'Nível de consciência atual',type:'radio',options:CV_EF_NIVEL,autoOpenNext:'foco'},
+   {key:'foco',label:'Déficit focal residual',type:'tags',options:CV_EF_FOCO,autoOpenNext:'men'},
+   {key:'men',label:'Sinais meníngeos e cabeça',type:'tags',options:CV_EF_MEN}
+  ],
+  onAdd(k,v){if(k==='nivel'&&v==='Alerta e orientado (Glasgow 15)'&&S.ef==='crit'){S.abc.ao=4;S.abc.rv=5;S.abc.rm=6;}}
+ },
+ hda:cvHda,
+ hpp:cvHpp,
+ badge:cvBadge,
+ efText:cvEFText
 });
 
 // ─── Dor torácica ──────────────────────────────────────────────────────────
