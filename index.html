@@ -1735,12 +1735,12 @@ async function saveReport(txt){
  try{
  const {data:{user}}=await sb.auth.getUser();
  if(!user){showToast('Faça login para salvar',false);return;}
- const {error}=await sb.from('reports').insert({
- key:'rel_'+Date.now(),
- nome:S.nome||'Sem nome',
- queixa:S.queixa||'—',
- report_date:new Date().toLocaleString('pt-BR'),
- txt
+ const {error}=await sb.rpc('save_report_secure',{
+ p_key:'rel_'+Date.now(),
+ p_nome:S.nome||'Sem nome',
+ p_queixa:S.queixa||'—',
+ p_date:new Date().toLocaleString('pt-BR'),
+ p_txt:txt
  });
  if(error)throw error;
  showToast('Relatório salvo com sucesso!');
@@ -1755,7 +1755,7 @@ function showToast(msg,ok=true){
 }
 async function loadSaved(){
  try{
- const {data,error}=await sb.from('reports').select('*').order('created_at',{ascending:false});
+ const {data,error}=await sb.rpc('load_reports_secure');
  if(error)throw error;
  return(data||[]).map(r=>({key:r.key,data:{date:r.report_date,nome:r.nome,queixa:r.queixa,txt:r.txt}}));
  }catch(e){console.error('loadSaved:',e);showToast('Erro ao carregar relatórios',false);return[];}
