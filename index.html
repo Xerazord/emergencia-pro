@@ -266,7 +266,7 @@ const S={step:0,nome:'',idade:30,orig:'Demanda Espontânea',origInst:'',origMoti
  sind:null,subsind:null,subsinds:[],chk:{},nts:{},imp:'',
  pocS:{pulmao:'',coracao:'',abdome:'',mmii:'',outros:''},
  ecgS:{normal:false,ritmo:'',fcEcg:'',pr:'',qrs:'',qtc:'',st:[],ondaT:[],padroes:[]},
- ecgOpen:{ritmo:true},
+ ecgSOpen:{ritmo:true},
  itDrug:'',
  dt:{ini:'',qual:[],irr:[],modif:[],sem:null,pal:null,sin:[]},
  dtOpen:{ini:true},
@@ -302,7 +302,7 @@ function deepMergeDefaults(defaults,override){
  return out;
 }
 const DRAFT_KEY='emergencia_draft_v2';
-const BUILD_VERSION='2026.05.13';
+const BUILD_VERSION='2026.05.20';
 
 let _saveTimer=null;
 function autoSave(){clearTimeout(_saveTimer);_saveTimer=setTimeout(()=>{try{localStorage.setItem(DRAFT_KEY,JSON.stringify(S));}catch(e){}},600);}
@@ -1825,7 +1825,7 @@ QX_SPEC_BY_SIGLA['ecgS']={
 };
 function ecgSetNormal(){
  S.ecgS={normal:true,ritmo:'Sinusal',fcEcg:'',pr:'Normal',qrs:'Normal',qtc:'Normal',st:[],ondaT:[],padroes:[]};
- S.ecgOpen={};
+ S.ecgSOpen={};
  render();
 }
 function rECG(){
