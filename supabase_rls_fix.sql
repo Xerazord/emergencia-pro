@@ -145,7 +145,10 @@ security definer
 set search_path = public
 as $$
 begin
-  if not is_admin() then
+  -- auth.uid() é NULL quando o UPDATE vem do SQL Editor / service_role.
+  -- Nesses contextos (admins DB) não aplicamos a proteção — só usuários
+  -- autenticados via JWT passam pelo gate de is_admin().
+  if auth.uid() is not null and not is_admin() then
     new.status            := old.status;
     new.role              := old.role;
     new.aprovado_por      := old.aprovado_por;
