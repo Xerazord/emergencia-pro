@@ -6,6 +6,7 @@
 <title>Emergência Pro</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" integrity="sha384-hs5SINUk7GPohxRis+rS7grpSWEbtOIJ3sRoseBKg3CDPIKpG55RfSenbvA6ALOt" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.3" integrity="sha384-iWpUQPQzWsFiosLgsS8o+e6E8y3Gm+EW2m/vAAo7A2H3fuc4KOKEx+5CAord2H2z" crossorigin="anonymous"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileReady" async defer></script>
 <style>
 
 :root{
@@ -36,6 +37,23 @@ input:focus,select:focus,textarea:focus{border-color:#a32d2d}
 .login-btn:disabled{opacity:.6;cursor:not-allowed}
 .login-err{color:#a32d2d;font-size:12px;margin-top:8px;display:none}
 .login-loading{text-align:center;color:#6b7280;font-size:12px;padding:6px 0;display:none}
+.login-link{display:block;text-align:center;font-size:12px;color:#a32d2d;margin-top:10px;cursor:pointer;background:none;border:none;width:100%;font-family:inherit}
+.login-link:hover{text-decoration:underline}
+.signup-box{background:#fff;border-radius:12px;padding:2rem;width:100%;max-width:480px;border:.5px solid #e5e7eb;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+.kyc-box{background:#fff;border-radius:12px;padding:2rem;width:100%;max-width:560px;border:.5px solid #e5e7eb;box-shadow:0 4px 24px rgba(0,0,0,.08);max-height:90vh;overflow-y:auto}
+.pending-box{background:#fff;border-radius:12px;padding:2rem;width:100%;max-width:440px;border:.5px solid #e5e7eb;box-shadow:0 4px 24px rgba(0,0,0,.08);text-align:center}
+.pwd-rules{font-size:11px;margin-top:6px;color:#6b7280;line-height:1.6}
+.pwd-rules li{list-style:none;display:flex;align-items:center;gap:6px}
+.pwd-rules li.ok{color:#3b6d11}
+.pwd-rules li.fail{color:#a32d2d}
+.kyc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kyc-upload{display:block;border:1px dashed #d1d5db;border-radius:8px;padding:14px;text-align:center;cursor:pointer;background:#f9fafb;font-size:13px;color:#6b7280;transition:border-color .15s}
+.kyc-upload:hover{border-color:#a32d2d;color:#a32d2d}
+.kyc-upload.has-file{border-style:solid;border-color:#3b6d11;background:#eaf3de;color:#3b6d11}
+.kyc-upload input{display:none}
+.cf-turnstile-wrap{margin:14px 0;display:flex;justify-content:center;min-height:65px}
+.pending-icon{width:64px;height:64px;border-radius:50%;background:#faeeda;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.pending-icon i{font-size:32px;color:#854f0b}
 .logout-btn{padding:6px 12px;background:#fcebeb;border:.5px solid #f09595;color:#a32d2d;border-radius:20px;font-size:12px;cursor:pointer;font-weight:500}
 .logout-btn:hover{background:#fad4d4}
 .reset-btn{padding:6px 12px;background:#faeeda;border:.5px solid #fac775;color:#854f0b;border-radius:20px;font-size:12px;cursor:pointer;font-weight:500;margin-left:auto}
@@ -190,6 +208,104 @@ textarea{resize:vertical;min-height:60px}
  <button class="login-btn" onclick="doLogin()" id="loginBtn">Entrar</button>
  <div class="login-err" id="loginErr"></div>
  <div class="login-loading" id="loginLoading">Verificando...</div>
+ <button class="login-link" onclick="showSignup()">Criar conta de profissional</button>
+ <button class="login-link" onclick="doForgotPassword()" style="margin-top:0">Esqueci minha senha</button>
+ </div>
+</div>
+
+<div class="login-overlay" id="signupOverlay" style="display:none">
+ <div class="signup-box">
+  <div class="login-logo">
+   <div class="login-hico"><i class="ti ti-user-plus" aria-hidden="true"></i></div>
+   <div>
+    <div style="font-size:18px;font-weight:600;color:#111827">Criar conta</div>
+    <div style="font-size:12px;color:#6b7280">Acesso restrito a profissionais de saúde</div>
+   </div>
+  </div>
+  <div class="login-fl">
+   <label>E-mail profissional</label>
+   <input type="email" id="signupEmail" placeholder="seu@email.com" autocomplete="email">
+  </div>
+  <div class="login-fl">
+   <label>Senha</label>
+   <input type="password" id="signupPwd" placeholder="••••••••" autocomplete="new-password" oninput="renderPwdRules()">
+   <ul class="pwd-rules" id="pwdRules">
+    <li id="pr-len"><i class="ti ti-circle"></i> Mínimo 10 caracteres</li>
+    <li id="pr-upp"><i class="ti ti-circle"></i> Pelo menos uma letra maiúscula</li>
+    <li id="pr-num"><i class="ti ti-circle"></i> Pelo menos um número</li>
+    <li id="pr-spc"><i class="ti ti-circle"></i> Pelo menos um caractere especial</li>
+   </ul>
+  </div>
+  <div class="login-fl">
+   <label>Confirmar senha</label>
+   <input type="password" id="signupPwd2" placeholder="••••••••" autocomplete="new-password">
+  </div>
+  <div class="cf-turnstile-wrap">
+   <div class="cf-turnstile" data-sitekey="0x4AAAAAADTWnhJoTdtRavea" data-callback="onTurnstileToken" data-error-callback="onTurnstileError" data-expired-callback="onTurnstileExpired"></div>
+  </div>
+  <button class="login-btn" onclick="doSignup()" id="signupBtn">Criar conta</button>
+  <div class="login-err" id="signupErr"></div>
+  <div class="login-loading" id="signupLoading">Criando...</div>
+  <button class="login-link" onclick="showLogin()">Já tenho conta — entrar</button>
+ </div>
+</div>
+
+<div class="login-overlay" id="kycOverlay" style="display:none">
+ <div class="kyc-box">
+  <div class="login-logo">
+   <div class="login-hico"><i class="ti ti-id-badge" aria-hidden="true"></i></div>
+   <div>
+    <div style="font-size:18px;font-weight:600;color:#111827">Validação profissional</div>
+    <div style="font-size:12px;color:#6b7280">Necessária para aprovação do admin</div>
+   </div>
+  </div>
+  <div class="login-fl">
+   <label>Nome completo</label>
+   <input type="text" id="kycNome" placeholder="Nome completo conforme CRM" autocomplete="name">
+  </div>
+  <div class="kyc-grid">
+   <div class="login-fl">
+    <label>CRM (apenas números)</label>
+    <input type="text" id="kycCrm" placeholder="243521" inputmode="numeric">
+   </div>
+   <div class="login-fl">
+    <label>UF do CRM</label>
+    <input type="text" id="kycCrmUf" placeholder="SP" maxlength="2" style="text-transform:uppercase">
+   </div>
+  </div>
+  <div class="login-fl">
+   <label>Especialidade</label>
+   <input type="text" id="kycEsp" placeholder="Ex: Emergência, Clínica Médica, Cardiologia…">
+  </div>
+  <div class="login-fl">
+   <label>Telefone (com DDD)</label>
+   <input type="tel" id="kycTel" placeholder="(11) 99999-9999" autocomplete="tel">
+  </div>
+  <div class="kyc-grid" style="margin-top:8px">
+   <label class="kyc-upload" id="kycSelfieLbl">
+    <i class="ti ti-camera" aria-hidden="true"></i> Selfie segurando o CRM
+    <input type="file" id="kycSelfie" accept="image/*" capture="user" onchange="onKycFile(this,'selfie')">
+   </label>
+   <label class="kyc-upload" id="kycCrmDocLbl">
+    <i class="ti ti-id" aria-hidden="true"></i> Foto/scan do CRM
+    <input type="file" id="kycCrmDoc" accept="image/*,application/pdf" onchange="onKycFile(this,'crm')">
+   </label>
+  </div>
+  <button class="login-btn" onclick="doKycSubmit()" id="kycBtn" style="margin-top:12px">Enviar para análise</button>
+  <div class="login-err" id="kycErr"></div>
+  <div class="login-loading" id="kycLoading">Enviando...</div>
+  <button class="login-link" onclick="doLogout()">Sair</button>
+ </div>
+</div>
+
+<div class="login-overlay" id="pendingOverlay" style="display:none">
+ <div class="pending-box">
+  <div class="pending-icon" id="pendingIcon"><i class="ti ti-hourglass" aria-hidden="true"></i></div>
+  <div style="font-size:18px;font-weight:600;color:#111827;margin-bottom:8px" id="pendingTitle">Aguardando aprovação</div>
+  <div style="font-size:13px;color:#6b7280;line-height:1.5;margin-bottom:16px" id="pendingMsg">
+   Sua conta foi enviada para análise. Você receberá acesso assim que o administrador validar seus documentos.
+  </div>
+  <button class="login-btn" onclick="doLogout()" style="background:#6b7280">Sair</button>
  </div>
 </div>
 
@@ -213,21 +329,109 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ─── Auth ──────────────────────────────────────────────────────────────────
-async function initAuth(){
- const {data:{session}} = await sb.auth.getSession();
- if(session) showApp(); else showLoginScreen();
- sb.auth.onAuthStateChange((_,s)=>{if(s)showApp();else showLoginScreen();});
-}
 
+const _AUTH_OVERLAYS = ['loginOverlay','signupOverlay','kycOverlay','pendingOverlay'];
+let _turnstileToken = null;
+let _turnstileWidgetId = null;
+let _profileSub = null;
+
+function hideAllOverlays(){
+ _AUTH_OVERLAYS.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+ const app=document.getElementById('mainApp');if(app)app.style.display='none';
+}
+function showOverlay(id){
+ hideAllOverlays();
+ const el=document.getElementById(id);if(el)el.style.display='flex';
+}
+function showLogin(){stopProfileSub();showOverlay('loginOverlay');}
+function showSignup(){stopProfileSub();resetTurnstile();showOverlay('signupOverlay');}
+function showKyc(){showOverlay('kycOverlay');}
+function showPending(status, motivo){
+ const titleEl=document.getElementById('pendingTitle');
+ const msgEl=document.getElementById('pendingMsg');
+ const iconEl=document.getElementById('pendingIcon');
+ const icoI=iconEl.querySelector('i');
+ if(status==='rejected'){
+  titleEl.textContent='Cadastro rejeitado';
+  msgEl.textContent='Seu cadastro foi rejeitado.'+(motivo?' Motivo: '+motivo:'')+' Entre em contato com o administrador.';
+  iconEl.style.background='#fcebeb';icoI.style.color='#a32d2d';icoI.className='ti ti-x';
+ } else if(status==='suspended'){
+  titleEl.textContent='Conta suspensa';
+  msgEl.textContent='Sua conta foi suspensa.'+(motivo?' Motivo: '+motivo:'')+' Entre em contato com o administrador.';
+  iconEl.style.background='#fcebeb';icoI.style.color='#a32d2d';icoI.className='ti ti-ban';
+ } else {
+  titleEl.textContent='Aguardando aprovação';
+  msgEl.textContent='Sua conta foi enviada para análise. Você receberá acesso assim que o administrador validar seus documentos.';
+  iconEl.style.background='#faeeda';icoI.style.color='#854f0b';icoI.className='ti ti-hourglass';
+ }
+ showOverlay('pendingOverlay');
+}
 function showApp(){
- document.getElementById('loginOverlay').style.display='none';
+ hideAllOverlays();
  document.getElementById('mainApp').style.display='block';
  if(typeof autoLoad==='function')autoLoad();
  render();
 }
-function showLoginScreen(){
- document.getElementById('loginOverlay').style.display='flex';
- document.getElementById('mainApp').style.display='none';
+
+async function initAuth(){
+ const {data:{session}} = await sb.auth.getSession();
+ if(session) await routePostLogin(); else showLogin();
+ sb.auth.onAuthStateChange(async (event,s)=>{
+  if(s){await routePostLogin();} else {stopProfileSub();showLogin();}
+ });
+}
+
+async function routePostLogin(){
+ try{
+  const {data:{user}} = await sb.auth.getUser();
+  if(!user){showLogin();return;}
+  let {data:profile, error} = await sb.from('profiles').select('status, role, nome_completo, crm, motivo_rejeicao, selfie_path, crm_doc_path').eq('id',user.id).maybeSingle();
+  if(error){
+   console.error('routePostLogin:',error);
+   showLogin();
+   document.getElementById('loginErr').textContent='Erro ao carregar perfil: '+(error.message||error);
+   document.getElementById('loginErr').style.display='block';
+   return;
+  }
+  if(!profile){
+   // Edge case: trigger handle_new_user não criou row (ex.: user criado antes do trigger existir).
+   const {error:insErr} = await sb.from('profiles').insert({id:user.id, email:user.email, status:'pending', role:'user'});
+   if(insErr){console.error('routePostLogin insert:',insErr);showLogin();return;}
+   showKyc();
+   return;
+  }
+  const needsKyc = !profile.nome_completo || !profile.crm || !profile.selfie_path || !profile.crm_doc_path;
+  if(profile.status==='approved'){
+   showApp();
+  } else if(profile.status==='pending' && needsKyc){
+   showKyc();
+  } else if(profile.status==='pending'){
+   startProfileSub();
+   showPending('pending');
+  } else if(profile.status==='rejected'){
+   showPending('rejected', profile.motivo_rejeicao);
+  } else if(profile.status==='suspended'){
+   showPending('suspended', profile.motivo_rejeicao);
+  } else {
+   showPending('pending');
+  }
+ } catch(e){
+  console.error('routePostLogin exception:',e);
+  showLogin();
+ }
+}
+
+function startProfileSub(){
+ stopProfileSub();
+ _profileSub = sb.channel('profile-status')
+  .on('postgres_changes',{event:'UPDATE',schema:'public',table:'profiles'},(payload)=>{
+   if(payload.new && payload.new.status==='approved'){routePostLogin();}
+   else if(payload.new && (payload.new.status==='rejected' || payload.new.status==='suspended')){routePostLogin();}
+  })
+  .subscribe();
+}
+function stopProfileSub(){
+ if(_profileSub){try{sb.removeChannel(_profileSub);}catch(e){}_profileSub=null;}
 }
 
 async function doLogin(){
@@ -243,13 +447,147 @@ async function doLogin(){
  loadEl.style.display='none';
  btn.disabled=false;
  if(error){
- const msg=error.message==='Invalid login credentials'?'E-mail ou senha incorretos':error.message;
- errEl.textContent=msg;errEl.style.display='block';
+  const msg=error.message==='Invalid login credentials'?'E-mail ou senha incorretos':error.message;
+  errEl.textContent=msg;errEl.style.display='block';
  }
 }
 
 async function doLogout(){
+ stopProfileSub();
  await sb.auth.signOut();
+}
+
+async function doForgotPassword(){
+ const email=document.getElementById('loginEmail').value.trim();
+ if(!email){document.getElementById('loginErr').textContent='Digite o e-mail acima primeiro.';document.getElementById('loginErr').style.display='block';return;}
+ const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.href});
+ const errEl=document.getElementById('loginErr');
+ if(error){errEl.textContent='Erro: '+error.message;errEl.style.color='#a32d2d';}
+ else{errEl.textContent='Enviamos um link de recuperação para seu e-mail.';errEl.style.color='#3b6d11';}
+ errEl.style.display='block';
+}
+
+// ─── Turnstile callbacks (globais — chamados pelo widget) ──────────────────
+function onTurnstileReady(){
+ if(!window.turnstile)return;
+ const el=document.querySelector('#signupOverlay .cf-turnstile');
+ if(!el)return;
+ try{_turnstileWidgetId=window.turnstile.render(el,{sitekey:'0x4AAAAAADTWnhJoTdtRavea',callback:onTurnstileToken,'error-callback':onTurnstileError,'expired-callback':onTurnstileExpired});}catch(e){console.warn('turnstile render:',e);}
+}
+function onTurnstileToken(token){_turnstileToken=token;}
+function onTurnstileError(){_turnstileToken=null;}
+function onTurnstileExpired(){_turnstileToken=null;}
+function resetTurnstile(){
+ _turnstileToken=null;
+ if(window.turnstile && _turnstileWidgetId!=null){try{window.turnstile.reset(_turnstileWidgetId);}catch(e){}}
+}
+
+// ─── Validação de senha ────────────────────────────────────────────────────
+function validatePassword(p){
+ return {
+  len: (p||'').length >= 10,
+  upp: /[A-Z]/.test(p||''),
+  num: /[0-9]/.test(p||''),
+  spc: /[^A-Za-z0-9]/.test(p||'')
+ };
+}
+function renderPwdRules(){
+ const p=document.getElementById('signupPwd').value;
+ const r=validatePassword(p);
+ const map={'pr-len':r.len,'pr-upp':r.upp,'pr-num':r.num,'pr-spc':r.spc};
+ for(const id in map){
+  const li=document.getElementById(id);if(!li)continue;
+  li.className=map[id]?'ok':(p?'fail':'');
+  const ico=li.querySelector('i');if(ico)ico.className=map[id]?'ti ti-check':'ti ti-circle';
+ }
+}
+
+// ─── Signup ────────────────────────────────────────────────────────────────
+async function doSignup(){
+ const email=document.getElementById('signupEmail').value.trim();
+ const pwd=document.getElementById('signupPwd').value;
+ const pwd2=document.getElementById('signupPwd2').value;
+ const errEl=document.getElementById('signupErr');
+ const loadEl=document.getElementById('signupLoading');
+ const btn=document.getElementById('signupBtn');
+ errEl.style.display='none';
+
+ if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){errEl.textContent='E-mail inválido.';errEl.style.display='block';return;}
+ const rules=validatePassword(pwd);
+ if(!(rules.len && rules.upp && rules.num && rules.spc)){errEl.textContent='A senha não atende a todos os requisitos.';errEl.style.display='block';return;}
+ if(pwd!==pwd2){errEl.textContent='As senhas não coincidem.';errEl.style.display='block';return;}
+ if(!_turnstileToken){errEl.textContent='Complete o desafio de verificação.';errEl.style.display='block';return;}
+
+ loadEl.style.display='block';btn.disabled=true;
+ const {error}=await sb.auth.signUp({email,password:pwd,options:{data:{turnstile_token:_turnstileToken}}});
+ loadEl.style.display='none';btn.disabled=false;
+ if(error){
+  errEl.textContent='Erro: '+error.message;errEl.style.display='block';
+  resetTurnstile();
+  return;
+ }
+ errEl.style.color='#3b6d11';
+ errEl.textContent='Conta criada. Verifique seu e-mail para confirmar e depois faça login.';
+ errEl.style.display='block';
+}
+
+// ─── KYC ───────────────────────────────────────────────────────────────────
+const _kycFiles = {selfie:null, crm:null};
+function onKycFile(input, kind){
+ const file=input.files && input.files[0];
+ if(!file)return;
+ if(file.size > 5*1024*1024){alert('Arquivo muito grande (máx 5 MB).');input.value='';return;}
+ _kycFiles[kind]=file;
+ const lbl=document.getElementById(kind==='selfie'?'kycSelfieLbl':'kycCrmDocLbl');
+ if(lbl){lbl.classList.add('has-file');lbl.firstChild.nodeValue=' '+file.name+' ';}
+}
+
+async function uploadKycFile(file, kind, userId){
+ const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
+ const path=`${userId}/${kind}.${ext}`;
+ const {error}=await sb.storage.from('kyc-docs').upload(path,file,{upsert:true,contentType:file.type||'application/octet-stream'});
+ if(error)throw error;
+ return path;
+}
+
+async function doKycSubmit(){
+ const nome=document.getElementById('kycNome').value.trim();
+ const crm=document.getElementById('kycCrm').value.trim();
+ const uf=document.getElementById('kycCrmUf').value.trim().toUpperCase();
+ const esp=document.getElementById('kycEsp').value.trim();
+ const tel=document.getElementById('kycTel').value.trim();
+ const errEl=document.getElementById('kycErr');
+ const loadEl=document.getElementById('kycLoading');
+ const btn=document.getElementById('kycBtn');
+ errEl.style.display='none';
+
+ if(nome.length<5){errEl.textContent='Nome completo é obrigatório.';errEl.style.display='block';return;}
+ if(!/^\d{3,7}$/.test(crm)){errEl.textContent='CRM deve conter apenas números (3 a 7 dígitos).';errEl.style.display='block';return;}
+ if(!/^[A-Z]{2}$/.test(uf)){errEl.textContent='UF deve ter 2 letras maiúsculas.';errEl.style.display='block';return;}
+ if(esp.length<3){errEl.textContent='Informe sua especialidade.';errEl.style.display='block';return;}
+ if(tel.replace(/\D/g,'').length<10){errEl.textContent='Telefone inválido.';errEl.style.display='block';return;}
+ if(!_kycFiles.selfie){errEl.textContent='Envie uma selfie segurando o CRM.';errEl.style.display='block';return;}
+ if(!_kycFiles.crm){errEl.textContent='Envie a foto/scan do CRM.';errEl.style.display='block';return;}
+
+ loadEl.style.display='block';btn.disabled=true;
+ try{
+  const {data:{user}}=await sb.auth.getUser();
+  if(!user)throw new Error('Sessão expirada — faça login novamente.');
+  const selfiePath=await uploadKycFile(_kycFiles.selfie,'selfie',user.id);
+  const crmPath=await uploadKycFile(_kycFiles.crm,'crm',user.id);
+  const {error}=await sb.from('profiles').update({
+   nome_completo:nome, crm, crm_uf:uf, especialidade:esp, telefone:tel,
+   selfie_path:selfiePath, crm_doc_path:crmPath
+  }).eq('id',user.id);
+  if(error)throw error;
+  startProfileSub();
+  showPending('pending');
+ } catch(e){
+  console.error('doKycSubmit:',e);
+  errEl.textContent='Erro: '+(e.message||String(e));errEl.style.display='block';
+ } finally {
+  loadEl.style.display='none';btn.disabled=false;
+ }
 }
 
 
