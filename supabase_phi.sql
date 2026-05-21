@@ -181,6 +181,7 @@ language plpgsql
 security definer
 set search_path = public, extensions
 as $$
+#variable_conflict use_column
 declare
   v_uid    uuid := auth.uid();
   v_status user_status;
@@ -190,7 +191,7 @@ begin
     raise exception 'Não autenticado';
   end if;
 
-  select status into v_status from profiles where id = v_uid;
+  select p.status into v_status from profiles p where p.id = v_uid;
   if v_status is distinct from 'approved' then
     raise exception 'Conta não aprovada (status=%)', coalesce(v_status::text, 'null');
   end if;
@@ -207,7 +208,7 @@ begin
     case
       when r.txt_enc is not null then extensions.pgp_sym_decrypt(r.txt_enc, v_keyhex)
       else r.txt
-    end as txt,
+    end,
     r.created_at
   from reports r
   where r.user_id = v_uid

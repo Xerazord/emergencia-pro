@@ -428,18 +428,25 @@ create policy "audit_delete_blocked" on audit_log
 
 
 -- ────────────────────────────────────────────────────────────
--- 11. SEED — Mateus como admin (idempotente; ignora se conta não existir)
+-- 11. SEED — Mateus como admin (idempotente; cobre usuários
+--     criados antes do trigger handle_new_user existir)
 -- ────────────────────────────────────────────────────────────
 
-update profiles
-set
-  role          = 'admin',
-  status        = 'approved',
-  aprovado_em   = coalesce(aprovado_em, now()),
-  nome_completo = coalesce(nome_completo, 'Mateus Teixeira Candido')
-where id = (
-  select id from auth.users where email = 'mateustcandido@gmail.com'
-);
+insert into profiles (id, email, status, role, aprovado_em, nome_completo)
+select
+  u.id,
+  u.email,
+  'approved'::user_status,
+  'admin'::user_role,
+  now(),
+  'Mateus Teixeira Candido'
+from auth.users u
+where u.email = 'mateustcandido@gmail.com'
+on conflict (id) do update
+   set status        = 'approved'::user_status,
+       role          = 'admin'::user_role,
+       aprovado_em   = coalesce(profiles.aprovado_em, now()),
+       nome_completo = coalesce(profiles.nome_completo, 'Mateus Teixeira Candido');
 
 -- ============================================================
 -- FIM DO SCRIPT
