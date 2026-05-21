@@ -143,7 +143,35 @@ create trigger profiles_set_updated_at
   for each row execute procedure set_updated_at();
 
 
--- 5c. Proteção de campos administrativos (status, role):
+-- 5c. Funções helper is_admin() / is_approved()
+--     SECURITY DEFINER (bypass RLS) para evitar recursão em policies de profiles
+create or replace function is_admin()
+returns boolean
+language sql
+security definer
+set search_path = public
+stable
+as $$
+  select coalesce((select role = 'admin' from profiles where id = auth.uid()), false);
+$$;
+
+create or replace function is_approved()
+returns boolean
+language sql
+security definer
+set search_path = public
+stable
+as $$
+  select coalesce((select status = 'approved' from profiles where id = auth.uid()), false);
+$$;
+
+revoke all on function is_admin()     from public, anon;
+revoke all on function is_approved()  from public, anon;
+grant execute on function is_admin()    to authenticated;
+grant execute on function is_approved() to authenticated;
+
+
+-- 5d. Proteção de campos administrativos (status, role):
 --     impede que um user não-admin altere status/role/aprovado_por/aprovado_em/motivo_rejeicao
 create or replace function protect_profile_admin_fields()
 returns trigger
@@ -151,23 +179,14 @@ language plpgsql
 security definer
 set search_path = public
 as $$
-declare
-  requester_role user_role;
 begin
-  -- Obtém o role de quem está fazendo o UPDATE
-  select role into requester_role
-  from profiles
-  where id = auth.uid();
-
-  if requester_role is distinct from 'admin' then
-    -- Reverte campos protegidos para os valores antigos
+  if not is_admin() then
     new.status            := old.status;
     new.role              := old.role;
     new.aprovado_por      := old.aprovado_por;
     new.aprovado_em       := old.aprovado_em;
     new.motivo_rejeicao   := old.motivo_rejeicao;
   end if;
-
   return new;
 end;
 $$;
@@ -249,49 +268,28 @@ drop policy if exists "kyc_delete_admin_only"     on storage.objects;
 create policy "kyc_select_owner_or_admin" on storage.objects
   for select using (
     bucket_id = 'kyc-docs'
-    and (
-      (storage.foldername(name))[1] = auth.uid()::text
-      or exists (
-        select 1 from profiles
-        where id = auth.uid() and role = 'admin'
-      )
-    )
+    and ((storage.foldername(name))[1] = auth.uid()::text or is_admin())
   );
 
 -- INSERT: owner (path começa com user_id/) OU admin
 create policy "kyc_insert_owner_or_admin" on storage.objects
   for insert with check (
     bucket_id = 'kyc-docs'
-    and (
-      (storage.foldername(name))[1] = auth.uid()::text
-      or exists (
-        select 1 from profiles
-        where id = auth.uid() and role = 'admin'
-      )
-    )
+    and ((storage.foldername(name))[1] = auth.uid()::text or is_admin())
   );
 
 -- UPDATE: owner OU admin
 create policy "kyc_update_owner_or_admin" on storage.objects
   for update using (
     bucket_id = 'kyc-docs'
-    and (
-      (storage.foldername(name))[1] = auth.uid()::text
-      or exists (
-        select 1 from profiles
-        where id = auth.uid() and role = 'admin'
-      )
-    )
+    and ((storage.foldername(name))[1] = auth.uid()::text or is_admin())
   );
 
 -- DELETE: somente admin
 create policy "kyc_delete_admin_only" on storage.objects
   for delete using (
     bucket_id = 'kyc-docs'
-    and exists (
-      select 1 from profiles
-      where id = auth.uid() and role = 'admin'
-    )
+    and is_admin()
   );
 
 
@@ -307,13 +305,7 @@ drop policy if exists "profiles_delete_blocked"       on profiles;
 
 -- SELECT: próprio perfil OU admin
 create policy "profiles_select_own_or_admin" on profiles
-  for select using (
-    auth.uid() = id
-    or exists (
-      select 1 from profiles p
-      where p.id = auth.uid() and p.role = 'admin'
-    )
-  );
+  for select using (auth.uid() = id or is_admin());
 
 -- INSERT: apenas o próprio (handle_new_user usa SECURITY DEFINER, então não precisa de policy
 --         permissiva para trigger; mantemos a policy para cobertura explícita)
@@ -329,13 +321,7 @@ create policy "profiles_update_own" on profiles
 
 -- UPDATE extra: admin pode atualizar qualquer perfil
 create policy "profiles_update_admin" on profiles
-  for update
-  using (
-    exists (
-      select 1 from profiles p
-      where p.id = auth.uid() and p.role = 'admin'
-    )
-  );
+  for update using (is_admin());
 
 -- DELETE: bloqueado — não deletamos profiles diretamente
 create policy "profiles_delete_blocked" on profiles
@@ -352,48 +338,18 @@ drop policy if exists "own_update" on reports;
 drop policy if exists "own_delete" on reports;
 
 create policy "own_select" on reports
-  for select using (
-    auth.uid() = user_id
-    and exists (
-      select 1 from profiles
-      where id = auth.uid() and status = 'approved'
-    )
-  );
+  for select using (auth.uid() = user_id and is_approved());
 
 create policy "own_insert" on reports
-  for insert with check (
-    auth.uid() = user_id
-    and exists (
-      select 1 from profiles
-      where id = auth.uid() and status = 'approved'
-    )
-  );
+  for insert with check (auth.uid() = user_id and is_approved());
 
 create policy "own_update" on reports
   for update
-  using (
-    auth.uid() = user_id
-    and exists (
-      select 1 from profiles
-      where id = auth.uid() and status = 'approved'
-    )
-  )
-  with check (
-    auth.uid() = user_id
-    and exists (
-      select 1 from profiles
-      where id = auth.uid() and status = 'approved'
-    )
-  );
+  using      (auth.uid() = user_id and is_approved())
+  with check (auth.uid() = user_id and is_approved());
 
 create policy "own_delete" on reports
-  for delete using (
-    auth.uid() = user_id
-    and exists (
-      select 1 from profiles
-      where id = auth.uid() and status = 'approved'
-    )
-  );
+  for delete using (auth.uid() = user_id and is_approved());
 
 
 -- ────────────────────────────────────────────────────────────
@@ -407,12 +363,7 @@ drop policy if exists "audit_delete_blocked"      on audit_log;
 
 -- SELECT: somente admin
 create policy "audit_select_admin_only" on audit_log
-  for select using (
-    exists (
-      select 1 from profiles
-      where id = auth.uid() and role = 'admin'
-    )
-  );
+  for select using (is_admin());
 
 -- INSERT: bloqueado via policy (inserções são feitas pelo trigger SECURITY DEFINER)
 create policy "audit_insert_blocked" on audit_log
