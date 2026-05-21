@@ -121,7 +121,19 @@ create policy "kyc_delete_admin_only" on storage.objects
 
 
 -- ────────────────────────────────────────────────────────────
--- 6. Trigger protect_profile_admin_fields — sem EXISTS recursivo
+-- 6. GRANTs de tabela (RLS controla linhas, GRANT controla acesso)
+-- ────────────────────────────────────────────────────────────
+
+grant usage on schema public to anon, authenticated;
+
+grant select, insert, update on profiles  to authenticated;
+grant select                  on audit_log to authenticated;
+-- reports é acessado via RPC SECURITY DEFINER (save/load_report_secure),
+-- então não precisa de grant direto para authenticated.
+
+
+-- ────────────────────────────────────────────────────────────
+-- 7. Trigger protect_profile_admin_fields — sem EXISTS recursivo
 -- ────────────────────────────────────────────────────────────
 -- Já é SECURITY DEFINER, mas vamos garantir o uso de is_admin()
 -- para consistência e clareza.

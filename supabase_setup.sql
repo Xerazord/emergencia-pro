@@ -379,7 +379,19 @@ create policy "audit_delete_blocked" on audit_log
 
 
 -- ────────────────────────────────────────────────────────────
--- 11. SEED — Mateus como admin (idempotente; cobre usuários
+-- 11. GRANTs de tabela (RLS controla linhas, GRANT controla acesso ao role)
+-- ────────────────────────────────────────────────────────────
+
+grant usage on schema public to anon, authenticated;
+
+grant select, insert, update on profiles  to authenticated;
+grant select                  on audit_log to authenticated;
+-- reports é acessado via RPC SECURITY DEFINER (save/load_report_secure),
+-- então não precisa de grant direto para authenticated.
+
+
+-- ────────────────────────────────────────────────────────────
+-- 12. SEED — Mateus como admin (idempotente; cobre usuários
 --     criados antes do trigger handle_new_user existir)
 -- ────────────────────────────────────────────────────────────
 
