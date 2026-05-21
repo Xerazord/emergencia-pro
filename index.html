@@ -185,6 +185,39 @@ textarea{resize:vertical;min-height:60px}
 .grav-mod{background:#faeeda;color:#854f0b;border:.5px solid #fac775}
 .grav-grave{background:#fcebeb;color:#a32d2d;border:.5px solid #f09595}
 
+.admin-btn{padding:6px 12px;background:#e6f1fb;border:.5px solid #85b7eb;color:#185fa5;border-radius:20px;font-size:12px;cursor:pointer;font-weight:500;margin-left:8px}
+.admin-btn:hover{background:#cfe2f5}
+.admin-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:150;display:flex;align-items:flex-start;justify-content:center;padding:1.5rem;overflow-y:auto}
+.admin-shell{background:#fff;border-radius:12px;width:100%;max-width:980px;padding:1.5rem;box-shadow:0 8px 40px rgba(0,0,0,.18)}
+.admin-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:.5px solid #e5e7eb}
+.admin-tabs{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
+.admin-tab{padding:7px 14px;border-radius:20px;font-size:13px;border:.5px solid #e5e7eb;background:#fff;color:#6b7280;cursor:pointer;font-family:inherit}
+.admin-tab.active{background:#fcebeb;border-color:#e24b4a;color:#a32d2d;font-weight:500}
+.admin-tab .badge-n{background:#a32d2d;color:#fff;border-radius:10px;padding:0 6px;font-size:11px;margin-left:6px}
+.admin-row{display:grid;grid-template-columns:1fr 110px 140px 110px 120px;gap:10px;align-items:center;padding:10px 12px;border:.5px solid #e5e7eb;border-radius:8px;margin-bottom:6px;cursor:pointer;background:#fff;transition:border-color .15s}
+.admin-row:hover{border-color:#a32d2d;background:#fdf3f3}
+.admin-row .ar-name{font-weight:500;font-size:14px;color:#111827}
+.admin-row .ar-sub{font-size:11px;color:#6b7280}
+.admin-row .ar-meta{font-size:12px;color:#6b7280}
+.admin-empty{padding:2rem;text-align:center;color:#6b7280;font-size:13px}
+.kyc-detail-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem}
+.kyc-detail-box{background:#fff;border-radius:12px;max-width:760px;width:100%;max-height:92vh;overflow-y:auto;padding:1.5rem}
+.kyc-imgs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.kyc-imgs .ki-card{border:.5px solid #e5e7eb;border-radius:8px;padding:10px;text-align:center}
+.kyc-imgs .ki-card img{max-width:100%;max-height:280px;border-radius:6px;cursor:zoom-in}
+.kyc-imgs .ki-card a{display:inline-block;margin-top:6px;font-size:12px;color:#185fa5;text-decoration:none}
+.kyc-imgs .ki-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#6b7280;margin-bottom:6px}
+.kyc-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:1rem}
+.kyc-actions button{padding:9px 16px;border-radius:8px;border:none;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit}
+.kyc-act-approve{background:#3b6d11;color:#fff}
+.kyc-act-reject{background:#a32d2d;color:#fff}
+.kyc-act-suspend{background:#854f0b;color:#fff}
+.kyc-act-reactivate{background:#185fa5;color:#fff}
+.kyc-act-cancel{background:#e5e7eb;color:#374151}
+.kyc-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:13px;margin-top:8px}
+.kyc-info-grid div{padding:4px 0}
+.kyc-info-grid .kil{color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+
 </style>
 </head>
 <body>
@@ -314,6 +347,7 @@ textarea{resize:vertical;min-height:60px}
  <div class="hico"><i class="ti ti-building-hospital" aria-hidden="true"></i></div>
  <div><div style="font-size:18px;font-weight:500">Emergência Pro</div><div style="font-size:13px;color:var(--color-text-secondary)">Admissão com condutas baseadas em evidências</div></div>
  <button class="reset-btn" onclick="resetCase()"><i class="ti ti-refresh" aria-hidden="true"></i> Reiniciar</button>
+ <button class="admin-btn" id="adminHdrBtn" onclick="showAdminPanel()" style="display:none"><i class="ti ti-shield-lock" aria-hidden="true"></i> Admin</button>
  <button class="logout-btn" onclick="doLogout()" style="margin-left:8px"><i class="ti ti-logout" aria-hidden="true"></i> Sair</button>
 </div>
 <div class="steps" id="sBar"></div>
@@ -321,6 +355,26 @@ textarea{resize:vertical;min-height:60px}
 <div id="modalArea"></div>
 <div class="app-footer" id="appFooter">Emergência Pro • v2026.05.20</div>
 </div>
+
+<div class="admin-overlay" id="adminOverlay" style="display:none">
+ <div class="admin-shell">
+  <div class="admin-hdr">
+   <div>
+    <div style="font-size:18px;font-weight:600">Painel administrativo</div>
+    <div style="font-size:12px;color:#6b7280">Aprovação de profissionais</div>
+   </div>
+   <button class="modal-close" onclick="closeAdminPanel()" aria-label="Fechar">×</button>
+  </div>
+  <div class="admin-tabs" id="adminTabs">
+   <button class="admin-tab active" data-tab="pending" onclick="setAdminTab('pending')">Pendentes <span class="badge-n" id="adminCntPending"></span></button>
+   <button class="admin-tab" data-tab="approved" onclick="setAdminTab('approved')">Aprovados</button>
+   <button class="admin-tab" data-tab="rejected" onclick="setAdminTab('rejected')">Rejeitados</button>
+   <button class="admin-tab" data-tab="suspended" onclick="setAdminTab('suspended')">Suspensos</button>
+  </div>
+  <div id="adminList"></div>
+ </div>
+</div>
+<div id="kycDetailArea"></div>
 <script>
 
 // ─── Supabase config ───────────────────────────────────────────────────────
@@ -334,6 +388,8 @@ const _AUTH_OVERLAYS = ['loginOverlay','signupOverlay','kycOverlay','pendingOver
 let _turnstileToken = null;
 let _turnstileWidgetId = null;
 let _profileSub = null;
+let _currentProfile = null;
+let _adminCurrentTab = 'pending';
 
 function hideAllOverlays(){
  _AUTH_OVERLAYS.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
@@ -369,6 +425,8 @@ function showPending(status, motivo){
 function showApp(){
  hideAllOverlays();
  document.getElementById('mainApp').style.display='block';
+ const adminBtn = document.getElementById('adminHdrBtn');
+ if(adminBtn) adminBtn.style.display = (_currentProfile && _currentProfile.role==='admin') ? '' : 'none';
  if(typeof autoLoad==='function')autoLoad();
  render();
 }
@@ -397,9 +455,11 @@ async function routePostLogin(){
    // Edge case: trigger handle_new_user não criou row (ex.: user criado antes do trigger existir).
    const {error:insErr} = await sb.from('profiles').insert({id:user.id, email:user.email, status:'pending', role:'user'});
    if(insErr){console.error('routePostLogin insert:',insErr);showLogin();return;}
+   _currentProfile = {id:user.id, status:'pending', role:'user'};
    showKyc();
    return;
   }
+  _currentProfile = profile;
   const needsKyc = !profile.nome_completo || !profile.crm || !profile.selfie_path || !profile.crm_doc_path;
   if(profile.status==='approved'){
    showApp();
@@ -588,6 +648,141 @@ async function doKycSubmit(){
  } finally {
   loadEl.style.display='none';btn.disabled=false;
  }
+}
+
+// ─── Painel admin ──────────────────────────────────────────────────────────
+async function showAdminPanel(){
+ if(!_currentProfile || _currentProfile.role!=='admin'){alert('Acesso negado.');return;}
+ document.getElementById('adminOverlay').style.display='flex';
+ setAdminTab('pending');
+ // contador na tab pendentes
+ try{
+  const {count}=await sb.from('profiles').select('id',{count:'exact',head:true}).eq('status','pending');
+  const el=document.getElementById('adminCntPending');if(el)el.textContent=count||'';
+ }catch(e){}
+}
+function closeAdminPanel(){document.getElementById('adminOverlay').style.display='none';document.getElementById('kycDetailArea').innerHTML='';}
+
+function setAdminTab(tab){
+ _adminCurrentTab=tab;
+ document.querySelectorAll('#adminTabs .admin-tab').forEach(b=>{b.classList.toggle('active',b.dataset.tab===tab);});
+ loadAdminTab(tab);
+}
+
+async function loadAdminTab(tab){
+ const listEl=document.getElementById('adminList');
+ listEl.innerHTML='<div class="admin-empty">Carregando...</div>';
+ const {data, error}=await sb.from('profiles')
+  .select('id,email,nome_completo,crm,crm_uf,especialidade,telefone,status,role,motivo_rejeicao,created_at,aprovado_em,selfie_path,crm_doc_path')
+  .eq('status',tab)
+  .order('created_at',{ascending: tab==='pending' ? true : false});
+ if(error){listEl.innerHTML=`<div class="admin-empty">Erro: ${esc(error.message||error)}</div>`;return;}
+ if(!data || !data.length){listEl.innerHTML='<div class="admin-empty">Nenhum registro.</div>';return;}
+ _adminCache = {};
+ listEl.innerHTML = data.map(p=>{
+  _adminCache[p.id]=p;
+  const sub = p.nome_completo ? esc(p.nome_completo) : '<em style="color:#a32d2d">Sem KYC</em>';
+  const crm = p.crm ? esc(p.crm)+'/'+esc(p.crm_uf||'??') : '—';
+  const esp = p.especialidade ? esc(p.especialidade) : '—';
+  const dt = p.created_at ? new Date(p.created_at).toLocaleDateString('pt-BR') : '';
+  return `<div class="admin-row" onclick="openKycDetail('${p.id}')">
+   <div><div class="ar-name">${sub}</div><div class="ar-sub">${esc(p.email)}</div></div>
+   <div class="ar-meta">${crm}</div>
+   <div class="ar-meta">${esp}</div>
+   <div class="ar-meta">${dt}</div>
+   <div class="ar-meta" style="text-align:right;color:#185fa5">Detalhar →</div>
+  </div>`;
+ }).join('');
+}
+
+let _adminCache = {};
+
+async function getKycSignedUrl(path){
+ if(!path)return null;
+ const {data, error}=await sb.storage.from('kyc-docs').createSignedUrl(path, 300); // 5 min
+ if(error){console.warn('signed url:',error);return null;}
+ return data && data.signedUrl;
+}
+
+async function openKycDetail(id){
+ const p=_adminCache[id];
+ if(!p){alert('Perfil não encontrado.');return;}
+ const area=document.getElementById('kycDetailArea');
+ area.innerHTML=`<div class="kyc-detail-modal"><div class="kyc-detail-box"><div class="modal-hdr"><strong>${esc(p.nome_completo||p.email)}</strong><button class="modal-close" onclick="document.getElementById('kycDetailArea').innerHTML=''">×</button></div>
+  <div class="kyc-info-grid">
+   <div><div class="kil">E-mail</div>${esc(p.email)}</div>
+   <div><div class="kil">CRM</div>${esc(p.crm||'—')}${p.crm?'/'+esc(p.crm_uf||'??'):''}</div>
+   <div><div class="kil">Especialidade</div>${esc(p.especialidade||'—')}</div>
+   <div><div class="kil">Telefone</div>${esc(p.telefone||'—')}</div>
+   <div><div class="kil">Status atual</div><strong>${esc(p.status)}</strong></div>
+   <div><div class="kil">Solicitação</div>${p.created_at?new Date(p.created_at).toLocaleString('pt-BR'):'—'}</div>
+   ${p.motivo_rejeicao?`<div style="grid-column:1/-1"><div class="kil">Motivo anterior</div>${esc(p.motivo_rejeicao)}</div>`:''}
+  </div>
+  <div class="kyc-imgs" id="kycDetailImgs"><div class="ki-card"><div class="ki-lbl">Selfie</div><div style="color:#6b7280;font-size:12px">Carregando…</div></div><div class="ki-card"><div class="ki-lbl">CRM</div><div style="color:#6b7280;font-size:12px">Carregando…</div></div></div>
+  <div class="kyc-actions">${renderAdminActions(p)}</div>
+ </div></div>`;
+ // signed URLs em paralelo
+ const [selfieUrl, crmUrl] = await Promise.all([getKycSignedUrl(p.selfie_path), getKycSignedUrl(p.crm_doc_path)]);
+ const imgs=document.getElementById('kycDetailImgs');
+ if(imgs){
+  imgs.innerHTML = `
+   <div class="ki-card"><div class="ki-lbl">Selfie com CRM</div>${selfieUrl?`<img src="${esc(selfieUrl)}" alt="Selfie"><br><a href="${esc(selfieUrl)}" target="_blank" rel="noopener">Abrir em nova aba</a>`:'<div style="color:#6b7280;font-size:12px">Não enviada</div>'}</div>
+   <div class="ki-card"><div class="ki-lbl">Documento CRM</div>${crmUrl?`<img src="${esc(crmUrl)}" alt="CRM" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block'"><a href="${esc(crmUrl)}" target="_blank" rel="noopener" style="display:inline-block">Abrir documento</a>`:'<div style="color:#6b7280;font-size:12px">Não enviado</div>'}</div>`;
+ }
+}
+
+function renderAdminActions(p){
+ const cancel='<button class="kyc-act-cancel" onclick="document.getElementById(\'kycDetailArea\').innerHTML=\'\'">Cancelar</button>';
+ if(p.status==='pending'){
+  return `<button class="kyc-act-approve" onclick="adminApprove('${p.id}')">Aprovar</button><button class="kyc-act-reject" onclick="adminReject('${p.id}')">Rejeitar</button>${cancel}`;
+ }
+ if(p.status==='approved'){
+  return `<button class="kyc-act-suspend" onclick="adminSuspend('${p.id}')">Suspender</button>${cancel}`;
+ }
+ if(p.status==='rejected' || p.status==='suspended'){
+  return `<button class="kyc-act-reactivate" onclick="adminReactivate('${p.id}')">Reativar (aprovar)</button>${cancel}`;
+ }
+ return cancel;
+}
+
+async function adminUpdateStatus(id, status, motivo){
+ const patch={status, motivo_rejeicao:motivo||null};
+ if(status==='approved'){
+  patch.aprovado_em = new Date().toISOString();
+  const {data:{user}}=await sb.auth.getUser();
+  if(user)patch.aprovado_por = user.id;
+ }
+ const {error} = await sb.from('profiles').update(patch).eq('id',id);
+ if(error){alert('Erro: '+(error.message||error));return false;}
+ document.getElementById('kycDetailArea').innerHTML='';
+ await loadAdminTab(_adminCurrentTab);
+ // atualizar contador de pendentes
+ try{
+  const {count}=await sb.from('profiles').select('id',{count:'exact',head:true}).eq('status','pending');
+  const el=document.getElementById('adminCntPending');if(el)el.textContent=count||'';
+ }catch(e){}
+ return true;
+}
+
+async function adminApprove(id){
+ if(!confirm('Aprovar este cadastro?'))return;
+ await adminUpdateStatus(id,'approved',null);
+}
+async function adminReject(id){
+ const motivo=prompt('Motivo da rejeição (será mostrado ao usuário):');
+ if(motivo===null)return;
+ if(!motivo.trim()){alert('Motivo é obrigatório.');return;}
+ await adminUpdateStatus(id,'rejected',motivo.trim());
+}
+async function adminSuspend(id){
+ const motivo=prompt('Motivo da suspensão (será mostrado ao usuário):');
+ if(motivo===null)return;
+ if(!motivo.trim()){alert('Motivo é obrigatório.');return;}
+ await adminUpdateStatus(id,'suspended',motivo.trim());
+}
+async function adminReactivate(id){
+ if(!confirm('Reativar (aprovar) este cadastro?'))return;
+ await adminUpdateStatus(id,'approved',null);
 }
 
 
