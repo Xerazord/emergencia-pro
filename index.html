@@ -514,6 +514,13 @@ async function doLogin(){
 
 async function doLogout(){
  stopProfileSub();
+ _currentProfile = null;
+ _adminCache = {};
+ _kycFiles.selfie = null;
+ _kycFiles.crm = null;
+ _turnstileToken = null;
+ const adminBtn = document.getElementById('adminHdrBtn');
+ if(adminBtn) adminBtn.style.display = 'none';
  await sb.auth.signOut();
 }
 
@@ -685,7 +692,7 @@ async function loadAdminTab(tab){
   const crm = p.crm ? esc(p.crm)+'/'+esc(p.crm_uf||'??') : '—';
   const esp = p.especialidade ? esc(p.especialidade) : '—';
   const dt = p.created_at ? new Date(p.created_at).toLocaleDateString('pt-BR') : '';
-  return `<div class="admin-row" onclick="openKycDetail('${p.id}')">
+  return `<div class="admin-row" onclick="openKycDetail('${esc(p.id)}')">
    <div><div class="ar-name">${sub}</div><div class="ar-sub">${esc(p.email)}</div></div>
    <div class="ar-meta">${crm}</div>
    <div class="ar-meta">${esp}</div>
@@ -732,17 +739,25 @@ async function openKycDetail(id){
 }
 
 function renderAdminActions(p){
+ const id = esc(p.id);
  const cancel='<button class="kyc-act-cancel" onclick="document.getElementById(\'kycDetailArea\').innerHTML=\'\'">Cancelar</button>';
  if(p.status==='pending'){
-  return `<button class="kyc-act-approve" onclick="adminApprove('${p.id}')">Aprovar</button><button class="kyc-act-reject" onclick="adminReject('${p.id}')">Rejeitar</button>${cancel}`;
+  return `<button class="kyc-act-approve" onclick="adminApprove('${id}')">Aprovar</button><button class="kyc-act-reject" onclick="adminReject('${id}')">Rejeitar</button>${cancel}`;
  }
  if(p.status==='approved'){
-  return `<button class="kyc-act-suspend" onclick="adminSuspend('${p.id}')">Suspender</button>${cancel}`;
+  return `<button class="kyc-act-suspend" onclick="adminSuspend('${id}')">Suspender</button>${cancel}`;
  }
  if(p.status==='rejected' || p.status==='suspended'){
-  return `<button class="kyc-act-reactivate" onclick="adminReactivate('${p.id}')">Reativar (aprovar)</button>${cancel}`;
+  return `<button class="kyc-act-reactivate" onclick="adminReactivate('${id}')">Reativar (aprovar)</button>${cancel}`;
  }
  return cancel;
+}
+
+function _sanitizeAdminMotivo(s){
+ if(!s)return '';
+ const trimmed = String(s).trim().slice(0,500);
+ // remove caracteres que podem virar HTML se algum dia renderizado em innerHTML
+ return trimmed.replace(/[<>]/g,'');
 }
 
 async function adminUpdateStatus(id, status, motivo){
@@ -769,16 +784,18 @@ async function adminApprove(id){
  await adminUpdateStatus(id,'approved',null);
 }
 async function adminReject(id){
- const motivo=prompt('Motivo da rejeição (será mostrado ao usuário):');
+ const motivo=prompt('Motivo da rejeição (até 500 caracteres):');
  if(motivo===null)return;
- if(!motivo.trim()){alert('Motivo é obrigatório.');return;}
- await adminUpdateStatus(id,'rejected',motivo.trim());
+ const clean = _sanitizeAdminMotivo(motivo);
+ if(!clean){alert('Motivo é obrigatório.');return;}
+ await adminUpdateStatus(id,'rejected',clean);
 }
 async function adminSuspend(id){
- const motivo=prompt('Motivo da suspensão (será mostrado ao usuário):');
+ const motivo=prompt('Motivo da suspensão (até 500 caracteres):');
  if(motivo===null)return;
- if(!motivo.trim()){alert('Motivo é obrigatório.');return;}
- await adminUpdateStatus(id,'suspended',motivo.trim());
+ const clean = _sanitizeAdminMotivo(motivo);
+ if(!clean){alert('Motivo é obrigatório.');return;}
+ await adminUpdateStatus(id,'suspended',clean);
 }
 async function adminReactivate(id){
  if(!confirm('Reativar (aprovar) este cadastro?'))return;

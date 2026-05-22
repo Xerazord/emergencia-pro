@@ -38,7 +38,7 @@ end $$;
 
 create table if not exists reports (
   id          bigint primary key generated always as identity,
-  user_id     uuid references auth.users not null default auth.uid(),
+  user_id     uuid references auth.users(id) on delete cascade not null default auth.uid(),
   key         text not null,
   nome        text,
   queixa      text,
@@ -46,6 +46,15 @@ create table if not exists reports (
   txt         text,
   created_at  timestamptz default now()
 );
+
+-- Garante CASCADE em bancos onde a constraint foi criada sem ele
+do $$ begin
+  alter table reports drop constraint if exists reports_user_id_fkey;
+  alter table reports
+    add constraint reports_user_id_fkey
+    foreign key (user_id) references auth.users(id) on delete cascade;
+exception when others then null;
+end $$;
 
 alter table reports enable row level security;
 
@@ -230,6 +239,12 @@ begin
     v_before := to_jsonb(old);
     v_after  := to_jsonb(new);
     v_row_id := new.id::text;
+  end if;
+
+  -- Em reports, remover colunas com PHI (cifrada ou plain) do audit log
+  if tg_table_name = 'reports' then
+    if v_before is not null then v_before := v_before - 'txt_enc' - 'txt'; end if;
+    if v_after  is not null then v_after  := v_after  - 'txt_enc' - 'txt'; end if;
   end if;
 
   insert into audit_log (user_id, table_name, action, row_id, before, after)

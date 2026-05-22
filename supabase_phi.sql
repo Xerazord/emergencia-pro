@@ -231,10 +231,16 @@ security definer
 set search_path = public
 as $$
 declare
-  v_uid uuid := auth.uid();
+  v_uid    uuid := auth.uid();
+  v_status user_status;
 begin
   if v_uid is null then
     raise exception 'Não autenticado';
+  end if;
+
+  select status into v_status from profiles where id = v_uid;
+  if v_status is distinct from 'approved' then
+    raise exception 'Conta não aprovada (status=%)', coalesce(v_status::text, 'null');
   end if;
 
   delete from reports where id = p_id and user_id = v_uid;
