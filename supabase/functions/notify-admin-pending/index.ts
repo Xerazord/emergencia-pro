@@ -7,15 +7,17 @@
 //   supabase secrets set RESEND_API_KEY=re_...
 //
 // Variáveis de ambiente esperadas:
-//   - RESEND_API_KEY   (obrigatório)
-//   - ADMIN_EMAIL      (opcional; default mateustcandido@gmail.com)
-//   - RESEND_FROM      (opcional; default 'Emergência Pro <onboarding@resend.dev>')
+//   - RESEND_API_KEY        (obrigatório)
+//   - NOTIFY_SHARED_SECRET  (obrigatório — protege a function de chamadas externas)
+//   - ADMIN_EMAIL           (opcional; default mateustcandido@gmail.com)
+//   - RESEND_FROM           (opcional; default 'Emergência Pro <onboarding@resend.dev>')
 
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
 
-const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
-const ADMIN_EMAIL    = Deno.env.get("ADMIN_EMAIL")    ?? "mateustcandido@gmail.com";
-const RESEND_FROM    = Deno.env.get("RESEND_FROM")    ?? "Emergência Pro <onboarding@resend.dev>";
+const RESEND_API_KEY       = Deno.env.get("RESEND_API_KEY")       ?? "";
+const NOTIFY_SHARED_SECRET = Deno.env.get("NOTIFY_SHARED_SECRET") ?? "";
+const ADMIN_EMAIL          = Deno.env.get("ADMIN_EMAIL")          ?? "mateustcandido@gmail.com";
+const RESEND_FROM          = Deno.env.get("RESEND_FROM")          ?? "Emergência Pro <onboarding@resend.dev>";
 
 function esc(s: unknown): string {
   return String(s ?? "").replace(/[&<>"']/g, (c) => ({
@@ -26,6 +28,22 @@ function esc(s: unknown): string {
 serve(async (req) => {
   if (req.method !== "POST") {
     return new Response("Method Not Allowed", { status: 405 });
+  }
+
+  // Shared secret obrigatório — só o trigger do banco conhece o valor
+  if (!NOTIFY_SHARED_SECRET) {
+    console.error("NOTIFY_SHARED_SECRET not configured");
+    return new Response(JSON.stringify({ error: "Function not configured" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+  const auth = req.headers.get("Authorization") || "";
+  if (auth !== `Bearer ${NOTIFY_SHARED_SECRET}`) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   if (!RESEND_API_KEY) {
