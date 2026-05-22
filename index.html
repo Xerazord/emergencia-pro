@@ -1331,7 +1331,8 @@ const S={step:0,nome:'',idade:30,sexo:'',orig:'Demanda Espontânea',origInst:'',
  cvEF:{nivel:null,foco:[],men:[]},
  cvEFOpen:{nivel:true,foco:false,men:false},
  abcOpen:{a:true},
- relMode:'full'};
+ relMode:'full',
+ condStatus:'em_conduta',condReavalMin:null,condPendDesc:'',condPendCat:'outros',condPendPrazoMin:null};
 
 // Snapshot do estado inicial para resetCase()
 const INITIAL_S=JSON.parse(JSON.stringify(S));
@@ -2797,18 +2798,39 @@ async function saveReport(txt){
  try{
  const {data:{user}}=await sb.auth.getUser();
  if(!user){showToast('Faça login para salvar',false);return;}
- const {error}=await sb.rpc('save_report_secure',{
+ const reavalIso = (S.condReavalMin && S.condReavalMin>=1 && S.condReavalMin<=2880)
+   ? new Date(Date.now()+S.condReavalMin*60000).toISOString() : null;
+ const validStatuses = ['em_conduta','aguard_exames','aguard_vaga','alta','transferencia','obito','recusa_terapeutica'];
+ const condStatus = validStatuses.includes(S.condStatus) ? S.condStatus : 'em_conduta';
+ const {data: reportId, error}=await sb.rpc('save_report_secure',{
  p_key:'rel_'+Date.now(),
  p_nome:S.nome||'Sem nome',
  p_queixa:S.queixa||'—',
  p_date:new Date().toLocaleString('pt-BR'),
  p_txt:txt,
+ p_status_conduta: condStatus,
+ p_reavaliar_em: reavalIso,
  p_idade: (typeof S.idade==='number' && S.idade>=0 && S.idade<=130) ? S.idade : null,
  p_sexo: (S.sexo==='M'||S.sexo==='F'||S.sexo==='O') ? S.sexo : null,
  p_sinais_vitais: _vitaisFromS(),
  p_sind_label: _sindLabel()
  });
  if(error)throw error;
+ // Pendência inicial opcional
+ const pendDesc = (S.condPendDesc||'').trim();
+ if(pendDesc && reportId){
+  const validCats = ['exame','medicacao','transferencia','reavaliacao','consulta','outros'];
+  const cat = validCats.includes(S.condPendCat) ? S.condPendCat : 'outros';
+  const prazoIso = (S.condPendPrazoMin && S.condPendPrazoMin>=1 && S.condPendPrazoMin<=2880)
+    ? new Date(Date.now()+S.condPendPrazoMin*60000).toISOString() : null;
+  const {error:pErr} = await sb.rpc('add_pendencia',{
+   p_report_id: reportId,
+   p_descricao: pendDesc.slice(0,500),
+   p_prazo: prazoIso,
+   p_categoria: cat
+  });
+  if(pErr){console.error('add_pendencia:',pErr);showToast('Relatório salvo, mas falhou ao adicionar pendência: '+(pErr.message||pErr),false);}
+ }
  showToast('Relatório salvo com sucesso!');
  clearDraft();
  }catch(e){const msg=(e&&e.message)||String(e)||'desconhecido';console.error('saveReport:',e);showToast('Erro ao salvar: '+msg,false);}
@@ -2971,7 +2993,26 @@ function gResumo(){
 }
 function pSumH(){const T=S.sind?CT[S.sind]:null;if(!T)return'';const pd=T.s.filter(sec=>sec.it.some((_,i)=>S.chk[S.sind+'_'+sec.id+'_'+i]==='pend'));if(!pd.length)return'';return`<div class="psm" style="margin-bottom:12px"><span class="psml"><i class="ti ti-clock" aria-hidden="true"></i> Pendências:</span>${pd.map(s=>{const n=s.it.filter((_,i)=>S.chk[S.sind+'_'+s.id+'_'+i]==='pend').length;return`<span class="psmb">${s.t}: ${n}</span>`;}).join('')}</div>`;}
 
-function s5(){return`<div class="card"><div class="st"><i class="ti ti-file-text" aria-hidden="true"></i> Relatório de admissão</div>${pSumH()}${QX_BADGE[S.queixa]?QX_BADGE[S.queixa]():''}<div class="rg" style="margin-bottom:10px"><span class="ro ${S.relMode==='full'?'on':''}" onclick="S.relMode='full';render()"><i class="ti ti-file-text" aria-hidden="true"></i> Completo</span><span class="ro ${S.relMode==='resumo'?'on':''}" onclick="S.relMode='resumo';render()"><i class="ti ti-list" aria-hidden="true"></i> Resumo de plantão</span></div><div class="relbox" id="relTxt"></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btng" onclick="navigator.clipboard.writeText(document.getElementById('relTxt').textContent).then(()=>showToast('Copiado!'))"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button><button class="btng" style="background:#185fa5" onclick="saveReport(document.getElementById('relTxt').textContent)"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar</button><button class="btns" onclick="showSaved()"><i class="ti ti-history" aria-hidden="true"></i> Ver salvos</button><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Editar</button></div></div>`;}
+function s5(){
+ const statusOpts = Object.entries(STATUS_LABEL).map(([k,v])=>
+  `<option value="${esc(k)}" ${S.condStatus===k?'selected':''}>${esc(v)}</option>`
+ ).join('');
+ const catOpts = Object.entries(PEND_CAT_LABEL).map(([k,v])=>
+  `<option value="${esc(k)}" ${S.condPendCat===k?'selected':''}>${esc(v)}</option>`
+ ).join('');
+ return `<div class="card"><div class="st"><i class="ti ti-file-text" aria-hidden="true"></i> Relatório de admissão</div>${pSumH()}${QX_BADGE[S.queixa]?QX_BADGE[S.queixa]():''}<div class="rg" style="margin-bottom:10px"><span class="ro ${S.relMode==='full'?'on':''}" onclick="S.relMode='full';render()"><i class="ti ti-file-text" aria-hidden="true"></i> Completo</span><span class="ro ${S.relMode==='resumo'?'on':''}" onclick="S.relMode='resumo';render()"><i class="ti ti-list" aria-hidden="true"></i> Resumo de plantão</span></div><div class="relbox" id="relTxt"></div>
+<div style="border-top:.5px solid #e5e7eb;padding-top:12px;margin-top:12px;margin-bottom:12px">
+ <div style="font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;font-weight:500">Conduta inicial (vai para o painel de plantão)</div>
+ <div class="r2" style="margin-bottom:8px">
+  <div><label>Status</label><select onchange="S.condStatus=this.value">${statusOpts}</select></div>
+  <div><label>Reavaliar em (min)</label><input type="number" min="1" max="2880" inputmode="numeric" value="${S.condReavalMin||''}" oninput="S.condReavalMin=parseInt(this.value,10)||null" placeholder="opcional"></div>
+ </div>
+ <div style="font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;margin:10px 0 6px;font-weight:500">Pendência inicial (opcional)</div>
+ <div style="margin-bottom:6px"><input type="text" maxlength="500" value="${esc(S.condPendDesc)}" oninput="S.condPendDesc=this.value" placeholder="Descrição da pendência (deixe vazio para pular)"></div>
+ <div class="r2"><div><label>Categoria</label><select onchange="S.condPendCat=this.value">${catOpts}</select></div><div><label>Prazo (min)</label><input type="number" min="1" max="2880" inputmode="numeric" value="${S.condPendPrazoMin||''}" oninput="S.condPendPrazoMin=parseInt(this.value,10)||null" placeholder="opcional"></div></div>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btng" onclick="navigator.clipboard.writeText(document.getElementById('relTxt').textContent).then(()=>showToast('Copiado!'))"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button><button class="btng" style="background:#185fa5" onclick="saveReport(document.getElementById('relTxt').textContent)"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar</button><button class="btns" onclick="showSaved()"><i class="ti ti-history" aria-hidden="true"></i> Ver salvos</button><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Editar</button></div></div>`;
+}
 
 function render(){rs();const c=document.getElementById('con');if(S.step===0)c.innerHTML=s0();else if(S.step===1)c.innerHTML=s1();else if(S.step===2)c.innerHTML=s2();else if(S.step===3)c.innerHTML=s3();else if(S.step===4)c.innerHTML=s4();else{c.innerHTML=s5();const rt=document.getElementById('relTxt');if(rt)rt.textContent=S.relMode==='resumo'?gResumo():gRel();}if(typeof autoSave==='function')autoSave();}
 initAuth();
