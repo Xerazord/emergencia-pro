@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" integrity="sha384-hs5SINUk7GPohxRis+rS7grpSWEbtOIJ3sRoseBKg3CDPIKpG55RfSenbvA6ALOt" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.3" integrity="sha384-iWpUQPQzWsFiosLgsS8o+e6E8y3Gm+EW2m/vAAo7A2H3fuc4KOKEx+5CAord2H2z" crossorigin="anonymous"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileReady" async defer></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" integrity="sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/" crossorigin="anonymous"></script>
 <style>
 
 :root{
@@ -538,7 +539,7 @@ async function routePostLogin(){
  try{
   const {data:{user}} = await sb.auth.getUser();
   if(!user){showLogin();return;}
-  let {data:profile, error} = await sb.from('profiles').select('status, role, nome_completo, crm, motivo_rejeicao, selfie_path, crm_doc_path').eq('id',user.id).maybeSingle();
+  let {data:profile, error} = await sb.from('profiles').select('status, role, nome_completo, crm, crm_uf, especialidade, motivo_rejeicao, selfie_path, crm_doc_path').eq('id',user.id).maybeSingle();
   if(error){
    console.error('routePostLogin:',error);
    showLogin();
@@ -1292,8 +1293,128 @@ async function doDeletePendencia(id, reportId){
 }
 
 function exportShiftPDF(){
- // Implementado na Fase C4
- alert('Exportação PDF chega na Fase C4 (após edição pós-save).');
+ if(!_shiftData || !_shiftData.shift){alert('Sem plantão para exportar.');return;}
+ if(!window.jspdf || !window.jspdf.jsPDF){alert('Biblioteca PDF ainda carregando. Tente novamente em alguns segundos.');return;}
+ const { jsPDF } = window.jspdf;
+ const doc = new jsPDF({unit:'pt', format:'a4'});
+ const W = doc.internal.pageSize.getWidth();
+ const H = doc.internal.pageSize.getHeight();
+ const M = 40;
+ let y = M;
+
+ function tx(txt, size, bold, color){
+  doc.setFontSize(size);
+  doc.setFont('helvetica', bold ? 'bold' : 'normal');
+  doc.setTextColor(...(color||[17,24,39]));
+  const ls = doc.splitTextToSize(String(txt==null?'':txt), W - 2*M);
+  doc.text(ls, M, y);
+  y += ls.length * (size * 1.25);
+ }
+ function rule(){doc.setLineWidth(0.5);doc.setDrawColor(220,220,220);doc.line(M, y, W-M, y);y += 6;}
+ function sp(n){y += n;}
+ function ensure(need){if(y + need > H - 50){doc.addPage();y = M;}}
+
+ const sh = _shiftData.shift;
+ const ps = _shiftData.pacientes || [];
+ const started = new Date(sh.started_at);
+ const ended = sh.ended_at ? new Date(sh.ended_at) : new Date();
+ const durMs = ended - started;
+ const dh = Math.floor(durMs/3600000);
+ const dm = Math.floor((durMs%3600000)/60000);
+
+ // Cabeçalho
+ tx('Resumo de Plantão', 18, true);
+ sp(4);
+ const medico = (_currentProfile && _currentProfile.nome_completo) || '—';
+ const crmTxt = (_currentProfile && _currentProfile.crm) ? ' · CRM ' + _currentProfile.crm + '/' + (_currentProfile.crm_uf || '??') : '';
+ const espTxt = (_currentProfile && _currentProfile.especialidade) ? ' · ' + _currentProfile.especialidade : '';
+ tx(medico + crmTxt + espTxt, 11);
+ sp(2);
+ tx('Início: ' + started.toLocaleString('pt-BR') + (sh.ended_at ? ' · Encerrado: ' + ended.toLocaleString('pt-BR') : ' · Em curso (snapshot)'), 9, false, [107,114,128]);
+ tx('Duração: ' + dh + 'h ' + dm + 'min · ' + ps.length + ' paciente(s)', 9, false, [107,114,128]);
+ sp(10); rule(); sp(6);
+
+ // Métricas
+ const now = Date.now();
+ const emConduta   = ps.filter(p=>p.status_conduta==='em_conduta').length;
+ const reavalVenc  = ps.filter(p=>p.reavaliar_em && new Date(p.reavaliar_em).getTime() < now).length;
+ const pendOpenTot = ps.reduce((s,p)=> s + ((p.pendencias||[]).filter(pn=>!pn.done).length), 0);
+ tx('Métricas', 11, true);
+ tx(`Total: ${ps.length} · Em conduta: ${emConduta} · Reaval. vencidas: ${reavalVenc} · Pendências abertas: ${pendOpenTot}`, 10);
+ sp(10); rule(); sp(8);
+
+ if(sh.notes){
+  tx('Notas do plantão', 11, true);
+  tx(sh.notes, 10);
+  sp(8); rule(); sp(6);
+ }
+
+ // Lista de pacientes
+ if(!ps.length){
+  tx('(Nenhum paciente registrado neste plantão.)', 10, false, [107,114,128]);
+ } else {
+  tx('Pacientes', 13, true);
+  sp(4);
+  const sorted = ps.slice().sort((a,b)=> new Date(a.created_at) - new Date(b.created_at));
+  sorted.forEach((p, idx)=>{
+   ensure(120);
+   // Cabeçalho do paciente
+   const hdr = (idx+1) + '. ' + _firstName(p.nome) + (p.idade!=null?' · '+p.idade+'a':'') + (p.sexo?' · '+p.sexo:'');
+   tx(hdr, 12, true);
+   const dt = p.created_at ? new Date(p.created_at).toLocaleString('pt-BR') : '';
+   tx('Admissão: ' + dt, 9, false, [107,114,128]);
+   const sind = p.sind_label || p.queixa || '—';
+   tx('Síndrome: ' + sind, 10, false, [24,95,165]);
+   // Vitais
+   const v = p.sinais_vitais;
+   if(v){
+    const parts = [];
+    if(v.fc) parts.push('FC '+v.fc);
+    if(v.sat) parts.push('SpO2 '+v.sat+'%');
+    if(v.pa) parts.push('PA '+v.pa);
+    if(v.fr) parts.push('FR '+v.fr);
+    if(v.temp) parts.push('T '+v.temp+'°C');
+    if(parts.length) tx(parts.join('  |  '), 9, false, [55,65,81]);
+   }
+   // Status + reaval
+   const stLbl = STATUS_LABEL[p.status_conduta] || p.status_conduta;
+   let stLine = 'Status: ' + stLbl;
+   if(p.reavaliar_em){
+    const rv = new Date(p.reavaliar_em);
+    const due = rv < new Date() ? '  [VENCIDA]' : '';
+    stLine += '   ·   Reavaliar: ' + rv.toLocaleString('pt-BR',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'}) + due;
+   }
+   tx(stLine, 9);
+   // Pendências
+   const pends = p.pendencias || [];
+   if(pends.length){
+    sp(2);
+    tx('Pendências:', 10, true);
+    pends.forEach(pn=>{
+     ensure(20);
+     const chk = pn.done ? '[x]' : '[ ]';
+     const cat = '(' + (PEND_CAT_LABEL[pn.categoria]||pn.categoria) + ')';
+     const prz = pn.prazo ? '  · prazo ' + new Date(pn.prazo).toLocaleString('pt-BR',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'}) : '';
+     tx('  ' + chk + ' ' + pn.descricao + '  ' + cat + prz, 9);
+    });
+   }
+   sp(8); rule(); sp(4);
+  });
+ }
+
+ // Rodapé em todas as páginas
+ const total = doc.internal.getNumberOfPages();
+ for(let i=1; i<=total; i++){
+  doc.setPage(i);
+  doc.setFontSize(8);
+  doc.setTextColor(156,163,175);
+  doc.text('Emergência Pro · v' + (typeof BUILD_VERSION!=='undefined'?BUILD_VERSION:'—') + ' · gerado ' + new Date().toLocaleString('pt-BR'), M, H-20);
+  doc.text(`${i} / ${total}`, W-M-30, H-20);
+ }
+
+ const stampDate = started.toISOString().slice(0,10);
+ const stampTime = started.toTimeString().slice(0,5).replace(':','');
+ doc.save('plantao_' + stampDate + '_' + stampTime + '.pdf');
 }
 
 
