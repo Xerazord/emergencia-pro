@@ -254,6 +254,17 @@ textarea{resize:vertical;min-height:60px}
 .pac-card .pac-pend-count{font-size:11px;color:#6b7280;padding:2px 8px;border-radius:10px;background:#f3f4f6}
 .pac-card .pac-pend-count.has-open{background:#faeeda;color:#854f0b;font-weight:500}
 .pac-status-badge{padding:3px 9px;border-radius:10px;font-size:11px;font-weight:500;display:inline-block}
+.pac-vitals{font-size:12px;color:#374151;margin-top:4px;font-variant-numeric:tabular-nums}
+.pac-vitals .vsep{color:#d1d5db;margin:0 6px}
+.pac-sind{font-size:12px;color:#185fa5;margin-top:3px;font-weight:500}
+.pac-conducts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pac-conduct-tag{padding:3px 9px;border-radius:10px;font-size:11px;font-weight:500;display:inline-flex;align-items:center;gap:4px;max-width:100%}
+.tag-exames{background:#faeeda;color:#854f0b;border:.5px solid #fac775}
+.tag-medicacao{background:#fdf3f3;color:#a32d2d;border:.5px solid #f09595}
+.tag-transferencia{background:#e6f1fb;color:#185fa5;border:.5px solid #85b7eb}
+.tag-vaga{background:#fcf3f8;color:#9b1862;border:.5px solid #ecaccc}
+.tag-pend-spec{background:#eaf3de;color:#3b6d11;border:.5px solid #c0dd97}
+.tag-pend-spec .pt-txt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px}
 .status-em_conduta{background:#fdf3f3;color:#a32d2d}
 .status-aguard_exames,.status-aguard_vaga{background:#faeeda;color:#854f0b}
 .status-alta{background:#eaf3de;color:#3b6d11}
@@ -451,13 +462,8 @@ textarea{resize:vertical;min-height:60px}
    </div>
    <button class="modal-close" onclick="closeShiftPanel()" aria-label="Fechar">×</button>
   </div>
-  <div id="shiftInfo"></div>
+  <div class="shift-info" id="shiftInfo"></div>
   <div class="shift-actions" id="shiftActions"></div>
-  <div class="shift-tabs" id="shiftTabs" style="display:none">
-   <button class="shift-tab active" data-tab="resumo" onclick="setShiftTab('resumo')">Resumo</button>
-   <button class="shift-tab" data-tab="pacientes" onclick="setShiftTab('pacientes')">Pacientes</button>
-   <button class="shift-tab" data-tab="pendencias" onclick="setShiftTab('pendencias')">Pendências</button>
-  </div>
   <div id="shiftBody"></div>
  </div>
 </div>
@@ -953,17 +959,9 @@ function urgClass(p){
 async function showShiftPanel(){
  if(!_currentProfile || _currentProfile.status!=='approved'){alert('Acesso negado.');return;}
  document.getElementById('shiftOverlay').style.display='flex';
- _shiftCurrentTab='resumo';
- document.querySelectorAll('#shiftTabs .shift-tab').forEach(b=>b.classList.toggle('active',b.dataset.tab==='resumo'));
  await loadShiftDashboard();
 }
 function closeShiftPanel(){document.getElementById('shiftOverlay').style.display='none';}
-
-function setShiftTab(tab){
- _shiftCurrentTab=tab;
- document.querySelectorAll('#shiftTabs .shift-tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
- renderShiftBody();
-}
 
 async function loadShiftDashboard(){
  document.getElementById('shiftBody').innerHTML='<div class="shift-empty">Carregando...</div>';
@@ -991,13 +989,11 @@ function renderShiftHeader(){
  const info = document.getElementById('shiftInfo');
  const actions = document.getElementById('shiftActions');
  const status = document.getElementById('shiftStatus');
- const tabs = document.getElementById('shiftTabs');
 
  if(!sh){
   status.textContent = 'Nenhum plantão ativo';
   info.innerHTML = '';
   actions.innerHTML = '<button class="shift-action-btn shift-act-start" onclick="doStartShift()"><i class="ti ti-player-play" aria-hidden="true"></i> Iniciar plantão</button>';
-  tabs.style.display = 'none';
   document.getElementById('shiftBody').innerHTML='';
   return;
  }
@@ -1028,35 +1024,11 @@ function renderShiftHeader(){
    <button class="shift-action-btn shift-act-start" onclick="doStartShift()"><i class="ti ti-player-play" aria-hidden="true"></i> Iniciar novo plantão</button>
    <button class="shift-action-btn shift-act-pdf" onclick="exportShiftPDF()"><i class="ti ti-file-export" aria-hidden="true"></i> Exportar PDF</button>`;
  }
- tabs.style.display = 'flex';
 }
 
 function renderShiftBody(){
  if(!_shiftData || !_shiftData.shift) return;
- const body = document.getElementById('shiftBody');
- if(_shiftCurrentTab==='resumo') body.innerHTML = renderShiftResumo();
- else if(_shiftCurrentTab==='pacientes') body.innerHTML = renderShiftPacientes();
- else if(_shiftCurrentTab==='pendencias') body.innerHTML = renderShiftPendencias();
-}
-
-function renderShiftResumo(){
- const ps = (_shiftData && _shiftData.pacientes) || [];
- if(!ps.length) return '<div class="shift-empty">Nenhum paciente neste plantão ainda.</div>';
- const byStatus = {}, byQueixa = {};
- ps.forEach(p=>{
-  byStatus[p.status_conduta] = (byStatus[p.status_conduta]||0)+1;
-  byQueixa[p.queixa||'—'] = (byQueixa[p.queixa||'—']||0)+1;
- });
- let out = '<div style="margin-bottom:14px"><div style="font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Status</div>';
- Object.entries(byStatus).sort((a,b)=>b[1]-a[1]).forEach(([s,n])=>{
-  out += `<div class="shift-dist-row"><span class="pac-status-badge status-${esc(s)}">${esc(STATUS_LABEL[s]||s)}</span><span style="color:#6b7280">${n}</span></div>`;
- });
- out += '</div><div><div style="font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Queixa</div>';
- Object.entries(byQueixa).sort((a,b)=>b[1]-a[1]).forEach(([q,n])=>{
-  out += `<div class="shift-dist-row"><span>${esc(q)}</span><span style="color:#6b7280">${n}</span></div>`;
- });
- out += '</div>';
- return out;
+ document.getElementById('shiftBody').innerHTML = renderShiftPacientes();
 }
 
 function fmtReaval(reavaliar_em){
@@ -1073,6 +1045,34 @@ function fmtReaval(reavaliar_em){
  return `<div class="${cls}">${esc(txt)}</div>`;
 }
 
+function fmtVitais(v){
+ if(!v || typeof v !== 'object') return '';
+ const parts = [];
+ if(v.fc)   parts.push(`FC ${esc(v.fc)}`);
+ if(v.sat)  parts.push(`SpO₂ ${esc(v.sat)}%`);
+ if(v.pa)   parts.push(`PA ${esc(v.pa)}`);
+ if(v.fr)   parts.push(`FR ${esc(v.fr)}`);
+ if(v.temp) parts.push(`T ${esc(v.temp)}°C`);
+ return parts.join('<span class="vsep">|</span>');
+}
+
+function _firstName(s){return String(s||'').trim().split(/\s+/)[0] || 'Sem nome';}
+
+function pacConductTags(p){
+ const open = (p.pendencias||[]).filter(pn=>!pn.done);
+ const hasCat = c => open.some(pn=>pn.categoria===c);
+ const tags = [];
+ if(hasCat('exame') || p.status_conduta==='aguard_exames') tags.push('<span class="pac-conduct-tag tag-exames"><i class="ti ti-test-pipe" aria-hidden="true"></i> Aguarda exames</span>');
+ if(hasCat('medicacao')) tags.push('<span class="pac-conduct-tag tag-medicacao"><i class="ti ti-pill" aria-hidden="true"></i> Aguarda medicação</span>');
+ if(hasCat('transferencia') || p.status_conduta==='transferencia') tags.push('<span class="pac-conduct-tag tag-transferencia"><i class="ti ti-arrow-forward" aria-hidden="true"></i> Aguarda transferência</span>');
+ if(p.status_conduta==='aguard_vaga') tags.push('<span class="pac-conduct-tag tag-vaga"><i class="ti ti-bed" aria-hidden="true"></i> Aguarda vaga</span>');
+ // Pendências específicas (outros/consulta/reavaliacao) — cada uma vira tag com seu texto
+ open.filter(pn=>['outros','consulta','reavaliacao'].includes(pn.categoria)).forEach(pn=>{
+  tags.push(`<span class="pac-conduct-tag tag-pend-spec" title="${esc(pn.descricao)}"><i class="ti ti-flag" aria-hidden="true"></i><span class="pt-txt">${esc(pn.descricao)}</span></span>`);
+ });
+ return tags.length ? `<div class="pac-conducts">${tags.join('')}</div>` : '';
+}
+
 function renderShiftPacientes(){
  const ps = (_shiftData && _shiftData.pacientes) || [];
  if(!ps.length) return '<div class="shift-empty">Nenhum paciente neste plantão ainda.</div>';
@@ -1083,25 +1083,26 @@ function renderShiftPacientes(){
  });
  return sorted.map(p=>{
   const dt = p.created_at ? new Date(p.created_at).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) : '';
-  const statusCls = 'status-'+p.status_conduta;
-  const statusLbl = STATUS_LABEL[p.status_conduta] || p.status_conduta;
   const pendOpen = (p.pendencias||[]).filter(pn=>!pn.done).length;
   const pendTotal = (p.pendencias||[]).length;
   const sexoTxt = p.sexo==='M'?'M':p.sexo==='F'?'F':p.sexo==='O'?'O':'';
-  const demo = [p.idade!=null?p.idade+'a':'', sexoTxt].filter(Boolean).join(' · ');
+  const demoParts = [p.idade!=null?p.idade+'a':'', sexoTxt].filter(Boolean);
+  const demo = demoParts.length ? '<span class="pac-demo">· '+esc(demoParts.join(' · '))+'</span>' : '';
   const isTimeDep = TIME_DEPENDENT_QUEIXAS.has(p.queixa) && !STATUS_CLOSED.has(p.status_conduta);
   const queixaIcon = isTimeDep ? '<i class="ti ti-alert-triangle" aria-hidden="true" style="color:#a32d2d;margin-right:4px"></i>' : '';
+  const vitalsHtml = fmtVitais(p.sinais_vitais);
+  const sind = p.sind_label || p.queixa || '';
+  const reavalHtml = p.reavaliar_em ? `<div style="margin-top:6px;font-size:12px"><i class="ti ti-clock" aria-hidden="true"></i> Reaval.: ${fmtReaval(p.reavaliar_em)}</div>` : '';
   return `<div class="pac-card ${urgClass(p)}" onclick="openPacienteEdit(${Number(p.id)})">
    <div style="min-width:0">
     <div class="pac-line1">
-     <span class="pac-name">${esc(p.nome||'Sem nome')}</span>
-     ${demo?`<span class="pac-demo">${esc(demo)}</span>`:''}
+     <span class="pac-name">${esc(_firstName(p.nome))}</span>
+     ${demo}
     </div>
-    <div class="pac-queixa">${queixaIcon}${esc(p.queixa||'—')}</div>
-    <div class="pac-meta">
-     <span><span class="pac-status-badge ${statusCls}">${esc(statusLbl)}</span></span>
-     ${p.reavaliar_em?`<span>Reaval.: ${fmtReaval(p.reavaliar_em)}</span>`:''}
-    </div>
+    ${vitalsHtml?`<div class="pac-vitals">${vitalsHtml}</div>`:''}
+    <div class="pac-sind">${queixaIcon}${esc(sind)}</div>
+    ${pacConductTags(p)}
+    ${reavalHtml}
    </div>
    <div class="pac-right">
     <div class="pac-hora"><i class="ti ti-clock" aria-hidden="true"></i> ${esc(dt)}</div>
@@ -1111,30 +1112,6 @@ function renderShiftPacientes(){
  }).join('');
 }
 
-function renderShiftPendencias(){
- const ps = (_shiftData && _shiftData.pacientes) || [];
- const items = [];
- ps.forEach(p=>{(p.pendencias||[]).forEach(pn=>items.push(Object.assign({},pn,{paciente_nome:p.nome,paciente_queixa:p.queixa,paciente_id:p.id})));});
- if(!items.length) return '<div class="shift-empty">Nenhuma pendência neste plantão.</div>';
- items.sort((a,b)=>{
-  if(a.done!==b.done) return a.done?1:-1;
-  if(a.prazo && b.prazo) return new Date(a.prazo)-new Date(b.prazo);
-  if(a.prazo) return -1;
-  if(b.prazo) return 1;
-  return new Date(a.created_at)-new Date(b.created_at);
- });
- return items.map(it=>{
-  const prazo = it.prazo ? new Date(it.prazo).toLocaleString('pt-BR',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'}) : '';
-  return `<div class="pend-item ${it.done?'done':''}">
-   <input type="checkbox" ${it.done?'checked':''} onchange="doTogglePendencia(${Number(it.id)})">
-   <span class="pend-cat">${esc(PEND_CAT_LABEL[it.categoria]||it.categoria)}</span>
-   <div style="flex:1;min-width:0">
-    <div class="pend-desc" style="font-size:13px">${esc(it.descricao)}</div>
-    <div class="pend-paciente">${esc(it.paciente_nome||'')}${it.paciente_queixa?' — '+esc(it.paciente_queixa):''}${prazo?' • prazo '+esc(prazo):''}</div>
-   </div>
-  </div>`;
- }).join('');
-}
 
 async function doStartShift(){
  const notes = prompt('Notas iniciais do plantão (opcional, até 500 chars):');
@@ -1200,13 +1177,19 @@ function renderPacEdit(p){
 
  const sexoTxt = p.sexo==='M'?'M':p.sexo==='F'?'F':p.sexo==='O'?'O':'';
  const demo = [p.idade!=null?p.idade+' anos':'', sexoTxt].filter(Boolean).join(' · ');
+ const vitalsHtml = fmtVitais(p.sinais_vitais);
+ const sindFull = p.sind_label || p.queixa || '—';
  area.innerHTML = `<div class="pac-edit-modal"><div class="pac-edit-box">
   <div class="modal-hdr">
    <div>
     <div style="font-size:16px;font-weight:600">${esc(p.nome||'Sem nome')}${demo?` <span style="font-size:13px;color:#6b7280;font-weight:400">(${esc(demo)})</span>`:''}</div>
-    <div style="font-size:12px;color:#6b7280">${esc(p.queixa||'—')} • ${esc(dt)}</div>
+    <div style="font-size:12px;color:#6b7280">${esc(sindFull)} • ${esc(dt)}</div>
    </div>
    <button class="modal-close" onclick="closePacEdit()" aria-label="Fechar">×</button>
+  </div>
+  ${vitalsHtml?`<div class="pac-vitals" style="margin-bottom:8px">${vitalsHtml}</div>`:''}
+  <div style="margin-bottom:8px">
+   <button class="shift-action-btn shift-act-pdf" style="font-size:12px;padding:6px 12px" onclick="viewReportText(${Number(p.id)})"><i class="ti ti-file-text" aria-hidden="true"></i> Ver relatório completo</button>
   </div>
 
   <div class="pac-edit-section">
@@ -1282,6 +1265,12 @@ async function doAddPendencia(reportId){
  await loadShiftDashboard();
  const p = (_shiftData.pacientes||[]).find(x=>Number(x.id)===Number(reportId));
  if(p) renderPacEdit(p);
+}
+
+async function viewReportText(id){
+ const {data, error} = await sb.rpc('load_report_text', {p_id: id});
+ if(error){alert('Erro: '+(error.message||error)); return;}
+ showRel(data || '(relatório vazio)');
 }
 
 async function doTogglePendenciaInEdit(id, reportId){
@@ -2786,6 +2775,24 @@ function nx(){if(S.step<5){S.step++;render();}}
 function pv(){if(S.step>0){S.step--;render();}}
 
 // storage — Supabase
+function _vitaisFromS(){
+ const v = {};
+ if(S.fc)   v.fc   = String(S.fc);
+ if(S.sat)  v.sat  = String(S.sat);
+ if(S.pa)   v.pa   = String(S.pa);
+ if(S.fr)   v.fr   = String(S.fr);
+ if(S.temp) v.temp = String(S.temp);
+ if(S.gli)  v.gli  = String(S.gli);
+ if(S.eva!==''&&S.eva!=null) v.eva = String(S.eva);
+ if(S.peso) v.peso = String(S.peso);
+ return Object.keys(v).length ? v : null;
+}
+function _sindLabel(){
+ if(!S.sind || typeof SLIST==='undefined') return null;
+ const m = SLIST.find(s=>s.id===S.sind);
+ return m ? m.l : null;
+}
+
 async function saveReport(txt){
  try{
  const {data:{user}}=await sb.auth.getUser();
@@ -2797,7 +2804,9 @@ async function saveReport(txt){
  p_date:new Date().toLocaleString('pt-BR'),
  p_txt:txt,
  p_idade: (typeof S.idade==='number' && S.idade>=0 && S.idade<=130) ? S.idade : null,
- p_sexo: (S.sexo==='M'||S.sexo==='F'||S.sexo==='O') ? S.sexo : null
+ p_sexo: (S.sexo==='M'||S.sexo==='F'||S.sexo==='O') ? S.sexo : null,
+ p_sinais_vitais: _vitaisFromS(),
+ p_sind_label: _sindLabel()
  });
  if(error)throw error;
  showToast('Relatório salvo com sucesso!');
