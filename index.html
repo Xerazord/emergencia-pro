@@ -236,10 +236,23 @@ textarea{resize:vertical;min-height:60px}
 .shift-tab{padding:7px 14px;border-radius:20px;font-size:13px;border:.5px solid #e5e7eb;background:#fff;color:#6b7280;cursor:pointer;font-family:inherit}
 .shift-tab.active{background:#eaf3de;border-color:#639922;color:#3b6d11;font-weight:500}
 .shift-empty{padding:2rem;text-align:center;color:#6b7280;font-size:13px}
-.pac-row{display:grid;grid-template-columns:1fr 140px 130px 90px 80px;gap:10px;align-items:center;padding:10px 12px;border:.5px solid #e5e7eb;border-radius:8px;margin-bottom:6px;background:#fff;cursor:pointer;transition:border-color .15s}
-.pac-row:hover{border-color:#a32d2d;background:#fdf3f3}
-.pac-name{font-weight:500;font-size:14px;color:#111827}
-.pac-sub{font-size:11px;color:#6b7280}
+.pac-card{padding:14px 16px;border:.5px solid #e5e7eb;border-left-width:4px;border-radius:10px;margin-bottom:10px;background:#fff;cursor:pointer;transition:border-color .15s,box-shadow .15s;display:grid;grid-template-columns:1fr auto;gap:8px 16px;align-items:start}
+.pac-card:hover{border-color:#a32d2d;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.pac-card.pac-critico{border-left-color:#a32d2d;background:#fdf3f3}
+.pac-card.pac-warn{border-left-color:#d48a1f;background:#fefaf4}
+.pac-card.pac-ok{border-left-color:#639922}
+.pac-card.pac-closed{opacity:.7;background:#f9fafb}
+.pac-card .pac-line1{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;min-width:0}
+.pac-card .pac-name{font-weight:600;font-size:15px;color:#111827}
+.pac-card .pac-demo{font-size:12px;color:#6b7280}
+.pac-card .pac-queixa{font-size:13px;color:#374151;margin-top:2px;font-weight:500}
+.pac-card .pac-meta{font-size:11px;color:#6b7280;margin-top:6px;display:flex;gap:14px;flex-wrap:wrap}
+.pac-card .pac-meta b{color:#374151;font-weight:500}
+.pac-card .pac-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:130px}
+.pac-card .pac-hora{font-size:11px;color:#6b7280}
+.pac-card .pac-reaval{font-size:12px;font-weight:500}
+.pac-card .pac-pend-count{font-size:11px;color:#6b7280;padding:2px 8px;border-radius:10px;background:#f3f4f6}
+.pac-card .pac-pend-count.has-open{background:#faeeda;color:#854f0b;font-weight:500}
 .pac-status-badge{padding:3px 9px;border-radius:10px;font-size:11px;font-weight:500;display:inline-block}
 .status-em_conduta{background:#fdf3f3;color:#a32d2d}
 .status-aguard_exames,.status-aguard_vaga{background:#faeeda;color:#854f0b}
@@ -902,6 +915,40 @@ const PEND_CAT_LABEL = {
  consulta:'Consulta',
  outros:'Outros'
 };
+const TIME_DEPENDENT_QUEIXAS = new Set([
+ 'Dor torácica','Déficit neurológico agudo','Dispneia',
+ 'Dor abdominal','Rebaixamento de consciência',
+ 'Trauma','Intoxicação exógena','Agitação psicomotora'
+]);
+const STATUS_CLOSED = new Set(['alta','transferencia','obito','recusa_terapeutica']);
+
+function urgScore(p){
+ // menor = mais urgente
+ const now = Date.now();
+ const reavalDue = p.reavaliar_em && new Date(p.reavaliar_em).getTime() < now;
+ if(reavalDue) return 0;
+ const isOpen = !STATUS_CLOSED.has(p.status_conduta);
+ const isCritico = isOpen && TIME_DEPENDENT_QUEIXAS.has(p.queixa);
+ const reavalSoon = p.reavaliar_em && (new Date(p.reavaliar_em).getTime() - now < 30*60000);
+ if(isCritico && reavalSoon) return 1;
+ if(isCritico) return 2;
+ if(reavalSoon) return 3;
+ if(p.status_conduta==='em_conduta') return 4;
+ if(p.status_conduta==='aguard_exames' || p.status_conduta==='aguard_vaga') return 5;
+ return 9; // closed
+}
+function urgClass(p){
+ const now = Date.now();
+ const reavalDue = p.reavaliar_em && new Date(p.reavaliar_em).getTime() < now;
+ const isOpen = !STATUS_CLOSED.has(p.status_conduta);
+ const isCritico = isOpen && TIME_DEPENDENT_QUEIXAS.has(p.queixa);
+ if(!isOpen) return 'pac-closed';
+ if(reavalDue) return 'pac-critico';
+ if(isCritico) return 'pac-critico';
+ if(p.status_conduta==='aguard_exames' || p.status_conduta==='aguard_vaga') return 'pac-warn';
+ if(p.status_conduta==='em_conduta') return 'pac-warn';
+ return 'pac-ok';
+}
 
 async function showShiftPanel(){
  if(!_currentProfile || _currentProfile.status!=='approved'){alert('Acesso negado.');return;}
@@ -1029,18 +1076,37 @@ function fmtReaval(reavaliar_em){
 function renderShiftPacientes(){
  const ps = (_shiftData && _shiftData.pacientes) || [];
  if(!ps.length) return '<div class="shift-empty">Nenhum paciente neste plantão ainda.</div>';
- return ps.map(p=>{
+ const sorted = ps.slice().sort((a,b)=>{
+  const ua=urgScore(a), ub=urgScore(b);
+  if(ua!==ub) return ua-ub;
+  return new Date(a.created_at)-new Date(b.created_at);
+ });
+ return sorted.map(p=>{
   const dt = p.created_at ? new Date(p.created_at).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) : '';
   const statusCls = 'status-'+p.status_conduta;
   const statusLbl = STATUS_LABEL[p.status_conduta] || p.status_conduta;
   const pendOpen = (p.pendencias||[]).filter(pn=>!pn.done).length;
   const pendTotal = (p.pendencias||[]).length;
-  return `<div class="pac-row" onclick="openPacienteEdit(${Number(p.id)})">
-   <div><div class="pac-name">${esc(p.nome||'Sem nome')}</div><div class="pac-sub">${esc(p.queixa||'—')}</div></div>
-   <div><span class="pac-status-badge ${statusCls}">${esc(statusLbl)}</span></div>
-   <div style="font-size:12px">${fmtReaval(p.reavaliar_em)}</div>
-   <div style="font-size:12px;color:#6b7280">${pendOpen}/${pendTotal} pend.</div>
-   <div style="font-size:12px;color:#6b7280;text-align:right">${esc(dt)}</div>
+  const sexoTxt = p.sexo==='M'?'M':p.sexo==='F'?'F':p.sexo==='O'?'O':'';
+  const demo = [p.idade!=null?p.idade+'a':'', sexoTxt].filter(Boolean).join(' · ');
+  const isTimeDep = TIME_DEPENDENT_QUEIXAS.has(p.queixa) && !STATUS_CLOSED.has(p.status_conduta);
+  const queixaIcon = isTimeDep ? '<i class="ti ti-alert-triangle" aria-hidden="true" style="color:#a32d2d;margin-right:4px"></i>' : '';
+  return `<div class="pac-card ${urgClass(p)}" onclick="openPacienteEdit(${Number(p.id)})">
+   <div style="min-width:0">
+    <div class="pac-line1">
+     <span class="pac-name">${esc(p.nome||'Sem nome')}</span>
+     ${demo?`<span class="pac-demo">${esc(demo)}</span>`:''}
+    </div>
+    <div class="pac-queixa">${queixaIcon}${esc(p.queixa||'—')}</div>
+    <div class="pac-meta">
+     <span><span class="pac-status-badge ${statusCls}">${esc(statusLbl)}</span></span>
+     ${p.reavaliar_em?`<span>Reaval.: ${fmtReaval(p.reavaliar_em)}</span>`:''}
+    </div>
+   </div>
+   <div class="pac-right">
+    <div class="pac-hora"><i class="ti ti-clock" aria-hidden="true"></i> ${esc(dt)}</div>
+    <span class="pac-pend-count ${pendOpen>0?'has-open':''}">${pendOpen}/${pendTotal} pend.</span>
+   </div>
   </div>`;
  }).join('');
 }
@@ -1132,10 +1198,12 @@ function renderPacEdit(p){
   </div>`;
  }).join('') || '<div style="font-size:12px;color:#6b7280;padding:8px 0">Sem pendências.</div>';
 
+ const sexoTxt = p.sexo==='M'?'M':p.sexo==='F'?'F':p.sexo==='O'?'O':'';
+ const demo = [p.idade!=null?p.idade+' anos':'', sexoTxt].filter(Boolean).join(' · ');
  area.innerHTML = `<div class="pac-edit-modal"><div class="pac-edit-box">
   <div class="modal-hdr">
    <div>
-    <div style="font-size:16px;font-weight:600">${esc(p.nome||'Sem nome')}</div>
+    <div style="font-size:16px;font-weight:600">${esc(p.nome||'Sem nome')}${demo?` <span style="font-size:13px;color:#6b7280;font-weight:400">(${esc(demo)})</span>`:''}</div>
     <div style="font-size:12px;color:#6b7280">${esc(p.queixa||'—')} • ${esc(dt)}</div>
    </div>
    <button class="modal-close" onclick="closePacEdit()" aria-label="Fechar">×</button>
@@ -1241,7 +1309,7 @@ function exportShiftPDF(){
 
 
 
-const S={step:0,nome:'',idade:30,orig:'Demanda Espontânea',origInst:'',origMotivo:'',queixa:null,tempo:'',
+const S={step:0,nome:'',idade:30,sexo:'',orig:'Demanda Espontânea',origInst:'',origMotivo:'',queixa:null,tempo:'',
  caract:[],
  hpp:[],muc:'',ale:'Nega',tab:'',etil:'',drog:'',fc:'',sat:'',pa:'',fr:'',gli:'',temp:'',eva:'',peso:'',
  ef:null,amb:{g:'',cv:'',re:'',ab:'',ne:'',pe:''},
@@ -2727,7 +2795,9 @@ async function saveReport(txt){
  p_nome:S.nome||'Sem nome',
  p_queixa:S.queixa||'—',
  p_date:new Date().toLocaleString('pt-BR'),
- p_txt:txt
+ p_txt:txt,
+ p_idade: (typeof S.idade==='number' && S.idade>=0 && S.idade<=130) ? S.idade : null,
+ p_sexo: (S.sexo==='M'||S.sexo==='F'||S.sexo==='O') ? S.sexo : null
  });
  if(error)throw error;
  showToast('Relatório salvo com sucesso!');
@@ -2776,7 +2846,7 @@ function rHear(){const H=S.hear;const aL=S.idade<45?'< 45a (0)':S.idade<65?'45�
 function rEdacs(){const e=S.edacs,ap=eAP();return`<div class="srow"><div style="flex:1"><div class="slbl">Idade / Sexo</div><div class="sdsc">Auto calculado (${S.idade} anos)</div></div><div style="display:flex;align-items:center;gap:6px"><span class="sopt auto">${ap} pts</span><div style="display:flex;gap:5px">${[['M','Masc'],['F','Fem']].map(([v,l])=>`<span class="sopt ${e.sx===v?'on':''}" onclick="S.edacs.sx='${v}';render()">${l}</span>`).join('')}</div></div></div>`+[{k:'cad',l:'DAC conhecida',d:'+4'},{k:'dia',l:'Diaforese',d:'+3'},{k:'rad',l:'Irradiação braço/ombro',d:'+5'},{k:'ins',l:'Piora à inspiração',d:'−4'},{k:'pal',l:'Reproduzida à palpação',d:'−6'}].map(x=>`<div class="srow"><div style="flex:1"><div class="slbl">${x.l}</div><div class="sdsc">${x.d} pts</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(e[x.k])===v?'on':''}" onclick="S.edacs['${x.k}']=${v};render()">${lb}</span>`).join('')}</div></div>`).join('')+`<div class="srow"><div style="flex:1"><div class="slbl">Troponina 0h / 2h</div></div><div style="display:flex;gap:5px"><input type="number" inputmode="decimal" step="0.1" min="0" value="${esc(e.t0)}" oninput="S.edacs.t0=this.value;render()" style="width:62px" placeholder="0h"><input type="number" inputmode="decimal" step="0.1" min="0" value="${esc(e.t2)}" oninput="S.edacs.t2=this.value;render()" style="width:62px" placeholder="2h"></div></div>`;}
 
 
-function s0(){const t=Math.floor(S.idade/10),u=S.idade%10,needsInfo=['Vaga Zero','Transferência'].includes(S.orig);return`<div class="card"><div class="st"><i class="ti ti-user" aria-hidden="true"></i> Identificação e origem</div><div style="margin-bottom:12px"><label>Nome do paciente</label><input type="text" value="${esc(S.nome)}" oninput="S.nome=this.value" placeholder="Nome completo"></div><div class="r2"><div><label>Idade</label><div class="age-drums"><div class="drum"><button class="drum-btn" onclick="cAgeDig(10,1)"><i class="ti ti-chevron-up" aria-hidden="true"></i></button><div class="drum-dig">${t}</div><button class="drum-btn" onclick="cAgeDig(10,-1)"><i class="ti ti-chevron-down" aria-hidden="true"></i></button></div><div class="drum"><button class="drum-btn" onclick="cAgeDig(1,1)"><i class="ti ti-chevron-up" aria-hidden="true"></i></button><div class="drum-dig">${u}</div><button class="drum-btn" onclick="cAgeDig(1,-1)"><i class="ti ti-chevron-down" aria-hidden="true"></i></button></div><span class="drum-unit">anos</span></div></div><div><label>Origem</label><select onchange="S.orig=this.value;render()">${['Demanda Espontânea','SAMU','Bombeiros','Vaga Zero','Transferência'].map(o=>`<option ${S.orig===o?'selected':''}>${o}</option>`).join('')}</select></div></div>${needsInfo?`<div style="margin-top:10px"><div style="margin-bottom:8px"><label>Instituição de origem</label><input type="text" value="${esc(S.origInst)}" oninput="S.origInst=this.value" placeholder="Nome da instituição"></div><div><label>Motivo da transferência / vaga zero</label><input type="text" value="${esc(S.origMotivo)}" oninput="S.origMotivo=this.value" placeholder="Diagnóstico / motivo da solicitação"></div></div>`:''}</div><div class="nav"><div></div><button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;}
+function s0(){const t=Math.floor(S.idade/10),u=S.idade%10,needsInfo=['Vaga Zero','Transferência'].includes(S.orig);const sexOpts=[['','—'],['M','Masculino'],['F','Feminino'],['O','Outro']];return`<div class="card"><div class="st"><i class="ti ti-user" aria-hidden="true"></i> Identificação e origem</div><div style="margin-bottom:12px"><label>Nome do paciente</label><input type="text" value="${esc(S.nome)}" oninput="S.nome=this.value" placeholder="Nome completo"></div><div class="r2"><div><label>Idade</label><div class="age-drums"><div class="drum"><button class="drum-btn" onclick="cAgeDig(10,1)"><i class="ti ti-chevron-up" aria-hidden="true"></i></button><div class="drum-dig">${t}</div><button class="drum-btn" onclick="cAgeDig(10,-1)"><i class="ti ti-chevron-down" aria-hidden="true"></i></button></div><div class="drum"><button class="drum-btn" onclick="cAgeDig(1,1)"><i class="ti ti-chevron-up" aria-hidden="true"></i></button><div class="drum-dig">${u}</div><button class="drum-btn" onclick="cAgeDig(1,-1)"><i class="ti ti-chevron-down" aria-hidden="true"></i></button></div><span class="drum-unit">anos</span></div></div><div><label>Sexo</label><select onchange="S.sexo=this.value;render()">${sexOpts.map(([v,l])=>`<option value="${v}" ${S.sexo===v?'selected':''}>${l}</option>`).join('')}</select></div></div><div style="margin-top:10px"><label>Origem</label><select onchange="S.orig=this.value;render()">${['Demanda Espontânea','SAMU','Bombeiros','Vaga Zero','Transferência'].map(o=>`<option ${S.orig===o?'selected':''}>${o}</option>`).join('')}</select></div>${needsInfo?`<div style="margin-top:10px"><div style="margin-bottom:8px"><label>Instituição de origem</label><input type="text" value="${esc(S.origInst)}" oninput="S.origInst=this.value" placeholder="Nome da instituição"></div><div><label>Motivo da transferência / vaga zero</label><input type="text" value="${esc(S.origMotivo)}" oninput="S.origMotivo=this.value" placeholder="Diagnóstico / motivo da solicitação"></div></div>`:''}</div><div class="nav"><div></div><button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;}
 function s1(){const al=ALERTAS[S.queixa],isIT=S.queixa==='Intoxicação exógena',renderQx=QX_ANAMNESE[S.queixa],cm=CMAP[S.queixa]||['Início súbito','Progressivo','Persistente','Febre'];return`<div class="card"><div class="st"><i class="ti ti-stethoscope" aria-hidden="true"></i> Queixa principal</div>${!S.queixa?QX_CATS.map(cat=>`<div class="qcat qcat-${cat.id}"><div class="qcat-lbl">${cat.label}</div><div class="qgrid">${cat.items.map(q=>`<button class="qbtn" onclick="setQueixa('${q.replace(/'/g,"\\'")}')">${esc(q)}</button>`).join('')}</div></div>`).join(''):`<div class="selq"><span><i class="ti ti-check" aria-hidden="true"></i> ${esc(S.queixa)}</span><button onclick="setQueixa(null)">Mudar</button></div>${al?`<div class="abox ${al.c}"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${al.m}</div>`:''}${renderQx?renderQx():`<div class="sl">Características:</div><div class="tags">${cm.map(c=>`<span class="tag ${S.caract.includes(c)?'on':''}" onclick="ts(S.caract,\`${c}\`)">${c}</span>`).join('')}</div><div style="margin-top:10px"><label>Tempo de início</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>${isIT?`<div style="margin-top:8px"><label>Substâncias suspeitas</label><input type="text" value="${esc(S.itDrug)}" oninput="S.itDrug=this.value" placeholder="Ex: benzodiazepínico, antidepressivo tricíclico, álcool..."></div>`:''}`}`}</div><div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.queixa?`<button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
 function s2(){const va=vA();return`<div class="card"><div class="st"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i> Sinais vitais</div><div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:12px"><div><label>FC</label><input type="number" inputmode="numeric" min="0" max="300" value="${esc(S.fc)}" oninput="S.fc=this.value;uvb()" placeholder="bpm"></div><div><label>SatO2</label><input type="number" inputmode="numeric" min="0" max="100" value="${esc(S.sat)}" oninput="S.sat=this.value;uvb()" placeholder="%"></div><div><label>PA</label><input type="text" inputmode="numeric" pattern="\\d{2,3}/\\d{2,3}" value="${esc(S.pa)}" oninput="S.pa=this.value;uvb()" placeholder="120/80"></div><div><label>FR</label><input type="number" inputmode="numeric" min="0" max="80" value="${esc(S.fr)}" oninput="S.fr=this.value;uvb()" placeholder="irpm"></div><div><label>Temp.</label><input type="number" inputmode="decimal" step="0.1" min="25" max="45" value="${esc(S.temp)}" oninput="S.temp=this.value" placeholder="°C"></div><div><label>Glicemia</label><input type="number" inputmode="numeric" min="0" max="1000" value="${esc(S.gli)}" oninput="S.gli=this.value;uvb()" placeholder="mg/dL"></div></div><div class="r2" style="margin-bottom:12px"><div><label>Peso estimado</label><input type="number" inputmode="decimal" step="0.5" min="0" max="300" value="${esc(S.peso)}" oninput="S.peso=this.value" placeholder="kg"></div><div><div class="sl" style="margin-bottom:4px">EVA (dor 0–10)</div><div style="display:flex;gap:3px">${[0,1,2,3,4,5,6,7,8,9,10].map(n=>`<button style="flex:1;padding:5px 0;border-radius:4px;border:.5px solid ${S.eva==n?'#a32d2d':'#d1d5db'};background:${S.eva==n?'#fcebeb':'#fff'};color:${S.eva==n?'#a32d2d':'#374151'};font-size:12px;cursor:pointer" onclick="S.eva=${n};render()">${n}</button>`).join('')}</div></div></div><div class="vbars" id="vbars">${vBH()}</div>${va.length?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> ${va.join(' | ')}</div>`:''}</div><div class="card"><div class="st"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Antecedentes</div><div class="sl" style="margin-top:0">HPP:</div><div class="tags" style="margin-bottom:10px">${['HAS','DM2','ICC','AVC','DAC','IRC','DPOC','FA','Neo','Cirrose','HIV','Outras'].map(h=>`<span class="tag ${S.hpp.includes(h)?'on':''}" onclick="ts(S.hpp,'${h}')">${h}</span>`).join('')}</div><div class="r2" style="margin-bottom:10px"><div><label>Medicações em uso</label><input type="text" value="${esc(S.muc)}" oninput="S.muc=this.value" placeholder="Ex: Metoprolol, AAS"></div><div><label>Alergias</label><input type="text" value="${esc(S.ale)}" oninput="S.ale=this.value"></div></div><div class="sl">Tabagismo:</div><div class="rg" style="margin-bottom:8px">${['Não fumante','Ex-fumante','Fumante ativo'].map(v=>`<span class="ro ${S.tab===v?'on':''}" onclick="S.tab='${v}';render()">${v}</span>`).join('')}</div><div class="sl">Etilismo:</div><div class="rg" style="margin-bottom:8px">${['Nega','Eventual','Regular','Abusivo'].map(v=>`<span class="ro ${S.etil===v?'on':''}" onclick="S.etil='${v}';render()">${v}</span>`).join('')}</div><div><label>Drogas ilícitas</label><input type="text" value="${esc(S.drog)}" oninput="S.drog=this.value" placeholder="Nega ou descreva"></div></div><div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;}
 function abcH(){
