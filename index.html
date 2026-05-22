@@ -256,6 +256,20 @@ textarea{resize:vertical;min-height:60px}
 .shift-dist-row{padding:6px 0;font-size:13px;display:flex;align-items:center;justify-content:space-between}
 .shift-dist-row + .shift-dist-row{border-top:.5px solid #f3f4f6}
 
+.pac-edit-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto}
+.pac-edit-box{background:#fff;border-radius:12px;max-width:640px;width:100%;max-height:92vh;overflow-y:auto;padding:1.5rem}
+.pac-edit-section{padding:14px 0;border-top:.5px solid #e5e7eb}
+.pac-edit-section:first-of-type{border-top:none}
+.pac-edit-section h4{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;font-weight:500}
+.pac-edit-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin-bottom:8px}
+.pac-edit-row select,.pac-edit-row input{font-size:13px;padding:7px 9px}
+.pend-add-grid{display:grid;grid-template-columns:1fr 110px 90px auto;gap:6px;align-items:center}
+.pend-add-grid input,.pend-add-grid select{font-size:12px;padding:6px 8px}
+.pend-add-grid button{padding:7px 12px;background:#3b6d11;color:#fff;border:none;border-radius:8px;font-size:12px;cursor:pointer;font-weight:500}
+.pend-list-edit .pend-item{display:grid;grid-template-columns:auto auto 1fr auto;gap:8px;align-items:center}
+.pend-del-btn{background:none;border:none;color:#a32d2d;cursor:pointer;padding:4px 8px;font-size:14px}
+.pend-del-btn:hover{color:#791f1f}
+
 </style>
 </head>
 <body>
@@ -434,6 +448,7 @@ textarea{resize:vertical;min-height:60px}
   <div id="shiftBody"></div>
  </div>
 </div>
+<div id="pacEditArea"></div>
 <script>
 
 // ─── Supabase config ───────────────────────────────────────────────────────
@@ -1083,8 +1098,140 @@ async function doTogglePendencia(id){
 }
 
 function openPacienteEdit(id){
- // Implementado na Fase C2
- alert('Edição de paciente (status, reavaliação, pendências) chega na Fase C2.');
+ const ps = (_shiftData && _shiftData.pacientes) || [];
+ const p = ps.find(x => Number(x.id) === Number(id));
+ if(!p){alert('Paciente não encontrado.');return;}
+ renderPacEdit(p);
+}
+
+function closePacEdit(){document.getElementById('pacEditArea').innerHTML='';}
+
+function renderPacEdit(p){
+ const area = document.getElementById('pacEditArea');
+ const statusOpts = Object.entries(STATUS_LABEL).map(([k,v])=>
+  `<option value="${esc(k)}" ${p.status_conduta===k?'selected':''}>${esc(v)}</option>`
+ ).join('');
+ const catOpts = Object.entries(PEND_CAT_LABEL).map(([k,v])=>
+  `<option value="${esc(k)}">${esc(v)}</option>`
+ ).join('');
+ const dt = p.created_at ? new Date(p.created_at).toLocaleString('pt-BR') : '';
+ const reavalCur = p.reavaliar_em
+  ? new Date(p.reavaliar_em).toLocaleString('pt-BR',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'})
+  : '';
+
+ const pendList = (p.pendencias||[]).map(it => {
+  const prazo = it.prazo ? new Date(it.prazo).toLocaleString('pt-BR',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'}) : '';
+  return `<div class="pend-item ${it.done?'done':''}">
+   <input type="checkbox" ${it.done?'checked':''} onchange="doTogglePendenciaInEdit(${Number(it.id)}, ${Number(p.id)})">
+   <span class="pend-cat">${esc(PEND_CAT_LABEL[it.categoria]||it.categoria)}</span>
+   <div style="min-width:0">
+    <div class="pend-desc" style="font-size:13px">${esc(it.descricao)}</div>
+    ${prazo?`<div class="pend-paciente">prazo ${esc(prazo)}</div>`:''}
+   </div>
+   <button class="pend-del-btn" onclick="doDeletePendencia(${Number(it.id)}, ${Number(p.id)})" title="Excluir"><i class="ti ti-trash" aria-hidden="true"></i></button>
+  </div>`;
+ }).join('') || '<div style="font-size:12px;color:#6b7280;padding:8px 0">Sem pendências.</div>';
+
+ area.innerHTML = `<div class="pac-edit-modal"><div class="pac-edit-box">
+  <div class="modal-hdr">
+   <div>
+    <div style="font-size:16px;font-weight:600">${esc(p.nome||'Sem nome')}</div>
+    <div style="font-size:12px;color:#6b7280">${esc(p.queixa||'—')} • ${esc(dt)}</div>
+   </div>
+   <button class="modal-close" onclick="closePacEdit()" aria-label="Fechar">×</button>
+  </div>
+
+  <div class="pac-edit-section">
+   <h4>Status de conduta</h4>
+   <div class="pac-edit-row">
+    <select id="paceStatus" onchange="doUpdatePacStatus(${Number(p.id)})">${statusOpts}</select>
+    <span class="pac-status-badge status-${esc(p.status_conduta)}" id="paceStatusBadge">${esc(STATUS_LABEL[p.status_conduta]||p.status_conduta)}</span>
+   </div>
+  </div>
+
+  <div class="pac-edit-section">
+   <h4>Reavaliação</h4>
+   <div class="pac-edit-row" style="grid-template-columns:1fr auto auto">
+    <input type="number" id="paceReavalMin" placeholder="Reavaliar em N minutos a partir de agora" min="1" max="2880" inputmode="numeric">
+    <button class="shift-action-btn" style="background:#185fa5;color:#fff" onclick="doUpdatePacReaval(${Number(p.id)}, false)">Definir</button>
+    <button class="shift-action-btn" style="background:#e5e7eb;color:#374151" onclick="doUpdatePacReaval(${Number(p.id)}, true)">Limpar</button>
+   </div>
+   ${reavalCur ? `<div style="font-size:12px;color:#6b7280;margin-top:4px">Atual: ${esc(reavalCur)} ${fmtReaval(p.reavaliar_em)}</div>` : '<div style="font-size:12px;color:#6b7280;margin-top:4px">Sem reavaliação agendada.</div>'}
+  </div>
+
+  <div class="pac-edit-section">
+   <h4>Pendências</h4>
+   <div class="pend-list-edit" style="margin-bottom:10px">${pendList}</div>
+   <div class="pend-add-grid">
+    <input type="text" id="pendAddDesc" placeholder="Descrição da pendência (até 500 chars)" maxlength="500">
+    <select id="pendAddCat">${catOpts}</select>
+    <input type="number" id="pendAddPrazo" placeholder="prazo min" min="1" max="2880" inputmode="numeric">
+    <button onclick="doAddPendencia(${Number(p.id)})">Adicionar</button>
+   </div>
+  </div>
+ </div></div>`;
+}
+
+async function doUpdatePacStatus(id){
+ const sel = document.getElementById('paceStatus');
+ const val = sel.value;
+ const {error} = await sb.rpc('update_report_meta',{p_id:id, p_status_conduta:val, p_reavaliar_em:null, p_clear_reavaliar:false});
+ if(error){alert('Erro: '+(error.message||error));return;}
+ showToast('Status atualizado');
+ await loadShiftDashboard();
+ const p = (_shiftData.pacientes||[]).find(x=>Number(x.id)===Number(id));
+ if(p) renderPacEdit(p);
+}
+
+async function doUpdatePacReaval(id, clear){
+ if(clear){
+  const {error} = await sb.rpc('update_report_meta',{p_id:id, p_status_conduta:null, p_reavaliar_em:null, p_clear_reavaliar:true});
+  if(error){alert('Erro: '+(error.message||error));return;}
+  showToast('Reavaliação removida');
+ } else {
+  const min = parseInt(document.getElementById('paceReavalMin').value,10);
+  if(!min || min<1 || min>2880){alert('Informe um valor entre 1 e 2880 minutos.');return;}
+  const target = new Date(Date.now() + min*60000).toISOString();
+  const {error} = await sb.rpc('update_report_meta',{p_id:id, p_status_conduta:null, p_reavaliar_em:target, p_clear_reavaliar:false});
+  if(error){alert('Erro: '+(error.message||error));return;}
+  showToast('Reavaliação agendada para '+min+' min');
+ }
+ await loadShiftDashboard();
+ const p = (_shiftData.pacientes||[]).find(x=>Number(x.id)===Number(id));
+ if(p) renderPacEdit(p);
+}
+
+async function doAddPendencia(reportId){
+ const desc = document.getElementById('pendAddDesc').value.trim();
+ const cat = document.getElementById('pendAddCat').value;
+ const prazoMin = parseInt(document.getElementById('pendAddPrazo').value,10);
+ if(!desc){alert('Descrição é obrigatória.');return;}
+ if(desc.length>500){alert('Descrição muito longa (máx 500 chars).');return;}
+ const prazo = (prazoMin && prazoMin>=1 && prazoMin<=2880) ? new Date(Date.now()+prazoMin*60000).toISOString() : null;
+ const {error} = await sb.rpc('add_pendencia',{p_report_id:reportId, p_descricao:desc, p_prazo:prazo, p_categoria:cat});
+ if(error){alert('Erro: '+(error.message||error));return;}
+ showToast('Pendência adicionada');
+ await loadShiftDashboard();
+ const p = (_shiftData.pacientes||[]).find(x=>Number(x.id)===Number(reportId));
+ if(p) renderPacEdit(p);
+}
+
+async function doTogglePendenciaInEdit(id, reportId){
+ const {error} = await sb.rpc('toggle_pendencia',{p_id:id});
+ if(error){alert('Erro: '+(error.message||error));return;}
+ await loadShiftDashboard();
+ const p = (_shiftData.pacientes||[]).find(x=>Number(x.id)===Number(reportId));
+ if(p) renderPacEdit(p);
+}
+
+async function doDeletePendencia(id, reportId){
+ if(!confirm('Excluir pendência?'))return;
+ const {error} = await sb.rpc('delete_pendencia',{p_id:id});
+ if(error){alert('Erro: '+(error.message||error));return;}
+ showToast('Pendência excluída');
+ await loadShiftDashboard();
+ const p = (_shiftData.pacientes||[]).find(x=>Number(x.id)===Number(reportId));
+ if(p) renderPacEdit(p);
 }
 
 function exportShiftPDF(){
