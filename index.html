@@ -685,7 +685,7 @@ async function doSignup(){
  if(!_turnstileToken){errEl.textContent='Complete o desafio de verificação.';errEl.style.display='block';return;}
 
  loadEl.style.display='block';btn.disabled=true;
- const {error}=await sb.auth.signUp({email,password:pwd,options:{data:{turnstile_token:_turnstileToken}}});
+ const {error}=await sb.auth.signUp({email,password:pwd,options:{captchaToken:_turnstileToken}});
  loadEl.style.display='none';btn.disabled=false;
  if(error){
   errEl.textContent='Erro: '+error.message;errEl.style.display='block';
