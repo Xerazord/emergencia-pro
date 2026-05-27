@@ -1625,27 +1625,184 @@ const SLIST=[
 const STEPS=[{l:'Identificação',i:'ti-user'},{l:'Queixa',i:'ti-stethoscope'},{l:'Dados clínicos',i:'ti-heart-rate-monitor'},{l:'Exame físico',i:'ti-search'},{l:'Impressão / Conduta',i:'ti-clipboard-check'},{l:'Relatório',i:'ti-file-text'}];
 
 const CT={
-cho_sep:{l:'Sepse / Choque séptico',s:[
-{id:'m',t:'Monitorização e acesso',it:[
-'Monitor contínuo; reavaliação clínica a cada 30 min no choque',
-'Dois acessos periféricos ≥ 16G — acesso central não é pré-requisito para iniciar vasopressor',
-'Sonda vesical — débito urinário horário, meta ≥ 0,5 mL/kg/h',
-'Gasometria arterial + lactato basal — > 2 mmol/L define sepse mesmo sem hipotensão']},
-{id:'f',t:'Farmacológico',it:[
-'Norepinefrina como vasopressor de 1ª linha — iniciar precocemente se PAM < 65 mmHg ou PAD < 40 mmHg, sem aguardar refratariedade a volume; início em acesso periférico calibroso é seguro',
-'Cristaloide balanceado 250–500 mL em bolus se hipoperfusão — reavaliar com elevação passiva de membros antes de reexpandir; evitar ressuscitação liberal',
-'Antibiótico de amplo espectro IV em < 1h do diagnóstico — cada hora de atraso aumenta mortalidade em ~7%',
-'Hidrocortisona 200 mg/dia IV em infusão contínua se choque refratário a norepinefrina em dose crescente']},
-{id:'e',t:'Investigação',it:[
-'Hemoculturas (2 pares) antes do antibiótico — não atrasar ATB > 45 min para coleta',
-'Lactato seriado (0h e 2h) — clareamento ≥ 10% como meta de ressuscitação',
-'Hemograma, PCR, procalcitonina, coagulograma, função renal e hepática',
-'Urina I + urocultura, RX tórax, TC conforme foco suspeito']},
-{id:'d',t:'Disposição e metas',it:[
-'Meta PAM ≥ 65 mmHg; considerar 80–85 mmHg em HAS prévia',
-'Transfusão se Hb < 7 g/dL (< 8 g/dL em DAC ou isquemia ativa) — estratégia restritiva',
-'Internação em UTI — choque séptico com mortalidade > 35–45% sem manejo intensivo',
-'Controle de foco: drenagem de coleções, remoção de dispositivos infectados']}
+cho:{l:'Choque',subExcl:[{id:'cho_sep',l:'Choque séptico'},{id:'cho_hip',l:'Choque hipovolêmico'},{id:'cho_car',l:'Choque cardiogênico'},{id:'cho_obs',l:'Choque obstrutivo'}],s:[
+{id:'sup',t:'Ressuscitação inicial',it:[
+'Monitorização contínua: Telemetria, PANI a cada 5 min, SpO₂, FR, FC, diurese (considerar Foley)',
+'Acesso venoso: 2 AVPS (16–18G) como primeira escolha; se falha, IO com técnica asséptica; CVC com técnica asséptica se choque refratário',
+'Oxigenoterapia com SatO₂ alvo ≥90% (individualizar conforme patologias e objetivos): CN / MNRL 10–15L/min ou flush-rate / CNAF / VNI',
+'Posicionamento: supino com membros inferiores elevados 30°, se tolerar',
+'Aquecimento passivo se hipotermia; evitar hipertermia iatrogênica',
+'Expansão volêmica: Ringer Lactato 500–1000mL IV agora (usuário edita volume conforme resposta clínica)',
+'Norepinefrina: 0,01–0,3 μg/kg/min IV (infusão contínua central) se PA sistólica <90 após fluido adequado',
+'Vasopressina: 0,04 U/min IV (titrável) se refratário a norepinefrina',
+'Hidrocortisona: 100mg IV 8/8h (dose de choque)',
+'Dobutamina: 2–20 μg/kg/min IV se sinais de disfunção cardíaca (redução de pós-carga, melhora de contratilidade)']},
+{id:'inv',t:'Investigação',it:[
+'Labs: hemograma, coagulograma (TP/INR, TTPa), glicemia, eletrólitos (Na, K, Cl, Ca, Mg, Phos), creatinina, urina tipo I',
+'Lactato sérico (tomar 0 e 6h): marcador de perfusão tecidual e prognóstico',
+'ECG 12-D: isquemia, ritmo, intervalo PR/QRS (descartar arritmia)',
+'Ecocardio (bedside se expertise): FE, movimentação de septo, sobrecarga de VD',
+'Raio-X de tórax: cardiomegalia, edema pulmonar, infiltrados',
+'POCUS: pulmonar (B-lines, derrame), abdominal (rastreio livre, perfusão)']},
+{id:'sin',t:'Tratamento sintomático',it:[
+'Analgesia: dipirona 1–2g IV 6/6h ou paracetamol 500mg–1g IV 6/6h',
+'Ansiolítico se agitação: midazolam 2–5mg IV em bolus, repetir a cada 5–10 min conforme necessidade',
+'Antiemético: ondansetrão 4mg IV ou metoclopramida 10mg IV se náuseas']},
+{id:'esp',t:'Tratamento específico',it:[
+'(Selecione um subtipo de choque — séptico, hipovolêmico, cardiogênico ou obstrutivo — para ver condutas específicas baseadas na fisiologia)']},
+{id:'dsp',t:'Disposição',it:[
+'Internação com solicitação imediata de vaga em UTI',
+'Solicitação de transferência via CROSS imediatamente (risco elevado de desfecho negativo se mantido em unidade pré-hospitalar fixa)']}
+]},
+cho_sep:{l:'Choque séptico',s:[
+{id:'sup',t:'Ressuscitação inicial',it:[
+'Monitorização contínua: Telemetria, PANI a cada 5 min, SpO₂, FR, FC, diurese (Foley), lactato de repetição',
+'Acesso venoso: 2 AVPS (16–18G) como primeira escolha; se falha, IO com técnica asséptica; CVC com técnica asséptica se choque refratário',
+'Oxigenoterapia com SatO₂ alvo ≥92%: CN / MNRL 10–15L/min ou flush-rate / CNAF / VNI',
+'Posicionamento: supino com membros inferiores elevados 30°',
+'Aquecimento passivo se hipotermia',
+'Expansão volêmica: Ringer Lactato 500–1000mL IV agora (reavaliação contínua de PA, FC, perfusão periférica, diurese)',
+'Norepinefrina: 0,01–0,3 μg/kg/min IV (infusão contínua central) se PA sistólica <90 após fluido adequado',
+'Vasopressina: 0,04 U/min IV (titrável) se refratário a norepinefrina ou PA ainda <90',
+'Hidrocortisona: 100mg IV 8/8h (dose de choque)',
+'Dobutamina: 2–20 μg/kg/min IV se sinais de disfunção cardíaca (débito baixo)']},
+{id:'inv',t:'Investigação',it:[
+'Hemoculturas (2 frascos) ANTES de antibiótico',
+'Lactato sérico (0 e 6h): clearance de lactato prediz resposta terapêutica',
+'Hemograma, coagulograma (TP/INR, TTPa, plaquetas), função renal (creatinina, ureia), eletrólitos (Na, K, Ca, Mg, Phos)',
+'Procalcitonina (PCT): auxilia triagem infeccioso vs. não-infeccioso',
+'Cultura de urina, swab de ferida, líquidos corporais conforme sítio infeccioso suspeito',
+'Raio-X de tórax ou TC de tórax/abdômen se pneumonia/derrame/foco abdominal suspeito',
+'Gasometria arterial: avaliar pH, pCO₂, saturação']},
+{id:'sin',t:'Tratamento sintomático',it:[
+'Analgesia: dipirona 1–2g IV 6/6h ou paracetamol 500mg–1g IV 6/6h',
+'Ansiolítico se agitação: midazolam 2–5mg IV em bolus, repetir conforme necessidade',
+'Antipiréticos conforme protocolo (paracetamol max 4g/dia)',
+'Antiemético: ondansetrão 4mg IV se náuseas']},
+{id:'esp',t:'Tratamento específico',it:[
+'Antibioticoterapia empírica de amplo espectro (iniciar <1h de diagnóstico):',
+'  • Infecção comunitária não-grave: ceftriaxona 2g IV 12/12h + azitromicina 500mg IV 1x/dia',
+'  • Risco ESBL/gram-negativo: ceftazidima 1–2g IV 8/8h + fluoroquinolona (levofloxacina 750mg IV 1x/dia)',
+'  • Risco anaeróbio (abdominal, odontológico): adicionar metronidazol 500mg IV 6/6h',
+'  • Risco MRSA: adicionar vancomicina 15–20mg/kg IV 8/12h (target nível 15–20 μg/mL)',
+'Controle de foco: drenagem cirúrgica de abscesso, remoção de cateter/dispositivo infectado, desbridamento']},
+{id:'dsp',t:'Disposição',it:[
+'Internação com solicitação imediata de vaga em UTI',
+'Solicitação de transferência via CROSS imediatamente (risco elevado de desfecho negativo)']}
+]},
+cho_hip:{l:'Choque hipovolêmico',s:[
+{id:'sup',t:'Ressuscitação inicial',it:[
+'Monitorização contínua: Telemetria, PANI a cada 5 min, SpO₂, FR, FC, diurese (Foley)',
+'Acesso venoso: 2 AVPS (16–18G) como primeira escolha; se falha, IO com técnica asséptica; CVC com técnica asséptica se choque refratário',
+'Oxigenoterapia com SatO₂ alvo ≥90%: CN / MNRL 10–15L/min ou flush-rate / CNAF / VNI',
+'Posicionamento: supino com membros inferiores elevados 30°',
+'Aquecimento: manta térmica se hipotermia',
+'Expansão volêmica: Ringer Lactato 500–1000mL IV agora (reavaliação contínua; aumentar volume conforme deficit estimado)',
+'Norepinefrina: 0,01–0,3 μg/kg/min IV (infusão central) se PA sistólica <90 após fluido adequado',
+'Vasopressina: 0,04 U/min IV (titrável) se refratário',
+'Hidrocortisona: 100mg IV 8/8h (dose de choque)',
+'Dobutamina: 2–20 μg/kg/min IV se sinais de disfunção cardíaca']},
+{id:'inv',t:'Investigação',it:[
+'Hemograma seriado: Hb/Ht (não reflete sangramento agudo nas primeiras 2h)',
+'Coagulograma: TP/INR, TTPa, plaquetas, fibrinogênio (se sangramento significativo)',
+'Função renal: creatinina, ureia (elevada desproporcional sugere sangue no GI)',
+'Eletrólitos: Na, K, Cl, Ca, Mg',
+'Lactato sérico (0 e 6h): perfusão tecidual',
+'Tipo/cruzamento para possível transfusão (preparar sangue O negativo se exsanguinação)',
+'Imagiologia conforme sítio: TC com contraste (trauma abdominal, pélvico), endoscopia (HDA), FAST/ecocardio bedside']},
+{id:'sin',t:'Tratamento sintomático',it:[
+'Analgesia: dipirona 1g IV 6/6h ou paracetamol 500mg–1g IV 6/6h (cautela com sangramento ativo)',
+'Ansiolítico se agitação: midazolam 2–5mg IV em bolus (cautela com depressão respiratória)',
+'Antiemético: ondansetrão 4mg IV se náuseas']},
+{id:'esp',t:'Tratamento específico',it:[
+'Hemostasia definitiva: cirurgia (trauma abdominal, ruptura aneurisma), endoscopia (HDA, HDC), angiografia/embolização',
+'Transfusão de hemácias: meta Hb 7–9 g/dL (restritiva); se exsanguinação iminente, usar sangue O negativo e ativar protocolo massive transfusion',
+'Transfusão de plasma fresco congelado (FFP) se coagulopatia confirmada (INR >1,5, TTPa prolongado)',
+'Concentrado de plaquetas se plaquetas <50k (cirurgia) ou <20k (médico)',
+'Ácido tranexâmico (TXA): 1g IV em 3 min, depois 1g em 8h (se sangramento ativo <3h; reduz mortalidade em trauma)',
+'Evitar fluidos em excesso (permissive hypotension em trauma não-controlado): manter PA sistólica 70–80 mmHg até hemostasia cirúrgica']},
+{id:'dsp',t:'Disposição',it:[
+'Internação com solicitação imediata de vaga em UTI',
+'Solicitação de transferência via CROSS imediatamente (risco elevado de desfecho negativo)']}
+]},
+cho_car:{l:'Choque cardiogênico',s:[
+{id:'sup',t:'Ressuscitação inicial',it:[
+'Monitorização contínua: Telemetria, PANI a cada 5 min, SpO₂, FR, FC, diurese (Foley), lactato de repetição',
+'Acesso venoso: 2 AVPS (16–18G) como primeira escolha; se falha, IO com técnica asséptica; CVC com técnica asséptica para monitorização pressão venosa central',
+'Oxigenoterapia com SatO₂ alvo ≥92%: CN / MNRL 10–15L/min ou flush-rate / CNAF / VNI (VNI preferencial antes de intubação)',
+'Posicionamento: semi-recumbente (facilita diurese e repouso cardíaco)',
+'Aquecimento passivo se hipotermia',
+'Expansão volêmica cautelosa: Ringer Lactato 250–500mL IV agora (reavaliação rigorosa; parar se creptações, JVP elevada, edema periférico)',
+'Norepinefrina: 0,01–0,3 μg/kg/min IV (infusão central) se PA sistólica <90 após fluido mínimo',
+'Vasopressina: 0,04 U/min IV (titrável) se refratário',
+'Hidrocortisona: 100mg IV 8/8h (dose de choque)',
+'Dobutamina: 2–20 μg/kg/min IV (melhora contratilidade e vasodilatação periférica)']},
+{id:'inv',t:'Investigação',it:[
+'Troponina I ou T (ultrassensível): marcador de infarto miocárdico',
+'Lactato sérico (0 e 6h): perfusão tecidual',
+'BNP/NT-proBNP: estratificação de risco (prognóstico)',
+'Hemograma, coagulograma, função renal, eletrólitos',
+'ECG 12-D seriado (0, 30 min, 3h): desnivelamento ST, inversão T, arritmias',
+'Ecocardio (transtorácica ± transesofágica): FE, movimentação de septo, tamanho câmaras, sobrecarga de VD, derrame pericárdico, valvopatia',
+'Raio-X de tórax: cardiomegalia, edema pulmonar, infiltrados',
+'Cineangiocoronariografia: padrão ouro diagnóstico se IAM suspeito (realiza intervenção percutânea)']},
+{id:'sin',t:'Tratamento sintomático',it:[
+'Analgesia: dipirona 1g IV 6/6h ou paracetamol 500mg–1g IV 6/6h (evitar AINE)',
+'Ansiolítico se agitação: midazolam 2–5mg IV em bolus (facilita VNI)',
+'Antiemético: ondansetrão 4mg IV se náuseas']},
+{id:'esp',t:'Tratamento específico',it:[
+'Se infarto miocárdico agudo (STEMI/NSTEMI):',
+'  • Dual antiplatelet: AAS 300–500mg IV + P2Y12 inibidor (clopidogrel 600mg VO ou prasugrel 60mg VO)',
+'  • Anticoagulação: enoxaparina 0,5–1 mg/kg IV ou fondaparinux 2,5mg IV 1x/dia',
+'  • Reperfusão urgente: angioplastia primária (<120 min) ou trombolítico (tPA 0,9 mg/kg IV se angioplastia indisponível)',
+'Se cardiomiopatia dilatada descompensada:',
+'  • Diurético IV: furosemida 40–80mg IV (titulação para diurese 200–300 mL/h)',
+'  • Nitroglicerina IV contínua (se PA >100 mmHg): 12,5–25 μg/min, titragem a cada 5 min (máx 400 μg/min)',
+'  • IECA de ação rápida: enalapril 2,5mg IV 6/6h (após estabilização hemodinâmica)',
+'Se estenose aórtica severa: referência urgente para cirurgia (prognóstico fatal sem intervenção)',
+'Se derrame pericárdico com tamponamento: pericardiocentese (drenagem percutânea ou cirúrgica)']},
+{id:'dsp',t:'Disposição',it:[
+'Internação com solicitação imediata de vaga em UTI',
+'Solicitação de transferência via CROSS imediatamente (risco elevado de desfecho negativo)']}
+]},
+cho_obs:{l:'Choque obstrutivo',s:[
+{id:'sup',t:'Ressuscitação inicial',it:[
+'Monitorização contínua: Telemetria, PANI a cada 5 min, SpO₂, FR, FC, diurese (Foley)',
+'Acesso venoso: 2 AVPS (16–18G) como primeira escolha; se falha, IO com técnica asséptica; CVC com técnica asséptica para PVC/drenagem',
+'Oxigenoterapia com SatO₂ alvo ≥92%: CN / MNRL 10–15L/min ou flush-rate / CNAF / VNI',
+'Posicionamento: supino ou semi-recumbente conforme etiologia',
+'Aquecimento passivo se hipotermia',
+'Expansão volêmica: Ringer Lactato 500–1000mL IV agora (reavaliação contínua; fluido pode piorar alguns casos como asma/DPOC)',
+'Norepinefrina: 0,01–0,3 μg/kg/min IV (infusão central) se PA sistólica <90 após fluido adequado',
+'Vasopressina: 0,04 U/min IV (titrável) se refratário',
+'Hidrocortisona: 100mg IV 8/8h (dose de choque)',
+'Dobutamina: 2–20 μg/kg/min IV se sinais de disfunção cardíaca']},
+{id:'inv',t:'Investigação',it:[
+'Ecocardio (transtorácica ± transesofágica): derrame pericárdico? Tamponamento? Dilatação VD (TEP)? Movimentação de septo?',
+'Troponina: descartar IEM coexistente',
+'Lactato sérico (0 e 6h): perfusão',
+'Hemograma, coagulograma, função renal, eletrólitos',
+'ECG 12-D: S1Q3T3 (TEP, inespecífico), RDAB (sobrecarga VD)',
+'D-dímero: alta sensibilidade (~98%); negativa praticamente exclui TEP',
+'Angiotomografia pulmonar (ATCO): padrão ouro para TEP; identifica nível de oclusão',
+'Raio-X de tórax: silhueta cardíaca, pulmões, mediastino',
+'Gasometria arterial: hipoxemia, hipocapnia em TEP massiva']},
+{id:'sin',t:'Tratamento sintomático',it:[
+'Analgesia: dipirona 1g IV 6/6h ou paracetamol 500mg–1g IV 6/6h',
+'Ansiolítico se agitação: midazolam 2–5mg IV em bolus (cautela com depressão respiratória)',
+'Antiemético: ondansetrão 4mg IV se náuseas']},
+{id:'esp',t:'Tratamento específico',it:[
+'Se tamponamento cardíaco: pericardiocentese urgente (drenagem percutânea) ou pericardiotomia cirúrgica (drenagem definitiva)',
+'Se tromboembolismo pulmonar (TEP) massivo:',
+'  • Anticoagulação: enoxaparina 1 mg/kg IV ou fondaparinux 5–10mg IV 1x/dia',
+'  • Trombolítico: alteplase 10mg IV bolus + 90mg infusão em 2h (total 100mg) se choque/instabilidade',
+'  • Alternativa: estreptoquinase 1,5 MU IV em 1h (menos específica)',
+'  • Trombectomia percutânea/cirúrgica se trombolítico contraindicado + choque refratário',
+'Se pneumotórax hipertensivo: descompressão imediata (agulha 2º espaço intercostal midclavicular, depois tubo de tórax)',
+'Se asma/DPOC agudo com broncoespasmo severo: beta-2 agonista inalatório, corticosteroide IV, brometo de ipratrópio, magnesium IV, ketamina se intubação']},
+{id:'dsp',t:'Disposição',it:[
+'Internação com solicitação imediata de vaga em UTI',
+'Solicitação de transferência via CROSS imediatamente (risco elevado de desfecho negativo)']}
 ]},
 hdg:{l:'Hemorragia digestiva',s:[
 {id:'m',t:'Monitorização e acesso',it:[
@@ -1851,59 +2008,6 @@ cef_hii:{l:'Hipertensão intracraniana idiopática',s:[]},
 cef_tce:{l:'Cefaleia pós-TCE',s:[]},
 cef_sin:{l:'Rinossinusite aguda',s:[]},
 cef_trig:{l:'Neuralgia do trigêmeo',s:[]},
-cho:{l:'Choque indiferenciado',subExcl:[{id:'cho_sep',l:'Séptico / Distributivo'},{id:'cho_hip',l:'Hipovolêmico'},{id:'cho_car',l:'Cardiogênico'},{id:'cho_obs',l:'Obstrutivo (Tamponamento / Pneumotórax)'}],s:[
-{id:'m',t:'Monitorização e acesso',it:[
-'Monitor contínuo: ECG, SatO2, PA não invasiva contínua',
-'Dois acessos venosos periféricos ≥ 16G — acesso central não é pré-requisito para vasopressor',
-'Sonda vesical — débito urinário meta ≥ 0,5 mL/kg/h como marcador de perfusão',
-'Gasometria arterial e lactato basal — lactato > 2 mmol/L indica hipoperfusão tecidual',
-'O2 com alvo SatO2 94–98% — IOT precoce se rebaixamento de consciência ou falha ventilatória']},
-{id:'f',t:'Ressuscitação inicial',it:[
-'Cristaloide balanceado 250–500 mL IV em bolus — reavaliar com elevação passiva de pernas antes de reexpandir',
-'Norepinefrina 1ª linha se PAM < 65 mmHg — início seguro em acesso periférico calibroso',
-'Meta PAM ≥ 65 mmHg — considerar 80–85 mmHg em HAS prévia',
-'Transfusão se Hb < 7 g/dL (< 8 g/dL em DAC ou isquemia ativa) — estratégia restritiva']},
-{id:'e',t:'Investigação',it:[
-'Lactato seriado (0h e 2h) — clareamento ≥ 10% como meta de ressuscitação',
-'Hemograma, coagulograma, função renal e hepática, glicemia',
-'POCUS: função VE, IVC, derrame pericárdico, pneumotórax, distensão VD — diagnóstico diferencial de choque',
-'ECG 12D — excluir IAM, TEP (S1Q3T3), tamponamento (alternância elétrica)']}
-]},
-cho_hip:{l:'Choque hipovolêmico',s:[
-{id:'f',t:'Controle da perda e reposição',it:[
-'Identificar e controlar fonte de sangramento — hemostasia cirúrgica ou endoscópica quando indicado',
-'Cristaloide balanceado 1–2 L rápido; se hemorrágico grave → ativar protocolo de transfusão maciça (PTM)',
-'PTM: concentrado de hemácias + plasma fresco + plaquetas na proporção 1:1:1',
-'Ácido tranexâmico 1 g IV em 10 min se sangramento ativo — iniciar em < 3h do trauma',
-'Hipotensão permissiva em trauma com hemorragia ativa — alvo PAS 80–90 mmHg até hemostasia definitiva']},
-{id:'e',t:'Investigação',it:[
-'Tipagem sanguínea e reserva de concentrado de hemácias',
-'Coagulograma, TEG/ROTEM se disponível — guia reposição hemostática',
-'POCUS FAST estendido — líquido livre em abdome e tórax']}
-]},
-cho_car:{l:'Choque cardiogênico',s:[
-{id:'f',t:'Suporte hemodinâmico',it:[
-'Evitar ressuscitação volêmica agressiva — pode piorar congestão pulmonar',
-'Dobutamina 2,5–20 mcg/kg/min se débito cardíaco baixo sem hipotensão grave — inotrópico de 1ª linha',
-'Norepinefrina associada se PAM < 65 mmHg — manter perfusão coronariana',
-'Furosemida 40–80 mg IV se congestão pulmonar — titular conforme débito urinário',
-'Considerar IABP ou suporte mecânico se refratário — ativar cardiologia intervencionista']},
-{id:'e',t:'Investigação',it:[
-'ECG 12D imediato — excluir IAM como causa (supra = ativar hemodinâmica)',
-'Ecocardiograma / POCUS urgente — FEVE, valvopatia aguda, tamponamento',
-'Troponina hs, BNP/NT-proBNP, hemograma, função renal']}
-]},
-cho_obs:{l:'Choque obstrutivo (Tamponamento / Pneumotórax)',s:[
-{id:'f',t:'Tratamento específico pela etiologia',it:[
-'Tamponamento cardíaco: pericardiocentese de emergência guiada por POCUS — 50 mL já aliviam hemodinâmica',
-'Pneumotórax hipertensivo: descompressão imediata com agulha 14G (2º EIC linha hemiclavicular) → dreno torácico',
-'NÃO ventilar com pressão positiva antes de descomprimir pneumotórax hipertensivo — risco de PCR',
-'Se TEP de alto risco como causa do choque: selecionar adicionalmente "TEP suspeito" (ver Síndrome dispneica ou Dor torácica) para acessar conduta de trombólise']},
-{id:'e',t:'Investigação',it:[
-'POCUS: derrame pericárdico, colapso de câmaras D, distensão VD, ausência de deslizamento pleural',
-'RX tórax / TC se estabilidade — confirmar pneumotórax e excluir outras etiologias',
-'ECG: alternância elétrica (tamponamento), baixa voltagem']}
-]},
 dsp:{l:'Síndrome dispneica',subExcl:[{id:'eap',l:'EAP / IC descompensada'},{id:'dpoc_ag',l:'Agudização de DPOC'},{id:'asma',l:'Crise asmática'},{id:'pnm',l:'Pneumonia grave'},{id:'dep',l:'Derrame pleural sintomático'},{id:'tep',l:'TEP suspeito'}],s:[
 {id:'m',t:'Monitorização e suporte ventilatório',it:[
 'Oximetria contínua; O2 titulado para SatO2 94–98% (88–92% em DPOC)',
