@@ -295,6 +295,25 @@ textarea{resize:vertical;min-height:60px}
 .pend-del-btn{background:none;border:none;color:#a32d2d;cursor:pointer;padding:4px 8px;font-size:14px}
 .pend-del-btn:hover{color:#791f1f}
 
+/* ── EF sugestão button ── */
+.ef-sug-btn{font-size:11px;padding:2px 9px;border-radius:12px;border:.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);cursor:pointer;font-family:var(--font-sans);white-space:nowrap}
+.ef-sug-btn:hover{background:#e6f1fb;border-color:#85b7eb;color:#185fa5}
+
+/* ── Two-column desktop layout ── */
+.two-col-wrap{display:block}
+.col-rel{display:none}
+@media(min-width:1024px){
+ .app{max-width:1300px;padding:1rem 1.5rem}
+ .two-col-wrap{display:grid;grid-template-columns:1fr 380px;gap:1.5rem;align-items:start}
+ .col-rel{display:flex;flex-direction:column;position:sticky;top:1rem;max-height:calc(100vh - 90px)}
+ .rel-col-inner{display:flex;flex-direction:column;height:100%;background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+ .rel-col-hdr{padding:.65rem 1rem;border-bottom:.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em;flex-shrink:0}
+ .rel-col-textarea{flex:1;min-height:0;overflow-y:auto;resize:none;border:none;border-radius:0;background:var(--color-background-secondary);font-family:var(--font-mono);font-size:11px;line-height:1.8;padding:1rem;color:var(--color-text-primary)}
+ .rel-col-actions{padding:.5rem 1rem;border-top:.5px solid var(--color-border-tertiary);display:flex;gap:8px;flex-shrink:0}
+ .rel-col-actions .btng{padding:7px 14px;font-size:13px}
+ .desktop-hide-relcard{display:none}
+}
+
 </style>
 </head>
 <body>
@@ -314,6 +333,9 @@ textarea{resize:vertical;min-height:60px}
  <div class="login-fl">
  <label>Senha</label>
  <input type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+ </div>
+ <div class="cf-turnstile-wrap">
+   <div class="cf-turnstile" data-tname="login"></div>
  </div>
  <button class="login-btn" onclick="doLogin()" id="loginBtn">Entrar</button>
  <div class="login-err" id="loginErr"></div>
@@ -351,7 +373,7 @@ textarea{resize:vertical;min-height:60px}
    <input type="password" id="signupPwd2" placeholder="••••••••" autocomplete="new-password">
   </div>
   <div class="cf-turnstile-wrap">
-   <div class="cf-turnstile" data-sitekey="0x4AAAAAADTWnhJoTdtRavea" data-callback="onTurnstileToken" data-error-callback="onTurnstileError" data-expired-callback="onTurnstileExpired"></div>
+   <div class="cf-turnstile" data-tname="signup"></div>
   </div>
   <button class="login-btn" onclick="doSignup()" id="signupBtn">Criar conta</button>
   <div class="login-err" id="signupErr"></div>
@@ -429,7 +451,25 @@ textarea{resize:vertical;min-height:60px}
  <button class="logout-btn" onclick="doLogout()" style="margin-left:8px"><i class="ti ti-logout" aria-hidden="true"></i> Sair</button>
 </div>
 <div class="steps" id="sBar"></div>
-<div id="con"></div>
+<div class="two-col-wrap">
+ <div class="col-main" id="con"></div>
+ <div class="col-rel">
+  <div class="rel-col-inner">
+   <div class="rel-col-hdr">
+    <span>Relatório</span>
+    <div class="rg">
+     <span class="ro" id="relModeFullBtn" onclick="S.relMode='full';render()"><i class="ti ti-file-text" aria-hidden="true"></i> Completo</span>
+     <span class="ro" id="relModeResumoBtn" onclick="S.relMode='resumo';render()"><i class="ti ti-list" aria-hidden="true"></i> Resumo</span>
+    </div>
+   </div>
+   <textarea id="relColTxt" class="rel-col-textarea" spellcheck="false"></textarea>
+   <div class="rel-col-actions">
+    <button class="btng" onclick="copyRelCol()"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
+    <button class="btng" style="background:#185fa5" onclick="saveReportFromCol()"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar</button>
+   </div>
+  </div>
+ </div>
+</div>
 <div id="modalArea"></div>
 <div class="app-footer" id="appFooter">Emergência Pro • v2026.05.20</div>
 </div>
@@ -479,8 +519,8 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // ─── Auth ──────────────────────────────────────────────────────────────────
 
 const _AUTH_OVERLAYS = ['loginOverlay','signupOverlay','kycOverlay','pendingOverlay'];
-let _turnstileToken = null;
-let _turnstileWidgetId = null;
+const TURNSTILE_SITE_KEY = '0x4AAAAAADTWnhJoTdtRavea';
+const _turnstileWidgets = {}; // {name: {id, token}}
 let _profileSub = null;
 let _currentProfile = null;
 let _adminCurrentTab = 'pending';
@@ -493,8 +533,8 @@ function showOverlay(id){
  hideAllOverlays();
  const el=document.getElementById(id);if(el)el.style.display='flex';
 }
-function showLogin(){stopProfileSub();showOverlay('loginOverlay');}
-function showSignup(){stopProfileSub();resetTurnstile();showOverlay('signupOverlay');}
+function showLogin(){stopProfileSub();showOverlay('loginOverlay');setTimeout(()=>{resetTurnstile('login');onTurnstileReady();},0);}
+function showSignup(){stopProfileSub();showOverlay('signupOverlay');setTimeout(()=>{resetTurnstile('signup');onTurnstileReady();},0);}
 function showKyc(){showOverlay('kycOverlay');}
 function showPending(status, motivo){
  const titleEl=document.getElementById('pendingTitle');
@@ -597,14 +637,22 @@ async function doLogin(){
  const loadEl=document.getElementById('loginLoading');
  const btn=document.getElementById('loginBtn');
  errEl.style.display='none';
+ const captchaToken = getTurnstileToken('login');
+ if(!captchaToken){
+  errEl.textContent='Complete o desafio de verificação antes de entrar.';
+  errEl.style.color='#a32d2d';errEl.style.display='block';
+  return;
+ }
  loadEl.style.display='block';
  btn.disabled=true;
- const {error}=await sb.auth.signInWithPassword({email,password:pwd});
+ const {error}=await sb.auth.signInWithPassword({email,password:pwd,options:{captchaToken}});
  loadEl.style.display='none';
  btn.disabled=false;
+ // Turnstile token é single-use — reseta sempre, sucesso ou falha
+ resetTurnstile('login');
  if(error){
   const msg=error.message==='Invalid login credentials'?'E-mail ou senha incorretos':error.message;
-  errEl.textContent=msg;errEl.style.display='block';
+  errEl.textContent=msg;errEl.style.color='#a32d2d';errEl.style.display='block';
  }
 }
 
@@ -614,7 +662,8 @@ async function doLogout(){
  _adminCache = {};
  _kycFiles.selfie = null;
  _kycFiles.crm = null;
- _turnstileToken = null;
+ resetTurnstile('login');
+ resetTurnstile('signup');
  _shiftData = null;
  const adminBtn = document.getElementById('adminHdrBtn');
  if(adminBtn) adminBtn.style.display = 'none';
@@ -625,27 +674,44 @@ async function doLogout(){
 
 async function doForgotPassword(){
  const email=document.getElementById('loginEmail').value.trim();
- if(!email){document.getElementById('loginErr').textContent='Digite o e-mail acima primeiro.';document.getElementById('loginErr').style.display='block';return;}
- const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.href});
  const errEl=document.getElementById('loginErr');
+ if(!email){errEl.textContent='Digite o e-mail acima primeiro.';errEl.style.color='#a32d2d';errEl.style.display='block';return;}
+ const captchaToken = getTurnstileToken('login');
+ if(!captchaToken){
+  errEl.textContent='Complete o desafio de verificação antes de solicitar recuperação.';
+  errEl.style.color='#a32d2d';errEl.style.display='block';
+  return;
+ }
+ const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.href,captchaToken});
+ resetTurnstile('login');
  if(error){errEl.textContent='Erro: '+error.message;errEl.style.color='#a32d2d';}
  else{errEl.textContent='Enviamos um link de recuperação para seu e-mail.';errEl.style.color='#3b6d11';}
  errEl.style.display='block';
 }
 
-// ─── Turnstile callbacks (globais — chamados pelo widget) ──────────────────
+// ─── Turnstile (suporta múltiplos widgets identificados por data-tname) ───
 function onTurnstileReady(){
  if(!window.turnstile)return;
- const el=document.querySelector('#signupOverlay .cf-turnstile');
- if(!el)return;
- try{_turnstileWidgetId=window.turnstile.render(el,{sitekey:'0x4AAAAAADTWnhJoTdtRavea',callback:onTurnstileToken,'error-callback':onTurnstileError,'expired-callback':onTurnstileExpired});}catch(e){console.warn('turnstile render:',e);}
+ document.querySelectorAll('.cf-turnstile[data-tname]').forEach(el=>{
+  const name = el.dataset.tname;
+  if(_turnstileWidgets[name] && _turnstileWidgets[name].id != null) return;
+  try{
+   const id = window.turnstile.render(el, {
+    sitekey: TURNSTILE_SITE_KEY,
+    callback: t => { if(_turnstileWidgets[name]) _turnstileWidgets[name].token = t; },
+    'error-callback':   () => { if(_turnstileWidgets[name]) _turnstileWidgets[name].token = null; },
+    'expired-callback': () => { if(_turnstileWidgets[name]) _turnstileWidgets[name].token = null; }
+   });
+   _turnstileWidgets[name] = { id, token: null };
+  }catch(e){console.warn('turnstile render', name, ':', e);}
+ });
 }
-function onTurnstileToken(token){_turnstileToken=token;}
-function onTurnstileError(){_turnstileToken=null;}
-function onTurnstileExpired(){_turnstileToken=null;}
-function resetTurnstile(){
- _turnstileToken=null;
- if(window.turnstile && _turnstileWidgetId!=null){try{window.turnstile.reset(_turnstileWidgetId);}catch(e){}}
+function getTurnstileToken(name){return _turnstileWidgets[name] ? _turnstileWidgets[name].token : null;}
+function resetTurnstile(name){
+ const w = _turnstileWidgets[name];
+ if(!w) return;
+ w.token = null;
+ if(window.turnstile && w.id != null){try{window.turnstile.reset(w.id);}catch(e){}}
 }
 
 // ─── Validação de senha ────────────────────────────────────────────────────
@@ -677,19 +743,21 @@ async function doSignup(){
  const loadEl=document.getElementById('signupLoading');
  const btn=document.getElementById('signupBtn');
  errEl.style.display='none';
+ errEl.style.color='#a32d2d';
 
  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){errEl.textContent='E-mail inválido.';errEl.style.display='block';return;}
  const rules=validatePassword(pwd);
  if(!(rules.len && rules.upp && rules.num && rules.spc)){errEl.textContent='A senha não atende a todos os requisitos.';errEl.style.display='block';return;}
  if(pwd!==pwd2){errEl.textContent='As senhas não coincidem.';errEl.style.display='block';return;}
- if(!_turnstileToken){errEl.textContent='Complete o desafio de verificação.';errEl.style.display='block';return;}
+ const captchaToken = getTurnstileToken('signup');
+ if(!captchaToken){errEl.textContent='Complete o desafio de verificação.';errEl.style.display='block';return;}
 
  loadEl.style.display='block';btn.disabled=true;
- const {error}=await sb.auth.signUp({email,password:pwd,options:{captchaToken:_turnstileToken}});
+ const {error}=await sb.auth.signUp({email,password:pwd,options:{captchaToken}});
  loadEl.style.display='none';btn.disabled=false;
+ resetTurnstile('signup');
  if(error){
   errEl.textContent='Erro: '+error.message;errEl.style.display='block';
-  resetTurnstile();
   return;
  }
  errEl.style.color='#3b6d11';
@@ -1457,6 +1525,25 @@ const S={step:0,nome:'',idade:30,sexo:'',orig:'Demanda Espontânea',origInst:'',
 
 // Snapshot do estado inicial para resetCase()
 const INITIAL_S=JSON.parse(JSON.stringify(S));
+
+const EF_TEMPLATES={
+ M:{
+  g:'BEG, LOTE, corado, hidratado, eupneico em ar ambiente, afebril',
+  cv:'Ritmo regular em 2 tempos, bulhas normofonéticas, sem sopros. Pulsos periféricos cheios e simétricos',
+  re:'MV presente e simétrico bilateralmente, sem ruídos adventícios',
+  ab:'Abdome plano, flácido, RHA presentes, sem visceromegalias, sem massas palpáveis, indolor à palpação',
+  ne:'Consciente, orientado em tempo e espaço, Glasgow 15. Força e sensibilidade preservadas. Sem déficits focais',
+  pe:'MMII sem edema, sem sinais flogísticos, pulsos tibiais e pediosos simétricos. Pele íntegra'
+ },
+ F:{
+  g:'BEG, LOTE, corada, hidratada, eupneica em ar ambiente, afebril',
+  cv:'Ritmo regular em 2 tempos, bulhas normofonéticas, sem sopros. Pulsos periféricos cheios e simétricos',
+  re:'MV presente e simétrico bilateralmente, sem ruídos adventícios',
+  ab:'Abdome plano, flácido, RHA presentes, sem visceromegalias, útero não palpável, sem massas, indolor à palpação',
+  ne:'Consciente, orientada em tempo e espaço, Glasgow 15. Força e sensibilidade preservadas. Sem déficits focais',
+  pe:'MMII sem edema, sem sinais flogísticos, pulsos tibiais e pediosos simétricos. Pele íntegra'
+ }
+};
 function deepMergeDefaults(defaults,override){
  if(override===null||override===undefined)return defaults;
  if(typeof defaults!=='object'||defaults===null)return override;
@@ -3044,7 +3131,7 @@ function rECG(){
 function rPOCUS(){const p=S.pocS;return`<div class="card"><div class="st"><i class="ti ti-wave-sine" aria-hidden="true"></i> POCUS</div>${[['pulmao','Pulmão'],['coracao','Coração'],['abdome','Abdome'],['mmii','MMII'],['outros','Outros']].map(([k,l])=>`<div style="margin-bottom:8px"><label>${l}</label><input type="text" value="${esc(p[k])}" oninput="S.pocS['${k}']=this.value" placeholder="${l}..."></div>`).join('')}</div>`;}
 function dispGrav(){const fr=parseFloat(S.fr),sat=parseFloat(S.sat),fala=S.dspEF.fala,cian=S.dspEF.cianose;let pts=0;if(S.fr&&(fr>30||fr<12))pts+=2;else if(S.fr&&fr>24)pts+=1;if(S.sat&&sat<90)pts+=2;else if(S.sat&&sat<94)pts+=1;if(fala==='Palavras soltas'||fala==='Impossível falar')pts+=2;else if(fala==='Frases incompletas')pts+=1;if(cian==='Central (lábios/língua)')pts+=2;if(pts>=4)return'grave';if(pts>=2)return'mod';return'leve';}
 function dispGravBadge(){if(S.queixa!=='Dispneia')return'';const hasData=S.fr||S.sat||S.dspEF.fala||S.dspEF.cianose;if(!hasData)return'';const g=dispGrav();const[level,txt]=g==='grave'?['grave','Gravidade sugerida: GRAVE — IOT/VNI considerar imediatamente']:g==='mod'?['mod','Gravidade sugerida: MODERADA — monitorização intensa, O2 alto fluxo']:['leve','Gravidade sugerida: LEVE — tratar e reavaliar'];return gravBadge(level,txt,{noMargin:true});}
-function s3(){const badge=(S.queixa==='Dispneia'&&QX_BADGE[S.queixa])?QX_BADGE[S.queixa]():'';return`${badge}<div class="card"><div class="st"><i class="ti ti-search" aria-hidden="true"></i> Tipo de exame físico</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem"><button class="xbtn ${S.ef==='amb'?'on':''}" onclick="S.ef='amb';render()"><i class="ti ti-walk" aria-hidden="true"></i> Ambulatorial</button><button class="xbtn ${S.ef==='crit'?'on':''}" onclick="S.ef='crit';render()"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Paciente crítico (ABCDE)</button></div></div>${S.ef==='amb'?`<div class="card"><div class="st">Padrão ambulatorial</div>${[['g','Geral'],['cv','AP Cardiovascular'],['re','AP Respiratório'],['ab','Abdome'],['ne','Neurológico'],['pe','Pele e MMII']].map(([k,l])=>`<div style="margin-bottom:10px"><label>${l}</label><input type="text" value="${esc(S.amb[k])}" oninput="S.amb['${k}']=this.value" placeholder="${l}..."></div>`).join('')}</div>`:''}${S.ef==='crit'?`<div class="card"><div class="st">ABCDE — Avaliação primária</div>${abcH()}</div>`:''}${S.ef&&QX_EF[S.queixa]?QX_EF[S.queixa]():''}${S.ef?rECG()+''+rPOCUS():''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.ef?`<button class="btnp" onclick="nx()">Impressão / Conduta <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
+function s3(){const badge=(S.queixa==='Dispneia'&&QX_BADGE[S.queixa])?QX_BADGE[S.queixa]():'';return`${badge}<div class="card"><div class="st"><i class="ti ti-search" aria-hidden="true"></i> Tipo de exame físico</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem"><button class="xbtn ${S.ef==='amb'?'on':''}" onclick="S.ef='amb';render()"><i class="ti ti-walk" aria-hidden="true"></i> Ambulatorial</button><button class="xbtn ${S.ef==='crit'?'on':''}" onclick="S.ef='crit';render()"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Paciente crítico (ABCDE)</button></div></div>${S.ef==='amb'?`<div class="card"><div class="st">Padrão ambulatorial</div>${[['g','Geral'],['cv','AP Cardiovascular'],['re','AP Respiratório'],['ab','Abdome'],['ne','Neurológico'],['pe','Pele e MMII']].map(([k,l])=>{const tpl=(S.sexo==='M'||S.sexo==='F')?EF_TEMPLATES[S.sexo][k]:null;const ph=tpl||l+'...';const sug=tpl?`<button type="button" class="ef-sug-btn" onclick="if(!S.amb['${k}']){S.amb['${k}']=EF_TEMPLATES[S.sexo]['${k}'];render()}" title="Preencher com sugestão para o sexo selecionado">Sugestão</button>`:'';return`<div style="margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><label style="margin:0">${l}</label>${sug}</div><input type="text" value="${esc(S.amb[k])}" oninput="S.amb['${k}']=this.value" placeholder="${esc(ph)}"></div>`}).join('')}</div>`:''}${S.ef==='crit'?`<div class="card"><div class="st">ABCDE — Avaliação primária</div>${abcH()}</div>`:''}${S.ef&&QX_EF[S.queixa]?QX_EF[S.queixa]():''}${S.ef?rECG()+''+rPOCUS():''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.ef?`<button class="btnp" onclick="nx()">Impressão / Conduta <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
 
 function rCSec(sid,sec){const items=sec.it||[];const pc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;const dc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='done').length;const alertsHtml=(sec.alerts||[]).map(a=>`<div class="abox aw" style="margin-bottom:6px;font-size:12px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${esc(a)}</div>`).join('');return`<div class="csec"><div class="csh" onclick="tog('cs${sec.id}')"><span>${sec.t}</span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc}✓</span>`:''}${pc?`<span class="sb smod" style="font-size:11px">${pc}⏳</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb open" id="cs${sec.id}">${alertsHtml}${items.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);return`<div class="chk ${cl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${esc(S.nts[sid+'_'+sec.id]||'')}</textarea></div></div></div>`;}
 
@@ -3121,7 +3208,7 @@ function s5(){
  const catOpts = Object.entries(PEND_CAT_LABEL).map(([k,v])=>
   `<option value="${esc(k)}" ${S.condPendCat===k?'selected':''}>${esc(v)}</option>`
  ).join('');
- return `<div class="card"><div class="st"><i class="ti ti-file-text" aria-hidden="true"></i> Relatório de admissão</div>${pSumH()}${QX_BADGE[S.queixa]?QX_BADGE[S.queixa]():''}<div class="rg" style="margin-bottom:10px"><span class="ro ${S.relMode==='full'?'on':''}" onclick="S.relMode='full';render()"><i class="ti ti-file-text" aria-hidden="true"></i> Completo</span><span class="ro ${S.relMode==='resumo'?'on':''}" onclick="S.relMode='resumo';render()"><i class="ti ti-list" aria-hidden="true"></i> Resumo de plantão</span></div><div class="relbox" id="relTxt"></div>
+ return `<div class="card"><div class="st"><i class="ti ti-file-text" aria-hidden="true"></i> Relatório de admissão</div>${pSumH()}${QX_BADGE[S.queixa]?QX_BADGE[S.queixa]():''}<div class="desktop-hide-relcard"><div class="rg" style="margin-bottom:10px"><span class="ro ${S.relMode==='full'?'on':''}" onclick="S.relMode='full';render()"><i class="ti ti-file-text" aria-hidden="true"></i> Completo</span><span class="ro ${S.relMode==='resumo'?'on':''}" onclick="S.relMode='resumo';render()"><i class="ti ti-list" aria-hidden="true"></i> Resumo de plantão</span></div><div class="relbox" id="relTxt"></div></div>
 <div style="border-top:.5px solid #e5e7eb;padding-top:12px;margin-top:12px;margin-bottom:12px">
  <div style="font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;font-weight:500">Conduta inicial (vai para o painel de plantão)</div>
  <div class="r2" style="margin-bottom:8px">
@@ -3135,7 +3222,10 @@ function s5(){
 <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btng" onclick="navigator.clipboard.writeText(document.getElementById('relTxt').textContent).then(()=>showToast('Copiado!'))"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button><button class="btng" style="background:#185fa5" onclick="saveReport(document.getElementById('relTxt').textContent)"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar</button><button class="btns" onclick="showSaved()"><i class="ti ti-history" aria-hidden="true"></i> Ver salvos</button><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Editar</button></div></div>`;
 }
 
-function render(){rs();const c=document.getElementById('con');if(S.step===0)c.innerHTML=s0();else if(S.step===1)c.innerHTML=s1();else if(S.step===2)c.innerHTML=s2();else if(S.step===3)c.innerHTML=s3();else if(S.step===4)c.innerHTML=s4();else{c.innerHTML=s5();const rt=document.getElementById('relTxt');if(rt)rt.textContent=S.relMode==='resumo'?gResumo():gRel();}if(typeof autoSave==='function')autoSave();}
+function updateRelCol(){const ta=document.getElementById('relColTxt');if(!ta)return;ta.value=S.relMode==='resumo'?gResumo():gRel();const fb=document.getElementById('relModeFullBtn');const rb=document.getElementById('relModeResumoBtn');if(fb)fb.classList.toggle('on',S.relMode!=='resumo');if(rb)rb.classList.toggle('on',S.relMode==='resumo');}
+function copyRelCol(){const ta=document.getElementById('relColTxt');if(ta)navigator.clipboard.writeText(ta.value).then(()=>showToast('Copiado!'));}
+function saveReportFromCol(){const ta=document.getElementById('relColTxt');if(ta)saveReport(ta.value);}
+function render(){rs();const c=document.getElementById('con');if(S.step===0)c.innerHTML=s0();else if(S.step===1)c.innerHTML=s1();else if(S.step===2)c.innerHTML=s2();else if(S.step===3)c.innerHTML=s3();else if(S.step===4)c.innerHTML=s4();else{c.innerHTML=s5();const rt=document.getElementById('relTxt');if(rt)rt.textContent=S.relMode==='resumo'?gResumo():gRel();}if(typeof autoSave==='function')autoSave();updateRelCol();}
 initAuth();
 </script>
 </body>
