@@ -1521,6 +1521,7 @@ const S={step:0,nome:'',idade:30,sexo:'',orig:'Demanda Espontânea',origInst:'',
  cvEFOpen:{nivel:true,foco:false,men:false},
  abcOpen:{a:true},
  relMode:'full',
+ syndromeGridCollapsed:false,
  condStatus:'em_conduta',condReavalMin:null,condPendDesc:'',condPendCat:'outros',condPendPrazoMin:null};
 
 // Snapshot do estado inicial para resetCase()
@@ -1542,8 +1543,7 @@ const EF_TEMPLATES={
   ab:'Abdome plano, flácido, RHA presentes, sem visceromegalias, útero não palpável, sem massas, indolor à palpação',
   ne:'Consciente, orientada em tempo e espaço, Glasgow 15. Força e sensibilidade preservadas. Sem déficits focais',
   pe:'MMII sem edema, sem sinais flogísticos, pulsos tibiais e pediosos simétricos. Pele íntegra'
- },
- collapsedSyndromes:{}
+ }
 };
 function deepMergeDefaults(defaults,override){
  if(override===null||override===undefined)return defaults;
@@ -1641,69 +1641,47 @@ cho:{l:'Choque',subExcl:[{id:'cho_sep',l:'Choque séptico'},{id:'cho_hip',l:'Cho
 ]},
 cho_sep:{l:'Choque séptico',s:[
 {id:'sup',t:'Ressuscitação inicial',it:[
-'🔴 PRIMEIROS 5 MINUTOS:',
 'Colocar em supino, membros inferiores elevados 30°. O₂ flush-rate imediato (alvo SpO₂ ≥ 92%)',
-'Punção 2 AVPS (16–18G) < 2 min. Se insucesso, IO tibial/umeral imediatamente',
-'Ringer Lactato 500–1000 mL IV bolus AGORA — reavaliação em 30–60 min',
-'Colocar Foley — meta diurese mínima 0,5 mL/kg/h',
-'Coleta: hemoculturas 2 frascos IMEDIATO (< 5 min) ANTES de antibiótico',
-'',
-'🟠 REAVALIAÇÃO 15–30 MIN (PAS, FC, lactato sérico):',
-'Telemetria + PA cada 5 min × 30 min, depois 15 min. Lactato seriado (0, 1h, 6h)',
-'Se PAS < 90 OU lactato ≥ 2 mmol/L APÓS fluido, iniciar Norepinefrina imediatamente',
-'Aquecimento passivo se Temp < 36°C; evitar hipertermia iatrogênica',
-'',
-'🟢 VASOPRESSORES — CRITÉRIO EXPLÍCITO:',
-'Iniciar Norepinefrina 0,01–0,3 μg/kg/min infusão central/PICC [CRITÉRIO: PAS < 90 + lactato ≥ 2 OU hipoperfusão (oligúria, débito cardíaco baixo)]',
-'  Titular para PAS ≥ 90, MAP ≥ 65. Reavaliação cada 5 min × 30 min, depois 15 min',
-'Associar Vasopressina 0,04 U/min (não titulável) [SE Norepinefrina > 0,15 μg/kg/min E PAS ainda < 90] — preserva dose de catecolamina',
-'Hidrocortisona 100 mg IV 8/8h [INICIAR na hora 0 em choque refratário (PAS < 90 com Norepinefrina > 0,15) OU lactato > 4]',
-'Dobutamina 2–20 μg/kg/min [SE SvO₂ < 60% ou débito cardíaco baixo persistente com Norepinefrina já titulada]'
+'Punção de 2 acessos venosos periféricos 16–18G [< 2 min]. Se insucesso, IO tibial/umeral imediatamente',
+'Ressuscitação volêmica com Ringer Lactato: 30 mL/kg IV em bolus [reavaliação clínica 30–60 min]',
+'Sonda vesical (Foley) — meta diurese mínima 0,5 mL/kg/h',
+'Coleta de hemoculturas 2 frascos [< 5 min, ANTES de qualquer antibiótico]',
+'Telemetria contínua + PA sistêmica cada 5 min',
+'Aquecimento passivo [se T < 36°C]; evitar hipertermia iatrogênica',
+'Iniciar Norepinefrina 0,01–0,3 μg/kg/min infusão central/PICC [se PAS < 90 + lactato ≥ 2 mmol/L OU sinais hipoperfusão após ressuscitação volêmica]',
+'Associar Vasopressina 0,04 U/min fixo [se dose Norepinefrina > 0,15 μg/kg/min e PAS ainda < 90]',
+'Iniciar Hidrocortisona 100 mg IV 8/8h [em choque refratário: PAS < 90 com Norepinefrina > 0,15 μg/kg/min OU lactato > 4 mmol/L]',
+'Titular Dobutamina 2–20 μg/kg/min [se SvO₂ < 60% ou débito cardíaco baixo persistente apesar de Norepinefrina otimizada]'
 ]},
 {id:'inv',t:'Investigação',it:[
-'⚡ ESSENCIAIS (< 15–30 min — não atrasam ressuscitação):',
-'Hemoculturas 2 frascos ANTES de antibiótico (< 5 min)',
-'Lactato sérico (0, 1h, 6h) — clearance de lactato prediz resposta terapêutica e mortalidade',
-'Hemograma + coagulograma (TP/INR, TTPa, plaquetas) — avaliar CIVD em sepse grave',
-'Função renal (creatinina, ureia), eletrólitos (Na, K, Ca, Mg, Phos)',
-'',
-'📊 SECUNDÁRIAS (> 30–60 min, conforme sítio infeccioso):',
-'Cultura de urina, swab de ferida, líquidos corporais conforme sítio suspeito',
-'Raio-X tórax ou TC abdômen (pneumonia, derrame, foco intra-abdominal)',
-'Gasometria arterial (pH, pCO₂, saturação) se grave'
+'Hemoculturas 2 frascos [< 5 min, ANTES de antibiótico]',
+'Lactato sérico basal (hora 0); repetir em 1h e 6h — clearance de lactato prediz mortalidade',
+'Hemograma completo + coagulograma (TP/INR, TTPa, plaquetas) [avaliar CIVD em sepse grave]',
+'Função renal (creatinina, ureia, eletrólitos: Na, K, Ca, Mg, Fosfato)',
+'Gasometria arterial [se SpO₂ baixa, hipotensão grave, ou lactato elevado]',
+'Culturas conforme foco (urina, swab de ferida, líquidos corporais)',
+'Imagem diagnosticada: Raio-X tórax OU TC abdômen [para localizar foco: pneumonia, derrame, abscesso intra-abdominal]'
 ]},
 {id:'sin',t:'Tratamento sintomático',it:[
-'Analgesia: dipirona 1–2g IV 6/6h OU paracetamol 500mg–1g IV 6/6h [SEM AINE em CIVD/trombocitopenia]',
-'Ansiolítico se agitação: midazolam 2–5mg IV bolus, repetir conforme necessidade [Cautela: risco depressão respiratória]',
-'Antitérmico: paracetamol máx 4g/dia (reduz demanda metabólica)',
-'Antiemético: ondansetrão 4mg IV se náuseas'
+'Analgesia: Dipirona 1–2 g IV 6/6h OU Paracetamol 500 mg–1 g IV 6/6h [EVITAR AINE se trombocitopenia/CIVD]',
+'Ansiolítico [se agitação]: Midazolam 2–5 mg IV bolus, repetir conforme necessidade [risco: depressão respiratória — titular cuidadosamente]',
+'Antitérmico: Paracetamol máx 4 g/dia [reduz demanda metabólica em febre alta]',
+'Antiemético [se náuseas]: Ondansetrão 4 mg IV'
 ]},
 {id:'esp',t:'Tratamento específico',it:[
-'ANTIBIOTICOTERAPIA EMPÍRICA — INICIAR < 1h DE DIAGNÓSTICO:',
-'',
-'Infecção comunitária NÃO-grave:',
-'  → Ceftriaxona 2g IV 12/12h + Azitromicina 500mg IV 1×/dia',
-'  [Recultura 48h; ajustar conforme antibiograma]',
-'',
-'Risco ESBL / Gram-negativo (hospitalização, transplantado, diálise):',
-'  → Ceftazidima 1–2g IV 8/8h + Levofloxacina 750mg IV 1×/dia',
-'',
-'Risco anaeróbio (abdominal, odontológico, aspiração):',
-'  → Adicionar Metronidazol 500mg IV 6/6h à cobertura acima',
-'',
-'Risco MRSA (procedimento invasivo, hospitalização prévia, UTI):',
-'  → Adicionar Vancomicina 15–20mg/kg IV 8/12h (target 15–20 μg/mL)',
-'  [Monitorar: creatinina (nefrotoxicidade), audição (ototoxicidade)]',
-'',
-'CONTROLE DE FOCO:',
-'Drenar abscesso cirurgicamente < 12h se detectado',
-'Remover cateter/dispositivo infectado imediatamente',
-'Desbridamento em fasceíte necrotizante EMERGENCIAL'
+'Iniciar Antibioticoterapia empírica < 1 hora do diagnóstico [após hemocultura]',
+'Infecção comunitária: Ceftriaxona 2 g IV 12/12h + Azitromicina 500 mg IV 1×/dia [recultura 48h; ajustar conforme antibiograma]',
+'Risco ESBL/Gram-negativo [hospitalização, transplante, diálise]: Ceftazidima 1–2 g IV 8/8h + Levofloxacina 750 mg IV 1×/dia',
+'Risco anaeróbio [abdominal, odontológico, aspiração]: Adicionar Metronidazol 500 mg IV 6/6h à cobertura acima',
+'Risco MRSA [procedimento invasivo, UTI prévia, hospitalização]: Adicionar Vancomicina 15–20 mg/kg IV 8/12h [target 15–20 μg/mL; monitorar creatinina e audição]',
+'Drenagem cirúrgica de abscesso [< 12h se detectado por imagem]',
+'Remover imediatamente qualquer cateter/dispositivo infectado',
+'Desbridamento emergencial [em fasceíte necrotizante confirmada]'
 ]},
 {id:'dsp',t:'Disposição',it:[
-'UTI imediatamente — risco elevado morte e disfunção orgânica múltipla',
-'Solicitação CROSS para transferência se UTI indisponível localmente',
-'Reavaliação de saída de choque após 48h (lactato < 2, PAS ≥ 90 sem vasopressor)'
+'Internação em UTI imediatamente [risco elevado morte, disfunção orgânica múltipla]',
+'Solicitação CROSS para transferência [se UTI indisponível localmente]',
+'Reavaliação de saída de choque após 48–72h [critérios: lactato < 2 mmol/L, PAS ≥ 90 sem vasopressor, diurese adequada]'
 ]}
 ]},
 cho_hip:{l:'Choque hipovolêmico',s:[
@@ -3078,14 +3056,6 @@ function tog(id){const b=document.getElementById(id);if(b)b.classList.toggle('op
 function cyc(k){const c=S.chk[k];if(!c)S.chk[k]='done';else if(c==='done')S.chk[k]='pend';else delete S.chk[k];render();}
 function selSub(id){S.subsind=S.subsind===id?null:id;render();}
 function toggleSub(id){const i=S.subsinds.indexOf(id);if(i>-1)S.subsinds.splice(i,1);else S.subsinds.push(id);render();}
-function autoCollapseIfMultiSection(sid){if(sid&&CT[sid]&&CT[sid].s&&CT[sid].s.length>1){S.collapsedSyndromes[sid]=true;}}
-function renderCollapsedCard(sid){const T=CT[sid];if(!T)return'';const pt=T.s?T.s.reduce((a,sec)=>a+(sec.it||[]).filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length,0):0;return`<div class="card" style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:#f5f7fa; border-left:4px solid #2196F3;">
-<button onclick="S.collapsedSyndromes['${sid}']=false;render()" style="flex:1; text-align:left; background:none; border:none; padding:0; cursor:pointer; font-weight:600; color:#1a1a1a; font-size:14px;">
-<i class="ti ti-chevron-down" aria-hidden="true"></i> ${T.l} ${pt?`<span style="margin-left:8px; color:#ff9800; font-size:12px; font-weight:700;">(${pt})</span>`:''}
-</button>
-<button onclick="S.collapsedSyndromes['${sid}']=false;render()" class="xbtn" style="margin-left:8px; padding:4px 8px; font-size:12px;" title="Editar">✎</button>
-<button onclick="S.sind=null; S.subsind=null; S.subsinds=[]; S.chk={}; S.nts={}; delete S.collapsedSyndromes['${sid}']; render();" class="xbtn" style="margin-left:4px; padding:4px 8px; font-size:12px;" title="Remover">✕</button>
-</div>`;}
 function rSindBlock(sid){const T=CT[sid];if(!T)return'';if(!T.s||T.s.length===0)return `<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="abox ai"><i class="ti ti-info-circle" aria-hidden="true"></i> Conduta em desenvolvimento. Registre a abordagem específica no campo "Impressão clínica livre" acima.</div></div>`;const pt=T.s.reduce((a,sec)=>a+(sec.it||[]).filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length,0);return`<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="ai" style="margin-bottom:10px;font-size:12px"><i class="ti ti-info-circle" aria-hidden="true"></i> Clique para ciclar: ✓ Realizado → ⏳ Pendente → Não selecionado</div>${pt?`<div class="psm"><span class="psml"><i class="ti ti-clock" aria-hidden="true"></i> Pendentes:</span>${T.s.map(sec=>{const n=(sec.it||[]).filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;return n?`<span class="psmb">${sec.t}: ${n}</span>`:''}).join('')}</div>`:''}${T.s.map(sec=>rCSec(sid,sec)).join('')}</div>`;}
 function cico(k){const c=S.chk[k];return c==='done'?'ti-check':c==='pend'?'ti-clock':'ti-minus';}
 function ccls(k){const c=S.chk[k];return c==='done'?'done':c==='pend'?'pend':'';}
@@ -3264,7 +3234,7 @@ function s3(){const badge=(S.queixa==='Dispneia'&&QX_BADGE[S.queixa])?QX_BADGE[S
 
 function rCSec(sid,sec){const items=sec.it||[];const pc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;const dc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='done').length;const alertsHtml=(sec.alerts||[]).map(a=>`<div class="abox aw" style="margin-bottom:6px;font-size:12px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${esc(a)}</div>`).join('');return`<div class="csec"><div class="csh" onclick="tog('cs${sec.id}')"><span>${sec.t}</span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc}✓</span>`:''}${pc?`<span class="sb smod" style="font-size:11px">${pc}⏳</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb open" id="cs${sec.id}">${alertsHtml}${items.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);return`<div class="chk ${cl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${esc(S.nts[sid+'_'+sec.id]||'')}</textarea></div></div></div>`;}
 
-function s4(){const T=S.sind?CT[S.sind]:null;const hasExcl=T&&T.subExcl;const hasAdd=T&&T.subAdd;return`<div id="step-4" class="card"><div class="st"><i class="ti ti-clipboard-check" aria-hidden="true"></i> Impressão clínica e síndrome</div><div style="margin-bottom:12px"><label>Impressão clínica livre</label><textarea oninput="S.imp=this.value" placeholder="Descreva sua impressão diagnóstica...">${esc(S.imp)}</textarea></div><div class="sl">Síndrome clínica suspeita:</div><div class="sgrid">${SLIST.map(s=>`<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};S.subsind=null;S.subsinds=[];S.collapsedSyndromes={};autoCollapseIfMultiSection(S.sind);render()">${s.l}</button>`).join('')}</div></div>${T?(S.collapsedSyndromes[S.sind]?renderCollapsedCard(S.sind):rSindBlock(S.sind)):''}${hasExcl?`<div class="card"><div class="st"><i class="ti ti-git-branch" aria-hidden="true"></i> ${S.sind==='dtx'?'Probabilidade clínica:':'Subtipo clínico:'}</div><div class="sgrid">${T.subExcl.map(s=>`<button class="xbtn ${S.subsind===s.id?'on':''}" onclick="selSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`:''}${hasExcl&&S.subsind&&CT[S.subsind]?(S.collapsedSyndromes[S.subsind]?renderCollapsedCard(S.subsind):rSindBlock(S.subsind)):''}${hasAdd?`<div class="card"><div class="st"><i class="ti ti-list-tree" aria-hidden="true"></i> ${S.sind==='dtx'?'Diagnósticos diferenciais (em ordem de gravidade):':'Subsíndromes presentes:'}</div><div class="sgrid">${T.subAdd.map(s=>`<button class="xbtn ${S.subsinds.includes(s.id)?'on':''}" onclick="toggleSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`:''}${hasAdd?S.subsinds.filter(sid=>CT[sid]).map(sid=>S.collapsedSyndromes[sid]?renderCollapsedCard(sid):rSindBlock(sid)).join(''):''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Gerar relatório <i class="ti ti-file-text" aria-hidden="true"></i></button></div>`;}
+function s4(){const T=S.sind?CT[S.sind]:null;const hasExcl=T&&T.subExcl;const hasAdd=T&&T.subAdd;const gridHtml=`<div id="step-4" class="card"><div class="st"><i class="ti ti-clipboard-check" aria-hidden="true"></i> Impressão clínica e síndrome</div><div style="margin-bottom:12px"><label>Impressão clínica livre</label><textarea oninput="S.imp=this.value" placeholder="Descreva sua impressão diagnóstica...">${esc(S.imp)}</textarea></div><div class="sl">Síndrome clínica suspeita:</div><div class="sgrid" id="syndrome-grid">${SLIST.map(s=>`<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};S.subsind=null;S.subsinds=[];S.syndromeGridCollapsed=true;render()">${s.l}</button>`).join('')}</div></div>`;const syndromeSectionHtml=T?rSindBlock(S.sind):'';const subExclHtml=hasExcl?`<div class="card"><div class="st"><i class="ti ti-git-branch" aria-hidden="true"></i> ${S.sind==='dtx'?'Probabilidade clínica:':'Subtipo clínico:'}</div><div class="sgrid">${T.subExcl.map(s=>`<button class="xbtn ${S.subsind===s.id?'on':''}" onclick="selSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`:'';const subsyndromeSectionHtml=hasExcl&&S.subsind&&CT[S.subsind]?rSindBlock(S.subsind):'';const subAddHtml=hasAdd?`<div class="card"><div class="st"><i class="ti ti-list-tree" aria-hidden="true"></i> ${S.sind==='dtx'?'Diagnósticos diferenciais (em ordem de gravidade):':'Subsíndromes presentes:'}</div><div class="sgrid">${T.subAdd.map(s=>`<button class="xbtn ${S.subsinds.includes(s.id)?'on':''}" onclick="toggleSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`:'';const subAddItemsHtml=hasAdd?S.subsinds.filter(sid=>CT[sid]).map(sid=>rSindBlock(sid)).join(''):'';const navHtml=`<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Gerar relatório <i class="ti ti-file-text" aria-hidden="true"></i></button></div>`;if(!S.syndromeGridCollapsed){return gridHtml+syndromeSectionHtml+subExclHtml+subsyndromeSectionHtml+subAddHtml+subAddItemsHtml+navHtml;}else if(S.sind){const resetBtn=`<div style="margin-bottom:10px"><button class="xbtn" onclick="S.syndromeGridCollapsed=false;render()" style="width:100%;padding:8px;font-size:13px"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar ao seletor</button></div>`;return `<div id="step-4" class="card"><div class="st"><i class="ti ti-clipboard-check" aria-hidden="true"></i> Impressão clínica e síndrome</div><div style="margin-bottom:12px"><label>Impressão clínica livre</label><textarea oninput="S.imp=this.value" placeholder="Descreva sua impressão diagnóstica...">${esc(S.imp)}</textarea></div></div>${resetBtn}${syndromeSectionHtml}${subExclHtml}${subsyndromeSectionHtml}${subAddHtml}${subAddItemsHtml}${navHtml}`;}else{return gridHtml+navHtml;}}
 
 function gRel(){
  const g=gcs(),isDT=S.queixa==='Dor torácica';
