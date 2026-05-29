@@ -1626,19 +1626,7 @@ const SLIST=[
 const STEPS=[{l:'Identificação',i:'ti-user'},{l:'Queixa',i:'ti-stethoscope'},{l:'Dados clínicos',i:'ti-heart-rate-monitor'},{l:'Exame físico',i:'ti-search'},{l:'Impressão / Conduta',i:'ti-clipboard-check'},{l:'Relatório',i:'ti-file-text'}];
 
 const CT={
-cho:{l:'Choque',subExcl:[{id:'cho_sep',l:'Choque séptico'},{id:'cho_hip',l:'Choque hipovolêmico'},{id:'cho_car',l:'Choque cardiogênico'},{id:'cho_obs',l:'Choque obstrutivo'}],s:[
-{id:'sup',t:'Ressuscitação inicial',it:[
-'Monitorização contínua: Telemetria, PANI a cada 5 min, SpO₂, FR, FC, diurese (considerar Foley)',
-'Acesso venoso: 2 AVPS (16–18G) como primeira escolha; se falha, IO com técnica asséptica',
-'Oxigenoterapia com SatO₂ alvo ≥90% (individualizar conforme patologias e objetivos): CN / MNRL 10–15L/min ou flush-rate / CNAF / VNI',
-'Posicionamento: supino com membros inferiores elevados 30°, se tolerar',
-'Aquecimento passivo se hipotermia; evitar hipertermia iatrogênica',
-'Expansão volêmica: Ringer Lactato 500–1000mL IV agora',
-'Norepinefrina: 0,01–0,3 μg/kg/min IV',
-'Vasopressina: 0,04 U/min IV (titrável) se necessidade de asceção de dose de Norepinefrina > 0,15mcg/kg/min',
-'Hidrocortisona: 100mg IV 8/8h (dose de choque)',
-'Dobutamina: 2–20 μg/kg/min IV se sinais de disfunção cardíaca (redução de pós-carga, melhora de contratilidade)']}
-]},
+cho:{l:'Choque',subExcl:[{id:'cho_sep',l:'Choque séptico'},{id:'cho_hip',l:'Choque hipovolêmico'},{id:'cho_car',l:'Choque cardiogênico'},{id:'cho_obs',l:'Choque obstrutivo'}],s:[]},
 cho_sep:{l:'Choque séptico',s:[
 {id:'sup',t:'Ressuscitação inicial',it:[
 'Colocar em supino, membros inferiores elevados 30°. O₂ flush-rate imediato (alvo SpO₂ ≥ 92%)',
@@ -3054,7 +3042,7 @@ function tog(id){const b=document.getElementById(id);if(b)b.classList.toggle('op
 function cyc(k){const c=S.chk[k];if(!c)S.chk[k]='done';else if(c==='done')S.chk[k]='pend';else delete S.chk[k];render();}
 function selSub(id){S.subsind=S.subsind===id?null:id;render();}
 function toggleSub(id){const i=S.subsinds.indexOf(id);if(i>-1)S.subsinds.splice(i,1);else S.subsinds.push(id);render();}
-function rSindBlock(sid){const T=CT[sid];if(!T)return'';if(!T.s||T.s.length===0)return `<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="abox ai"><i class="ti ti-info-circle" aria-hidden="true"></i> Conduta em desenvolvimento. Registre a abordagem específica no campo "Impressão clínica livre" acima.</div></div>`;const pt=T.s.reduce((a,sec)=>a+(sec.it||[]).filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length,0);return`<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="ai" style="margin-bottom:10px;font-size:12px"><i class="ti ti-info-circle" aria-hidden="true"></i> Clique para ciclar: ✓ Realizado → ⏳ Pendente → Não selecionado</div>${pt?`<div class="psm"><span class="psml"><i class="ti ti-clock" aria-hidden="true"></i> Pendentes:</span>${T.s.map(sec=>{const n=(sec.it||[]).filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;return n?`<span class="psmb">${sec.t}: ${n}</span>`:''}).join('')}</div>`:''}${T.s.map(sec=>rCSec(sid,sec)).join('')}</div>`;}
+function rSindBlock(sid){const T=CT[sid];if(!T)return'';if(!T.s||T.s.length===0){if(T.subExcl||T.subAdd)return'';return `<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="abox ai"><i class="ti ti-info-circle" aria-hidden="true"></i> Conduta em desenvolvimento. Registre a abordagem específica no campo "Impressão clínica livre" acima.</div></div>`;}const pt=T.s.reduce((a,sec)=>a+(sec.it||[]).filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length,0);return`<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="ai" style="margin-bottom:10px;font-size:12px"><i class="ti ti-info-circle" aria-hidden="true"></i> Clique para ciclar: ✓ Realizado → ⏳ Pendente → Não selecionado</div>${pt?`<div class="psm"><span class="psml"><i class="ti ti-clock" aria-hidden="true"></i> Pendentes:</span>${T.s.map(sec=>{const n=(sec.it||[]).filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;return n?`<span class="psmb">${sec.t}: ${n}</span>`:''}).join('')}</div>`:''}${T.s.map(sec=>rCSec(sid,sec)).join('')}</div>`;}
 function cico(k){const c=S.chk[k];return c==='done'?'ti-check':c==='pend'?'ti-clock':'ti-minus';}
 function ccls(k){const c=S.chk[k];return c==='done'?'done':c==='pend'?'pend':'';}
 function chAge(){const a=S.idade;return a<45?0:a<65?1:2;}
