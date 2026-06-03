@@ -30,7 +30,7 @@ App single-file (`index.html`) para admissão e conduta em sala de emergência. 
 - `subExcl: [...]` — sub-seleção exclusiva, usa `S.subsind` (radio). Ex: `cho`, `sca`, `dsp`.
 - `subAdd: [...]` — sub-seleção aditiva, usa `S.subsinds` (multi). Ex: `abd`, `emmi`, diferenciais do `dtx`.
 - Uma síndrome pode ter ambos (ex: `dtx` = Dor torácica: probabilidade exclusiva + diferenciais aditivos).
-- Sub-itens podem apontar para outras entradas CT (alias é a regra, não duplicação): `CT.tep_dsp = CT.tep`.
+- Sub-itens podem apontar para outras entradas CT pelo próprio `id`: `CT[id]` resolve direto, então um subtipo de `dsp.subExcl` como `{id:'tep'}` reaproveita `CT.tep` sem precisar de alias explícito (`CT.tep_dsp = CT.tep` não é necessário).
 
 **Padrão de anamnese estruturada (queixas refinadas):**
 Cada queixa "refinada" tem um renderizador (`r<Queixa>()`) com hierarquia em blocos sucessivos:
@@ -68,8 +68,8 @@ Cada queixa pode definir sua própria contagem de alarmes. Badge mostra "Queixa 
 | Dor torácica | refinada | `rDT` | inline `gRel` | — | — |
 | Dispneia | refinada | `rDispneia` | inline `gRel` | — | `dispGravBadge` (severidade) |
 | Cefaleia | **conduta em andamento (3/11 subtipos)** | `rCefaleia` + `rCefEF` (em D do ABCDE) | `cefHda` | `cefHpp` | `cefAlarmBadge` (contagem) |
-| Síncope | pendente | — | — | — | — |
-| Convulsão | pendente | — | — | — | — |
+| Síncope | refinada (anamnese + EF) | `rSinc` | `sincHda` | `sincHpp` | `sincBadge` (Calgary) |
+| Convulsão | refinada (anamnese + EF) | `rConv` | `convHda` | `convHpp` | — |
 | Síndrome abdominal | pendente | — | — | — | — |
 | Síndrome febril | pendente | — | — | — | — |
 | Hemorragia digestiva | pendente | — | — | — | — |
@@ -176,11 +176,11 @@ dsp   → Disposição (observação, internação, alta, contra-referência)
 
 **Nota sobre quebra de compatibilidade:**
 - Mudar IDs de seções quebra relatórios salvos: chaves em `S.chk` e `S.nts` usam padrão `sind_secId_idx`.
-- Solução: usuários cientes; relatórios antigos podem precisar re-preenchimento parcial em casos críticos.
+- Após refator de 2026-06-03, todos os IDs migrados (m→sup, e→inv, d→dsp, f→sin para analgesia ou esp para terapia específica). Relatórios salvos antes desta data podem apresentar checkboxes/notas vazios em algumas seções quando reabertos — usuário ciente.
 
 **Implementação:**
-- Amostra de 15 entries (cho, cho_sep, hdg, dtx, sca, sca_oca, tep, eap, asma, dpoc_ag, cef_hsa, peri, neu, rnc, sinc) foi validada por Opus.
-- Próximas 34 entries após validação browser.
+- ✅ Todas as 49 entries CT estão no schema padronizado (sup/inv/sin/esp/dsp).
+- ✅ Subtipos de Choque DRY-ificados: itens comuns (monitorização, sintomático, disposição) movidos para `CT.cho` parent; subtipos só contêm específicos.
 
 ---
 
