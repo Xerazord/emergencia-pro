@@ -159,6 +159,9 @@ textarea{resize:vertical;min-height:60px}
 .chk:hover{background:var(--color-background-secondary)}
 .chk.done{background:#eaf3de;border-color:#c0dd97}
 .chk.pend{background:#faeeda;border-color:#fac775}
+.chk.hl{border-left:3px solid #c84a4a;background:#fff7f7}
+.chk.hl.done{background:#eaf3de;border-left:3px solid #c84a4a}
+.chk.hl.pend{background:#faeeda;border-left:3px solid #c84a4a}
 .cico{width:19px;height:19px;border-radius:4px;border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .chk.done.cico{background:#3b6d11;border-color:#3b6d11}
 .chk.pend.cico{background:#854f0b;border-color:#854f0b}
@@ -2500,6 +2503,15 @@ esof:{l:'Síndrome esofágica aguda',s:[
 // helpers
 const ESC_MAP={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','`':'&#96;'};
 function esc(s){return s==null?'':String(s).replace(/[&<>"'`]/g,c=>ESC_MAP[c]);}
+function joinClinical(parts,opts){
+ const o=opts||{};const sep=o.sep||', ';const last=o.last||' e ';
+ const f=parts.filter(p=>p&&String(p).trim());
+ if(f.length===0)return '';
+ if(f.length===1)return String(f[0]);
+ if(f.length===2)return f.join(last);
+ return f.slice(0,-1).join(sep)+last+f.slice(-1);
+}
+function lcFirst(s){return s?s.charAt(0).toLowerCase()+s.slice(1):s;}
 function gravBadge(level,label,opts){
  const o=opts||{};
  const cls={leve:'grav-leve',mod:'grav-mod',grave:'grav-grave'}[level]||'grav-leve';
@@ -2639,25 +2651,24 @@ function cefAlarmBadge(){
  return gravBadge(level,`Cefaleia com ${n} ${n===1?'sinal':'sinais'} de alarme`);
 }
 function cefHda(S){
- const c=S.cef;
- let out='';
- if(c.inicio)out+=`. Início ${c.inicio.toLowerCase()}`;
- if(c.loc.length)out+=`. Localização: ${c.loc.join(', ').toLowerCase()}`;
- if(c.qual.length)out+=`. Qualidade: ${c.qual.join(', ').toLowerCase()}`;
- if(c.modif.length)out+=`. Modificadores: ${c.modif.join(', ').toLowerCase()}`;
- if(c.precip.length)out+=`. Precipitantes: ${c.precip.join(', ').toLowerCase()}`;
+ const c=S.cef;const parts=[];
+ if(c.inicio)parts.push(`de início ${c.inicio.toLowerCase()}`);
+ if(c.loc.length)parts.push(`localizada em ${c.loc.join(', ').toLowerCase()}`);
+ if(c.qual.length)parts.push(`em caráter ${c.qual.join(', ').toLowerCase()}`);
+ if(c.modif.length)parts.push(c.modif.join(', ').toLowerCase());
+ if(c.precip.length)parts.push(`com fatores precipitantes ${c.precip.join(', ').toLowerCase()}`);
  if(c.assoc.length){
- let s=c.assoc.join(', ').toLowerCase();
- const d=[];
- if(c.descr.auraMot)d.push(`aura motora: ${c.descr.auraMot}`);
- if(c.descr.deficit)d.push(`déficit: ${c.descr.deficit}`);
- if(c.descr.conv)d.push(`convulsão: ${c.descr.conv}`);
- if(c.descr.sinc)d.push(`síncope: ${c.descr.sinc}`);
- if(d.length)s+=` (${d.join('; ')})`;
- out+=`. Sintomas associados: ${s}`;
+  let s=c.assoc.join(', ').toLowerCase();
+  const d=[];
+  if(c.descr.auraMot)d.push(`aura motora: ${c.descr.auraMot}`);
+  if(c.descr.deficit)d.push(`déficit: ${c.descr.deficit}`);
+  if(c.descr.conv)d.push(`convulsão: ${c.descr.conv}`);
+  if(c.descr.sinc)d.push(`síncope: ${c.descr.sinc}`);
+  if(d.length)s+=` (${d.join('; ')})`;
+  parts.push(`associada a ${s}`);
  }
- if(c.alarm.length)out+=`. Sinais de alarme: ${c.alarm.join(', ').toLowerCase()}`;
- return out;
+ if(c.alarm.length)parts.push(`com sinais de alarme: ${c.alarm.join(', ').toLowerCase()}`);
+ return parts.length?`, ${parts.join(', ')}`:'';
 }
 function cefHpp(S){return S.cef.antec.slice();}
 
@@ -2739,15 +2750,14 @@ const DSP_EF_AUS=['MV normal','Estertores crepitantes bilaterais','Estertores un
 const DSP_EF_SINAIS_CV=['Turgência jugular','Galope (B3)','Edema MMII com cacifo','Cianose central','Pulso paradoxal','Sopro cardíaco audível'];
 
 function dspHda(S){
- const d=S.dsp;let out='';
- if(d.inicio)out+=`. Início ${d.inicio.toLowerCase()}`;
- if(d.padrao.length)out+=`. Padrão: ${d.padrao.join(', ').toLowerCase()}`;
- if(d.modif.length)out+=`. ${d.modif.join(', ').toLowerCase()}`;
- if(d.assocCV.length)out+=`. Associado (CV): ${d.assocCV.join(', ').toLowerCase()}`;
- if(d.assocResp.length)out+=`. Associado (resp): ${d.assocResp.join(', ').toLowerCase()}`;
- if(d.assocInf.length)out+=`. Associado (infec): ${d.assocInf.join(', ').toLowerCase()}`;
- if(d.ctx.length)out+=`. Contexto: ${d.ctx.join(', ').toLowerCase()}`;
- return out;
+ const d=S.dsp;const parts=[];
+ if(d.inicio)parts.push(`de início ${d.inicio.toLowerCase()}`);
+ if(d.padrao.length)parts.push(`com padrão ${d.padrao.join(', ').toLowerCase()}`);
+ if(d.modif.length)parts.push(d.modif.join(', ').toLowerCase());
+ const assoc=[...d.assocCV,...d.assocResp,...d.assocInf];
+ if(assoc.length)parts.push(`associada a ${assoc.join(', ').toLowerCase()}`);
+ if(d.ctx.length)parts.push(`em contexto de ${d.ctx.join(', ').toLowerCase()}`);
+ return parts.length?`, ${parts.join(', ')}`:'';
 }
 function dspEFText(S){
  if(S.ef!=='crit')return '';
@@ -2821,15 +2831,15 @@ function sincBadge(){
  return gravBadge('grave',`Síncope de alto risco — ${sc} critério${sc>1?'s':''} Calgary (ECG urgente + monitorização)`);
 }
 function sincHda(S){
- const c=S.sinc;const out=[];
- if(c.prod)out.push(`pródromos: ${c.prod.toLowerCase()}`);
- if(c.post)out.push(`postura no evento: ${c.post.toLowerCase()}`);
- if(c.gat.length)out.push(`gatilho: ${c.gat.join(', ').toLowerCase()}`);
- if(c.car.length)out.push(`características: ${c.car.join(', ').toLowerCase()}`);
- if(c.rec)out.push(`recuperação: ${c.rec.toLowerCase()}`);
- if(!out.length)return '';
- let txt=`. Perda de consciência com ${out.join('; ')}`;
- if(c.alar.length)txt+=`. Alarmes: ${c.alar.join(', ').toLowerCase()}`;
+ const c=S.sinc;const parts=[];
+ if(c.prod)parts.push(`pródromos ${c.prod.toLowerCase()}`);
+ if(c.post)parts.push(`em ${c.post.toLowerCase()}`);
+ if(c.gat.length)parts.push(`desencadeada por ${c.gat.join(', ').toLowerCase()}`);
+ if(c.car.length)parts.push(`com ${c.car.join(', ').toLowerCase()}`);
+ if(c.rec)parts.push(`recuperação ${c.rec.toLowerCase()}`);
+ if(!parts.length&&!c.alar.length)return '';
+ let txt=parts.length?`, perda de consciência com ${parts.join(', ')}`:'';
+ if(c.alar.length)txt+=`${txt?', ':', '}com sinais de alarme: ${c.alar.join(', ').toLowerCase()}`;
  return txt;
 }
 function sincHpp(S){return S.sinc.ante.slice();}
@@ -2980,15 +2990,17 @@ const DT_PAL=['Sim','Não'];
 const DT_SIN=['Dispneia','Sudorese','Náuseas/Vômitos','Pré-síncope','Palpitações','Cefaleia','Parestesia MMSS','Parestesia perioral','Parestesia MMII','Febre','Tosse','Hemoptise'];
 
 function dtHda(S){
- const d=S.dt;let out='';
- if(d.ini)out+=`. Início ${d.ini.toLowerCase()}`;
+ const d=S.dt;const parts=[];
+ if(d.ini)parts.push(`de início ${d.ini.toLowerCase()}`);
  const car=[...d.qual,...d.modif];
- if(car.length)out+=`. Dor de caráter ${car.join(', ').toLowerCase()}`;
- if(d.irr.length)out+=`, com irradiação para ${d.irr.join(', ').toLowerCase()}`;
- if(d.pal)out+=`. ${d.pal==='Sim'?'Reproduzida':'Não reproduzida'} à palpação`;
- if(d.sem)out+=`. ${d.sem==='Sim'?'Semelhante a evento cardíaco prévio':d.sem==='Não'?'Não semelhante a evento prévio':'Sem evento cardíaco prévio'}`;
- if(d.sin.length)out+=`. Sintomas: ${d.sin.join(', ').toLowerCase()}`;
- return out;
+ if(car.length)parts.push(`em caráter ${car.join(', ').toLowerCase()}`);
+ if(d.irr.length)parts.push(`com irradiação para ${d.irr.join(', ').toLowerCase()}`);
+ if(d.pal)parts.push(d.pal==='Sim'?'reproduzida à palpação':'não reproduzida à palpação');
+ if(d.sem==='Sim')parts.push('semelhante a evento cardíaco prévio');
+ else if(d.sem==='Não')parts.push('diferente de evento cardíaco prévio');
+ else if(d.sem)parts.push('sem evento cardíaco prévio relatado');
+ if(d.sin.length)parts.push(`acompanhada de ${d.sin.join(', ').toLowerCase()}`);
+ return parts.length?`, ${parts.join(', ')}`:'';
 }
 function dtAfter(S){
  const d=S.dt;let out='';
@@ -3021,9 +3033,27 @@ function tog(id){const b=document.getElementById(id);if(b)b.classList.toggle('op
 function cyc(k){const c=S.chk[k];if(!c)S.chk[k]='done';else if(c==='done')S.chk[k]='pend';else delete S.chk[k];render();}
 function selSub(id){S.subsind=S.subsind===id?null:id;render();}
 function toggleSub(id){const i=S.subsinds.indexOf(id);if(i>-1)S.subsinds.splice(i,1);else S.subsinds.push(id);render();}
-function rSindBlock(sid){const T=CT[sid];if(!T)return'';if(!T.s||T.s.length===0){if(T.subExcl||T.subAdd)return'';return `<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="abox ai"><i class="ti ti-info-circle" aria-hidden="true"></i> Conduta em desenvolvimento. Registre a abordagem específica no campo "Impressão clínica livre" acima.</div></div>`;}const pt=T.s.reduce((a,sec)=>a+(sec.it||[]).filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length,0);return`<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="ai" style="margin-bottom:10px;font-size:12px"><i class="ti ti-info-circle" aria-hidden="true"></i> Clique para ciclar: ✓ Realizado → ⏳ Pendente → Não selecionado</div>${pt?`<div class="psm"><span class="psml"><i class="ti ti-clock" aria-hidden="true"></i> Pendentes:</span>${T.s.map(sec=>{const n=(sec.it||[]).filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;return n?`<span class="psmb">${sec.t}: ${n}</span>`:''}).join('')}</div>`:''}${T.s.map(sec=>rCSec(sid,sec)).join('')}</div>`;}
+const CT_ALERT_RULES=[
+ {id:'aine-irc',when:S=>S.hpp.includes('IRC'),msg:'IRC prévia: evitar AINE (Cetorolaco/Ibuprofeno) — preferir Dipirona/Paracetamol/opioide. Ajustar doses de ATB por TFG (Vancomicina, Aminoglicosídeos, Piperacilina-Tazo).'},
+ {id:'fa-anticoag',when:S=>S.hpp.includes('FA'),msg:'FA prévia: avaliar CHA₂DS₂-VASc + HAS-BLED; manter anticoagulação se já em uso (cuidado se procedimento invasivo iminente).'},
+ {id:'dpoc-o2',when:S=>S.hpp.includes('DPOC'),msg:'DPOC retentor: alvo SpO₂ 88–92% (evitar O₂ > 92% — risco de retenção de CO₂ e narcose).'},
+ {id:'icc-fluido',when:S=>S.hpp.includes('ICC'),msg:'ICC prévia: ressuscitação volêmica cautelosa (250–500 mL bolus); reavaliar JVP, B3, creptações antes de novo bolus.'},
+ {id:'dac-aine',when:S=>S.hpp.includes('DAC'),msg:'DAC prévia: AINE aumenta risco cardiovascular; preferir Paracetamol/opioides. Manter dupla antiagregação se em uso.'},
+ {id:'cirr-renal',when:S=>S.hpp.includes('Cirrose'),msg:'Cirrose: ajustar doses por Child-Pugh; evitar AINE (risco de síndrome hepatorrenal); preferir Octreotida + Ceftriaxona se HDA + cirrose.'},
+ {id:'alergia-explicit',when:S=>S.ale&&S.ale.toLowerCase()!=='nega'&&S.ale.toLowerCase()!=='nenhuma'&&S.ale.trim(),msg:S=>`Alergia relatada: ${S.ale}. Conferir antes de prescrever qualquer fármaco.`}
+];
+function getInlineAlerts(){return CT_ALERT_RULES.filter(r=>r.when(S)).map(r=>typeof r.msg==='function'?r.msg(S):r.msg);}
+function rSindBlock(sid){const T=CT[sid];if(!T)return'';if(!T.s||T.s.length===0){if(T.subExcl||T.subAdd)return'';return `<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="abox ai"><i class="ti ti-info-circle" aria-hidden="true"></i> Conduta em desenvolvimento. Registre a abordagem específica no campo "Impressão clínica livre" acima.</div></div>`;}const pt=T.s.reduce((a,sec)=>a+(sec.it||[]).filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length,0);const inlineAlerts=getInlineAlerts();const alertsHtml=inlineAlerts.length?`<div class="abox aw" style="margin-bottom:8px;font-size:12.5px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>Alertas (HPP/MUC):</strong><ul style="margin:4px 0 0 18px;padding:0">${inlineAlerts.map(a=>`<li style="margin-bottom:3px">${esc(a)}</li>`).join('')}</ul></div>`:'';return`<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div>${alertsHtml}<div class="ai" style="margin-bottom:10px;font-size:12px"><i class="ti ti-info-circle" aria-hidden="true"></i> Clique para ciclar: ✓ Realizado → ⏳ Pendente → Não selecionado</div>${pt?`<div class="psm"><span class="psml"><i class="ti ti-clock" aria-hidden="true"></i> Pendentes:</span>${T.s.map(sec=>{const n=(sec.it||[]).filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;return n?`<span class="psmb">${sec.t}: ${n}</span>`:''}).join('')}</div>`:''}${T.s.map(sec=>rCSec(sid,sec)).join('')}</div>`;}
 function cico(k){const c=S.chk[k];return c==='done'?'ti-check':c==='pend'?'ti-clock':'ti-minus';}
 function ccls(k){const c=S.chk[k];return c==='done'?'done':c==='pend'?'pend':'';}
+const VITAL_HL_MAP={
+ 'Sat < 90%':['o₂','o2 ','oxigen','satO','satura','MNRL','VNI','CNAF','intuba','IOT','flush-rate'],
+ 'Hipotensão':['vasopressor','norepinefrina','noradrenalina','dobutamina','vasopressina','ressuscita','volêmica','PAS','fluido','bolus','ringer','cristaloid'],
+ 'FC crítica':['cardiovers','amiodarona','atropina','desfibril','marcapasso','adenosina','beta-bloq','betabloq','bradicardi','taquicardi'],
+ 'FR crítica':['ventila','intuba','IOT','VNI','CNAF','MNRL','oxigen'],
+ 'HAS grave':['anti-hipertensiv','nitroprussiato','labetalol','hidralazina','nitrato','captopril','enalapril','clevidipina','PA alvo']
+};
+function itemHasVitalHl(item){const it=String(item).toLowerCase();return vA().some(al=>{const kw=VITAL_HL_MAP[al]||[];return kw.some(k=>it.includes(k.toLowerCase()));});}
 function chAge(){const a=S.idade;return a<45?0:a<65?1:2;}
 function hSc(){let t=chAge();const h=S.hear;if(h.h!==null)t+=+h.h;if(h.e!==null)t+=+h.e;if(h.r!==null)t+=+h.r;if(h.t!==null)t+=+h.t;return t;}
 function hC(){const n=hSc();return n<=3?'sok':n<=6?'smod':'sgr';}
@@ -3197,9 +3227,27 @@ function dispGrav(){const fr=parseFloat(S.fr),sat=parseFloat(S.sat),fala=S.dspEF
 function dispGravBadge(){if(S.queixa!=='Dispneia')return'';const hasData=S.fr||S.sat||S.dspEF.fala||S.dspEF.cianose;if(!hasData)return'';const g=dispGrav();const[level,txt]=g==='grave'?['grave','Gravidade sugerida: GRAVE — IOT/VNI considerar imediatamente']:g==='mod'?['mod','Gravidade sugerida: MODERADA — monitorização intensa, O2 alto fluxo']:['leve','Gravidade sugerida: LEVE — tratar e reavaliar'];return gravBadge(level,txt,{noMargin:true});}
 function s3(){const badge=(S.queixa==='Dispneia'&&QX_BADGE[S.queixa])?QX_BADGE[S.queixa]():'';return`${badge}<div id="step-3" class="card"><div class="st"><i class="ti ti-search" aria-hidden="true"></i> Tipo de exame físico</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem"><button class="xbtn ${S.ef==='amb'?'on':''}" onclick="S.ef='amb';render()"><i class="ti ti-walk" aria-hidden="true"></i> Ambulatorial</button><button class="xbtn ${S.ef==='crit'?'on':''}" onclick="S.ef='crit';render()"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Paciente crítico (ABCDE)</button></div></div>${S.ef==='amb'?`<div class="card"><div class="st">Padrão ambulatorial</div>${[['g','Geral'],['cv','AP Cardiovascular'],['re','AP Respiratório'],['ab','Abdome'],['ne','Neurológico'],['pe','Pele e MMII']].map(([k,l])=>{const tpl=(S.sexo==='M'||S.sexo==='F')?EF_TEMPLATES[S.sexo][k]:null;const ph=tpl||l+'...';const sug=tpl?`<button type="button" class="ef-sug-btn" onclick="if(!S.amb['${k}']){S.amb['${k}']=EF_TEMPLATES[S.sexo]['${k}'];render()}" title="Preencher com sugestão para o sexo selecionado">Sugestão</button>`:'';return`<div style="margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><label style="margin:0">${l}</label>${sug}</div><input type="text" value="${esc(S.amb[k])}" oninput="S.amb['${k}']=this.value" placeholder="${esc(ph)}"></div>`}).join('')}</div>`:''}${S.ef==='crit'?`<div class="card"><div class="st">ABCDE — Avaliação primária</div>${abcH()}</div>`:''}${S.ef&&QX_EF[S.queixa]?QX_EF[S.queixa]():''}${S.ef?rECG()+''+rPOCUS():''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.ef?`<button class="btnp" onclick="nx()">Impressão / Conduta <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
 
-function rCSec(sid,sec){const items=sec.it||[];const pc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;const dc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='done').length;const alertsHtml=(sec.alerts||[]).map(a=>`<div class="abox aw" style="margin-bottom:6px;font-size:12px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${esc(a)}</div>`).join('');return`<div class="csec"><div class="csh" onclick="tog('cs${sec.id}')"><span>${sec.t}</span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc}✓</span>`:''}${pc?`<span class="sb smod" style="font-size:11px">${pc}⏳</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb open" id="cs${sec.id}">${alertsHtml}${items.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);return`<div class="chk ${cl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${esc(S.nts[sid+'_'+sec.id]||'')}</textarea></div></div></div>`;}
+function rCSec(sid,sec){const items=sec.it||[];const pc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;const dc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='done').length;const alertsHtml=(sec.alerts||[]).map(a=>`<div class="abox aw" style="margin-bottom:6px;font-size:12px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${esc(a)}</div>`).join('');return`<div class="csec"><div class="csh" onclick="tog('cs${sec.id}')"><span>${sec.t}</span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc}✓</span>`:''}${pc?`<span class="sb smod" style="font-size:11px">${pc}⏳</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb open" id="cs${sec.id}">${alertsHtml}${items.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);const hl=itemHasVitalHl(item)?' hl':'';return`<div class="chk ${cl}${hl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${esc(S.nts[sid+'_'+sec.id]||'')}</textarea></div></div></div>`;}
 
-function s4ImpHeader(){return `<div id="step-4" class="card"><div class="st"><i class="ti ti-clipboard-check" aria-hidden="true"></i> Impressão clínica e síndrome</div><div style="margin-bottom:12px"><label>Impressão clínica livre</label><textarea oninput="S.imp=this.value" placeholder="Descreva sua impressão diagnóstica...">${esc(S.imp)}</textarea></div>`;}
+function suggestSindFromABC(){
+ if(S.ef!=='crit')return null;
+ const a=S.abc,g=gcs(),va=vA();
+ const pasMatch=S.pa&&S.pa.includes('/')?parseFloat(S.pa.split('/')[0]):NaN;
+ const sat=parseFloat(S.sat);
+ if(a.va==='Obstruída')return {id:null,l:'Via aérea obstruída',hint:'Manejo imediato de via aérea antes de qualquer outra conduta'};
+ if(g<=8)return {id:'rnc',l:'Rebaixamento de consciência',hint:`GCS ${g}/15 — considerar IOT e proteção de via aérea`};
+ if(a.tec==='> 5s'||a.pul==='Filiformes'||a.pul==='Ausentes'||(pasMatch&&pasMatch<90)||va.includes('Hipotensão'))return {id:'cho',l:'Choque',hint:'Sinais clínicos de hipoperfusão — ressuscitação volêmica + identificar etiologia (séptico/hipovolêmico/cardiogênico/obstrutivo)'};
+ if(a.def&&a.def.length&&g<15)return {id:'neu',l:'Síndrome neurovascular (AVC/AIT)',hint:'Déficit focal + alteração de consciência — TC crânio em < 25 min'};
+ if(sat&&sat<90&&a.rud&&a.rud.includes('Crépitos'))return {id:'dsp',l:'Dispneia',hint:'Hipoxemia + creptações — EAP/pneumonia/SDRA são prioridades'};
+ if(sat&&sat<90&&a.esf&&(a.esf.includes('Dispneia')||a.esf.includes('Uso musc. acessória')))return {id:'dsp',l:'Dispneia',hint:'Hipoxemia + esforço respiratório — DPOC/asma/EAP/TEP'};
+ return null;
+}
+function applySindSuggestion(id){if(!id)return;S.sind=id;S.chk={};S.nts={};S.subsind=null;S.subsinds=[];S.syndromeGridCollapsed=true;render();}
+function s4ImpHeader(){
+ const sug=suggestSindFromABC();
+ const sugHtml=(sug&&!S.sind)?`<div class="abox aw" style="margin-bottom:12px;font-size:13px"><i class="ti ti-bulb" aria-hidden="true"></i> <strong>Sugestão do ABCDE:</strong> ${esc(sug.l)}. ${esc(sug.hint)}${sug.id?` <button class="xbtn" style="margin-left:6px;padding:3px 8px;font-size:12px" onclick="applySindSuggestion('${sug.id}')">Aplicar sugestão</button>`:''}</div>`:'';
+ return `<div id="step-4" class="card"><div class="st"><i class="ti ti-clipboard-check" aria-hidden="true"></i> Impressão clínica e síndrome</div>${sugHtml}<div style="margin-bottom:12px"><label>Impressão clínica livre</label><textarea oninput="S.imp=this.value" placeholder="Descreva sua impressão diagnóstica...">${esc(S.imp)}</textarea></div>`;
+}
 function s4Grid(){return `${s4ImpHeader()}<div class="sl">Síndrome clínica suspeita:</div><div class="sgrid" id="syndrome-grid">${SLIST.map(s=>`<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};S.subsind=null;S.subsinds=[];S.syndromeGridCollapsed=true;render()">${s.l}</button>`).join('')}</div></div>`;}
 function s4ResetBtn(){return `<div style="margin-bottom:10px"><button class="xbtn" onclick="S.syndromeGridCollapsed=false;render()" style="width:100%;padding:8px;font-size:13px"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar ao seletor</button></div>`;}
 function s4SubExcl(T){return `<div class="card"><div class="st"><i class="ti ti-git-branch" aria-hidden="true"></i> ${S.sind==='dtx'?'Probabilidade clínica:':'Subtipo clínico:'}</div><div class="sgrid">${T.subExcl.map(s=>`<button class="xbtn ${S.subsind===s.id?'on':''}" onclick="selSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`;}
@@ -3274,9 +3322,9 @@ function buildCondutas(){
  if(T.subAdd)S.subsinds.forEach(id=>{if(CT[id])collect(id,CT[id]);});
  let ct=`${_sep()}\nIMPRESSÃO E CONDUTA\nSíndrome: ${T.l}${subLabel}`;
  if(S.imp)ct+=`\nImpressão: ${S.imp}`;
- const fmt=arr=>arr.map(s=>`\n[${s.src}] ${s.t.toUpperCase()}:\n`+s.it.map(x=>` - ${x}`).join('\n')+(s.nt?`\n Obs: ${s.nt}`:'')).join('');
- if(pd.length)ct+=`\n\n⏳ PENDENTES:${fmt(pd)}`;
- if(dn.length)ct+=`\n\n✓ REALIZADAS:${fmt(dn)}`;
+ const fmt=arr=>arr.map(s=>`\n• ${s.src} — ${s.t}: ${s.it.join('; ')}${s.nt?` (obs: ${s.nt})`:''}`).join('');
+ if(dn.length)ct+=`\n\nRealizadas:${fmt(dn)}`;
+ if(pd.length)ct+=`\n\nPendentes:${fmt(pd)}`;
  return ct;
 }
 function gRel(){
