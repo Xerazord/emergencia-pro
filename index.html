@@ -155,21 +155,18 @@ textarea{resize:vertical;min-height:60px}
 .csec{border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);margin-bottom:7px;overflow:hidden}
 .csh{padding:9px 13px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:var(--color-background-secondary);font-size:14px;font-weight:500}
 .csb{padding:10px 13px;border-top:.5px solid var(--color-border-tertiary);display:none}.csb.open{display:block}
-.chk{display:flex;align-items:flex-start;gap:9px;padding:8px 9px;border-radius:var(--border-radius-md);cursor:pointer;margin-bottom:5px;border:.5px solid var(--color-border-tertiary);background:var(--color-background-primary)}
-.chk:hover{background:var(--color-background-secondary)}
-.chk.done{background:#eaf3de;border-color:#c0dd97}
-.chk.pend{background:#faeeda;border-color:#fac775}
-.chk.hl{border-left:3px solid #c84a4a;background:#fff7f7}
-.chk.hl.done{background:#eaf3de;border-left:3px solid #c84a4a}
-.chk.hl.pend{background:#faeeda;border-left:3px solid #c84a4a}
-.cico{width:19px;height:19px;border-radius:4px;border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.chk.done.cico{background:#3b6d11;border-color:#3b6d11}
-.chk.pend.cico{background:#854f0b;border-color:#854f0b}
-.cico i{font-size:11px;color:var(--color-text-secondary)}
-.chk.done.cico i,.chk.pend.cico i{color:#fff}
-.ctx{font-size:13px;line-height:1.5}
-.chk.done.ctx{color:#3b6d11}
-.chk.pend.ctx{color:#854f0b}
+.chk{display:flex;align-items:flex-start;gap:9px;padding:8px 10px;border-radius:var(--border-radius-md);cursor:pointer;margin-bottom:5px;border:.5px solid var(--color-border-tertiary);background:var(--color-background-primary);transition:background .15s,border-color .15s}
+.chk:hover{background:var(--color-background-secondary);border-color:var(--color-border-secondary)}
+.chk.done{background:#f0fdf4;border-color:#86efac}
+.chk.hl{border-left:3px solid #dc2626;background:#fff5f5}
+.chk.hl.done{background:#f0fdf4;border-left:3px solid #16a34a}
+.cico{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--color-border-secondary);background:var(--color-background-primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s ease}
+.chk:hover .cico{border-color:#16a34a}
+.chk.done .cico{background:#16a34a;border-color:#16a34a}
+.cico i{font-size:12px;color:transparent;transition:color .15s ease}
+.chk.done .cico i{color:#fff}
+.ctx{font-size:13px;line-height:1.5;color:var(--color-text-primary)}
+.chk.done .ctx{color:#14532d;font-weight:500}
 .psm{display:flex;flex-wrap:wrap;gap:7px;padding:9px 13px;background:#faeeda;border-radius:var(--border-radius-md);border:.5px solid #fac775;margin-bottom:10px;align-items:center}
 .psml{font-size:12px;font-weight:500;color:#854f0b}
 .psmb{font-size:12px;font-weight:500;color:#854f0b;padding:2px 9px;background:rgba(250,199,117,.35);border-radius:20px}
@@ -3252,7 +3249,7 @@ registerQx('Dor torácica',{
 });
 
 function tog(id){const b=document.getElementById(id);if(b)b.classList.toggle('open');}
-function cyc(k){const c=S.chk[k];if(!c)S.chk[k]='done';else if(c==='done')S.chk[k]='pend';else delete S.chk[k];render();}
+function cyc(k){if(!S.chk[k])S.chk[k]='done';else delete S.chk[k];render();}
 function selSub(id){S.subsind=S.subsind===id?null:id;render();}
 function toggleSub(id){const i=S.subsinds.indexOf(id);if(i>-1)S.subsinds.splice(i,1);else S.subsinds.push(id);render();}
 const CT_ALERT_RULES=[
@@ -3265,9 +3262,9 @@ const CT_ALERT_RULES=[
  {id:'alergia-explicit',when:S=>S.ale&&S.ale.toLowerCase()!=='nega'&&S.ale.toLowerCase()!=='nenhuma'&&S.ale.trim(),msg:S=>`Alergia relatada: ${S.ale}. Conferir antes de prescrever qualquer fármaco.`}
 ];
 function getInlineAlerts(){return CT_ALERT_RULES.filter(r=>r.when(S)).map(r=>typeof r.msg==='function'?r.msg(S):r.msg);}
-function rSindBlock(sid){const T=CT[sid];if(!T)return'';if(!T.s||T.s.length===0){if(T.subExcl||T.subAdd)return'';return `<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="abox ai"><i class="ti ti-info-circle" aria-hidden="true"></i> Conduta em desenvolvimento. Registre a abordagem específica no campo "Impressão clínica livre" acima.</div></div>`;}const pt=T.s.reduce((a,sec)=>a+(sec.it||[]).filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length,0);const inlineAlerts=getInlineAlerts();const alertsHtml=inlineAlerts.length?`<div class="abox aw" style="margin-bottom:8px;font-size:12.5px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>Alertas (HPP/MUC):</strong><ul style="margin:4px 0 0 18px;padding:0">${inlineAlerts.map(a=>`<li style="margin-bottom:3px">${esc(a)}</li>`).join('')}</ul></div>`:'';return`<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div>${alertsHtml}<div class="ai" style="margin-bottom:10px;font-size:12px"><i class="ti ti-info-circle" aria-hidden="true"></i> Clique para ciclar: ✓ Realizado → ⏳ Pendente → Não selecionado</div>${pt?`<div class="psm"><span class="psml"><i class="ti ti-clock" aria-hidden="true"></i> Pendentes:</span>${T.s.map(sec=>{const n=(sec.it||[]).filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;return n?`<span class="psmb">${sec.t}: ${n}</span>`:''}).join('')}</div>`:''}${T.s.map(sec=>rCSec(sid,sec)).join('')}</div>`;}
-function cico(k){const c=S.chk[k];return c==='done'?'ti-check':c==='pend'?'ti-clock':'ti-minus';}
-function ccls(k){const c=S.chk[k];return c==='done'?'done':c==='pend'?'pend':'';}
+function rSindBlock(sid){const T=CT[sid];if(!T)return'';if(!T.s||T.s.length===0){if(T.subExcl||T.subAdd)return'';return `<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="abox ai"><i class="ti ti-info-circle" aria-hidden="true"></i> Conduta em desenvolvimento. Registre a abordagem específica no campo "Impressão clínica livre" acima.</div></div>`;}const totSel=T.s.reduce((a,sec)=>a+(sec.it||[]).filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]).length,0);const inlineAlerts=getInlineAlerts();const alertsHtml=inlineAlerts.length?`<div class="abox aw" style="margin-bottom:8px;font-size:12.5px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>Alertas (HPP/MUC):</strong><ul style="margin:4px 0 0 18px;padding:0">${inlineAlerts.map(a=>`<li style="margin-bottom:3px">${esc(a)}</li>`).join('')}</ul></div>`:'';return`<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div>${alertsHtml}<div class="ai" style="margin-bottom:10px;font-size:12px"><i class="ti ti-info-circle" aria-hidden="true"></i> Seleção direta de 1 clique: selecione para prescrever / incluir na conduta</div>${totSel?`<div class="psm" style="background:#f0fdf4;border-color:#bbf7d0;margin-bottom:10px"><span class="psml" style="color:#15803d"><i class="ti ti-clipboard-check" aria-hidden="true"></i> Prescrição ativa:</span><span class="psmb" style="background:#dcfce7;color:#15803d">${totSel} ite${totSel>1?'ns':'m'} selecionado${totSel>1?'s':''}</span></div>`:''}${T.s.map(sec=>rCSec(sid,sec)).join('')}</div>`;}
+function cico(k){return S.chk[k]?'ti-check':'ti-check';}
+function ccls(k){return S.chk[k]?'done':'';}
 const VITAL_HL_MAP={
  'Sat < 90%':['o₂','o2 ','oxigen','satO','satura','MNRL','VNI','CNAF','intuba','IOT','flush-rate'],
  'Hipotensão':['vasopressor','norepinefrina','noradrenalina','dobutamina','vasopressina','ressuscita','volêmica','PAS','fluido','bolus','ringer','cristaloid'],
@@ -3550,7 +3547,7 @@ function dispGrav(){const fr=parseFloat(S.fr),sat=parseFloat(S.sat),fala=S.dspEF
 function dispGravBadge(){if(S.queixa!=='Dispneia')return'';const hasData=S.fr||S.sat||S.dspEF.fala||S.dspEF.cianose;if(!hasData)return'';const g=dispGrav();const[level,txt]=g==='grave'?['grave','Gravidade sugerida: GRAVE — IOT/VNI considerar imediatamente']:g==='mod'?['mod','Gravidade sugerida: MODERADA — monitorização intensa, O2 alto fluxo']:['leve','Gravidade sugerida: LEVE — tratar e reavaliar'];return gravBadge(level,txt,{noMargin:true});}
 function s3(){const badge=(S.queixa==='Dispneia'&&QX_BADGE[S.queixa])?QX_BADGE[S.queixa]():'';return`${badge}<div id="step-3" class="card"><div class="st"><i class="ti ti-search" aria-hidden="true"></i> Tipo de exame físico</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem"><button class="xbtn ${S.ef==='amb'?'on':''}" onclick="S.ef='amb';render()"><i class="ti ti-walk" aria-hidden="true"></i> Ambulatorial</button><button class="xbtn ${S.ef==='crit'?'on':''}" onclick="S.ef='crit';render()"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Paciente crítico (ABCDE)</button></div></div>${S.ef==='amb'?`<div class="card"><div class="st">Padrão ambulatorial</div>${[['g','Geral'],['cv','AP Cardiovascular'],['re','AP Respiratório'],['ab','Abdome'],['ne','Neurológico'],['pe','Pele e MMII']].map(([k,l])=>{const tpl=(S.sexo==='M'||S.sexo==='F')?EF_TEMPLATES[S.sexo][k]:null;const ph=tpl||l+'...';const sug=tpl?`<button type="button" class="ef-sug-btn" onclick="if(!S.amb['${k}']){S.amb['${k}']=EF_TEMPLATES[S.sexo]['${k}'];render()}" title="Preencher com sugestão para o sexo selecionado">Sugestão</button>`:'';return`<div style="margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><label style="margin:0">${l}</label>${sug}</div><input type="text" value="${esc(S.amb[k])}" oninput="S.amb['${k}']=this.value" placeholder="${esc(ph)}"></div>`}).join('')}</div>`:''}${S.ef==='crit'?`<div class="card"><div class="st">ABCDE — Avaliação primária</div>${abcH()}</div>`:''}${S.ef&&QX_EF[S.queixa]?QX_EF[S.queixa]():''}${S.ef?rECG()+''+rPOCUS():''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.ef?`<button class="btnp" onclick="nx()">Impressão / Conduta <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
 
-function rCSec(sid,sec){const items=sec.it||[];const pc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend').length;const dc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='done').length;const alertsHtml=(sec.alerts||[]).map(a=>`<div class="abox aw" style="margin-bottom:6px;font-size:12px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${esc(a)}</div>`).join('');const catNames={sup:'Suporte',inv:'Investigação',sin:'Sintomáticos',esp:'Específico',dsp:'Disposição/Alta'};const tagLbl=catNames[sec.id]||'';const tagHtml=tagLbl?`<span class="csec-tag csec-tag-${sec.id}">${tagLbl}</span>`:'';return`<div class="csec csec-${sec.id}"><div class="csh" onclick="tog('cs${sec.id}')"><span style="display:flex;align-items:center;gap:6px">${tagHtml}<span>${sec.t}</span></span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc}✓</span>`:''}${pc?`<span class="sb smod" style="font-size:11px">${pc}⏳</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb open" id="cs${sec.id}">${alertsHtml}${items.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);const hl=itemHasVitalHl(item)?' hl':'';return`<div class="chk ${cl}${hl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${esc(S.nts[sid+'_'+sec.id]||'')}</textarea></div></div></div>`;}
+function rCSec(sid,sec){const items=sec.it||[];const dc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]).length;const alertsHtml=(sec.alerts||[]).map(a=>`<div class="abox aw" style="margin-bottom:6px;font-size:12px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${esc(a)}</div>`).join('');const catNames={sup:'Suporte',inv:'Investigação',sin:'Sintomáticos',esp:'Específico',dsp:'Disposição/Alta'};const tagLbl=catNames[sec.id]||'';const tagHtml=tagLbl?`<span class="csec-tag csec-tag-${sec.id}">${tagLbl}</span>`:'';return`<div class="csec csec-${sec.id}"><div class="csh" onclick="tog('cs${sec.id}')"><span style="display:flex;align-items:center;gap:6px">${tagHtml}<span>${sec.t}</span></span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc} prescrito${dc>1?'s':''}</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb open" id="cs${sec.id}">${alertsHtml}${items.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);const hl=itemHasVitalHl(item)?' hl':'';return`<div class="chk ${cl}${hl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${esc(S.nts[sid+'_'+sec.id]||'')}</textarea></div></div></div>`;}
 
 function suggestSindFromABC(){
  if(S.ef!=='crit')return null;
@@ -3635,24 +3632,261 @@ function buildScoresDT(){
  const trop=S.edacs.t0||S.edacs.t2?'\n Troponina 0h: '+(S.edacs.t0||'—')+' | 2h: '+(S.edacs.t2||'—'):'';
  return `\n${_sep()}\nSCORES PREDITIVOS\nHEAR: ${hSc()}/10 — ${hI(hSc())}\nEDACS: ${eSc()} pts — ${eI()}${trop}`;
 }
+function getActivePendingItems(){
+ const T=S.sind?CT[S.sind]:null;
+ const pList=[];
+ const seen=new Set();
+ const addP=(type,txt)=>{
+  if(!txt)return;
+  const clean=txt.trim();
+  const norm=clean.toLowerCase();
+  if(!seen.has(norm)){
+   seen.add(norm);
+   pList.push({type,txt:clean});
+  }
+ };
+
+ const isLabItem=(txt)=>{
+  const t=txt.toLowerCase();
+  if(t.includes('ringer')||t.includes('norepinefrina')||t.includes('noradrenalina')||t.includes('vasopressor')||t.includes('dobutamina')||t.includes('bolus')||t.includes('expansão')||t.includes('ressuscitação')) return false;
+  return t.startsWith('solicito ')||t.startsWith('solicitar ')||t.startsWith('coleta de ')||t.includes('gasometria')||t.includes('hemocultura')||t.includes('lactato basal')||t.includes('lactato sérico');
+ };
+
+ const collect=(sid,sindObj)=>{
+  if(!sindObj||!sindObj.s)return;
+  sindObj.s.forEach(sec=>{
+   (sec.it||[]).forEach((it,i)=>{
+    if(S.chk[sid+'_'+sec.id+'_'+i]){
+     if(sec.id==='inv'){
+      addP('Exame',it);
+     } else if(sec.id==='dsp'){
+      addP('Destino/Leito',it);
+     } else if(sec.id==='sup'){
+      if(isLabItem(it)) addP('Exame',it);
+     }
+    }
+   });
+  });
+ };
+ if(T){
+  collect(S.sind,T);
+  if(T.subExcl&&S.subsind&&CT[S.subsind])collect(S.subsind,CT[S.subsind]);
+  if(T.subAdd)S.subsinds.forEach(id=>{if(CT[id])collect(id,CT[id]);});
+ }
+ if(S.condPendDesc&&S.condPendDesc.trim()){
+  addP('Plantão',S.condPendDesc.trim());
+ }
+
+ const hasSepseBundle=pList.some(p=>p.txt.toLowerCase().includes('pacote sepse')&&p.txt.toLowerCase().includes('lactato'));
+ if(hasSepseBundle){
+  return pList.filter(p=>{
+   const t=p.txt.toLowerCase();
+   return !(t.includes('coleta de gasometria + lactato basal')||t.includes('gasometria e lactato basal'));
+  });
+ }
+ return pList;
+}
+
 function buildCondutas(){
  const T=S.sind?CT[S.sind]:null;
- if(!T)return S.imp?`${_sep()}\nIMPRESSÃO CLÍNICA\n${S.imp}`:'';
+ if(!T)return S.imp?`${_sep()}\nIMPRESSÃO CLÍNICA E CONDUTA\n${S.imp}`:'';
  let subLabel='';
- if(T.subExcl&&S.subsind){const sx=T.subExcl.find(x=>x.id===S.subsind);if(sx)subLabel+=` (${sx.l.toLowerCase()})`;}
+ if(T.subExcl&&S.subsind){const sx=T.subExcl.find(x=>x.id===S.subsind);if(sx)subLabel+=` (${sx.l})`;}
  if(T.subAdd&&S.subsinds.length){const labels=S.subsinds.map(id=>{const sa=T.subAdd.find(x=>x.id===id);return sa?sa.l:'';}).filter(Boolean);if(labels.length)subLabel+=`\nDiferenciais considerados: ${labels.join(', ')}`;}
- const pd=[],dn=[];
- const collect=(sid,sindObj)=>{sindObj.s.forEach(sec=>{const pi=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='pend');const di=sec.it.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]==='done');const nt=S.nts[sid+'_'+sec.id]||'';if(pi.length)pd.push({src:sindObj.l,t:sec.t,it:pi,nt});if(di.length)dn.push({src:sindObj.l,t:sec.t,it:di,nt});});};
+
+ const collected=[];
+ const collect=(sid,sindObj)=>{
+  if(!sindObj||!sindObj.s)return;
+  sindObj.s.forEach(sec=>{
+   (sec.it||[]).forEach((it,i)=>{
+    if(S.chk[sid+'_'+sec.id+'_'+i]){
+     const nt=S.nts[sid+'_'+sec.id]||'';
+     collected.push({
+      sid,
+      sindLabel:sindObj.l,
+      secId:sec.id,
+      secTitle:sec.t,
+      item:it.trim(),
+      note:nt.trim()
+     });
+    }
+   });
+  });
+ };
  collect(S.sind,T);
  if(T.subExcl&&S.subsind&&CT[S.subsind])collect(S.subsind,CT[S.subsind]);
  if(T.subAdd)S.subsinds.forEach(id=>{if(CT[id])collect(id,CT[id]);});
- let ct=`${_sep()}\nIMPRESSÃO E CONDUTA\nSíndrome: ${T.l}${subLabel}`;
- if(S.imp)ct+=`\nImpressão: ${S.imp}`;
- const fmt=arr=>arr.map(s=>`\n• ${s.src} — ${s.t}: ${s.it.join('; ')}${s.nt?` (obs: ${s.nt})`:''}`).join('');
- if(dn.length)ct+=`\n\nRealizadas:${fmt(dn)}`;
- if(pd.length)ct+=`\n\nPendentes:${fmt(pd)}`;
+
+ // Deduplicação inteligente de itens idênticos ou redundantes
+ const seen=new Set();
+ const unique=[];
+ for(const c of collected){
+  const norm=c.item.toLowerCase();
+  if(!seen.has(norm)){
+   seen.add(norm);
+   unique.push(c);
+  }
+ }
+ const deduplicated=[];
+ const hasSepseBundle=unique.some(u=>u.item.toLowerCase().includes('pacote sepse')&&u.item.toLowerCase().includes('lactato'));
+ for(const u of unique){
+  const itL=u.item.toLowerCase();
+  if(hasSepseBundle&&(itL.includes('coleta de gasometria + lactato basal')||itL.includes('gasometria e lactato basal'))){
+   continue;
+  }
+  deduplicated.push(u);
+ }
+
+ const bCuidados=[];
+ const bVolume=[];
+ const bEspecifico=[];
+ const bSintomaticos=[];
+ const bExames=[];
+ const bDisposicao=[];
+ const bObsMap={};
+
+ const isVasoactiveOrMeds=(txt)=>{
+  const t=txt.toLowerCase();
+  return(
+   t.includes('norepinefrina')||
+   t.includes('noradrenalina')||
+   t.includes('dobutamina')||
+   t.includes('vasopressina')||
+   t.includes('hidrocortisona')||
+   t.includes('adrenalina')||
+   t.includes('atropina')||
+   t.includes('amiodarona')||
+   t.includes('antibiótico')||
+   t.includes('ceftriaxona')
+  );
+ };
+
+ const isFluidItem=(txt)=>{
+  const t=txt.toLowerCase();
+  if(isVasoactiveOrMeds(txt)) return false;
+  return(
+   t.includes('ringer')||
+   t.includes('soro fisiológico')||
+   t.includes('sf 0,9%')||
+   t.includes('sg 5%')||
+   t.includes('cristaloid')||
+   t.includes('expansão volêmica')||
+   t.includes('ressuscitação volêmica com')||
+   t.includes('ml/kg em bolus')||
+   t.includes('ml iv em bolus')||
+   t.includes('reposição volêmica')||
+   t.includes('fluidoterap')
+  );
+ };
+
+ const isExamItem=(txt)=>{
+  const t=txt.toLowerCase();
+  if(isVasoactiveOrMeds(txt)||isFluidItem(txt)) return false;
+  return(
+   t.startsWith('solicito ')||
+   t.startsWith('solicitar ')||
+   t.includes('hemocultura')||
+   t.includes('coleta de gasometria')||
+   t.includes('gasometria arterial')||
+   t.includes('gasometria venosa')||
+   t.includes('lactato basal')||
+   t.includes('lactato sérico')||
+   t.includes('troponina')||
+   t.includes('d-dímero')||
+   t.includes('ecg 12')||
+   t.includes('radiografia')||
+   t.includes('raio-x')||
+   t.includes('tomografia')||
+   t.includes('ecocardiograma')||
+   t.includes('angiotomografia')
+  );
+ };
+
+ deduplicated.forEach(entry=>{
+  const sec=entry.secId;
+  const it=entry.item;
+  if(entry.note&&!bObsMap[sec])bObsMap[sec]=entry.note;
+
+  if(sec==='inv'){
+   bExames.push(it);
+  } else if(sec==='dsp'){
+   bDisposicao.push(it);
+  } else if(sec==='sin'){
+   bSintomaticos.push(it);
+  } else if(sec==='esp'){
+   bEspecifico.push(it);
+  } else if(sec==='sup'){
+   if(isVasoactiveOrMeds(it)) bEspecifico.push(it);
+   else if(isFluidItem(it)) bVolume.push(it);
+   else if(isExamItem(it)) bExames.push(it);
+   else bCuidados.push(it);
+  } else {
+   bEspecifico.push(it);
+  }
+ });
+
+ let ct=`${_sep()}\nCONDUTA E PRESCRIÇÃO MÉDICA DE ADMISSÃO\nHipótese: ${T.l}${subLabel}`;
+ if(S.imp&&S.imp.trim())ct+=`\nImpressão clínica: ${S.imp.trim()}`;
+
+ const sectionsOutput=[];
+ let secNum=1;
+
+ if(bCuidados.length){
+  let sTxt=`\n\n${secNum++}. CUIDADOS GERAIS, MONITORIZAÇÃO E ACESSOS:\n`+bCuidados.map(it=>`   - ${it}`).join('\n');
+  if(bObsMap['sup'])sTxt+=`\n   ↳ Obs: ${bObsMap['sup']}`;
+  sectionsOutput.push(sTxt);
+ }
+
+ if(bVolume.length){
+  let sTxt=`\n\n${secNum++}. RESSUSCITAÇÃO VOLÊMICA / HIDRATAÇÃO VENOSA:\n`+bVolume.map(it=>`   - ${it}`).join('\n');
+  sectionsOutput.push(sTxt);
+ }
+
+ if(bEspecifico.length){
+  let sTxt=`\n\n${secNum++}. TERAPIA ESPECÍFICA & DROGAS VASOATIVAS:\n`+bEspecifico.map(it=>`   - ${it}`).join('\n');
+  if(bObsMap['esp'])sTxt+=`\n   ↳ Obs: ${bObsMap['esp']}`;
+  sectionsOutput.push(sTxt);
+ }
+
+ if(bSintomaticos.length){
+  let sTxt=`\n\n${secNum++}. SINTOMÁTICOS & CONDUTAS S.O.S.:\n`+bSintomaticos.map(it=>`   - ${it}`).join('\n');
+  if(bObsMap['sin'])sTxt+=`\n   ↳ Obs: ${bObsMap['sin']}`;
+  sectionsOutput.push(sTxt);
+ }
+
+ if(bExames.length){
+  let sTxt=`\n\n${secNum++}. EXAMES SOLICITADOS (INVESTIGAÇÃO):\n`+bExames.map(it=>`   - ${it}`).join('\n');
+  if(bObsMap['inv'])sTxt+=`\n   ↳ Obs: ${bObsMap['inv']}`;
+  sectionsOutput.push(sTxt);
+ }
+
+ if(bDisposicao.length){
+  let sTxt=`\n\n${secNum++}. DISPOSIÇÃO & ENCAMINHAMENTOS:\n`+bDisposicao.map(it=>`   - ${it}`).join('\n');
+  if(bObsMap['dsp'])sTxt+=`\n   ↳ Obs: ${bObsMap['dsp']}`;
+  sectionsOutput.push(sTxt);
+ }
+
+ if(sectionsOutput.length){
+  ct+=sectionsOutput.join('');
+ } else {
+  ct+=`\n\n(Nenhuma conduta pré-formatada selecionada)`;
+ }
+
+ // QUADRO DE PENDÊNCIAS DE PLANTÃO
+ const pends=[];
+ bExames.forEach(e=>pends.push(`⏳ Exame/Resultado: ${e}`));
+ bDisposicao.forEach(d=>pends.push(`⏳ Vaga/Regulação/Destino: ${d}`));
+ if(S.condPendDesc&&S.condPendDesc.trim()){
+  pends.push(`⏳ Plantão: ${S.condPendDesc.trim()}${S.condPendPrazoMin?` (Prazo: ${S.condPendPrazoMin} min)`:''}`);
+ }
+
+ if(pends.length){
+  ct+=`\n\n${_sep()}\nQUADRO DE PENDÊNCIAS DE PLANTÃO:\n`+pends.join('\n');
+ }
+
  return ct;
 }
+
 function gRel(){
  const parts=[buildHeader(),buildHDA(),buildAntecedentes(),buildVitais(),buildEF()+buildScoresDT(),`${_sep()}\nECG\n${buildEcgText()}`,`${_sep()}\nPOCUS\n${buildPocText()}`,buildCondutas(),_sep()];
  return parts.filter(Boolean).join('\n');
@@ -3665,23 +3899,32 @@ function gResumo(){
  const queixa=S.queixa||'sem queixa registrada';
  const tempo=S.tempo?` há ${S.tempo}`:'';
  const va=vA();
- const vitais=`FC ${S.fc||'—'} | Sat ${S.sat||'—'}% | PA ${S.pa||'—'} | FR ${S.fr||'—'} | T ${S.temp||'—'}°C${va.length?' ⚠ '+va.join('; '):''}`;
+ const n2=calcNEWS2(S);
+ const n2Str=n2?` | NEWS2: ${n2.score} (${n2.nivelLabel})`:'';
+ const vitais=`FC ${S.fc||'—'} | Sat ${S.sat||'—'}% | PA ${S.pa||'—'} | FR ${S.fr||'—'} | T ${S.temp||'—'}°C${n2Str}${va.length?' ⚠ '+va.join('; '):''}`;
  let dx='(sem hipótese)';
  if(T){
- let sub='';
- if(T.subExcl&&S.subsind){const sx=T.subExcl.find(x=>x.id===S.subsind);if(sx)sub+=` (${sx.l.toLowerCase()})`;}
- if(T.subAdd&&S.subsinds.length){const labs=S.subsinds.map(id=>{const sa=T.subAdd.find(x=>x.id===id);return sa?sa.l:'';}).filter(Boolean);if(labs.length)sub+=` + dif: ${labs.join(', ')}`;}
- dx=T.l+sub;
+  let sub='';
+  if(T.subExcl&&S.subsind){const sx=T.subExcl.find(x=>x.id===S.subsind);if(sx)sub+=` (${sx.l.toLowerCase()})`;}
+  if(T.subAdd&&S.subsinds.length){const labs=S.subsinds.map(id=>{const sa=T.subAdd.find(x=>x.id===id);return sa?sa.l:'';}).filter(Boolean);if(labs.length)sub+=` + dif: ${labs.join(', ')}`;}
+  dx=T.l+sub;
  }
  const imp=S.imp?` — ${S.imp.length>120?S.imp.slice(0,117)+'...':S.imp}`:'';
- const pendList=[];
- const collectPend=(sid,sindObj)=>{if(!sindObj)return;sindObj.s.forEach(sec=>{sec.it.forEach((it,i)=>{if(S.chk[sid+'_'+sec.id+'_'+i]==='pend')pendList.push(it);});});};
- if(T){collectPend(S.sind,T);if(T.subExcl&&S.subsind&&CT[S.subsind])collectPend(S.subsind,CT[S.subsind]);if(T.subAdd)S.subsinds.forEach(id=>{if(CT[id])collectPend(id,CT[id]);});}
- const pTop=pendList.slice(0,3).map(p=>p.length>90?p.slice(0,87)+'...':p);
- const pendStr=pendList.length?`Pendentes (${pendList.length})${pendList.length>3?', top 3':''}:\n - ${pTop.join('\n - ')}`:'Pendentes: nenhum item marcado';
+
+ const pends=getActivePendingItems();
+ const pTop=pends.slice(0,5).map(p=>` - [${p.type}] ${p.txt.length>90?p.txt.slice(0,87)+'...':p.txt}`);
+ const pendStr=pends.length?`Pendências ativas (${pends.length}):\n${pTop.join('\n')}${pends.length>5?`\n - ... e mais ${pends.length-5} pendências`:''}`:'Pendências ativas: nenhuma';
  return `RESUMO DE PLANTÃO (${now})\n${id} — ${queixa}${tempo}\nVitais: ${vitais}\nDx: ${dx}${imp}\n${pendStr}`;
 }
-function pSumH(){const T=S.sind?CT[S.sind]:null;if(!T)return'';const pd=T.s.filter(sec=>sec.it.some((_,i)=>S.chk[S.sind+'_'+sec.id+'_'+i]==='pend'));if(!pd.length)return'';return`<div class="psm" style="margin-bottom:12px"><span class="psml"><i class="ti ti-clock" aria-hidden="true"></i> Pendências:</span>${pd.map(s=>{const n=s.it.filter((_,i)=>S.chk[S.sind+'_'+s.id+'_'+i]==='pend').length;return`<span class="psmb">${s.t}: ${n}</span>`;}).join('')}</div>`;}
+
+function pSumH(){
+ const pends=getActivePendingItems();
+ if(!pends.length)return'';
+ const exCount=pends.filter(x=>x.type==='Exame').length;
+ const othCount=pends.length-exCount;
+ const detailStr=exCount&&othCount?` (${exCount} exames, ${othCount} vaga/conduta)`:exCount?` (${exCount} exame${exCount>1?'s':''})`:` (${othCount} vaga/conduta)`;
+ return `<div class="psm" style="margin-bottom:12px;background:#fef3c7;border-color:#fde68a"><span class="psml" style="color:#92400e"><i class="ti ti-clock" aria-hidden="true"></i> Pendências de plantão:</span><span class="psmb" style="background:#fde68a;color:#92400e">${pends.length} ativa${pends.length>1?'s':''}${detailStr}</span></div>`;
+}
 
 function s5(){
  const statusOpts = Object.entries(STATUS_LABEL).map(([k,v])=>
