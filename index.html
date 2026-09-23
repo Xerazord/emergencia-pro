@@ -2153,26 +2153,40 @@ ait:{l:'Ataque Isquêmico Transitório (AIT)',s:[
 'ABCD2 ≤ 3 com exames de imagem e ECG normais: elegível para alta com investigação ambulatorial rápida (< 48h)'
 ]}
 ]},
-rnc:{l:'Rebaixamento do nível de consciência',s:[
-{id:'sup',t:'Estabilização e monitorização',it:[
-'Posição lateral de segurança se sem trauma cervical — reduz risco de broncoaspiração',
-'IOT de sequência rápida se GCS ≤ 8 sem proteção de VA',
-'Monitor contínuo: ECG, SatO2, PA, temperatura',
-'Glicemia capilar em < 5 min — causa mais comum e tratável de RNC']},
-{id:'esp',t:'Farmacológico',it:[
-'Glicose 50% 50 mL IV se glicemia < 60 mg/dL — corrigir antes de qualquer investigação',
-'Tiamina 100 mg IV antes ou junto com glicose se etilismo ou desnutrição — previne encefalopatia de Wernicke',
-'Naloxona 0,4–2 mg IV/IM/IN se suspeita de opioides — repetir a cada 2–3 min até resposta',
-'Manitol 1 g/kg IV ou SF 3% 150–250 mL se sinais de herniação (anisocoria, postura de descerebração)']},
-{id:'inv',t:'Investigação',it:[
-'TC crânio urgente — excluir HSA, hematoma, hidrocefalia; precede PL',
-'EEG urgente se suspeita de status epiléptico não convulsivo',
-'Hemograma, função renal, hepática, eletrólitos, amônia, gasometria',
-'Toxicológico sérico e urinário; PL após TC normal se febre + RNC']},
+rnc:{l:'Rebaixamento de consciência / Coma',
+subAdd:[
+{id:'con',l:'Crise epiléptica associada'},
+{id:'int',l:'Intoxicação exógena associada'},
+{id:'feb',l:'Foco infeccioso / Sepse associada'}
+],
+s:[
+{id:'sup',t:'Manejo inicial do coma e proteção de via aérea (NCS)',it:[
+'Posicionamento e aspiração de vias aéreas: decúbito lateral se sem suspeita de trauma cervical; cabeceira a 30° se suspeita de hipertensão intracraniana',
+'Intubação Orotraqueal (IOT) em sequência rápida adaptada se GCS ≤ 8, perda de reflexos protetores de via aérea ou padrão ventilatório ineficaz',
+'Glicemia capilar IMEDIATA na admissão (< 5 min) — causa metabólica mais comum e com risco de dano neurológico irreversível se não revertida',
+'Monitorização contínua: oximetria de pulso (meta SpO₂ ≥ 94%), ECG contínuo, PA não invasiva a cada 5–15 min e temperatura central',
+'Coleta imediata de gasometria arterial e lactato sérico (pesquisar acidose metabólica grave com gap aumentado, hipóxia ou hipercapnia)'
+]},
+{id:'esp',t:'Terapêutica empírica reversível e neuroproteção',alerts:[
+'NUNCA administrar glicose hipertônica sem tiamina prévia em pacientes desnutridos, etilistas ou com suspeita de encefalopatia de Wernicke!',
+'Naloxona: titular em pequenas doses (0,04–0,1 mg) em usuários crônicos de opioides para evitar síndrome de abstinência aguda com tempestade adrenérgica'
+],it:[
+'Hipoglicemia confirmada (Glicemia < 70 mg/dL): Tiamina 100 mg IV lento SEGUIDA IMEDIATAMENTE de Glicose a 50% 50 mL IV (25 g de glicose) em bólus; reavaliar dextro em 15 min',
+'Suspeita de toxídrome opioide (miose puntiforme + depressão respiratória + coma): Naloxona 0,04 a 0,4 mg IV/IM/IN, repetindo a cada 2–3 min até restauração do drive respiratório (dose de até 2 mg se parada iminente)',
+'Hipertensão Intracraniana (HIC) aguda / herniação iminente (anisocoria, tríade de Cushing, postura de descerebração): Salina Hipertônica 3% 150–250 mL IV em 15 min OU Manitol 20% 0,5–1 g/kg IV',
+'Suspeita de meningoencefalite (febre + rigidez de nuca + coma): Ceftriaxona 2 g IV 12/12h + Ampicilina 2 g IV 4/4h (se > 50 anos ou imunossuprimido) + Vancomicina 15–20 mg/kg 12/12h + Dexametasona 10 mg IV (iniciar ANTES ou junto do 1º ATB)'
+]},
+{id:'inv',t:'Investigação complementar urgente',it:[
+'TC de crânio sem contraste em < 30 minutos: descartar hemorragia intracraniana, efeito de massa, hidrocefalia aguda e edema cerebral difuso',
+'Painel laboratorial completo: eletrólitos (Na, K, Ca ionizado, Mg), função renal (ureia, creatinina), função hepática e amônia sérica (encefalopatia hepática)',
+'Screening toxicológico urinário e sérico (álcool, benzodiazepínicos, opioides, antidepressivos, cocaína)',
+'Eletroencefalograma (EEG) urgente: mandatório se coma inexplicado sem lesão estrutural na TC para descartar Estado de Mal Epiléptico Não Convulsivo (EMENC)',
+'Punção lombar (PL) para análise bioquímica, citológica e microbiológica do líquor (realizar após TC descartar lesão expansiva com desvio de linha média)'
+]},
 {id:'dsp',t:'Disposição',it:[
-'GCS ≤ 8 → UTI ou emergência com capacidade de IOT',
-'Causa reversível identificada e tratada com recuperação → observação mínima 6h',
-'Causa não estabelecida → internação para investigação']}
+'Internação imediata em leito de Terapia Intensiva (UTI geral ou neurocrítica)',
+'Acionamento prioritário da Neurologia / Neurocirurgia'
+]}
 ]},
 cef:{l:'Cefaleia',
 subExcl:[
@@ -2430,38 +2444,67 @@ dia:{l:'Diarreia',s:[
 'Hemograma, função renal, eletrólitos',
 'Pesquisa de toxina C. difficile se uso recente de antibiótico']}
 ]},
-sinc:{l:'Síncope',s:[
-{id:'sup',t:'Monitorização e avaliação',it:[
-'ECG 12D imediato — excluir BAV, QTc longo, WPW, Brugada, supradesnivelamento',
-'Monitor cardíaco contínuo',
-'Glicemia capilar — excluir hipoglicemia',
-'PA em decúbito e ortostase (1 e 3 min) — hipotensão ortostática ≥ 20/10 mmHg']},
-{id:'inv',t:'Investigação',it:[
-'Hemograma, função renal, eletrólitos — causas metabólicas',
-'Troponina se dor torácica associada ou ECG alterado',
-'Ecocardiograma se suspeita estrutural — estenose aórtica, miocardiopatia hipertrófica']},
-{id:'dsp',t:'Estratificação de risco',it:[
-'Alto risco (internação): ECG alterado, PA < 90 mmHg, IC conhecida, BRE novo, QTc > 460 ms',
-'San Francisco Rule: ICC, Hematócrito < 30%, PAS < 90 mmHg, ECG alterado, dispneia — qualquer item = alto risco',
-'Baixo risco: síncope vasovagal típica com pródromo, jovem sem comorbidade, ECG normal — alta com seguimento']}
+sinc:{l:'Síncope',
+subAdd:[
+{id:'pal',l:'Arritmia / Palpitações associadas'},
+{id:'dtx',l:'Dor torácica / SCA associada'},
+{id:'neu',l:'Déficit neurológico / AIT associado'}
+],
+s:[
+{id:'sup',t:'Triagem de risco e monitorização imediata (ESC 2024)',it:[
+'ECG de 12 derivações na admissão: obrigatório em 100% dos pacientes com síncope para busca ativa de canalopatias e arritmias',
+'Pesquisa ativa de Red Flags de síncope cardíaca: síncope durante o esforço físico ou em decúbito, palpitações precedendo o evento, ausência de pródromos autonômicos, cardiopatia estrutural conhecida ou história familiar de morte súbita precoce (< 40 anos)',
+'Aferição de PA e FC em decúbito dorsal e após 1 e 3 minutos em ortostase (pesquisa de hipotensão ortostática: queda de PAS ≥ 20 mmHg ou PAD ≥ 10 mmHg)',
+'Glicemia capilar na admissão para descartar hipoglicemia como causa do evento sincopal',
+'Monitorização cardíaca contínua em leito monitorizado se critérios de risco intermediário ou alto'
 ]},
-con:{l:'Convulsão',s:[
-{id:'sup',t:'Manejo inicial',it:[
-'Posição lateral de segurança se sem trauma cervical — reduz risco de broncoaspiração',
-'O2 por máscara 10 L/min — hipóxia agrava lesão neuronal',
-'Acesso venoso periférico — colher glicemia antes de administrar glicose',
-'Glicemia capilar: se < 60 mg/dL → tiamina 100 mg IV + glicose 50% 50 mL IV',
-'Monitor cardíaco contínuo']},
-{id:'esp',t:'Sequência farmacológica (estado de mal)',it:[
-'1ª linha (0–5 min): diazepam 0,15–0,2 mg/kg IV (máx 10 mg) ou midazolam 10 mg IM se sem acesso',
-'2ª linha (5–20 min): fenitoína 20 mg/kg IV ou ácido valproico 40 mg/kg IV ou levetiracetam 60 mg/kg IV',
-'3ª linha (> 20 min — estado refratário): propofol 1–2 mg/kg IV + IOT ou midazolam em infusão contínua',
-'Crise febril simples: benzodiazepínico apenas se crise ativa > 5 min']},
-{id:'inv',t:'Investigação',it:[
-'Glicemia, sódio, cálcio, magnésio, ureia, creatinina — convulsão metabólica',
-'Nível sérico de antiepilépticos em uso — subdosagem',
-'TC crânio sem contraste — 1ª crise, déficit pós-ictal, trauma ou suspeita estrutural',
-'EEG urgente se status não convulsivo suspeito ou alteração persistente da consciência']}
+{id:'inv',t:'Investigação complementar e estratificação',it:[
+'Ecocardiograma transtorácico: indicado se suspeita de cardiopatia estrutural (sopro cardíaco novo, estenose aórtica, disfunção ventricular ou ECG alterado)',
+'Eletrocardiograma seriado: buscar intervalo QTc prolongado (> 460–480 ms), padrão de Brugada (tipo 1 ou 2), onda delta / PR curto (Wolf-Parkinson-White), ondas epsilon (DAED), bloqueio bifascicular ou BAV avançado',
+'Hemograma completo (descartar anemia aguda/hemorragia oculta), eletrólitos séricos (K, Mg, Ca) e troponina se suspeita isquêmica associada',
+'Escore de Risco Canadense de Síncope (CSRS) / San Francisco Rule para orientar necessidade de internação hospitalar'
+]},
+{id:'dsp',t:'Estratificação de risco e disposição',it:[
+'Alto Risco (Internação hospitalar obrigatória em leito monitorizado/telemetria): cardiopatia estrutural conhecida, síncope de esforço, ECG com achados de alto risco, PA sistólica < 90 mmHg persistente ou hemoglobina < 9 g/dL',
+'Baixo Risco (Elegível para alta da sala de emergência): características típicas de síncope vasovagal/reflexa (pródromos clássicos: náusea, palidez, sudorese, calor; gatilho situacional ou dor/estresse), paciente jovem, sem cardiopatia prévia e com ECG estritamente normal',
+'Orientações de alta no baixo risco: hidratação oral vigorosa (2–2,5 L/dia), manobras de contrapressão física isométrica (cruzar pernas e tensionar membros) aos primeiros pródromos e seguimento ambulatorial'
+]}
+]},
+con:{l:'Convulsão / Estado de Mal Epiléptico',
+subAdd:[
+{id:'rnc',l:'Rebaixamento pós-ictal prolongado / Coma'},
+{id:'feb',l:'Febre / Suspeita de infecção de SNC'},
+{id:'int',l:'Intoxicação / Abstinência associada'}
+],
+s:[
+{id:'sup',t:'Manejo inicial e fase de estabilização (0–5 min)',it:[
+'Proteção imediata contra trauma: posicionamento em decúbito lateral para evitar broncoaspiração, aspiração suave de secreções e remoção de objetos ao redor (NUNCA introduzir objetos ou dedos na boca)',
+'Oxigenoterapia suplementar sob máscara não reinalante a 10–15 L/min (manter SpO₂ ≥ 94%; a hipoxemia durante a crise agrava lesão neuronal)',
+'Acesso vascular calibroso e coleta imediata de glicemia capilar (< 5 min)',
+'Se hipoglicemia (glicemia < 70 mg/dL): administrar Tiamina 100 mg IV seguido de Glicose 50% 50 mL IV em bólus',
+'Monitorização contínua de ECG, SpO₂ e pressão arterial'
+]},
+{id:'esp',t:'Terapia farmacológica escalonada por fases (AES / Neurocritical Care)',alerts:[
+'ESTADO DE MAL EPILÉPTICO (Crise contínua ≥ 5 minutos OU duas ou mais crises sem recuperação da consciência): iniciar benzodiazepínico IMEDIATAMENTE. O atraso no tratamento reduz a eficácia dos receptores GABA e aumenta a mortalidade!',
+'Dose de Levetiracetam: 60 mg/kg IV (dose plena eficaz, não subdosar com 1.000 mg em adultos de peso médio)'
+],it:[
+'FASE 1 (0–5 min) — Benzodiazepínicos de 1ª linha: Midazolam 10 mg IM (se peso > 40 kg; 5 mg se 13–40 kg) se sem acesso venoso OU Diazepam 10 mg IV (0,15–0,2 mg/kg) lento em 2 min OU Lorazepam 4 mg IV lento; repetir uma única dose em 5–10 min se crise mantida',
+'FASE 2 (5–20 min) — Antiepilépticos IV de 2ª linha (iniciar se crise > 5 min apesar do benzo): Levetiracetam 60 mg/kg IV em 10 min (dose máx 4.500 mg — 1ª escolha por ausência de cardiotoxicidade e interações)',
+'Alternativas na Fase 2: Valproato de Sódio 40 mg/kg IV em 10 min (máx 3.000 mg) OU Fosfenitoína / Fenitoína 20 mg/kg IV (máx 1.500 mg) infundida em SF a < 50 mg/min com monitorização de ECG/PA',
+'FASE 3 (> 20–40 min) — Estado de Mal Epiléptico Refratário: Intubação orotraqueal imediata com sequência rápida + anestésicos IV contínuos em BIC para supressão de surtos no EEG',
+'Opções de infusão na Fase 3: Propofol (bolus 1–2 mg/kg seguido de 2–10 mg/kg/h) OU Midazolam (bolus 0,2 mg/kg seguido de 0,1–2 mg/kg/h) OU Cetamina (bolus 1–2 mg/kg seguido de 1–5 mg/kg/h)'
+]},
+{id:'inv',t:'Investigação complementar etiológica',it:[
+'Painel metabólico urgente: glicemia, sódio sérico (pesquisar hiponatremia aguda como gatilho), cálcio ionizado, magnésio, ureia, creatinina e gasometria com lactato',
+'Dosagem de níveis séricos de drogas antiepilépticas de uso crônico (pesquisar subdosagem ou interrupção inadvertida)',
+'TC de crânio sem contraste de urgência: indicada em primeira crise convulsiva na vida, déficit neurológico pós-ictal persistente (paresia de Todd > 2h), história de trauma craniano ou neoplasia prévia',
+'Eletroencefalograma (EEG) precoce: essencial se rebaixamento de consciência não recuperado para excluir Estado de Mal Epiléptico Não Convulsivo (EMENC)'
+]},
+{id:'dsp',t:'Disposição',it:[
+'Estado de mal epiléptico ou necessidade de segunda linha de antiepilépticos: internação obrigatória em UTI',
+'Primeira crise convulsiva isolada com TC e laboratório normais e exame neurológico restaurado: observação por 4–6h e encaminhamento ambulatorial à Neurologia',
+'Crise em epiléptico conhecido por falha terapêutica transitória corrigida: ajuste posológico e alta orientada após recuperação plena'
+]}
 ]},
 pal:{l:'Palpitações / Arritmia',s:[
 {id:'sup',t:'Monitorização',it:[
