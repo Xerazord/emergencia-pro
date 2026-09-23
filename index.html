@@ -1155,10 +1155,15 @@ async function adminUpdateStatus(id, status, motivo){
  if(status==='approved'){
   patch.aprovado_em = new Date().toISOString();
   const {data:{user}}=await sb.auth.getUser();
-  if(user)patch.aprovado_por = user.id;
+  if(!user){alert('Sessão expirada. Faça login novamente.');return false;}
+  patch.aprovado_por = user.id;
  }
- const {error} = await sb.from('profiles').update(patch).eq('id',id);
- if(error){alert('Erro: '+(error.message||error));return false;}
+ const {data, error} = await sb.from('profiles').update(patch).eq('id',id).select();
+ if(error){alert('Erro ao atualizar cadastro: '+(error.message||error));return false;}
+ if(!data || !data.length){
+  alert('Aviso: nenhuma alteração foi gravada no banco. Isso ocorre se o seu usuário não possuir role="admin" na tabela public.profiles ou se a política RLS bloquear a atualização.');
+  return false;
+ }
  document.getElementById('kycDetailArea').innerHTML='';
  await loadAdminTab(_adminCurrentTab);
  // atualizar contador de pendentes
