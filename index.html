@@ -2224,28 +2224,47 @@ cef_hii:{l:'Hipertensão intracraniana idiopática',s:[]},
 cef_tce:{l:'Cefaleia pós-TCE',s:[]},
 cef_sin:{l:'Rinossinusite aguda',s:[]},
 cef_trig:{l:'Neuralgia do trigêmeo',s:[]},
-dsp:{l:'Síndrome dispneica',subExcl:[{id:'eap',l:'EAP / IC descompensada'},{id:'dpoc_ag',l:'Agudização de DPOC'},{id:'asma',l:'Crise asmática'},{id:'pnm',l:'Pneumonia grave'},{id:'dep',l:'Derrame pleural sintomático'},{id:'tep',l:'TEP suspeito'}],s:[
-{id:'sup',t:'Monitorização e suporte ventilatório',it:[
-'Oximetria contínua; O2 titulado para SatO2 94–98% (88–92% em DPOC)',
-'Posição sentada (Fowler 45°) — reduz trabalho respiratório',
-'Monitor cardíaco — dispneia aguda pode ser manifestação de arritmia',
-'CPAP/BiPAP se SatO2 < 92% com O2 em alto fluxo — VNI reduz intubação em EAP e DPOC',
-'IOT precoce se falha da VNI, rebaixamento de consciência, apneia iminente ou instabilidade hemodinâmica']},
-{id:'esp',t:'Farmacológico conforme etiologia',it:[
-'Broncoespasmo: salbutamol 2,5 mg nebulizado + ipratrópio 0,5 mg — repetir a cada 20 min se necessário',
-'EAP hipertensivo: furosemida 40–80 mg IV + nitroglicerina 10–200 mcg/min se PAS > 100 mmHg',
-'DPOC agudizado: prednisolona 40 mg VO ou metilprednisolona 40 mg IV + ATB se sinais infecciosos',
-'Pneumonia grave: ATB IV precoce conforme foco e perfil de resistência local']},
-{id:'inv',t:'Investigação',it:[
-'POCUS: linhas B (EAP), consolidação (pneumonia), derrame pleural, pneumotórax, distensão VD (TEP)',
-'RX tórax PA — congestão, pneumotórax, consolidação, derrame',
-'BNP/NT-proBNP — diferenciação cardíaca vs. pulmonar',
-'D-dímero se Wells ≥ 2 ou PERC positivo — angioTC se elevado',
-'Gasometria arterial se grave ou dúvida diagnóstica']},
+dsp:{l:'Síndrome dispneica',
+subExcl:[
+{id:'eap',l:'IC aguda descompensada / EAP'},
+{id:'dpoc_ag',l:'DPOC agudizado'},
+{id:'asma',l:'Crise asmática aguda'},
+{id:'pnm',l:'Pneumonia grave'},
+{id:'tep',l:'Tromboembolismo pulmonar (TEP)'},
+{id:'dep',l:'Derrame pleural sintomático'},
+{id:'pntx',l:'Pneumotórax / Trauma torácico'}
+],
+subAdd:[
+{id:'dtx',l:'Suspeita de SCA associada (CHAMPIT)'},
+{id:'cho_sep',l:'Sepse / Foco infeccioso grave'},
+{id:'pntx',l:'Pneumotórax associado'}
+],
+s:[
+{id:'sup',t:'Suporte ventilatório e abordagem emergencial imediata',it:[
+'Posicionamento sentado ou cabeceira elevada a 45–90° (posição de Fowler) — reduz retorno venoso e alivia o trabalho diafragmático',
+'Oximetria contínua com alvo de SpO₂: 94–98% na população geral e 88–92% em pacientes com retenção crônica de CO₂ (DPOC / hipoventilação da obesidade)',
+'Ventilação Não Invasiva (VNI) precoce: CPAP 5–10 cmH₂O ou BiPAP (EPAP 4–6 cmH₂O, IPAP 10–15 cmH₂O) se FR > 25 irpm, uso de musculatura acessória ou SpO₂ < 90% com oxigênio em alto fluxo (reduz intubação em ~50% e mortalidade)',
+'Intubação Orotraqueal (IOT) em sequência rápida: indicada se exaustão respiratória iminente, rebaixamento de consciência (GCS ≤ 8), instabilidade hemodinâmica refratária ou acidose hipercápnica progressiva apesar da VNI',
+'Monitor cardíaco contínuo de 12 derivações à beira-leito — arritmias agudas e isquemia são causas frequentes de insuficiência respiratória súbita'
+]},
+{id:'esp',t:'Terapêutica direcionada e mnemônico CHAMPIT (ESC 2026)',it:[
+'Rastreio etiológico emergencial CHAMPIT: Coronariana (SCA), Hipertensiva, Arritmia, Mecânica (valvopatia aguda/CIV), Pulmonar (TEP), Infecciosa (sepse/pneumonia), Tamponamento pericárdico',
+'Broncoespasmo ativo (sibilos/expiração prolongada): Salbutamol 2,5 mg inalatório (ou fenoterol) + Brometo de Ipratrópio 0,5 mg inalatório a cada 20 min nas primeiras doses',
+'Pneumonia associada: iniciar antibioticoterapia empírica imediata conforme estratificação por CURB-65 / PSI',
+'Suspeita de TEP com hipoxemia refratária: iniciar anticoagulação empírica precoce se probabilidade alta e ausência de sangramento ativo'
+]},
+{id:'inv',t:'Investigação complementar no leito',it:[
+'POCUS pulmonar (Protocolo BLUE): diferenciar perfil B (linhas B bilaterais difusas = EAP) de perfil A (deslizamento preservado = asma/DPOC/TEP), consolidação (pneumonia) e ausência de deslizamento (pneumotórax)',
+'Peptídeos natriuréticos (BNP ou NT-proBNP): valor de descarte (BNP < 100 pg/mL ou NT-proBNP < 300 pg/mL tornam causa cardíaca improvável)',
+'ECG de 12 derivações na admissão: pesquisar sobrecarga ventricular, taquiarritmias (ex: FA com alta resposta), BRE novo ou alterações isquêmicas de ST',
+'Radiografia de tórax no leito (PA / AP): avaliar congestão hilofugal, consolidações alveolares, pneumotórax e derrame pleural',
+'Gasometria arterial se insuficiência respiratória aguda grave, suspeita de acidose/hipercapnia ou SpO₂ não confiável',
+'D-dímero se suspeita de tromboembolismo pulmonar com probabilidade intermediária/baixa'
+]},
 {id:'dsp',t:'Disposição',it:[
-'TEP confirmado: anticoagulação imediata — HNF IV se instável (permite trombólise rápida)',
-'IOT: suporte ventilatório protetor — VC 6 mL/kg peso predito, PEEP 5–8 cmH2O',
-'Pneumonia grave (PSI IV/V ou CURB-65 ≥ 3): internação + ATB IV']}
+'Internação em Unidade de Terapia Intensiva (UTI) se necessidade de VNI mantida, IOT, instabilidade hemodinâmica ou disfunção orgânica',
+'Internação em leito semi-intensivo / enfermaria monitorizada se estabilização com oxigenoterapia de baixo fluxo e resposta rápida às condutas'
+]}
 ]},
 feb:{l:'Síndrome febril / Infecciosa',s:[
 {id:'sup',t:'Triagem de gravidade',it:[
@@ -2483,30 +2502,36 @@ emmi_edem:{l:'Edema bilateral',s:[
 'Creatinina, ureia — síndrome nefrítica ou IRC',
 'TSH — mixedema']}
 ]},
-eap:{l:'EAP / IC descompensada',s:[
-{id:'sup',t:'Monitorização e suporte ventilatório',it:[
-'Posição sentada (Fowler 90°) — reduz pré-carga e trabalho respiratório',
-'O2 titulado para SatO2 94–98% — evitar hiperóxia',
-'CPAP/BiPAP imediato se SatO2 < 92% com O2 em alto fluxo — VNI reduz intubação em EAP em ~50%',
-'IOT se falha da VNI, rebaixamento de consciência ou apneia iminente',
-'Monitor cardíaco contínuo — FA e arritmias são desencadeantes frequentes de EAP']},
-{id:'esp',t:'Farmacológico',it:[
-'Furosemida 40–80 mg IV em bolus — dose inicial ≥ dose diária habitual; titular conforme diurese',
-'Nitroglicerina IV 10–200 mcg/min se PAS > 100 mmHg — reduz pré e pós-carga; contraindicada se estenose aórtica grave',
-'Morfina 2–4 mg IV apenas em ansiedade intensa refratária — controversa; ADHERE registry associou a pior prognóstico',
-'Dobutamina 2,5–10 mcg/kg/min se disfunção sistólica grave com hipoperfusão — inotrópico de 1ª linha',
-'Norepinefrina se choque cardiogênico (PAM < 65 mmHg) — associar à dobutamina']},
-{id:'inv',t:'Investigação',it:[
-'BNP/NT-proBNP — BNP > 100 pg/mL: sensibilidade 90% para IC descompensada; NT-proBNP > 300 pg/mL',
-'POCUS: linhas B difusas bilaterais (≥ 3 por campo = protocolo B), disfunção VE, IVC dilatada, derrame pericárdico',
-'ECG 12D — FA, IAM, BRE novo como desencadeante',
-'Troponina hs — excluir SCA como causa',
-'Gasometria arterial se SatO2 < 92% ou ventilação insuficiente',
-'RX tórax — congestão hilofugal, redistribuição vascular, derrames bilaterais, cardiomegalia']},
-{id:'dsp',t:'Disposição',it:[
-'IAM como causa: ativar hemodinâmica imediatamente — ICP primária altera drasticamente o prognóstico',
-'Refratário a diuréticos: ultrafiltração ou suporte mecânico circulatório (IABP, Impella)',
-'Internação UTI/semi-intensivo — monitorização de diurese horária, balanço hídrico e parâmetros hemodinâmicos']}
+eap:{l:'IC aguda descompensada / EAP',s:[
+{id:'sup',t:'Suporte ventilatório e estabilização (ESC 2026)',it:[
+'Posição ortopneica (sentado com membros inferiores pendentes a 90°) — reduz drasticamente a pré-carga e melhora a mecânica pulmonar',
+'VNI imediata (CPAP 5–10 cmH₂O ou BiPAP com EPAP 5 e IPAP 12–16): recomendação Classe I no EAP cardiogênico; diminui a pós-carga de VE e clareia o edema alveolar',
+'Oxigenoterapia suplementar indicada APENAS se SpO₂ < 90% (alvo 94–98%) — hiperóxia causa vasoconstrição coronariana e sistêmica reflexa prejudicial',
+'IOT com ventilação protetora (VC 6 mL/kg de peso predito, PEEP 5–8) se falha de VNI, fadiga muscular respiratória ou rebaixamento do nível de consciência'
+]},
+{id:'esp',t:'Manejo por fenótipo hemodinâmico e farmacoterapia (ESC 2026)',alerts:[
+'Evitar o uso rotineiro de opioides (morfina) no EAP: diretriz ESC 2026 contraindica o uso liberal por aumento do risco de intubação mecânica e mortalidade intra-hospitalar'
+],it:[
+'FENÓTIPO QUENTE E ÚMIDO (PAS > 110 mmHg — ~80% dos casos): Vasodilatador IV precoce (Nitroglicerina 10–200 mcg/min ou Dinitrato de Isossorbida) com titulação rápida para alívio imediato da contrapressão capilar',
+'Diurético de alça IV em bolus: Furosemida 40–80 mg IV (se virgem de diurético) OU 2 a 2,5 vezes a dose diária domiciliar se uso crônico prévio',
+'Avaliação precoce da resposta diurética em 2 horas: dosar sódio urinário isolado (meta > 50–70 mEq/L) ou diurese horária (meta > 100–150 mL/h); se inadequada, dobrar a dose de furosemida em bólus',
+'Inibidor de SGLT2 precoce (ESC 2026 Classe I): Iniciar Dapagliflozina 10 mg VO 1×/dia ou Empagliflozina 10 mg VO 1×/dia assim que estabilizado hemodinamicamente (reduz tempo de internação e reinternações)',
+'Manter medicações modificadoras de prognóstico domiciliares (iSGLT2, IECA/BRA/ARNI, Espironolactona, Betabloqueador), exceto se choque, bradicardia grave ou hipercalemia',
+'FENÓTIPO FRIO E ÚMIDO (Hipotensão / PAS < 90 mmHg / Choque Cardiogênico): Iniciar Dobutamina 2,5–20 mcg/kg/min IV + Norepinefrina para PAM ≥ 65 mmHg; POSTERGAR diuréticos até restaurar perfusão tecidual',
+'FENÓTIPO FRIO E SECO (Hipoperfusão sem congestão): Prova volêmica cautelosa com Ringer Lactato 100–250 mL IV e suspensão de diuréticos'
+]},
+{id:'inv',t:'Investigação complementar e biomarcadores',it:[
+'POCUS cardiotorácico no leito: quantificar linhas B pulmonares (perfil de congestão), avaliar fração de ejeção de VE, contratilidade do VD e pesquisar valvopatias graves',
+'BNP / NT-proBNP na admissão para confirmação diagnóstica e prognóstico (cut-offs de descarte: BNP < 100 pg/mL, NT-proBNP < 300 pg/mL)',
+'Troponina ultrassensível para descartar SCA como gatilho do EAP (CHAMPIT)',
+'ECG de 12 derivações: avaliar FA aguda, bloqueios atrioventriculares, sobrecarga e sinais de isquemia miocárdica',
+'Função renal (creatinina, ureia), eletrólitos séricos (sódio, potássio) e gasometria venosa ou arterial com lactato'
+]},
+{id:'dsp',t:'Disposição e metas',it:[
+'Acionamento emergencial da hemodinâmica se EAP secundário a SCA com supradesnivelamento de ST ou equivalente',
+'Internação em UTI se necessidade de VNI contínua, choque cardiogênico ou drogas vasoativas',
+'Internação em enfermaria cardiológica / semi-intensivo se compensação rápida nas primeiras horas e diurese adequada'
+]}
 ]},
 dpoc_ag:{l:'Agudização de DPOC',s:[
 {id:'sup',t:'Monitorização e suporte',it:[
