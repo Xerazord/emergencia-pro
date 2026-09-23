@@ -1,4 +1,4 @@
-# Plantão Ágil — guia técnico
+# Emergência Pro — guia técnico
 
 App single-file (`index.html`) para admissão e conduta em sala de emergência. JavaScript embutido. Deploy automático no GitHub Pages a cada push em `main`. Auth via Supabase (email/senha) com Row-Level Security; cada usuário só vê seus próprios relatórios.
 
