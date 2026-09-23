@@ -2041,26 +2041,117 @@ hdg:{l:'Hemorragia digestiva',s:[
 'Glasgow-Blatchford ≥ 1 → internação para EDA em < 24h',
 'Instabilidade ou varizes → EDA em < 12h + UTI/semi-intensivo']}
 ]},
-neu:{l:'Síndrome neurovascular (AVC/AIT)',s:[
-{id:'sup',t:'Ativação e monitorização',it:[
-'TC crânio sem contraste em < 25 min da chegada — não atrasar para coleta de exames',
-'Monitor cardíaco contínuo 24–48h — FA paroxística em 15–25% dos AVC criptogênicos',
-'Glicemia capilar imediata — hipoglicemia mimetiza AVC e é tratável',
-'NIHSS — documentar para elegibilidade de trombólise e trombectomia']},
-{id:'esp',t:'Farmacológico',it:[
-'Alteplase 0,9 mg/kg IV (máx 90 mg) se janela ≤ 4,5h: 10% em bolus + 90% em 60 min — ou Tenecteplase 0,25 mg/kg bolus único',
-'PA pré-trombólise: alvo < 185/110 mmHg; labetalol 10–20 mg IV ou nicardipina em infusão',
-'AAS 100–300 mg VO em 24–48h se sem trombólise — não administrar nas primeiras 24h pós-alteplase',
-'Estatina de alta potência (atorvastatina 40–80 mg) em < 48h do AVC']},
-{id:'inv',t:'Investigação',it:[
-'TC sem contraste: excluir hemorragia; AngioTC se suspeita de oclusão de grande vaso para trombectomia',
-'Ecocardiograma — identificar fonte embólica cardíaca',
-'Hemograma, coagulograma, função renal — elegibilidade para trombólise']},
-{id:'dsp',t:'Disposição e metas',it:[
-'Trombectomia até 6h; até 24h com critérios DAWN/DEFUSE-3',
-'Internação em Unidade de AVC — reduz mortalidade ~20% vs. enfermaria geral',
-'Glicemia 140–180 mg/dL — hipo e hiperglicemia pioram prognóstico neurológico',
-'Cabeceira 0° até estabilização; elevar a 30° somente se ↑ PIC ou risco de broncoaspiração']}
+neu:{l:'Síndrome neurovascular (AVC / AIT)',
+subExcl:[
+{id:'avc_isq',l:'AVC Isquêmico Agudo (AVCi)'},
+{id:'avc_hem',l:'AVC Hemorrágico (AVCh / HSA)'},
+{id:'ait',l:'Ataque Isquêmico Transitório (AIT)'}
+],
+subAdd:[
+{id:'rnc',l:'Rebaixamento de consciência associado'},
+{id:'con',l:'Crise convulsiva associada'}
+],
+s:[
+{id:'sup',t:'Triagem imediata e protocolo código AVC (AHA/ASA 2026)',it:[
+'Ativação imediata do Código AVC e determinação estrita do "último visto bem" (tempo zero)',
+'TC de crânio sem contraste em < 20 minutos da admissão na sala de emergência (não atrasar para colher exames laboratoriais)',
+'Glicemia capilar imediata na admissão (< 5 min) — excluir hipoglicemia como mímico de AVC',
+'Avaliação e registro formal do escore NIHSS completo para determinar elegibilidade terapêutica',
+'Acesso venoso calibroso (18G) exclusivo, monitorização cardíaca contínua e oximetria de pulso (manter SpO₂ ≥ 94%)',
+'Jejum absoluto (NPO) rigoroso e teste formal de deglutição à beira-leito antes de qualquer oferta oral'
+]},
+{id:'sin',t:'Manejo de suporte e neuroproteção',it:[
+'Posicionamento no leito: manter cabeceira a 0° se AVCi sem sinais de hipertensão intracraniana (otimiza fluxo cerebral penumbral); elevar a 30° se suspeita de AVCh, vômitos ou risco de broncoaspiração',
+'Controle estrito de temperatura: tratar febre (Temp ≥ 37,5°C) imediatamente com Dipirona 1 g IV ou Paracetamol 1 g IV (hipertermia acelera a apoptose neuronal isquêmica)',
+'Controle glicêmico rigoroso: manter glicemia entre 140–180 mg/dL com insulina regular conforme escala; tratar hipoglicemia imediatamente (< 70 mg/dL)'
+]},
+{id:'inv',t:'Investigação complementar urgente',it:[
+'TC de crânio sem contraste imediata: excluir sangramento intracraniano e avaliar precocemente o escore ASPECTS',
+'Angiotomografia arterial de crânio e vasos cervicais (AngioTC) em < 30 min se candidato a Trombectomia Mecânica (pesquisa de oclusão de grande vaso: carótida interna e ACM-M1)',
+'Hemograma completo, plaquetas, coagulograma (TP/INR, TTPa), glicemia e função renal',
+'ECG de 12 derivações na admissão: pesquisar fibrilação atrial aguda, isquemia miocárdica concomitante ou arritmias'
+]},
+{id:'dsp',t:'Disposição',it:[
+'Internação obrigatória em Unidade de Cuidado Integral ao AVC (Unidade de AVC / UTI Neurológica) — reduz morbimortalidade e tempo de internação',
+'Acionamento urgente da Neurologia Vascular e da equipe de Neurorradiologia Intervencionista / Neurocirurgia'
+]}
+]},
+avc_isq:{l:'AVC Isquêmico Agudo (AVCi)',s:[
+{id:'sup',t:'Manejo hemodinâmico e metas de pressão (AHA/ASA 2026)',it:[
+'Controle de PA em candidatos a trombólise: ALVO PRÉ-LÍTICO < 185/110 mmHg. Administrar Labetalol 10–20 mg IV em bolus lento (1–2 min) OU Nicardipina 5–15 mg/h OU Nitroprussiato de Sódio se refratário',
+'Alvo pressórico pós-trombólise: MANTER PA < 180/105 mmHg nas primeiras 24h com monitorização a cada 15 min nas primeiras 2h, a cada 30 min por 6h e a cada 60 min até 24h',
+'Em NÃO candidatos a reperfusão: tolerar níveis de PA até 220/120 mmHg (permissive hypertension para perfusão da penumbra); tratar apenas se PA > 220/120 mmHg com redução cautelosa de 15% em 24h'
+]},
+{id:'esp',t:'Terapia de reperfusão química e endovascular (AHA/ASA 2026)',alerts:[
+'TENECTEPLASE (TNK 0,25 mg/kg em bolus IV único, máx 25 mg): recomendada como primeira escolha pela AHA/ASA 2026 pela superioridade logística e alta taxa de recanalização em oclusão de grandes vasos',
+'PROIBIÇÃO DE ANTIPLAQUETÁRIOS E ANTICOAGULANTES nas primeiras 24 horas pós-trombólise: risco crítico de transformação hemorrágica sintomática!'
+],it:[
+'Trombólise Endovenosa (Janela ≤ 4,5h do início dos sintomas / último visto bem): Tenecteplase (TNK) 0,25 mg/kg bolus IV único em 5–10 segundos (dose máxima de 25 mg) OU Alteplase (rtPA) 0,9 mg/kg IV (máx 90 mg; 10% bolus em 1 min e 90% restante em 60 min)',
+'Trombectomia Mecânica (TM): indicada até 6 horas para oclusão de grande vaso (carótida terminal ou segmento M1 da cerebral média) com ASPECTS ≥ 6; estendida até 24 horas se mismatch em neuroimagem (critérios DAWN/DEFUSE-3) ou núcleos isquêmicos extensos (large core ASPECTS 3–5)',
+'Estatina de alta potência imediata: Atorvastatina 80 mg VO dose de ataque (efeito pleiotrópico neuroprotetor e estabilizador de placa)',
+'Se NÃO candidato a trombólise nem TM com AVC menor (NIHSS ≤ 3) ou AIT de alto risco (ABCD2 ≥ 4): iniciar DAPT precoce (AAS 100 mg + Clopidogrel 300 mg dose de ataque, depois AAS 100 mg + Clopidogrel 75 mg/dia por 21 dias — Protocolo POINT/CHANCE)',
+'TC de crânio sem contraste de controle em 24 horas pós-trombólise (obrigatória antes de liberar qualquer antiplaquetário ou profilaxia para TVP farmacológica)'
+]},
+{id:'inv',t:'Investigação etiológica e monitorização',it:[
+'Ecocardiograma transtorácico com Doppler (± transesofágico) para pesquisa de fonte cardioembólica (trombo intracavitário, forame oval patente, endocardite)',
+'Doppler de carótidas e vertebrais se angioTC não realizada para avaliar estenose carotídea sintomática',
+'Holter 24h ou monitorização cardíaca hospitalar contínua para detecção de fibrilação atrial paroxística oculta',
+'Perfil lipídico, hemoglobina glicada (HbA1c) e função renal'
+]},
+{id:'dsp',t:'Disposição',it:[
+'Internação obrigatória em Unidade de AVC (Stroke Unit) com vigilância neurológica rigorosa',
+'Fisioterapia motora e fonoaudiologia precoces (< 24–48h) após estabilização hemodinâmica'
+]}
+]},
+avc_hem:{l:'AVC Hemorrágico (AVCh / HSA)',s:[
+{id:'sup',t:'Manejo inicial e neuroproteção na emergência',it:[
+'Posicionamento com cabeceira elevada a 30° e cabeça em posição neutra (facilita drenagem venosa jugular e reduz a pressão intracraniana)',
+'Intubação orotraqueal com sequência rápida adaptada (Fentanil 2–3 mcg/kg + Etomidato/Cetamina) se GCS ≤ 8 ou perda de reflexos de via aérea para prevenir broncoaspiração e controle da PaCO₂',
+'Evitar hipotensão e hipoxemia (manter PAS > 110 mmHg durante intubação e SpO₂ ≥ 95%)'
+]},
+{id:'esp',t:'Controle pressórico e reversão imediata de anticoagulantes (AHA 2026)',alerts:[
+'A reversão da anticoagulação deve ser iniciada IMEDIATAMENTE antes mesmo de qualquer transferência ou procedimento: a expansão do hematoma ocorre majoritariamente nas primeiras 3–6 horas!',
+'Meta de PA no AVCh agudo: PAS entre 130–140 mmHg de forma rápida e sustentada (evitar quedas abaixo de 130 mmHg)'
+],it:[
+'Anti-hipertensivo IV contínuo: Nitroprussiato de Sódio 0,3–5 mcg/kg/min IV em BIC OU Nicardipina 5–15 mg/h OU Labetalol 10–20 mg IV a cada 10–20 min para manter PAS alvo entre 130 e 140 mmHg',
+'Reversão de Varfarina (INR > 1,4): Concentrado de Complexo Protrombínico 4 Fatores (4F-PCC) 25–50 UI/kg IV (correção em minutos) + Vitamina K 10 mg IV lento em 30 min (mantém síntese hepática)',
+'Reversão de Inibidores do Fator Xa (Rivaroxabana / Apixabana): Andexanet alfa IV ou 4F-PCC na dose fixa de 50 UI/kg IV (máx 4.000 UI)',
+'Reversão de Dabigatrana: Idarucizumabe 5 g IV (2 frascos de 2,5 g IV em bólus com intervalo de 15 min)',
+'Reversão de Heparina HNF: Sulfato de Protamina 1 mg para cada 100 UI de heparina administrada nas últimas 2 horas (dose máx 50 mg IV lento)',
+'Manejo de Hipertensão Intracraniana (HIC) aguda / herniação: Salina Hipertônica a 3% (150–250 mL IV em 15 min) OU Manitol 20% (0,5–1 g/kg IV em 20 min) como medida de resgate transitória'
+]},
+{id:'inv',t:'Investigação diagnóstica e etiológica',it:[
+'TC de crânio sem contraste imediata: mensurar volume do hematoma pela regra ABC/2 e calcular o ICH Score',
+'AngioTC de crânio imediata: pesquisa de "Spot Sign" (extravasamento ativo de contraste preditor de expansão do hematoma) e rastreio de malformações arteriovenosas (MAV) ou aneurismas rotos',
+'Coagulograma completo urgente: TP/INR, TTPa, plaquetas e tempo de trombina',
+'Painel toxicológico urinário (pesquisa de cocaína e anfetaminas em pacientes jovens sem histórico de HAS)'
+]},
+{id:'dsp',t:'Disposição',it:[
+'Acionamento emergencial da Neurocirurgia para drenagem ventricular externa (DVE se hidrocefalia aguda), craniectomia descompressiva ou evacuação de hematoma cerebelar (> 3 cm com compressão de tronco)',
+'Internação prioritária em UTI Neurocrítica'
+]}
+]},
+ait:{l:'Ataque Isquêmico Transitório (AIT)',s:[
+{id:'sup',t:'Avaliação imediata e estratificação de risco (ABCD2)',it:[
+'Calcular o escore ABCD2 na admissão: Idade ≥ 60a (1pt); PA ≥ 140/90 mmHg (1pt); Fraqueza unilateral (2pts) ou Fala sem fraqueza (1pt); Duração ≥ 60 min (2pts) ou 10–59 min (1pt); Diabetes (1pt)',
+'Classificação: Baixo risco = 0–3 pontos (risco de AVC em 48h de ~1%); Alto risco = 4–7 pontos (risco de AVC em 48h de até 10%)',
+'Repouso e monitorização contínua de sinais vitais e ritmo cardíaco na sala de observação'
+]},
+{id:'esp',t:'Terapia antiplaquetária e neuroproteção precoce (AHA 2026)',it:[
+'Alto risco (ABCD2 ≥ 4) ou estenose vascular: DAPT IMEDIATA nas primeiras 24h com AAS 100–300 mg VO + Clopidogrel 300 mg VO (dose de ataque), seguido de AAS 100 mg + Clopidogrel 75 mg/dia por 21 dias',
+'Baixo risco (ABCD2 0–3): Monoterapia com AAS 100–200 mg VO ao dia',
+'Estatina de alta intensidade: Atorvastatina 80 mg VO dose única ao dia, independente do valor basal de colesterol',
+'Controle estrito de PA (meta ambulatorial < 130/80 mmHg após fase hiperaguda) e cessação imediata de tabagismo'
+]},
+{id:'inv',t:'Investigação complementar urgente em < 24h',it:[
+'Ressonância Magnética de Crânio (RM) com difusão (DWI) — método de escolha; detecta infartos silenciosos em até 30% dos AITs clínicos',
+'AngioTC ou AngioRM ou Doppler de artérias carótidas e vertebrais para pesquisa de estenose carotídea significativa (> 50–70% é indicação de endarterectomia/stent em < 7–14 dias)',
+'Ecocardiograma e monitorização eletrocardiográfica contínua (mínimo 24–48h) para descarte de fibrilação atrial'
+]},
+{id:'dsp',t:'Disposição',it:[
+'ABCD2 ≥ 4 ou déficit flutuante ou estenose carotídea > 50%: internação hospitalar para investigação acelerada',
+'ABCD2 ≤ 3 com exames de imagem e ECG normais: elegível para alta com investigação ambulatorial rápida (< 48h)'
+]}
 ]},
 rnc:{l:'Rebaixamento do nível de consciência',s:[
 {id:'sup',t:'Estabilização e monitorização',it:[
@@ -3749,11 +3840,11 @@ function s4ImpHeader(){
 function s4Grid(){return `${s4ImpHeader()}<div class="sl">Síndrome clínica suspeita:</div><div class="sgrid" id="syndrome-grid">${SLIST.map(s=>`<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};S.subsind=null;S.subsinds=[];S.syndromeGridCollapsed=true;render()">${s.l}</button>`).join('')}</div></div>`;}
 function s4ResetBtn(){return `<div style="margin-bottom:10px"><button class="xbtn" onclick="S.syndromeGridCollapsed=false;render()" style="width:100%;padding:8px;font-size:13px"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar ao seletor</button></div>`;}
 function s4SubExcl(T){
- const lbl=S.sind==='dtx'?'Approach / Probabilidade clínica:':S.sind==='cho'?'Fenótipo hemodinâmico / Apresentação:':S.sind==='dsp'?'Fenótipo hemodinâmico / Apresentação:':'Subtipo clínico:';
+ const lbl=S.sind==='dtx'?'Approach / Probabilidade clínica:':S.sind==='cho'?'Fenótipo hemodinâmico / Apresentação:':S.sind==='dsp'?'Fenótipo hemodinâmico / Apresentação:':S.sind==='neu'?'Etiologia neurovascular / Apresentação:':'Subtipo clínico:';
  return `<div class="card"><div class="st"><i class="ti ti-git-branch" aria-hidden="true"></i> ${lbl}</div><div class="sgrid">${T.subExcl.map(s=>`<button class="xbtn ${S.subsind===s.id?'on':''}" onclick="selSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`;
 }
 function s4SubAdd(T){
- const lbl=S.sind==='dtx'?'Ameaças à vida & diagnósticos diferenciais:':S.sind==='cho'?'Ameaças mecânicas / causas associadas:':S.sind==='dsp'?'Etiologias associadas / Descompensação:':'Subsíndromes presentes:';
+ const lbl=S.sind==='dtx'?'Ameaças à vida & diagnósticos diferenciais:':S.sind==='cho'?'Ameaças mecânicas / causas associadas:':S.sind==='dsp'?'Etiologias associadas / Descompensação:':S.sind==='neu'?'Complicações neurológicas associadas:':'Subsíndromes presentes:';
  return `<div class="card"><div class="st"><i class="ti ti-list-tree" aria-hidden="true"></i> ${lbl}</div><div class="sgrid">${T.subAdd.map(s=>`<button class="xbtn ${S.subsinds.includes(s.id)?'on':''}" onclick="toggleSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`;
 }
 function s4Nav(){return `<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Gerar relatório <i class="ti ti-file-text" aria-hidden="true"></i></button></div>`;}
