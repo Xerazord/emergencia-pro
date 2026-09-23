@@ -2565,61 +2565,87 @@ s:[
 ]},
 abd:{l:'Síndrome abdominal aguda',
 subExcl:[
+{id:'dab_perf',l:'Perfurativo (Úlcera péptica rota, Perfuração de víscera, Colecistite rota)'},
 {id:'dab_inf',l:'Inflamatório / Infeccioso (Apendicite, Colecistite, Diverticulite)'},
-{id:'dab_perf',l:'Perfurativo (Úlcera péptica rota, Perfuração colônica)'},
 {id:'dab_obs',l:'Obstrutivo (Aderências, Hérnia encarcerada, Volvo)'},
 {id:'dab_vasc',l:'Vascular / Isquêmico (Isquemia mesentérica, Ruptura de AAA)'},
 {id:'dab_hem',l:'Hemorrágico / Ginecológico (Gravidez ectópica rota, Cisto roto)'}
 ],
 subAdd:[
+{id:'cho_sep',l:'Choque séptico de foco abdominal'},
+{id:'cho_hip',l:'Choque hemorrágico associado'},
 {id:'dab',l:'Mapeamento de dor por quadrante'},
-{id:'nv',l:'Náuseas e vômitos refratários'},
-{id:'dia',l:'Diarreia aguda / Enterite'},
-{id:'cho_hip',l:'Choque hemorrágico / Hipovolêmico'},
-{id:'cho_sep',l:'Sepse de foco abdominal'}
+{id:'nv',l:'Náuseas e vômitos incoercíveis'}
 ],
 s:[
-{id:'sup',t:'Triagem de gravidade e suporte hemodinâmico (WSES 2022)',it:[
-'Monitorização multiparamétrica de sinais vitais: avaliar hipotensão, taquicardia desproporcional e sinais de peritonite generalizada',
-'Dois acessos venosos periféricos calibrosos (16–18G) na sala de emergência',
-'Jejum absoluto (NPO) rigoroso — manter estômago vazio para eventual cirurgia de urgência',
-'Ressuscitação com cristaloides balanceados: Ringer Lactato 1.000–2.000 mL IV para repor perdas em terceiro espaço e prevenir IRA pré-renal',
-'Sonda Nasogástrica (SNG) aberta: indicada se distensão abdominal importante, vômitos incoercíveis ou suspeita de obstrução mecânica / peritonite'
+{id:'sup',t:'Triagem de gravidade & Suporte hemodinâmico',it:[
+'Monitorização multiparamétrica contínua (ECG, SpO₂, PANI a cada 5–15 min)',
+'Dois acessos venosos periféricos calibrosos (16–18G) imediatos',
+'Jejum absoluto (NPO) rigoroso',
+'Ressuscitação volêmica: Ringer Lactato 1.000 mL IV em bólus agora',
+'Sonda Nasogástrica calibrosa (16–18F) aberta com drenagem livre em sifonagem',
+'Vigilância de via aérea: baixo limiar para IOT se rebaixamento, exaustão ventilatória ou acidose grave'
 ]},
-{id:'sin',t:'Analgesia precoce multimodal (WSES 2022)',alerts:[
-'O mito clássico de reter analgesia até a avaliação do cirurgião é formalmente CONTRAINDICADO pela literatura moderna: a analgesia precoce alivia a dor, diminui a resposta de estresse e NÃO altera a precisão do exame físico nem adia a decisão cirúrgica!'
+{id:'sin',t:'Analgesia precoce multimodal & Antieméticos',alerts:[
+'Analgesia precoce é recomendada (WSES): alivia a dor e NÃO mascara sinais de peritonite cirúrgica.'
 ],it:[
-'Dipirona 1–2 g IV em bólus a cada 6h',
-'Morfina 2–4 mg IV fracionada ou Fentanil 50–100 mcg IV se dor intensa (EVA ≥ 7) com reavaliação seriada',
-'Antiespasmódico / Escopolamina 20 mg IV se suspeita de cólica biliar ou renal pura',
+'Dipirona 1 a 2 g IV a cada 6h se dor ou febre',
+'Morfina 2–4 mg IV fracionada ou Fentanil 50–100 mcg IV se dor intensa (EVA ≥ 7)',
+'Escopolamina 20 mg IV se cólica biliar ou renal pura',
 'Ondansetrana 4–8 mg IV se náuseas ou vômitos associados'
 ]},
-{id:'esp',t:'Terapia antimicrobiana e conduta cirúrgica',it:[
-'Antibioticoterapia empírica precoce (< 1h se sinais de sepse ou peritonite): Ceftriaxona 2 g IV 12/12h + Metronidazol 500 mg IV 8/8h OU Piperacilina-Tazobactam 4,5 g IV 6/6h (se gravidade/UTI)',
-'Abdome agudo perfurativo ou vascular: acionamento imediato da Cirurgia Geral em caráter de EMERGÊNCIA para laparotomia ou videolaparoscopia',
-'Obstrução intestinal: radiografia de abdome em 3 posições ou TC; avaliar sinais de estrangulamento vascular / sofrimento de alça'
+{id:'esp',t:'Terapia antimicrobiana & Conduta cirúrgica',it:[
+'Ceftriaxona 2 g IV dose única diária + Metronidazol 500 mg IV 8/8h (iniciar na 1ª hora)',
+'Piperacilina-Tazobactam 4,5 g IV 6/6h (esquema alternativo para choque séptico de foco abdominal)',
+'Norepinefrina em AVP transitório (titular em BIC para PAM alvo ≥ 65 mmHg)',
+'Baixo limiar para associar Vasopressina 0,03 U/min + Hidrocortisona 200 mg/dia se choque séptico refratário',
+'Omeprazol 80 mg IV em bólus'
 ]},
-{id:'inv',t:'Investigação complementar diagnóstica',it:[
-'POCUS abdominal na emergência: pesquisa de pneumoperitônio (reverberação subdiafragmática), líquido livre em cavidade peritoneal (espaço de Morrison, esplenorrenal e fundo de saco de Douglas), distensão de alças com peristalse de luta ou vesícula biliar com espessamento de parede e cálculo impactado',
-'Tomografia Computadorizada (TC) de abdome e pelve com contraste IV: método padrão-ouro para abdome agudo duvidoso, diverticulite, apendicite atípica e isquemia mesentérica',
-'β-hCG urinário ou sérico em toda mulher em idade fértil (obrigatório para excluir gravidez ectópica rota)',
-'Hemograma completo com leucograma (leucocitose com desvio à esquerda), PCR sérica, amilase e lipase (pancreatite aguda), bilirrubinas totais e frações, enzimas hepáticas e canaliculares',
-'Gasometria arterial com lactato sérico (hiperlactatemia com acidose metabólica em dor desproporcional é forte indício de isquemia mesentérica aguda!)'
+{id:'inv',t:'Investigação diagnóstica urgente',it:[
+'TC de abdome total com contraste venoso em caráter de urgência',
+'POCUS abdominal na emergência (pesquisa de pneumoperitônio e líquido em espaço de Morrison)',
+'Rotina de abdome agudo: RX de tórax em cúpulas e RX de abdome em 2 posições',
+'Coleta de 2 pares de hemoculturas de sítios venosos distintos antes do antimicrobiano',
+'Gasometria venosa ou arterial com dosagem de lactato sérico imediato',
+'Hemograma completo, coagulograma (TP/INR, TTPa), ureia, creatinina, eletrólitos, amilase e lipase',
+'β-hCG sérico ou urinário em mulheres em idade fértil'
 ]},
-{id:'dsp',t:'Disposição',it:[
-'Sinais de peritonite difusa, perfuração em víscera oca ou instabilidade hemodinâmica: centro cirúrgico emergencial imediato',
-'Abdome agudo em investigação estável: observação com reavaliação seriada do exame físico pelo mesmo examinador a cada 2–4 horas'
+{id:'dsp',t:'Disposição & Encaminhamentos',it:[
+'Acionamento imediato da equipe de Cirurgia Geral de plantão para avaliação cirúrgica emergencial',
+'Regulação urgente de vaga / transferência hospitalar via CROSS / NIR (Vaga Zero para UTI / Centro Cirúrgico)',
+'Encaminhamento direto ao Centro Cirúrgico para laparotomia exploradora se peritonite difusa ou perfuração'
 ]}
 ]},
 dab_inf:{l:'Inflamatório / Infeccioso (Apendicite, Colecistite, Diverticulite)',s:[
-{id:'sup',t:'Suporte',it:['Jejum absoluto (NPO)','Acesso venoso calibroso e hidratação com Ringer Lactato','Analgesia multimodal com Dipirona 1 g IV e Morfina fracionada se dor intensa']},
-{id:'esp',t:'Antibioticoterapia direcionada',it:['Ceftriaxona 2 g IV 12/12h + Metronidazol 500 mg IV 8/8h (ou Ciprofloxacino 400 mg IV 12/12h se alergia grave)','Apendicite aguda: avaliação cirúrgica para apendicectomia videolaparoscópica de urgência','Colecistite aguda litiásica (Tokyo TG18): colecistectomia precoce em < 72h do início dos sintomas','Diverticulite aguda: antibiótico ambulatorial ou hospitalar conforme estadiamento de Hinchey']},
-{id:'inv',t:'Investigação',it:['USG de abdome superior (padrão ouro para colecistite e vias biliares)','TC de abdome e pelve com contraste (método de escolha para apendicite e diverticulite)','PCR sérica, hemograma e função renal']}
+ {id:'sup',t:'Suporte',it:['Jejum absoluto (NPO)','Acesso venoso calibroso e hidratação com Ringer Lactato 500–1.000 mL IV','Analgesia com Dipirona 1 g IV e Morfina fracionada se dor intensa']},
+ {id:'esp',t:'Antibioticoterapia direcionada & Conduta',it:['Ceftriaxona 2 g IV 12/12h + Metronidazol 500 mg IV 8/8h (ou Ciprofloxacino 400 mg IV se alergia grave)','Acionamento da Cirurgia Geral de plantão para apendicectomia videolaparoscópica ou colecistectomia precoce (< 72h)','Diverticulite aguda: antibioticoterapia conforme estadiamento clínico de Hinchey']},
+ {id:'inv',t:'Investigação',it:['USG de abdome superior (vias biliares e vesícula)','TC de abdome e pelve com contraste venoso (urgência)','Hemograma completo, PCR sérica, função renal e eletrólitos']},
+ {id:'dsp',t:'Disposição',it:['Internação cirúrgica / leito monitorizado para programação de procedimento de urgência','Cadastro em regulação CROSS / NIR se necessidade de transferência para hospital com centro cirúrgico']}
 ]},
-dab_perf:{l:'Perfurativo (Úlcera péptica rota, Perfuração colônica)',s:[
-{id:'sup',t:'Emergência cirúrgica',alerts:['Sinais peritoneais com abdome em tábua e ar livre intraperitoneal exigem cirurgia IMEDIATA; não postergar para exames laboratoriais demorados!'],it:['Ressuscitação volêmica vigorosa com Ringer Lactato','SNG aberta com drenagem livre','NPO absoluto']},
-{id:'esp',t:'Manejo cirúrgico e farmacológico',it:['Acionamento emergencial da Cirurgia Geral para Laparotomia exploradora / rafia de úlcera com patch de Graham ou colectomia com colostomia','Piperacilina-Tazobactam 4,5 g IV 6/6h OU Ceftriaxona 2 g IV + Metronidazol 500 mg IV','Omeprazol 80 mg IV bolus seguido de 8 mg/h contínuo']},
-{id:'inv',t:'Confirmação radiológica',it:['RX de tórax em cúpulas diafragmáticas (ortostase) ou decúbito lateral esquerdo com raios horizontais (Hjelm-Laurell) — pneumoperitônio visível em > 80% das perfurações gastroduodenais','TC de abdome sem e com contraste se RX inconclusivo']}
+dab_perf:{l:'Perfurativo (Úlcera péptica rota, Perfuração colônica, Colecistite rota)',s:[
+ {id:'sup',t:'Emergência cirúrgica & Ressuscitação',alerts:['Sinais peritoneais com abdome em tábua e ar livre intraperitoneal exigem cirurgia IMEDIATA; não postergar para exames demorados!'],it:[
+  'Jejum absoluto (NPO) rigoroso',
+  'Ressuscitação volêmica: Ringer Lactato 1.000 mL IV em bólus agora',
+  'Sonda Nasogástrica calibrosa (16–18F) aberta com drenagem livre em sifonagem',
+  'Vigilância de via aérea: baixo limiar para IOT se fadiga ventilatória ou acidose grave'
+ ]},
+ {id:'esp',t:'Manejo cirúrgico e farmacológico emergencial',it:[
+  'Acionamento imediato da Cirurgia Geral de plantão para laparotomia exploradora de urgência',
+  'Ceftriaxona 2 g IV dose única diária + Metronidazol 500 mg IV 8/8h (iniciar na 1ª hora)',
+  'Piperacilina-Tazobactam 4,5 g IV 6/6h (esquema alternativo se choque séptico associado)',
+  'Norepinefrina em AVP (titular em BIC para PAM alvo ≥ 65 mmHg)',
+  'Omeprazol 80 mg IV em bólus seguido de 8 mg/h contínuo'
+ ]},
+ {id:'inv',t:'Confirmação radiológica & Laboratório',it:[
+  'TC de abdome total com contraste venoso em caráter de urgência',
+  'RX de tórax em cúpulas diafragmáticas (ortostase) e decúbito lateral esquerdo (Hjelm-Laurell)',
+  '2 pares de hemoculturas de sítios distintos + Gasometria venosa com lactato sérico',
+  'Hemograma completo, coagulograma (TP/INR, TTPa), função renal e eletrólitos'
+ ]},
+ {id:'dsp',t:'Disposição de emergência',it:[
+  'Encaminhamento imediato ao Centro Cirúrgico para laparotomia exploradora',
+  'Regulação urgente de vaga / transferência via CROSS / NIR (Vaga Zero para UTI / Centro Cirúrgico)'
+ ]}
 ]},
 dab_obs:{l:'Obstrutivo (Aderências, Hérnia encarcerada, Volvulo)',s:[
 {id:'sup',t:'Manejo descompressivo e volêmico',it:['Sonda Nasogástrica calibrosa (16–18F) aberta em sifonagem ou aspiração suave imediata — alivia distensão, previne aspiração pulmonar e vômitos fecaloide','Hidratação IV agressiva com Ringer Lactato para reposição do sequestro de líquido no terceiro espaço e eletrólitos','Correção rigorosa de distúrbios hidroeletrolíticos (hipocalemia, hipocloremia e alcalose metabólica por vômitos) continua']},
@@ -4605,7 +4631,7 @@ function dispGrav(){const fr=parseFloat(S.fr),sat=parseFloat(S.sat),fala=S.dspEF
 function dispGravBadge(){if(S.queixa!=='Dispneia')return'';const hasData=S.fr||S.sat||S.dspEF.fala||S.dspEF.cianose;if(!hasData)return'';const g=dispGrav();const[level,txt]=g==='grave'?['grave','Gravidade sugerida: GRAVE — IOT/VNI considerar imediatamente']:g==='mod'?['mod','Gravidade sugerida: MODERADA — monitorização intensa, O2 alto fluxo']:['leve','Gravidade sugerida: LEVE — tratar e reavaliar'];return gravBadge(level,txt,{noMargin:true});}
 function s3(){const badge=(S.queixa==='Dispneia'&&QX_BADGE[S.queixa])?QX_BADGE[S.queixa]():'';return`${badge}<div id="step-3" class="card"><div class="st"><i class="ti ti-search" aria-hidden="true"></i> Tipo de exame físico</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem"><button class="xbtn ${S.ef==='amb'?'on':''}" onclick="S.ef='amb';render()"><i class="ti ti-walk" aria-hidden="true"></i> Ambulatorial</button><button class="xbtn ${S.ef==='crit'?'on':''}" onclick="S.ef='crit';render()"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Paciente crítico (ABCDE)</button></div></div>${S.ef==='amb'?`<div class="card"><div class="st">Padrão ambulatorial</div>${[['g','Geral'],['cv','AP Cardiovascular'],['re','AP Respiratório'],['ab','Abdome'],['ne','Neurológico'],['pe','Pele e MMII']].map(([k,l])=>{const tpl=(S.sexo==='M'||S.sexo==='F')?EF_TEMPLATES[S.sexo][k]:null;const ph=tpl||l+'...';const sug=tpl?`<button type="button" class="ef-sug-btn" onclick="if(!S.amb['${k}']){S.amb['${k}']=EF_TEMPLATES[S.sexo]['${k}'];render()}" title="Preencher com sugestão para o sexo selecionado">Sugestão</button>`:'';return`<div style="margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><label style="margin:0">${l}</label>${sug}</div><input type="text" value="${esc(S.amb[k])}" oninput="S.amb['${k}']=this.value" placeholder="${esc(ph)}"></div>`}).join('')}</div>`:''}${S.ef==='crit'?`<div class="card"><div class="st">ABCDE — Avaliação primária</div>${abcH()}</div>`:''}${S.ef&&QX_EF[S.queixa]?QX_EF[S.queixa]():''}${S.ef?rECG()+''+rPOCUS():''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.ef?`<button class="btnp" onclick="nx()">Impressão / Conduta <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
 
-function rCSec(sid,sec){const items=sec.it||[];const dc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]).length;const alertsHtml=(sec.alerts||[]).map(a=>`<div class="abox aw" style="margin-bottom:6px;font-size:12px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${esc(a)}</div>`).join('');const catNames={sup:'Suporte',inv:'Investigação',sin:'Sintomáticos',esp:'Específico',dsp:'Disposição/Alta'};const tagLbl=catNames[sec.id]||'';const tagHtml=tagLbl?`<span class="csec-tag csec-tag-${sec.id}">${tagLbl}</span>`:'';const uid='cs_'+sid+'_'+sec.id;return`<div class="csec csec-${sec.id}"><div class="csh" onclick="tog('${uid}')"><span style="display:flex;align-items:center;gap:6px">${tagHtml}<span>${sec.t}</span></span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc} prescrito${dc>1?'s':''}</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb open" id="${uid}">${alertsHtml}${items.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);const hl=itemHasVitalHl(item)?' hl':'';return`<div class="chk ${cl}${hl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${esc(S.nts[sid+'_'+sec.id]||'')}</textarea></div></div></div>`;}
+function rCSec(sid,sec){const items=sec.it||[];const dc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]).length;const alertsHtml=(sec.alerts||[]).map(a=>`<div class="abox aw" style="margin-bottom:6px;font-size:12px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${esc(a)}</div>`).join('');const catNames={sup:'Suporte & Ressuscitação',inv:'Investigação',sin:'Sintomáticos',esp:'Específico',dsp:'Disposição/Alta'};const tagLbl=catNames[sec.id]||'';const tagHtml=tagLbl?`<span class="csec-tag csec-tag-${sec.id}">${tagLbl}</span>`:'';const uid='cs_'+sid+'_'+sec.id;const isCollapsedByDefault=(S.ef==='amb'&&sec.id==='sup'&&dc===0);const openCls=isCollapsedByDefault?'':' open';const badgeHint=isCollapsedByDefault?`<span class="sb" style="font-size:10px;background:#f3f4f6;color:#6b7280;margin-left:4px"><i class="ti ti-chevron-right" aria-hidden="true"></i> recolhido no ambulatorial (clique para abrir)</span>`:'';return`<div class="csec csec-${sec.id}"><div class="csh" onclick="tog('${uid}')"><span style="display:flex;align-items:center;gap:6px">${tagHtml}<span>${sec.t}</span>${badgeHint}</span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc} prescrito${dc>1?'s':''}</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb${openCls}" id="${uid}">${alertsHtml}${items.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);const hl=itemHasVitalHl(item)?' hl':'';return`<div class="chk ${cl}${hl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${esc(S.nts[sid+'_'+sec.id]||'')}</textarea></div></div></div>`;}
 
 const MOMENTO_2_SYNDROMES=['cho','dtx','neu','rnc','abd','int'];
 
@@ -4928,17 +4954,8 @@ function buildScoresDT(){
 }
 function getActivePendingItems(){
  const T=S.sind?CT[S.sind]:null;
- const pList=[];
- const seen=new Set();
- const addP=(type,txt)=>{
-  if(!txt)return;
-  const clean=txt.trim();
-  const norm=clean.toLowerCase();
-  if(!seen.has(norm)){
-   seen.add(norm);
-   pList.push({type,txt:clean});
-  }
- };
+ const rawExams=[];
+ const rawDisp=[];
 
  const isLabItem=(txt)=>{
   const t=txt.toLowerCase();
@@ -4951,17 +4968,14 @@ function getActivePendingItems(){
   sindObj.s.forEach(sec=>{
    (sec.it||[]).forEach((it,i)=>{
     if(S.chk[sid+'_'+sec.id+'_'+i]){
-     if(sec.id==='inv'){
-      addP('Exame',it);
-     } else if(sec.id==='dsp'){
-      addP('Destino/Leito',it);
-     } else if(sec.id==='sup'){
-      if(isLabItem(it)) addP('Exame',it);
-     }
+     if(sec.id==='inv') rawExams.push(it);
+     else if(sec.id==='dsp') rawDisp.push(it);
+     else if(sec.id==='sup'&&isLabItem(it)) rawExams.push(it);
     }
    });
   });
  };
+
  if(T){
   collect(S.sind,T);
   if(T.subExcl&&S.subsind&&CT[S.subsind])collect(S.subsind,CT[S.subsind]);
@@ -4974,7 +4988,7 @@ function getActivePendingItems(){
        const invSec=sObj.s.find(sec=>sec.id==='inv');
        if(invSec){
         (invSec.it||[]).forEach((it,i)=>{
-         if(S.chk[id+'_inv_'+i]) addP('Exame',it);
+         if(S.chk[id+'_inv_'+i]) rawExams.push(it);
         });
        }
       }
@@ -4985,17 +4999,62 @@ function getActivePendingItems(){
    });
   }
  }
- if(S.condPendDesc&&S.condPendDesc.trim()){
-  addP('Plantão',S.condPendDesc.trim());
+
+ const pList=[];
+
+ // 1. Exames Laboratoriais (1 única linha sintética)
+ const hasLab=rawExams.some(e=>{
+  const t=e.toLowerCase();
+  return t.includes('hemograma')||t.includes('gasometria')||t.includes('lactato')||
+         t.includes('hemocultura')||t.includes('urina')||t.includes('eas')||
+         t.includes('eletrólitos')||t.includes('creatinina')||t.includes('ureia')||
+         t.includes('troponina')||t.includes('coagulograma')||t.includes('tp/inr')||
+         t.includes('d-dímero')||t.includes('pcr')||t.includes('laborat')||
+         t.includes('sorologia')||t.includes('líquor')||t.includes('amilase')||
+         t.includes('bioquímic')||t.includes('cultura')||t.includes('coleta de');
+ });
+
+ // 2. Exames de Imagem (1 única linha sintética)
+ const hasImg=rawExams.some(e=>{
+  const t=e.toLowerCase();
+  return t.includes('tc ')||t.includes('tomografia')||t.includes('radiografia')||
+         t.includes('raio-x')||t.includes('rx ')||t.includes('ultrassom')||
+         t.includes('usg')||t.includes('angiotc')||t.includes('ecocardiograma')||
+         t.includes('ressonância')||t.includes('rm ')||t.includes('eda ')||
+         t.includes('endoscopia')||t.includes('colonoscopia');
+ });
+
+ if(hasLab || (rawExams.length && !hasImg)){
+  pList.push({type:'Laboratório', txt:'Aguardando resultados de exames laboratoriais (sangue/culturas/gasometria)'});
  }
 
- const hasSepseBundle=pList.some(p=>p.txt.toLowerCase().includes('pacote sepse')&&p.txt.toLowerCase().includes('lactato'));
- if(hasSepseBundle){
-  return pList.filter(p=>{
-   const t=p.txt.toLowerCase();
-   return !(t.includes('coleta de gasometria + lactato basal')||t.includes('gasometria e lactato basal'));
+ if(hasImg){
+  const imgNames=[];
+  rawExams.forEach(e=>{
+   const t=e.toLowerCase();
+   if(t.includes('tc ')||t.includes('tomografia')) imgNames.push('TC');
+   else if(t.includes('radiografia')||t.includes('raio-x')||t.includes('rx ')) imgNames.push('Rx');
+   else if(t.includes('ultrassom')||t.includes('usg')) imgNames.push('USG');
+   else if(t.includes('ecocardiograma')) imgNames.push('Eco');
+   else if(t.includes('angiotc')) imgNames.push('AngioTC');
+   else if(t.includes('ressonância')||t.includes('rm ')) imgNames.push('RM');
+   else if(t.includes('eda ')||t.includes('endoscopia')) imgNames.push('EDA');
   });
+  const uImg=[...new Set(imgNames)];
+  const label=uImg.length?` (${uImg.join(', ')})`:'';
+  pList.push({type:'Imagem', txt:`Aguardando realização e laudo de exames de imagem${label}`});
  }
+
+ // 3. Transferência / Regulação (1 única linha sintética)
+ if(rawDisp.length){
+  pList.push({type:'Transferência', txt:'Aguardando regulação de vaga e transferência hospitalar (CROSS / NIR / UTI)'});
+ }
+
+ // 4. Plantão manual
+ if(S.condPendDesc&&S.condPendDesc.trim()){
+  pList.push({type:'Plantão', txt:S.condPendDesc.trim()+(S.condPendPrazoMin?` (Prazo: ${S.condPendPrazoMin} min)`:'')});
+ }
+
  return pList;
 }
 
@@ -5171,20 +5230,11 @@ function buildCondutas(){
  const sectionsOutput=[];
  let secNum=1;
 
- if(bCuidados.length){
-  let sTxt=`\n\n${secNum++}. CUIDADOS GERAIS, MONITORIZAÇÃO E ACESSOS:\n`+bCuidados.map(it=>`   - ${it}`).join('\n');
-  if(bObsMap['sup'])sTxt+=`\n   ↳ Obs: ${bObsMap['sup']}`;
-  sectionsOutput.push(sTxt);
- }
-
- if(bVolume.length){
-  let sTxt=`\n\n${secNum++}. RESSUSCITAÇÃO VOLÊMICA / HIDRATAÇÃO VENOSA:\n`+bVolume.map(it=>`   - ${it}`).join('\n');
-  sectionsOutput.push(sTxt);
- }
-
- if(bEspecifico.length){
-  let sTxt=`\n\n${secNum++}. TERAPIA ESPECÍFICA & DROGAS VASOATIVAS:\n`+bEspecifico.map(it=>`   - ${it}`).join('\n');
-  if(bObsMap['esp'])sTxt+=`\n   ↳ Obs: ${bObsMap['esp']}`;
+ const bSuporteETerapia=[...bCuidados,...bVolume,...bEspecifico];
+ if(bSuporteETerapia.length){
+  let sTxt=`\n\n${secNum++}. CUIDADOS GERAIS, RESSUSCITAÇÃO & TERAPIA ESPECÍFICA:\n`+bSuporteETerapia.map(it=>`   - ${it}`).join('\n');
+  const obsList=[bObsMap['sup'],bObsMap['esp']].filter(Boolean);
+  if(obsList.length)sTxt+=`\n   ↳ Obs: ${obsList.join(' | ')}`;
   sectionsOutput.push(sTxt);
  }
 
@@ -5213,15 +5263,9 @@ function buildCondutas(){
  }
 
  // QUADRO DE PENDÊNCIAS DE PLANTÃO
- const pends=[];
- bExames.forEach(e=>pends.push(`⏳ Exame/Resultado: ${e}`));
- bDisposicao.forEach(d=>pends.push(`⏳ Vaga/Regulação/Destino: ${d}`));
- if(S.condPendDesc&&S.condPendDesc.trim()){
-  pends.push(`⏳ Plantão: ${S.condPendDesc.trim()}${S.condPendPrazoMin?` (Prazo: ${S.condPendPrazoMin} min)`:''}`);
- }
-
- if(pends.length){
-  ct+=`\n\n${_sep()}\nQUADRO DE PENDÊNCIAS DE PLANTÃO:\n`+pends.join('\n');
+ const pList=getActivePendingItems();
+ if(pList.length){
+  ct+=`\n\n${_sep()}\nQUADRO DE PENDÊNCIAS DE PLANTÃO:\n`+pList.map(p=>`⏳ ${p.type==='Plantão'?'Plantão: '+p.txt:(p.type==='Laboratório'?'Exames Laboratoriais: '+p.txt:(p.type==='Imagem'?'Exames de Imagem: '+p.txt:'Transferência / Regulação: '+p.txt))}`).join('\n');
  }
 
  const conflicts=getConflictAlerts(S);
@@ -5265,9 +5309,14 @@ function gResumo(){
 function pSumH(){
  const pends=getActivePendingItems();
  if(!pends.length)return'';
- const exCount=pends.filter(x=>x.type==='Exame').length;
- const othCount=pends.length-exCount;
- const detailStr=exCount&&othCount?` (${exCount} exames, ${othCount} vaga/conduta)`:exCount?` (${exCount} exame${exCount>1?'s':''})`:` (${othCount} vaga/conduta)`;
+ const labCount=pends.filter(x=>x.type==='Laboratório').length;
+ const imgCount=pends.filter(x=>x.type==='Imagem').length;
+ const trCount=pends.filter(x=>x.type==='Transferência').length;
+ const parts=[];
+ if(labCount)parts.push(`${labCount} laboratório`);
+ if(imgCount)parts.push(`${imgCount} imagem`);
+ if(trCount)parts.push(`${trCount} transferência`);
+ const detailStr=parts.length?` (${parts.join(', ')})`:'';
  return `<div class="psm" style="margin-bottom:12px;background:#fef3c7;border-color:#fde68a"><span class="psml" style="color:#92400e"><i class="ti ti-clock" aria-hidden="true"></i> Pendências de plantão:</span><span class="psmb" style="background:#fde68a;color:#92400e">${pends.length} ativa${pends.length>1?'s':''}${detailStr}</span></div>`;
 }
 
