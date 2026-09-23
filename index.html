@@ -4618,10 +4618,13 @@ function getConflictAlerts(S){
  const hasChecked=(kwList)=>{
   return Object.keys(S.chk).some(k=>{
    if(!S.chk[k])return false;
-   const parts=k.split('_');
-   const sid=parts[0];
-   const sec=parts[1];
-   const idx=parseInt(parts[2],10);
+   const lastIdx=k.lastIndexOf('_');
+   if(lastIdx===-1)return false;
+   const secondLastIdx=k.lastIndexOf('_',lastIdx-1);
+   if(secondLastIdx===-1)return false;
+   const sid=k.substring(0,secondLastIdx);
+   const sec=k.substring(secondLastIdx+1,lastIdx);
+   const idx=parseInt(k.substring(lastIdx+1),10);
    const obj=CT[sid];
    if(!obj||!obj.s)return false;
    const sSec=obj.s.find(s=>s.id===sec);
@@ -5219,6 +5222,11 @@ function buildCondutas(){
 
  if(pends.length){
   ct+=`\n\n${_sep()}\nQUADRO DE PENDÊNCIAS DE PLANTÃO:\n`+pends.join('\n');
+ }
+
+ const conflicts=getConflictAlerts(S);
+ if(conflicts.length){
+  ct+=`\n\n${_sep()}\nALERTAS DE CONFLITO TERAPÊUTICO AVALIADOS:\n`+conflicts.map(c=>`⚠ [!] ${c.title.toUpperCase()}:\n    ${c.text}`).join('\n\n');
  }
 
  return ct;
