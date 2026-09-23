@@ -1843,7 +1843,7 @@ const CMAP={
 'Edema / Dor em MMII':['Unilateral','Bilateral','Edema predominante','Dor predominante','Eritema / Calor local','Assimetria de membros','Início agudo','Progressivo','Dispneia associada','Dor torácica associada','Imobilização recente','Cirurgia recente']};
 const ALERTAS={'Déficit neurológico agudo':{m:'Protocolo AVC — verificar janela para trombólise (< 4,5h)',c:'ad'},'Convulsão':{m:'Via aérea + acesso venoso. Se > 5 min: protocolo estado de mal epiléptico',c:'aw'},'Dispneia':{m:'Oximetria contínua. Considerar: TEP, DPOC agudizado, EAP',c:'aw'},'Intoxicação exógena':{m:'Avaliar nível de consciência e via aérea — depressão respiratória pode ser rápida',c:'ad'},'Icterícia':{m:'Verificar INR e nível de consciência — encefalopatia + icterícia recente pode indicar IHA',c:'aw'},'Edema / Dor em MMII':{m:'Excluir TVP — D-dímero se Wells baixo; Doppler venoso se suspeita moderada/alta',c:'aw'}};
 const SLIST=[
-{id:'dtx',l:'Dor torácica (sindrômica)'},{id:'sca',l:'Síndrome coronariana aguda'},
+{id:'dtx',l:'Dor torácica'},
 {id:'cho',l:'Choque indiferenciado'},
 {id:'dsp',l:'Síndrome dispneica'},
 {id:'neu',l:'Síndrome neurovascular'},{id:'rnc',l:'Rebaixamento de consciência'},{id:'cef',l:'Cefaleia'},{id:'con',l:'Convulsão'},
@@ -2580,86 +2580,189 @@ tep:{l:'TEP suspeito',s:[
 'TEP de risco intermediário: enfermaria com monitorização ≥ 48h']}
 ]},
 dtx:{l:'Dor torácica',
-subExcl:[{id:'dt_card',l:'Provavelmente cardíaca'},{id:'dt_ncard',l:'Provavelmente não cardíaca'},{id:'dt_def_ncard',l:'Definitivamente não cardíaca'}],
-subAdd:[{id:'diss',l:'Dissecção de aorta'},{id:'tep',l:'TEP'},{id:'pntx',l:'Pneumotórax'},{id:'esof',l:'Sd. esofágica aguda'},{id:'peri',l:'Pericardite'},{id:'pnm',l:'Pneumonia'},{id:'disp',l:'Dispepsia'},{id:'ansi',l:'Ansiedade'},{id:'inesp',l:'Dor torácica inespecífica'}],
+subExcl:[
+ {id:'sca_oca',l:'SCA — OCA (Oclusão / Equivalente STEMI)'},
+ {id:'sca_noca',l:'SCA — NOCA (Não-Oclusão / NSTEMI)'},
+ {id:'dt_ncard',l:'Não Cardíaca / Pleurítica / Inflamatória'},
+ {id:'dt_baixo',l:'Baixa Probabilidade / Musculoesquelética'}
+],
+subAdd:[
+ {id:'diss',l:'Dissecção aguda de aorta'},
+ {id:'tep',l:'Tromboembolismo pulmonar (TEP)'},
+ {id:'pntx',l:'Pneumotórax hipertensivo'},
+ {id:'peri',l:'Tamponamento cardíaco / Pericardite'},
+ {id:'esof',l:'Ruptura esofágica (Boerhaave)'},
+ {id:'pnm',l:'Pneumonia / Infecção pulmonar'},
+ {id:'disp',l:'Dispepsia / Refluxo gastroesofágico'}
+],
 s:[
-{id:'sup',t:'Monitorização e acesso',it:[
-'Monitorização cardíaca contínua (ECG, SatO2, PA) — síndrome torácica sem diagnóstico exige vigilância de arritmias',
-'ECG 12 derivações em < 10 min; repetir em 30 min se sem alterações e dor persistente',
-'Acesso venoso periférico ≥ 18G',
-'O2 somente se SatO2 < 90% — uso rotineiro sem hipoxemia sem benefício']},
-{id:'sin',t:'Analgesia e farmacológico inicial',it:[
-'Dipirona 1g IV para analgesia — morfina reservada para dor intensa refratária (reduz absorção de antiplaquetários orais)',
-'Nitrato SL (isossorbida 5 mg) se dor persistente, PAS > 90 mmHg e sem uso de inibidor de PDE-5 em 24–48h',
-'Evitar AINEs em suspeita coronariana — risco cardiovascular aumentado']},
-{id:'inv',t:'Investigação inicial',it:[
-'Troponina de alta sensibilidade (hs-Tn) basal e em 1h — protocolo 0h/1h ESC 2020: descarte em 2h, sensibilidade > 99%',
-'Hemograma, função renal, eletrólitos, glicemia',
-'Radiografia de tórax PA — excluir pneumotórax, dissecção, congestão',
-'D-dímero se Wells ≥ 2 ou suspeita clínica de TEP / dissecção (ADD-RS)',
-'POCUS: função VE, derrame pericárdico, sobrecarga de VD']},
-{id:'dsp',t:'Estratificação e disposição',it:[
-'HEART ≤ 3 + EDACS < 16 + delta hs-Tn < 3 ng/L em 2h → alta com retorno ambulatorial em < 72h (sensibilidade 99,7% para MACE)',
-'HEART 4–6 → observação 3–6h, reteste de troponina; considerar teste de estresse antes da alta',
-'HEART ≥ 7 ou hs-Tn dinâmica → internação e estratégia invasiva em < 72h',
-'Suspeita de SCA confirmada → migrar para síndrome SCA (subtipo OCA ou NOCA conforme ECG/troponina)']}
+{id:'sup',t:'Monitorização e suporte inicial (comum)',it:[
+'Monitorização cardíaca contínua (ECG, SatO₂, PA não-invasiva)',
+'ECG de 12 derivações realizado e interpretado em < 10 min da admissão',
+'Repetir ECG a cada 15–30 min se dor persistente, recorrência ou alteração clínica',
+'Acesso venoso periférico calibroso (18G ou 16G em MSD)',
+'Oxigenoterapia apenas se SatO₂ < 90% — evitar hiperóxia iatrogênica em coronariopatas'
 ]},
-sca:{l:'Síndrome coronariana aguda',
-subExcl:[{id:'sca_oca',l:'OCA (oclusão / equivalente STEMI)'},{id:'sca_noca',l:'NOCA (não-oclusão / NSTEMI)'}],
-s:[
-{id:'sup',t:'Monitorização e acesso',it:[
-'Monitor cardíaco contínuo com desfibrilador à beira leito',
-'Dois acessos venosos periféricos ≥ 16G — preferir MSD (facilita acesso radial para ICP)',
-'ECG seriado: basal, 30 min, 60 min e a qualquer piora ou nova queixa',
-'O2 somente se SatO2 < 90% — uso rotineiro não reduz desfechos e pode aumentar área de infarto']},
-{id:'esp',t:'Farmacológico comum',it:[
-'AAS 150–300 mg VO mastigado imediatamente, se sem contraindicação',
-'Anticoagulação: HNF 70–100 UI/kg IV bolus (máx 5.000 UI) ou enoxaparina 1 mg/kg SC 12/12h — ajustar dose em ClCr < 30 mL/min',
-'Morfina 2–4 mg IV apenas para dor intensa refratária — reduz biodisponibilidade do ticagrelor em ~30%']},
+{id:'sin',t:'Analgesia e alívio sintomático',it:[
+'Dipirona 1–2 g IV lento se dor leve a moderada',
+'Nitrato SL (Isossorbida 5 mg) se dor isquêmica persistente e PAS > 100 mmHg [CONTRAINDICADO se uso de inibidor de PDE-5 em 24–48h ou suspeita de IAM de VD]',
+'Morfina 2–4 mg IV titulada apenas para dor intensa refratária [atenção: retarda absorção de antiplaquetários orais]',
+'Evitar AINEs em suspeita coronariana (risco aumentado de eventos adversos e rotura miocárdica)'
+]},
+{id:'inv',t:'Investigação laboratorial e imagem',it:[
+'Troponina de alta sensibilidade (hs-cTn) na admissão (0h) e seriada em 1h (protocolo 0h/1h ESC 2023)',
+'Hemograma completo, creatinina, ureia, eletrólitos (K, Na, Mg), glicemia, coagulograma (TP/INR, TTPa)',
+'Radiografia de tórax PA e perfil no leito (avaliar mediastino alargado, pneumotórax, congestão)',
+'POCUS focado: contratilidade segmentar VE, sobrecarga de VD, derrame pericárdico e raiz da aorta',
+'D-dímero se suspeita de TEP (Wells ≥ 2) ou protocolo ADD-RS de dissecção aórtica'
+]},
+{id:'dsp',t:'Estratificação de risco e disposição',it:[
+'Calcular escores de risco na admissão: HEART Score e EDACS',
+'HEART ≤ 3 + hs-cTn normal em 0h/1h: baixo risco para MACE (< 1%), elegível para alta e seguimento ambulatorial em 72h',
+'HEART 4–6: risco intermediário, observação monitorizada por 6–12h com troponina seriada',
+'HEART ≥ 7 ou troponina dinâmica positiva: alto risco, internação em leito monitorizado/UTI e coronariografia'
+]}
+]},
+sca:{l:'Síndrome coronariana aguda (ver Dor Torácica)',subExcl:[{id:'sca_oca',l:'OCA (Oclusão / Equivalente STEMI)'},{id:'sca_noca',l:'NOCA (Não-Oclusão / NSTEMI)'}],s:[]},
+sca_oca:{l:'SCA — OCA (Oclusão / Equivalente STEMI)',s:[
+{id:'sup',t:'Ativação imediata e suporte',it:[
+'Ativar equipe de hemodinâmica imediatamente — meta porta-balão < 90 min (ou < 120 min para transferência)',
+'Desfibrilador bifásico colado e pronto à beira-leito — FV/TV é a principal causa de parada cardíaca na fase hiperaguda',
+'ECG de 12D + derivações direitas (V3R/V4R) se IAM inferior e posteriores (V7–V9) se infradesnível em V1–V3',
+'Monitorização contínua de arritmias e sinais vitais a cada 5 min'
+]},
+{id:'esp',t:'Antiagregação, anticoagulação e reperfusão (ESC 2023/2024)',alerts:[
+'NÃO prescrever betabloqueador IV de rotina na sala de emergência — risco de precipitar choque cardiogênico',
+'Trombólise indicada SOMENTE se ICP primária indisponível em < 120 min da apresentação'
+],it:[
+'AAS 200–300 mg VO mastigado imediatamente (ou 150–250 mg IV)',
+'Inibidor P2Y12 imediato (ICP iminente): Ticagrelor 180 mg VO (1ª escolha) OU Prasugrel 60 mg VO (se anatomia coronariana conhecida, sem AVC prévio e peso > 60 kg). Clopidogrel 300–600 mg apenas se contraindicação',
+'Anticoagulação: Enoxaparina 30 mg IV bolus + 1 mg/kg SC após 15 min [se ≥ 75 anos: sem bolus IV, 0,75 mg/kg SC 12/12h; se ClCr < 30: 1 mg/kg SC 24/24h] OU HNF 70–100 UI/kg IV bolus (máx 5.000 UI)',
+'Trombólise com Tenecteplase (TNK) bolus único em 5–10s se ICP indisponível em < 120 min (iniciar < 30 min da chegada). Dose por peso: <60kg→30mg; 60–69kg→35mg; 70–79kg→40mg; 80–89kg→45mg; ≥90kg→50mg [se ≥ 75 anos: reduzir dose em 50%]',
+'Estatina de alta potência imediata: Atorvastatina 80 mg VO ou Rosuvastatina 40 mg VO'
+]},
+{id:'inv',t:'Investigação complementar',it:[
+'Troponina hs seriada para confirmar curva enzimática e documentar extensão do infarto',
+'Função renal urgente para contraste iodado na hemodinâmica — NÃO aguardar resultado para ativar cath lab',
+'Hemograma com plaquetas e coagulograma (TP/INR, TTPa) basais',
+'POCUS imediato: avaliar contratilidade regional e excluir complicações mecânicas (insuficiência mitral aguda, CIV, tamponamento)'
+]},
+{id:'dsp',t:'Disposição e encaminhamento',it:[
+'Transferência direta para a sala de hemodinâmica (porta-balão < 90 min) — sem escala intermediária em enfermaria',
+'Se trombólise realizada: transferir imediatamente para centro terciário com hemodinâmica (estratégia farmacoinvasiva em 2–24h)',
+'Pós-procedimento: internação mandatória em Unidade de Terapia Intensiva Coronariana (UCO)',
+'Equivalentes STEMI que exigem conduta de OCA: Padrão de De Winter, Wellens tipo A/B evolutivo, Sgarbossa modificado de Smith em BRE/marcapasso, supra em aVR com infra difuso'
+]}
+]},
+sca_noca:{l:'SCA — NOCA (Não-Oclusão / NSTEMI)',s:[
+{id:'sup',t:'Estratificação de risco e vigilância',it:[
+'Calcular escore GRACE 2.0 na admissão para definir timing de coronariografia invasiva',
+'Telemetria cardíaca contínua e vigilância de instabilidade hemodinâmica',
+'Repouso no leito durante a fase de dor ativa'
+]},
+{id:'esp',t:'Terapia antitrombótica e anti-isquêmica (ESC 2023/2024)',alerts:[
+'Trombólise química NÃO é indicada em NOCA/NSTEMI (risco supera benefício)'
+],it:[
+'AAS 200–300 mg VO mastigado na admissão',
+'Anticoagulação plena: Enoxaparina 1 mg/kg SC 12/12h (1ª escolha) OU Fondaparinux 2,5 mg SC 1×/dia OU HNF IV',
+'Estratégia P2Y12 no NSTEMI (ESC 2023): NÃO pré-tratar de rotina com P2Y12 se estratificação invasiva precoce (< 24h) planejada; carregar Ticagrelor 180 mg VO se estratégia conservadora ou atraso no cateterismo',
+'Nitrato IV (Nitroglicerina 10–200 mcg/min) se dor isquêmica persistente e PAS > 100 mmHg [evitar se uso de inibidor PDE-5]',
+'Betabloqueador VO precoce (Metoprolol 25–50 mg VO ou Carvedilol 6,25 mg VO) se FC > 70 bpm, sem sinais de IC descompensada ou BAV',
+'Atorvastatina 80 mg VO dose de ataque'
+]},
+{id:'inv',t:'Investigação complementar',it:[
+'Troponina hs protocolo 0h/1h ESC (descarte se 0h baixa e delta 1h < 3 ng/L; confirmação se 0h alta ou delta 1h significativo)',
+'Ecocardiograma transtorácico em < 24h para avaliação de FEVE e valvopatias',
+'Função renal, glicemia, eletrólitos, hemograma e coagulograma'
+]},
+{id:'dsp',t:'Timing de intervenção coronariana por GRACE',it:[
+'Estratégia invasiva muito precoce (< 2h): instabilidade hemodinâmica, choque cardiogênico, arritmias ventriculares malignas ou dor refratária',
+'Estratégia invasiva precoce (< 24h): GRACE > 140, elevação/queda dinâmica de troponina ou alterações dinâmicas do segmento ST',
+'Estratégia invasiva seletiva (< 72h): GRACE 109–140 ou pacientes de risco intermediário',
+'Baixo risco (GRACE < 109, troponinas normais seriadas): teste funcional não invasivo ambulatorial'
+]}
+]},
+dt_ncard:{l:'Não Cardíaca / Pleurítica / Inflamatória',s:[
+{id:'sup',t:'Monitorização e exame focado',it:[
+'Monitorização de sinais vitais e oximetria de pulso contínua',
+'Exame físico torácico focado: atrito pleural, atrito pericárdico, percussão torácica e ausculta pulmonar comparativa',
+'Pesquisar sinais de TEP (taquicardia desproporcional, taquipneia, dor pleurítica súbita)'
+]},
+{id:'sin',t:'Analgesia direcionada',it:[
+'Dipirona 1 g IV ou Paracetamol 750 mg VO a cada 6h',
+'Cetoprofeno 100 mg IV ou Cetorolaco 30 mg IV [somente após descartar SCA e dissecção e se função renal normal]'
+]},
+{id:'inv',t:'Investigação etiológica',it:[
+'Radiografia de tórax PA e perfil — pesquisar condensações, pneumotórax, derrame pleural',
+'D-dímero se probabilidade clínica de TEP (Wells ≥ 2)',
+'Hemograma, PCR, ureia e creatinina séricas'
+]},
+{id:'dsp',t:'Disposição',it:[
+'Alta orientada se dor controlada, sinais vitais normais e causas graves descartadas',
+'Internação ou seguimento ambulatorial conforme foco (pleurite viral, pneumonia comunitária, derrame pleural)'
+]}
+]},
+dt_baixo:{l:'Baixa Probabilidade / Musculoesquelética',s:[
+{id:'sup',t:'Avaliação inicial',it:[
+'Palpação dirigida de arcos costais, articulações condroesternais e musculatura paravertebral',
+'Reprodução precisa dos sintomas à palpação ou movimentação do tronco (sugestivo de síndrome de Tietze/miofascial)'
+]},
+{id:'sin',t:'Tratamento sintomático',it:[
+'Dipirona 1 g VO/IV ou Paracetamol 750 mg VO a cada 6h',
+'Anti-inflamatório oral (Ibuprofeno 400 mg VO 8/8h por 3–5 dias) se dor condroesternal e sem contraindicações',
+'Calor local úmido na região dolorosa'
+]},
 {id:'inv',t:'Investigação',it:[
-'Troponina hs protocolo 0h/1h — elevação ≥ 5 ng/L na 1h confirma SCA',
-'POCUS: função VE, hipocinesia segmentar, derrame pericárdico, função VD',
-'Hemograma, coagulograma, função renal — antes de anticoagulação e contraste',
-'Função hepática + perfil lipídico para iniciar estatina de alta potência',
-'RX tórax — afastar congestão, dissecção, pneumotórax']},
-{id:'dsp',t:'Disposição e otimização pré-alta',it:[
-'Pós-reperfusão: UTI coronariana, ecocardiograma em 24–48h para avaliação de FEVE',
-'Iniciar antes da alta: betabloqueador VO (se hemodinâmica estável), IECA/BRA e estatina de alta potência (atorvastatina 40–80 mg)',
-'Educar sobre dupla antiagregação por 12 meses (DAPT) e adesão à reabilitação cardíaca']}
+'ECG de 12 derivações na admissão (obrigatório em toda dor torácica)',
+'Troponina hs única ou seriada (0h/1h) se paciente com fatores de risco cardiovascular ou dúvida clínica'
 ]},
-sca_oca:{l:'OCA (oclusão / equivalente STEMI)',s:[
-{id:'sup',t:'Ativação imediata',it:[
-'Ativar hemodinâmica imediatamente — alvo porta-balão < 90 min',
-'Desfibrilador pronto à beira leito — FV é principal causa de morte nas primeiras horas']},
-{id:'esp',t:'P2Y12, trombólise e adjuvantes',alerts:[
-'Não iniciar betabloqueador IV de rotina — risco de choque em VE não avaliado; VO precoce se hemodinâmica estável'
-],it:[
-'P2Y12 load imediato pois cath é iminente: Ticagrelor 180 mg VO (1ª escolha) ou Prasugrel 60 mg se anatomia conhecida + sem AVC/AIT. Clopidogrel 300–600 mg se contraindicação aos anteriores',
-'Trombólise com TNK se ICP indisponível em < 120 min — iniciar em < 30 min da chegada. Dose por peso: <60kg→30 mg; 60–70kg→35 mg; 70–80kg→40 mg; 80–90kg→45 mg; >90kg→50 mg (bolus único em < 10s)',
-'Adjuvante de TNK: enoxaparina IV bolus 30 mg + 1 mg/kg SC após 15 min se < 75 anos; sem bolus IV, 0,75 mg/kg SC 12/12h se ≥ 75 anos (máx 75 mg/dose)']},
-{id:'inv',t:'Investigação adicional',it:[
-'Derivações V3R/V4R e V7–V9 se supra inferior ou em aVR — IAM de VD e parede posterior frequentemente subdiagnosticados',
-'Função renal pré-contraste para ICP — não aguardar para ativar hemodinâmica']},
-{id:'dsp',t:'Reperfusão',it:[
-'ICP primária em < 90 min — transferência direta para hemodinâmica, sem escala na UTI',
-'Sem ICP disponível em < 120 min: TNK em < 30 min + transferência imediata para centro com hemodinâmica',
-'Equivalentes-STEMI a tratar como OCA: De Winter, Wellens evolutivo, Sgarbossa positivo em BRE, supra em aVR + infra difuso']}
+{id:'dsp',t:'Disposição',it:[
+'Critérios de descarte rápido por HEART Score ≤ 3 e troponina normal',
+'Alta com analgésicos orais e orientações claras de retorno se surgirem opressão, irradiação, dispneia ou diaforese'
+]}
 ]},
-sca_noca:{l:'NOCA (não-oclusão / NSTEMI)',s:[
-{id:'sup',t:'Estratificação de risco',it:[
-'Calcular GRACE: idade, FC, PAS, creatinina, Killip, parada cardíaca à admissão, ECG, troponina',
-'Reavaliação seriada de ECG e troponina em qualquer mudança clínica']},
-{id:'esp',t:'P2Y12 e farmacológico específico',alerts:[
-'Trombólise NÃO indicada em NOCA, mesmo refratária'
-],it:[
-'P2Y12 conforme estratégia: se invasiva precoce (< 24h) — NÃO pré-tratar antes da anatomia conhecida; se conservadora ou diferida — Ticagrelor 180 mg VO ao confirmar diagnóstico',
-'Nitrato IV (nitroglicerina 10–200 mcg/min) se dor persistente e PAS > 90 mmHg; contraindicado em uso recente de inibidores de PDE-5',
-'Betabloqueador VO precoce (metoprolol 25–50 mg) se FC > 100 bpm sem ICC descompensada, BAV ou broncoespasmo']},
-{id:'dsp',t:'Timing de ICP por GRACE',it:[
-'ICP muito precoce (< 2h) se instabilidade hemodinâmica, arritmia grave, dor refratária, Killip III-IV ou supra transitório',
-'GRACE > 140 ou troponina dinâmica → ICP em < 24h',
-'GRACE 109–140 → ICP em < 72h',
-'GRACE < 109 + troponina negativa → teste funcional antes da alta']}
+pntx:{l:'Pneumotórax hipertensivo / Espontâneo',s:[
+{id:'sup',t:'Descompressão emergencial e monitorização',it:[
+'Pneumotórax hipertensivo: DESCOMPRESSÃO IMEDIATA POR AGULHA (14G–16G) no 4º/5º EIC linha axilar anterior/média (ou 2º EIC hemiclavicular) — NÃO aguardar radiografia!',
+'Toracostomia com drenagem tubular em selo d\'água (dreno de tórax 20F–28F) no 5º EIC entre a linha axilar anterior e média',
+'Oxigenoterapia em alto fluxo (MNRL 10–15 L/min) — acelera em até 4× a taxa de reabsorção do pneumotórax',
+'Monitorização hemodinâmica contínua — alívio imediato da hipotensão e taquicardia pós-descompressão'
+]},
+{id:'sin',t:'Analgesia e conforto',it:[
+'Anestesia local infiltrativa ampla com Lidocaína 1% ou 2% sem vasoconstritor (pele, subcutâneo, periósteo costal e pleura parietal)',
+'Dipirona 1–2 g IV 6/6h + Morfina 2–4 mg IV se dor pleurítica aguda pós-drenagem'
+]},
+{id:'inv',t:'Diagnóstico e controle',it:[
+'POCUS pleuropulmonar imediato: ausência de deslizamento pleural (lung sliding), ausência de linhas B, presença de ponto de pulmão (lung point)',
+'Radiografia de tórax PA no leito PÓS-drenagem para confirmar expansão pulmonar e posicionamento do dreno',
+'Gasometria arterial se insuficiência respiratória ou hipoxemia persistente'
+]},
+{id:'dsp',t:'Disposição',it:[
+'Internação em leito de enfermaria cirúrgica ou UTI conforme estabilidade clínica',
+'Avaliação urgente pela Cirurgia Torácica / Cirurgia Geral',
+'Manter dreno sob selo d\'água funcional; verificar oscilação e débito a cada plantão'
+]}
+]},
+disp:{l:'Dispepsia / Refluxo gastroesofágico',s:[
+{id:'sup',t:'Avaliação e triagem',it:[
+'Exclusão mandatória de SCA — resposta sintomática a antiácido ou nitrato NÃO descarta isquemia miocárdica!',
+'Posicionamento em cabeceira elevada a 30–45°'
+]},
+{id:'sin',t:'Alívio farmacológico',it:[
+'Omeprazol 40 mg IV em bolus ou Pantoprazol 40 mg IV',
+'Hidróxido de Alumínio / Magnésio 10–15 mL VO',
+'Dimeticona / Simeticona 40 gotas VO se plenitude pós-prandial ou meteorismo',
+'Dipirona 1 g IV se dor epigástrica associada'
+]},
+{id:'inv',t:'Investigação complementar',it:[
+'Troponina hs seriada (0h/1h) e ECG de 12D se fatores de risco cardiovascular, diabético, idoso ou dor atípica',
+'Hemograma e função renal se dor persistente ou sinais de alarme (emagrecimento, disfagia, anemia)'
+]},
+{id:'dsp',t:'Disposição',it:[
+'Alta com prescrição ambulatorial de IBP (Omeprazol 40 mg/dia pela manhã) se ECG e troponinas normais e dor controlada',
+'Encaminhamento para Endoscopia Digestiva Alta (EDA) eletiva ambulatorial',
+'Orientar retorno imediato se opressão retroesternal, irradiação para mandíbula/braço, síncope ou diaforese'
+]}
 ]},
 diss:{l:'Dissecção de aorta',s:[
 {id:'sup',t:'Monitorização e estabilização',it:[
@@ -3575,15 +3678,16 @@ function s4ImpHeader(){
 }
 function s4Grid(){return `${s4ImpHeader()}<div class="sl">Síndrome clínica suspeita:</div><div class="sgrid" id="syndrome-grid">${SLIST.map(s=>`<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};S.subsind=null;S.subsinds=[];S.syndromeGridCollapsed=true;render()">${s.l}</button>`).join('')}</div></div>`;}
 function s4ResetBtn(){return `<div style="margin-bottom:10px"><button class="xbtn" onclick="S.syndromeGridCollapsed=false;render()" style="width:100%;padding:8px;font-size:13px"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar ao seletor</button></div>`;}
-function s4SubExcl(T){return `<div class="card"><div class="st"><i class="ti ti-git-branch" aria-hidden="true"></i> ${S.sind==='dtx'?'Probabilidade clínica:':'Subtipo clínico:'}</div><div class="sgrid">${T.subExcl.map(s=>`<button class="xbtn ${S.subsind===s.id?'on':''}" onclick="selSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`;}
-function s4SubAdd(T){return `<div class="card"><div class="st"><i class="ti ti-list-tree" aria-hidden="true"></i> ${S.sind==='dtx'?'Diagnósticos diferenciais (em ordem de gravidade):':'Subsíndromes presentes:'}</div><div class="sgrid">${T.subAdd.map(s=>`<button class="xbtn ${S.subsinds.includes(s.id)?'on':''}" onclick="toggleSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`;}
+function s4SubExcl(T){return `<div class="card"><div class="st"><i class="ti ti-git-branch" aria-hidden="true"></i> ${S.sind==='dtx'?'Approach / Probabilidade clínica:':'Subtipo clínico:'}</div><div class="sgrid">${T.subExcl.map(s=>`<button class="xbtn ${S.subsind===s.id?'on':''}" onclick="selSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`;}
+function s4SubAdd(T){return `<div class="card"><div class="st"><i class="ti ti-list-tree" aria-hidden="true"></i> ${S.sind==='dtx'?'Ameaças à vida & diagnósticos diferenciais:':'Subsíndromes presentes:'}</div><div class="sgrid">${T.subAdd.map(s=>`<button class="xbtn ${S.subsinds.includes(s.id)?'on':''}" onclick="toggleSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`;}
 function s4Nav(){return `<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Gerar relatório <i class="ti ti-file-text" aria-hidden="true"></i></button></div>`;}
 function s4SyndromeFull(T){
- const parts=[rSindBlock(S.sind)];
+ const parts=[];
  if(T.subExcl)parts.push(s4SubExcl(T));
- if(T.subExcl&&S.subsind&&CT[S.subsind])parts.push(rSindBlock(S.subsind));
  if(T.subAdd)parts.push(s4SubAdd(T));
- if(T.subAdd)parts.push(...S.subsinds.filter(sid=>CT[sid]).map(sid=>rSindBlock(sid)));
+ if(T.s&&T.s.length)parts.push(rSindBlock(S.sind));
+ if(T.subExcl&&S.subsind&&CT[S.subsind]&&CT[S.subsind].s&&CT[S.subsind].s.length)parts.push(rSindBlock(S.subsind));
+ if(T.subAdd&&S.subsinds&&S.subsinds.length)parts.push(...S.subsinds.filter(sid=>CT[sid]&&CT[sid].s&&CT[sid].s.length).map(sid=>rSindBlock(sid)));
  return parts.join('');
 }
 function s4(){
