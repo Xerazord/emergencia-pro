@@ -540,7 +540,7 @@ textarea{resize:vertical;min-height:60px}
  </div>
 </div>
 <div id="modalArea"></div>
-<div class="app-footer" id="appFooter">Emergência Pro • v2026.05.20</div>
+<div class="app-footer" id="appFooter">Plantão Ágil • v2026.05.20</div>
 </div>
 
 <div class="admin-overlay" id="adminOverlay" style="display:none">
@@ -1713,7 +1713,7 @@ function exportShiftPDF(){
   doc.setPage(i);
   doc.setFontSize(8);
   doc.setTextColor(156,163,175);
-  doc.text('Emergência Pro · v' + (typeof BUILD_VERSION!=='undefined'?BUILD_VERSION:'—') + ' · gerado ' + new Date().toLocaleString('pt-BR'), M, H-20);
+  doc.text('Plantão Ágil · v' + (typeof BUILD_VERSION!=='undefined'?BUILD_VERSION:'—') + ' · gerado ' + new Date().toLocaleString('pt-BR'), M, H-20);
   doc.text(`${i} / ${total}`, W-M-30, H-20);
  }
 
@@ -1856,10 +1856,10 @@ const SLIST=[
 {id:'cho',l:'Choque indiferenciado'},
 {id:'dsp',l:'Síndrome dispneica'},
 {id:'neu',l:'Síndrome neurovascular'},{id:'rnc',l:'Rebaixamento de consciência'},{id:'cef',l:'Cefaleia'},{id:'con',l:'Convulsão'},
-{id:'pal',l:'Palpitações / Arritmia'},{id:'sinc',l:'Síncope'},
-{id:'abd',l:'Síndrome abdominal'},{id:'hdg',l:'Hemorragia digestiva'},{id:'ict',l:'Icterícia / IHA'},
-{id:'feb',l:'Síndrome febril / Infecciosa'},
-{id:'int',l:'Intoxicação exógena'},{id:'dlb',l:'Dor lombar'},{id:'emmi',l:'Edema / Dor em MMII'}];
+{id:'pal',l:'Palpitações / Arritmias'},{id:'sinc',l:'Síncope'},
+{id:'abd',l:'Síndrome abdominal aguda'},{id:'hdg',l:'Hemorragia digestiva'},{id:'ict',l:'Icterícia / IHA'},
+{id:'feb',l:'Síndrome febril / Sepse'},
+{id:'int',l:'Intoxicação exógena'},{id:'dlb',l:'Dor lombar aguda'},{id:'emmi',l:'Edema / Dor em MMII'}];
 const STEPS=[{l:'Identificação',i:'ti-user'},{l:'Queixa',i:'ti-stethoscope'},{l:'Dados clínicos',i:'ti-heart-rate-monitor'},{l:'Exame físico',i:'ti-search'},{l:'Impressão / Conduta',i:'ti-clipboard-check'},{l:'Relatório',i:'ti-file-text'}];
 
 const CT={
@@ -2436,24 +2436,45 @@ s:[
 'Internação em leito semi-intensivo / enfermaria monitorizada se estabilização com oxigenoterapia de baixo fluxo e resposta rápida às condutas'
 ]}
 ]},
-feb:{l:'Síndrome febril / Infecciosa',s:[
-{id:'sup',t:'Triagem de gravidade',it:[
-'Sinais vitais completos — identificar SIRS: FC > 90, FR > 20, Temp > 38°C ou < 36°C',
-'Avaliar nível de consciência — alteração + febre = alarme para meningite/encefalite ou sepse com disfunção orgânica',
-'Lactato sérico — se > 2 mmol/L: hipoperfusão, ativar protocolo de choque']},
-{id:'esp',t:'Farmacológico',it:[
-'Antitérmico: dipirona 1 g IV ou paracetamol 1 g IV — não usar AAS em febre',
-'ATB IV em < 1h se critérios de sepse — não aguardar culturas para iniciar',
-'Cobertura empírica conforme foco suspeito — rever com culturas e antibiograma']},
-{id:'inv',t:'Investigação',it:[
-'Hemoculturas (2 pares) antes do ATB — não atrasar ATB > 45 min para coleta',
-'Urina I + urocultura, RX tórax',
-'Hemograma, PCR, procalcitonina, função renal',
-'TC crânio + punção lombar se meningite suspeita — iniciar ATB antes se houver retardo > 30 min']},
+feb:{l:'Síndrome febril / Sepse',
+subAdd:[
+{id:'cho_sep',l:'Choque séptico associado'},
+{id:'rnc',l:'Encefalopatia / Rebaixamento associado'},
+{id:'pnm',l:'Pneumonia / Infecção respiratória'}
+],
+s:[
+{id:'sup',t:'Rastreio de sepse e bundle da 1ª hora (Surviving Sepsis Campaign)',it:[
+'Rastreio de sepse à beira-leito com escore NEWS2 ou SOFA (aumento ≥ 2 pontos em relação ao basal na presença de infecção confirmada ou suspeita define Sepse)',
+'Triagem de sinais de hipoperfusão tecidual: Tempo de Enchimento Capilar (TEC > 3s), oligúria (< 0,5 mL/kg/h) ou confusão mental aguda',
+'Acesso venoso periférico calibroso imediato e monitorização multiparamétrica de sinais vitais',
+'Lactato sérico na admissão (meta: clearance > 20% em 2h se valor inicial > 2,0 mmol/L)',
+'Ressuscitação volêmica criteriosa com Ringer Lactato (alíquotas de 250–500 mL com avaliação dinâmica de responsividade; evitar sobrecarga em pacientes cardiopatas ou renais)'
+]},
+{id:'sin',t:'Controle térmico e sintomáticos',it:[
+'Dipirona 1 g IV ou Paracetamol 1 g IV/VO a cada 6h se temperatura ≥ 38,0°C ou desconforto álgico importante (evitar AAS e AINEs)',
+'Medidas físicas de resfriamento passivo (despir paciente, compressas mornas)'
+]},
+{id:'esp',t:'Terapia antimicrobiana e controle de foco (< 1 hora)',alerts:[
+'Sepse ou choque séptico: administrar antibioticoterapia de amplo espectro na PRIMEIRA HORA da triagem! Coletar hemoculturas antes, mas NÃO atrasar o início do antibiótico se houver dificuldade de punção além de 45 min'
+],it:[
+'Foco pulmonar comunitário: Ceftriaxona 2 g IV 12/12h + Azitromicina 500 mg IV 1×/dia (adicionar Vancomicina 15–20 mg/kg 12/12h se risco de MRSA)',
+'Foco abdominal / biliar: Ceftriaxona 2 g IV 12/12h + Metronidazol 500 mg IV 8/8h OU Piperacilina-Tazobactam 4,5 g IV 6/6h',
+'Foco urinário / urossepsse: Ceftriaxona 2 g IV 1×/dia (adicionar Amicacina 15 mg/kg IV se choque séptico) OU Meropenem 1 g IV 8/8h se histórico de germe ESBL',
+'Foco em partes moles / infecção de cateter: Oxacilina 2 g IV 4/4h OU Vancomicina 15–20 mg/kg IV se risco de MRSA',
+'Controle mecânico do foco infeccioso em < 6–12h (remoção de cateter infectado, drenagem cirúrgica de abscesso, desbridamento de infecção necrosante, desobstrução de via biliar/urinária)'
+]},
+{id:'inv',t:'Investigação diagnóstica e microbiológica',it:[
+'Coleta de 2 pares de hemoculturas de sítios venosos periféricos distintos com técnica estéril rigorosa',
+'Culturas direcionadas ao foco clínico suspeito: urocultura com antibiograma, cultura de escarro/secreção traqueal, cultura de líquido sinovial ou líquor',
+'Urina tipo 1 (sedimento urinário) e pesquisa de antígenos urinários para Legionella e Pneumococo se pneumonia grave',
+'Radiografia de tórax no leito e/ou Tomografia Computadorizada do segmento corpóreo suspeito (tórax, abdome, pelve ou crânio)',
+'Laboratório: hemograma completo, plaquetas, PCR, procalcitonina, gasometria com lactato, coagulograma, ureia, creatinina e eletrólitos'
+]},
 {id:'dsp',t:'Disposição',it:[
-'Sepse (SOFA ≥ 2 + suspeita infecciosa): ativar protocolo → Choque indiferenciado > Séptico',
-'Febre sem foco em imunossuprimido: internação e investigação ampla',
-'Foco identificado, estável, baixo risco: ATB oral com retorno em 48h']}
+'Sepse com disfunção orgânica ou hipotensão requerendo vasopressor: internação obrigatória em UTI',
+'Infecção bacteriana estável sem disfunções orgânicas: internação em enfermaria monitorizada para completar esquema parenteral',
+'Infecção de baixo risco (ex: infecção urinária baixa, bronquite aguda): alta orientada com antibioticoterapia oral e retorno em 48h'
+]}
 ]},
 abd:{l:'Síndrome abdominal aguda',
 subExcl:[
@@ -2623,73 +2644,455 @@ s:[
 'Crise em epiléptico conhecido por falha terapêutica transitória corrigida: ajuste posológico e alta orientada após recuperação plena'
 ]}
 ]},
-pal:{l:'Palpitações / Arritmia',s:[
-{id:'sup',t:'Monitorização',it:[
-'ECG 12D imediato — documentar arritmia em curso ou alterações de base',
-'Monitor contínuo com impressão do ritmo no momento dos sintomas',
-'Medir QTc — risco de torsades de pointes se > 500 ms',
-'Desfibrilador disponível à beira leito']},
-{id:'esp',t:'Farmacológico por ritmo',it:[
-'TSV: manobra vagal → adenosina 6 mg IV rápido (12 mg se falha — pode repetir 12 mg)',
-'FA/Flutter com instabilidade: cardioversão elétrica sincronizada 100–200 J (bifásico)',
-'FA estável (< 48h): controle de FC com metoprolol 5 mg IV ou diltiazem; cardioversão se < 48h',
-'FA estável (> 48h ou duração incerta): controle de FC + anticoagulação — não cardioverter sem ETE ou ≥ 3 sem de anticoagulação',
-'TV monomórfica estável: amiodarona 150 mg IV em 10 min',
-'TV polimórfica (Torsades): MgSO4 2 g IV em 10 min',
-'FV/TV sem pulso: desfibrilação imediata — sem sincronização']},
-{id:'inv',t:'Investigação',it:[
-'K+ e Mg2+ — hipocalemia e hipomagnesemia são causas reversíveis',
-'Troponina se dor torácica associada — SCA como causa de arritmia',
-'TSH — FA por hipertireoidismo']},
-{id:'dsp',t:'Disposição',it:[
-'Instabilidade hemodinâmica: cardioversão / desfibrilação antes de qualquer fármaco',
-'WPW + FA: evitar adenosina, digoxina, verapamil — risco de FV; usar procainamida ou cardioversão',
-'Alta: Holter 24h ou event monitor se sem documentação arrítmica']}
+pal:{l:'Palpitações / Arritmias',
+subExcl:[
+ {id:'pal_tsv',l:'TSV (Reentrada Nodal / Via Acessória)'},
+ {id:'pal_fa',l:'Fibrilação Atrial / Flutter Atrial'},
+ {id:'pal_tv',l:'TV Monomórfica com pulso'},
+ {id:'pal_tvp',l:'TV Polimórfica / Torsades de Pointes'},
+ {id:'pal_bra',l:'Bradiarritmias Instáveis (BAV 2º/3º grau)'}
+],
+subAdd:[
+ {id:'sinc',l:'Síncope associada'},
+ {id:'dtx',l:'Dor torácica / Isquemia miocárdica'},
+ {id:'cho_car',l:'Choque cardiogênico associado'},
+ {id:'eap',l:'Edema agudo de pulmão / IC associada'}
+],
+s:[
+ {id:'sup',t:'Triagem imediata de instabilidade hemodinâmica (ACLS / ESC)',alerts:[
+  'REGRA DE OURO DAS ARRITMIAS: Pesquisar imediatamente os 5 sinais de INSTABILIDADE HEMODINÂMICA: 1) Hipotensão arterial / choque (PAS < 90 mmHg); 2) Dor torácica de padrão isquêmico agudo; 3) Alteração aguda do estado mental / síncope; 4) Insuficiência cardíaca aguda / congestão pulmonar; 5) Má perfusão periférica (TEC > 3s). Taquiarritmia instável com pulso exige CARDIOVERSÃO ELÉTRICA SINCRONIZADA IMEDIATA!'
+ ],it:[
+  'Monitorização cardíaca multiparamétrica contínua (ECG de 3 derivações na tela, SpO₂ contínua, PA a cada 3–5 min)',
+  'Desfibrilador bifásico posicionado à beira-leito com pás adesivas anteroposteriores acopladas ao paciente',
+  'Eletrocardiograma de 12 derivações com DII longo obtido e interpretado em < 10 minutos (sem postergar choque se choque iminente)',
+  'Acesso venoso periférico calibroso (18G ou 16G em fossa antecubital direita preferencial para rápida circulação central de fármacos)',
+  'Oxigenoterapia suplementar com alvo SpO₂ ≥ 94% se hipoxemia'
+ ]},
+ {id:'esp',t:'Diretriz de intervenção e conduta por estabilidade',it:[
+  'TAQUIARRITMIA INSTÁVEL COM PULSO: Cardioversão Elétrica Sincronizada (CVES) de emergência. Sedação rápida se consciente (Etomidato 0,2 mg/kg IV ou Midazolam 2–5 mg IV + Fentanil 50 mcg IV). Energia inicial bifásica: TSV/Flutter: 50–100 J; FA: 120–200 J; TV monomórfica: 100 J',
+  'BRADIARRITMIA INSTÁVEL: Atropina 1 mg IV em bolus a cada 3–5 min (dose máx 3 mg). Se refratária ou BAV avançado: Marcapasso Transcutâneo imediato OU Dopamina 5–20 mcg/kg/min IV OU Epinefrina 2–10 mcg/min IV em infusão contínua',
+  'ARRITMIA ESTÁVEL: Diagnóstico eletrocardiográfico sistemático: ritmo regular vs irregular; complexo QRS estreito (< 120 ms) vs largo (≥ 120 ms); selecionar o subtipo clínico correspondente para conduta farmacológica direcionada'
+ ]},
+ {id:'inv',t:'Investigação complementar etiológica',it:[
+  'Eletrólitos séricos urgentes: Potássio (K⁺), Magnésio (Mg²⁺) e Cálcio ionizado (distúrbios eletrolíticos são os principais gatilhos arrítmicos reversíveis)',
+  'Gasometria venosa ou arterial com lactato sérico (pesquisa de acidose e hipoperfusão tecidual)',
+  'Troponina de alta sensibilidade (hs-cTn) na admissão se dor torácica, equivalentes isquêmicos ou arritmias ventriculares',
+  'TSH e T4 livre (rastreio de tireotoxicose/hipertireoidismo como causa de FA ou taquicardia sinusal persistente)',
+  'POCUS ecocardiográfico à beira-leito: contratilidade ventricular global, fração de ejeção, dimensões do átrio esquerdo e descarte de derrame pericárdico'
+ ]},
+ {id:'dsp',t:'Disposição',it:[
+  'Arritmia instável, TV sustentada, pós-cardioversão elétrica ou necessidade de suporte vasoativo/marcapasso: internação mandatória em UTI / UCO',
+  'FA/Flutter de início recente revertida ou com FC controlada: observação monitorizada por 12–24h ou internação em enfermaria cardiológica',
+  'TSV revertida com sucesso com manobra vagal ou adenosina em paciente jovem sem cardiopatia e com ECG normal pós-reversão: alta orientada após 4–6h de observação com encaminhamento ambulatorial à Arritmologia'
+ ]}
 ]},
-int:{l:'Intoxicação exógena',s:[
-{id:'sup',t:'Avaliação e monitorização',it:[
-'ABCDE imediato — intoxicações graves cursam com rebaixamento de consciência e falência respiratória',
-'Glicemia capilar — hipoglicemia por insulina, antidiabéticos orais ou álcool',
-'ECG 12D — alargamento de QRS (tricíclicos, antiarrítmicos), QTc longo (antipsicóticos)',
-'Temperatura — hipertermia em síndrome serotoninérgica/anticolinérgica; hipotermia em opioides/sedativos']},
-{id:'esp',t:'Antídotos e descontaminação',it:[
-'Naloxona 0,4–2 mg IV/IM/IN se síndrome opioide — repetir até resposta; infusão se recorrência',
-'Flumazenil 0,2 mg IV (máx 1 mg) se síndrome sedativo-hipnótica PURA — contraindicado se convulsão ou dependência de BZD',
-'Atropina 2 mg IV se síndrome colinérgica — titular até secreções reduzidas (não usar FC como alvo)',
-'Carvão ativado 1 g/kg VO/SNG se < 1h da ingestão oral, VA protegida, sem contraindicação (corrosivo, hidrocarboneto)',
-'Bicarbonato de sódio 1–2 mEq/kg IV se QRS > 120 ms por antidepressivo tricíclico — alvo pH 7,45–7,55',
-'N-acetilcisteína IV se intoxicação por paracetamol — iniciar mesmo tardiamente (reduz mortalidade)',
-'Contato CIT: 0800 722 6001 — orientação toxicológica 24h']},
-{id:'inv',t:'Investigação',it:[
-'Nível sérico: paracetamol, etanol, salicilatos — triagem de rotina em intoxicações intencionais',
-'Gasometria arterial — acidose com ânion gap elevado em salicilatos, metanol, etilenoglicol',
-'Função renal, hepática e coagulograma',
-'Toxicológico qualitativo urinário — confirma classe, não exclui exposição']},
-{id:'dsp',t:'Disposição',it:[
-'Tentativa de autoextermínio: internação obrigatória — alta somente após avaliação psiquiátrica e plano de segurança',
-'Observação mínima 6–8h após intoxicação aguda — algumas substâncias têm ação prolongada']}
+pal_tsv:{l:'TSV (Reentrada Nodal / Via Acessória)',s:[
+ {id:'sup',t:'Manobras vagais de 1ª linha (Estudo REVERT)',alerts:[
+  'MANOBRA DE VALSALVA MODIFICADA (REVERT Trial): Paciente em decúbito a 45°, realiza expiração forçada contra seringa de 10–20 mL por 15 segundos (atingindo ~40 mmHg), seguido imediatamente de decúbito horizontal com elevação passiva dos membros inferiores a 45° por 15 segundos. Taxa de reversão comprovada de 43% (vs 17% da manobra clássica)!',
+  'CONTRAINDICADA massagem do seio carotídeo sem ausculta carotídea prévia ou em pacientes idosos com sopro/risco de embolização aterotrombótica'
+ ],it:[
+  'Registro contínuo em fita de ECG durante toda a realização das manobras vagais e injeção de fármacos'
+ ]},
+ {id:'esp',t:'Terapia farmacológica escalonada (AHA/ESC)',it:[
+  '1ª Escolha: Adenosina 6 mg IV em bólus hiper-rápido (técnica de duas seringas com torneirinha de 3 vias: adenosina seguida imediatamente por flush vigoroso de 20 mL de SF 0,9% com elevação súbita do membro)',
+  'Se não reverter em 1–2 minutos: Adenosina 12 mg IV em bólus hiper-rápido com flush de 20 mL de SF',
+  'Se falha persistente: repetir uma segunda dose de Adenosina 12 mg IV',
+  'Avisar o paciente sobre sintomas transitórios esperados da adenosina (sensação de opressão torácica, calor facial, pausa no ECG por 2–4s)',
+  '2ª Escolha se refratariedade à adenosina e paciente estável: Diltiazem 0,25 mg/kg IV em 2 min (ou Verapamil 2,5–5 mg IV em 2 min) OU Metoprolol 5 mg IV lento a cada 5 min (máx 15 mg)',
+  'Cardioversão Elétrica Sincronizada 50–100 J bifásica se surgir qualquer sinal de instabilidade hemodinâmica a qualquer momento'
+ ]},
+ {id:'inv',t:'ECG pós-reversão',it:[
+  'ECG de 12 derivações completo pós-reversão para ritmo sinusal: busca ativa de onda Delta e intervalo PR curto (< 120 ms) sugestivos de Síndrome de Wolff-Parkinson-White (WPW)'
+ ]}
 ]},
-dlb:{l:'Dor lombar',s:[
-{id:'sup',t:'Triagem de emergências',it:[
-'Palpar pulsos abdominais — massa pulsátil sugere AAA: risco de rotura iminente',
-'Avaliar déficit neurológico em MMII — síndrome da cauda equina (retenção urinária + anestesia em sela + paraparesia) = emergência cirúrgica',
-'Temperatura e sinais infecciosos — espondilodiscite ou abscesso epidural',
-'PA bilateral se dissecção aórtica suspeita']},
-{id:'sin',t:'Analgesia',it:[
-'Dipirona 1 g IV ou cetorolaco 30 mg IV — 1ª linha para dor lombar aguda não complicada',
-'Ciclobenzaprina 5–10 mg VO se componente de espasmo muscular',
-'Morfina 2–4 mg IV se dor intensa ou etiologia grave suspeita',
-'Mobilização precoce — repouso prolongado não é indicado na lombalgia mecânica']},
-{id:'inv',t:'Investigação conforme suspeita',it:[
-'Urina I + urocultura se febre ou disúria — pielonefrite',
-'TC abdome e pelve com contraste se suspeita de AAA, dissecção ou cólica renal complicada',
-'RNM de coluna se déficit neurológico, febre + lombalgia ou suspeita de compressão medular',
-'Hemograma, PCR, VHS se suspeita infecciosa ou neoplásica']},
-{id:'dsp',t:'Disposição',it:[
-'Síndrome da cauda equina: neurocirurgia de emergência — descompressão em < 6h reduz sequelas',
-'AAA > 5,5 cm ou sintomático: cirurgia vascular de emergência',
-'Sinais de alarme (red flags): déficit neurológico, febre, perda de peso, neoplasia, trauma de alta energia',
-'Lombalgia mecânica sem red flags: alta com AINE oral, calor local e retorno se piora']}
+pal_fa:{l:'Fibrilação Atrial / Flutter Atrial',s:[
+ {id:'sup',t:'Estratificação clínica e tempo de evolução',it:[
+  'Determinar o início exato dos sintomas: < 48 horas vs ≥ 48 horas (ou tempo indeterminado)',
+  'Calcular o escore CHA₂DS₂-VASc para risco tromboembólico e HAS-BLED para risco de sangramento',
+  'Confirmar estabilidade hemodinâmica (se instável: Cardioversão Elétrica Sincronizada 120–200 J IMEDIATA!)'
+ ]},
+ {id:'esp',t:'Manejo agudo: Controle de FC vs Controle de Ritmo (ESC 2024)',alerts:[
+  'FA > 48 HORAS OU TEMPO INDETERMINADO: É FORMALMENTE CONTRAINDICADA a cardioversão (química ou elétrica) sem anticoagulação terapêutica por pelo menos 3 semanas ou Ecocardiograma Transesofágico (ETE) prévio para descartar trombo em apêndice atrial esquerdo! Risco inaceitável de AVC cardioembólico maciço!',
+  'NUNCA utilizar Betabloqueadores ou Bloqueadores de Canais de Cálcio (Diltiazem/Verapamil) se suspeita de IC descompensada, fração de ejeção muito reduzida ou BAV avançado!'
+ ],it:[
+  'CONTROLE DE FREQUÊNCIA CARDÍACA (Meta inicial: FC < 110 bpm em repouso):',
+  'Se FEVE preservada (≥ 40%) e sem IC: Metoprolol 2,5–5 mg IV lento em 2 min (repetir até 3 doses a cada 5 min) OU Diltiazem 0,25 mg/kg IV em 2 min (pode repetir 0,35 mg/kg após 15 min seguido de BIC 5–15 mg/h)',
+  'Se FEVE reduzida (< 40%) ou sinais de insuficiência cardíaca congestiva: Amiodarona 150 mg IV em 10–30 min (seguida de 1 mg/min por 6h e 0,5 mg/min por 18h) OU Deslanosídeo / Digoxina 0,25–0,5 mg IV lento',
+  'ANTICOAGULAÇÃO IMEDIATA: Iniciar Enoxaparina 1 mg/kg SC 12/12h ou DOAC oral (Apixabana 5 mg 12/12h ou Rivaroxabana 20 mg 1×/dia) se indicação por CHA₂DS₂-VASc ≥ 2 em homens ou ≥ 3 em mulheres',
+  'CONTROLE DE RITMO (Apenas se início < 48h documentado e baixo risco embólico): Cardioversão química com Amiodarona 300 mg IV em 1h + infusão de 900 mg em 24h OU CVES sincronizada 120–200 J bifásica'
+ ]},
+ {id:'inv',t:'Investigação etiológica',it:[
+  'Ecocardiograma transtorácico: diâmetro atrial esquerdo, hipertrofia ventricular, disfunção sistólica/diastólica e valvopatias',
+  'Painel tireoidiano (TSH, T4 livre) para pesquisa de tireotoxicose/hipertireoidismo',
+  'Eletrólitos (K⁺, Mg²⁺ basais) e hemograma'
+ ]}
+]},
+pal_tv:{l:'Taquicardia Ventricular Monomórfica com pulso',s:[
+ {id:'sup',t:'Abordagem prioritária e segurança',alerts:[
+  'Toda taquicardia de QRS largo (≥ 120 ms) regular na emergência deve ser presumida e tratada como TAQUICARDIA VENTRICULAR até prova em contrário (especialmente se história prévia de infarto, cardiopatia estrutural ou idade > 50 anos). Administrar verapamil ou diltiazem em TV é potencialmente FATAL!',
+  'Confirmar a presença de pulso arterial! Se ausência de pulso: iniciar RCP imediata e DESFIBRILAÇÃO 200 J (sem sincronização)!'
+ ],it:[
+  'Desfibrilador ligado ao paciente com pás adesivas em modo sincronizado ativado',
+  'Dois acessos venosos periféricos calibrosos'
+ ]},
+ {id:'esp',t:'Intervenção farmacológica vs elétrica',it:[
+  'SE INSTABILIDADE (Hipotensão, dor torácica, confusão, dispneia aguda): Cardioversão Elétrica Sincronizada IMEDIATA com 100 J bifásicos (escalonar para 200 J se falha)',
+  'SE ESTÁVEL: Terapia farmacológica antiarrítmica de 1ª linha:',
+  'Amiodarona 150 mg IV diluída em 100 mL de SG 5% infundida em 10 minutos. Se a arritmia persistir, repetir 150 mg IV em 10 min. Seguir com manutenção contínua de 1 mg/min por 6 horas (360 mg) e depois 0,5 mg/min por 18 horas (540 mg)',
+  'Alternativa em isquemia miocárdica aguda comprovada: Lidocaína 1,0 a 1,5 mg/kg IV em bolus lento (repetir 0,5–0,75 mg/kg em 5–10 min se necessário, até máx 3 mg/kg), seguida de infusão contínua a 1–4 mg/min',
+  'Se refratariedade farmacológica: realizar Cardioversão Elétrica Sincronizada sob sedação e analgesia'
+ ]},
+ {id:'inv',t:'Investigação diagnóstica',it:[
+  'ECG de 12 derivações: critérios de Brugada, Vereckei (aVR) e Santos para confirmação de TV',
+  'Troponina ultrassensível seriada e gasometria com eletrólitos (K⁺, Mg²⁺ séricos)',
+  'Ecocardiograma transtorácico: avaliação de fração de ejeção, acinesia/aneurisma ventricular prévio'
+ ]}
+]},
+pal_tvp:{l:'TV Polimórfica / Torsades de Pointes',s:[
+ {id:'sup',t:'Diferenciação crítica pelo intervalo QTc',alerts:[
+  'TORSADES DE POINTES: Taquicardia ventricular polimórfica associada a PROLONGAMENTO DO INTERVALO QTc (> 500 ms) no ritmo de base. Fármacos como Amiodarona, Procainamida e Sotalol são FORMALMENTE CONTRAINDICADOS pois aumentam ainda mais o QTc e precipitam PCR!',
+  'SE INSTABILIDADE OU TV SEM PULSO: DESFIBRILAÇÃO IMEDIATA (200 J bifásico não sincronizado)! Não é possível sincronizar em ritmo polimórfico caótico'
+ ],it:[
+  'Desfibrilador posicionado e pronto para choque em modo de desfibrilação assincrônica'
+ ]},
+ {id:'esp',t:'Terapêutica específica para Torsades de Pointes',it:[
+  'Sulfato de Magnésio 2 g IV diluído em 100 mL SG 5% infundido em 10–15 minutos (ou em bólus direto se instável). Pode ser repetido em 10–15 min se persistência',
+  'Correção agressiva da hipocalemia associada: manter Potássio sérico em níveis elevados (meta K⁺ 4,5–5,0 mEq/L)',
+  'Se bradicardia desencadeante ou pausas dependentes: Overdrive pacing (estimulação com marcapasso provisório a 90–110 bpm) OU infusão contínua de Isoproterenol 2–10 mcg/min (titular para FC > 90–100 bpm) para encurtar o intervalo QTc',
+  'Suspensão imediata de todos os fármacos que prolongam o intervalo QT (antiarrítmicos, psicotrópicos, antibióticos macrolídeos/quinolonas, antieméticos)',
+  'TV POLIMÓRFICA COM QT NORMAL: A causa primordial é ISQUEMIA MIOCÁRDICA AGUDA! Tratar como SCA: Betabloqueador IV + Lidocaína 1–1,5 mg/kg IV + cateterismo cardíaco emergencial'
+ ]},
+ {id:'inv',t:'Investigação',it:[
+  'Painel eletrolítico completo: K⁺, Mg²⁺, Ca²⁺ ionizado séricos urgentes',
+  'Troponina hs seriada para descartar SCA',
+  'Revisão exaustiva da lista de medicamentos de uso contínuo'
+ ]}
+]},
+pal_bra:{l:'Bradiarritmias Instáveis (BAV 2º/3º grau)',s:[
+ {id:'sup',t:'Reconhecimento de gravidade e monitorização',alerts:[
+  'Sinais de instabilidade por bradicardia: Hipotensão, alteração do estado mental, sinais de choque, dor torácica isquêmica ou insuficiência cardíaca aguda. Eletrodos de marcapasso transcutâneo devem ser fixados no tórax IMEDIATAMENTE!'
+ ],it:[
+  'Fixação imediata dos eletrodos do marcapasso transcutâneo (preferencialmente anteroposterior: anterior sobre o precórdio e posterior entre a escápula esquerda e coluna)',
+  'Acesso venoso periférico calibroso e monitorização multiparamétrica de oximetria e PA'
+ ]},
+ {id:'esp',t:'Farmacoterapia e Marcapasso Transcutâneo (ACLS 2025)',alerts:[
+  'A Atropina NÃO deve ser utilizada (ou não deve retardar o marcapasso) em BAV de 2º grau Mobitz II e BAV Total (3º grau) com QRS largo ou após infarto agudo: nesses casos a lesão é infranodal e a atropina pode piorar o bloqueio por aumento desordenado da frequência atrial!',
+  'Confirmar a CAPTURA MECÂNICA (pulso carotídeo ou femoral palpável e coincidente com a espícula do marcapasso)! A simples presença de espículas no monitor não garante ejeção ventricular!'
+ ],it:[
+  '1ª Linha (em bradicardia sinusal ou BAV nodal): Atropina 1 mg IV em bolus rápido a cada 3–5 min (dose máxima acumulada: 3 mg)',
+  'MARCAPASSO TRANSCUTÂNEO (TCP): Ligar o modo pacing sob demanda, fixar FC alvo de 60–80 bpm, aumentar gradualmente a corrente (mA) até a captura elétrica (espícula precedendo complexo QRS alargado e onda T oposta) e CONFIRMAR pulso arterial compatível. Adicionar 5–10 mA acima do limiar de captura para segurança',
+  'Analgesia e sedação obrigatórias para conforto das contrações torácicas: Fentanil 50–100 mcg IV + Midazolam 2–5 mg IV ou Cetamina',
+  'Drogas cronotrópicas em infusão contínua (se falha de atropina ou enquanto prepara marcapasso): Epinefrina 2 a 10 mcg/min IV em BIC OU Dopamina 5 a 20 mcg/kg/min IV em BIC',
+  'Acionamento urgente da Cardiologia para implante de Marcapasso Transvenoso Provisório'
+ ]},
+ {id:'inv',t:'Investigação complementar',it:[
+  'ECG 12 derivações com derivações direitas (V3R, V4R): descartar IAM de ventrículo direito ou parede inferior como gatilho do BAV',
+  'Potássio sérico (descartar hipercalemia grave simulando BAVT), Digoxina sérica (descartar intoxicação digitálica)'
+ ]}
+]},
+int:{l:'Intoxicação exógena',
+subExcl:[
+ {id:'int_opi',l:'Toxídrome Opioide (Fentanil, Morfina, Metadona)'},
+ {id:'int_col',l:'Toxídrome Colinérgica (Organofosforados, Carbamatos)'},
+ {id:'int_acol',l:'Toxídrome Anticolinérgica (Anti-histamínicos, Atropina)'},
+ {id:'int_simp',l:'Toxídrome Simpaticomimética (Cocaína, Crack, Anfetaminas)'},
+ {id:'int_ser',l:'Síndrome Serotoninérgica (ISRS, IMAO, MDMA)'},
+ {id:'int_ad',l:'Antidepressivos Tricíclicos (Amitriptilina, Nortriptilina)'},
+ {id:'int_pcm',l:'Intoxicação por Paracetamol (Acetaminofeno)'},
+ {id:'int_cv',l:'Cardiotóxicos (Bloqueadores de Cálcio e Betabloqueadores)'}
+],
+subAdd:[
+ {id:'rnc',l:'Coma / Rebaixamento de consciência associado'},
+ {id:'con',l:'Convulsões induzidas por toxinas'},
+ {id:'cho_hip',l:'Choque / Hipotensão vasoplégica'},
+ {id:'pal',l:'Arritmias cardíacas associadas'}
+],
+s:[
+ {id:'sup',t:'Abordagem inicial e segurança (ABCDE toxicológico)',alerts:[
+  'CENTRO DE INFORMAÇÕES TOXICOLÓGICAS (CIT/CIATox): Ligue imediatamente para 0800 722 6001 (plantão 24h em todo o Brasil) para suporte toxicológico especializado!',
+  'NUNCA induzir vômitos (xarope de ipeca é proscrito) e NUNCA realizar lavagem gástrica sem proteção definitiva de via aérea!'
+ ],it:[
+  'Proteção de via aérea: avaliar reflexo de tosse e deglutição; Intubação Traqueal imediata se Escala de Coma de Glasgow ≤ 8',
+  'Glicemia capilar IMEDIATA na admissão (< 5 min) — excluir hipoglicemia tóxica ou mista',
+  'Monitorização contínua de sinais vitais com atenção especial à TEMPERATURA CENTRAL (risco de hipertermia letal em simpaticomiméticos/serotoninérgica ou hipotermia em opioides/sedativos)',
+  'ECG de 12 derivações precoce: mensurar complexo QRS (alargamento > 100 ms indica bloqueio de canal de sódio) e intervalo QTc (> 500 ms indica risco de Torsades)'
+ ]},
+ {id:'esp',t:'Medidas gerais de descontaminação e suporte',alerts:[
+  'Carvão ativado NÃO adsorve: ácidos, bases/cáusticos, ferro, lítio, hidrocarbonetos e álcoois (etanol, metanol, etilenoglicol). Contraindicado em via aérea desprotegida!'
+ ],it:[
+  'Carvão Ativado 1 g/kg (máx 50 g) VO ou por SNG: indicado SOMENTE se ingestão há menos de 1 hora de substância adsorvível E paciente vigil e cooperativo ou com via aérea protegida por tubo orotraqueal com balonete insuflado',
+  'Descontaminação cutânea: despir o paciente, descartar roupas contaminadas em sacos plásticos vedados e lavar a pele com água morna e sabão abundante',
+  'Hidratação balanceada com cristaloides (Ringer Lactato) para manutenção de débito urinário adequado'
+ ]},
+ {id:'inv',t:'Investigação complementar toxicológica',it:[
+  'Gasometria arterial com lactato e cálculo do Anion Gap e Osmolar Gap (descarte de acidose tóxica por metanol, etilenoglicol e salicilatos)',
+  'Eletrólitos séricos (K⁺, Na⁺, Mg²⁺, Ca²⁺), função renal (ureia, creatinina) e creatina fosfoquinase (CPK sérica para descarte de rabdomiólise)',
+  'Enzimas hepáticas (AST/TGO, ALT/TGP basais) e coagulograma',
+  'Dosagem sérica quantitativa de Paracetamol: mandatória em qualquer tentativa de autoextermínio com histórico impreciso de medicação',
+  'Painel toxicológico urinário qualitativo (confirma classes de drogas de abuso expostas)'
+ ]},
+ {id:'dsp',t:'Disposição e observação',it:[
+  'Tentativa de autoextermínio: internação obrigatória com vigilância e avaliação psiquiátrica antes de qualquer alta hospitalar',
+  'Período mínimo de observação na emergência: 6 a 8 horas para toxinas de liberação imediata (e mínimo de 24 horas para formulações de liberação controlada/retard)',
+  'Instabilidade ventilatória, cardiovascular ou neurológica: internação obrigatória em leito de Terapia Intensiva (UTI)'
+ ]}
+]},
+int_opi:{l:'Toxídrome Opioide (Fentanil, Morfina, Metadona)',s:[
+ {id:'sup',t:'Reconhecimento da tríade e suporte ventilatório',alerts:[
+  'Tríade clássica: Depressão respiratória grave (FR < 8–10 irpm) + Miose puntiforme + Coma / Rebaixamento de consciência. Apoiar ventilação com AMBU e oxigênio antes de administrar o antídoto!'
+ ],it:[
+  'Posicionamento de via aérea, cânula de Guedel e ventilação assistida com bolsa-válvula-máscara a 100% de oxigênio'
+ ]},
+ {id:'esp',t:'Terapia com antídoto (Naloxona)',alerts:[
+  'Em dependentes crônicos de opioides: NÃO aplicar doses altas imediatas! Titular Naloxona em doses baixas (0,04 a 0,1 mg) com foco exclusivo em RESTAURAR O DRIVE RESPIRATÓRIO (FR > 10–12 irpm), evitando precipitar síndrome de abstinência aguda com tempestade adrenérgica, agressividade e edema pulmonar neurogênico!'
+ ],it:[
+  'Naloxona 0,04 a 0,4 mg IV/IM/IN: titular a cada 2–3 minutos até restauração de ventilação espontânea adequada (se parada respiratória iminente: 0,4 a 2 mg direto)',
+  'Atenção à meia-vida da Naloxona (30–60 min): substâncias como metadona e fentanil têm ação muito mais prolongada, podendo ocorrer renarcotização súbita!',
+  'Infusão contínua em BIC de Naloxona: se doses repetidas forem necessárias, infundir 2/3 da dose de ataque eficaz por hora em SF 0,9%'
+ ]}
+]},
+int_col:{l:'Toxídrome Colinérgica (Organofosforados, Carbamatos)',s:[
+ {id:'sup',t:'Proteção da equipe e manifestações clínicas',alerts:[
+  'A contaminação secundária da equipe de saúde por organofosforados através da pele do paciente é um RISCO REAL! Usar avental impermeável e luvas duplas de nitrilo/borracha antes de tocar o paciente!'
+ ],it:[
+  'Identificar síndrome colinérgica muscarínica (DUMBELS: diarreia, aumento de urina, miose, broncorreia severa com broncoespasmo, vômitos, lacrimejamento, sialorreia profusa)',
+  'Despir completamente o paciente e banho minucioso com água e sabão',
+  'Aspiração contínua de secreções respiratórias abundantes'
+ ]},
+ {id:'esp',t:'Antídotos: Atropina em doses duplicadas e Pralidoxima',alerts:[
+  'A meta da atropinização NÃO é a dilatação pupilar (midríase) nem taquicardia: O ALVO TERAPÊUTICO CRÍTICO É A CESSAÇÃO DA BRONCORREIA E VIAS AÉREAS SECAS!'
+ ],it:[
+  'Atropina: dose inicial de 1 a 2 mg IV em bólus (crianças: 0,02 mg/kg). Se sem resposta em 3–5 minutos, DOBRAR A DOSE SUCESSIVAMENTE (2 mg → 4 mg → 8 mg → 16 mg IV) até atingir vias aéreas secas e ausculta pulmonar limpa sem estertores',
+  'Após atropinização: manter infusão contínua de Atropina calculada em 10% a 20% da dose total de ataque requerida por hora em BIC',
+  'Pralidoxima (reativador da acetilcolinesterase): 1 a 2 g IV infundido em 30 min se organofosforado (eficaz nas primeiras 24–48h antes do envelhecimento da enzima)'
+ ]}
+]},
+int_acol:{l:'Toxídrome Anticolinérgica (Anti-histamínicos, Atropina)',s:[
+ {id:'sup',t:'Quadro clínico e exame físico',it:[
+  'Tríade clássica: Midríase não reagente + Pele seca e quente (anidrose) + Delírio agitado com alucinações visuais e retenção urinária aguda (bexigoma)',
+  'Passagem imediata de Sonda Vesical de Demora para alívio de globo vesical',
+  'Monitorização de ECG (pesquisar taquicardia sinusal e alargamento de QRS)'
+ ]},
+ {id:'esp',t:'Manejo sintomático e antídoto',alerts:[
+  'Fisostigmina é CONTRAINDICADA se houver alargamento de complexo QRS no ECG ou suspeita de intoxicação por antidepressivos tricíclicos (risco de assistolia fatal)!'
+ ],it:[
+  '1ª Linha: Diazepam 5–10 mg IV lento ou Midazolam 5 mg IM/IV para sedação, controle da agitação psicomotora e prevenção de hipertermia',
+  'Resfriamento físico passivo e ativo se temperatura axilar > 38,5°C',
+  'Fisostigmina 0,5 a 2 mg IV lento em 5 min: antídoto específico de uso estrito sob monitorização contínua para delírio anticolinérgico grave refratário a benzodiazepínicos com QRS estritamente normal'
+ ]}
+]},
+int_simp:{l:'Toxídrome Simpaticomimética (Cocaína, Crack, Anfetaminas)',s:[
+ {id:'sup',t:'Hiperestimulação adrenérgica',it:[
+  'Quadro clínico: Taquicardia severa, crise hipertensiva, midríase fotorreagente, diaforese profusa (pele úmida — diferencial de anticolinérgico!), tremores e agitação psicomotora',
+  'Avaliar sinais de complicações vasculares agudas: SCA / espasmo coronariano, dissecção aguda de aorta, AVC e rabdomiólise'
+ ]},
+ {id:'esp',t:'Controle simpático e contraindicação absoluta de betabloqueadores',alerts:[
+  'BETABLOQUEADORES PUROS SÃO FORMALMENTE CONTRAINDICADOS na intoxicação aguda por cocaína ou anfetaminas! O bloqueio beta isolado provoca estímulo alfa-adrenérgico sem oposição ("unopposed alpha stimulation"), resultando em vasoespasmo coronariano catastrófico e crise hipertensiva fulminante!'
+ ],it:[
+  '1ª Linha obrigatória: Benzodiazepínicos em doses generosas e repetidas (Diazepam 5–10 mg IV ou Midazolam 5 mg IV/IM a cada 5–10 min) até controle da agitação, FC e PA',
+  'Crise hipertensiva persistente após sedação: Nitroglicerina IV ou Nitroprussiato de Sódio IV ou Fentolamina (bloqueador alfa direto)',
+  'Dor torácica associada: tratar com Nitrato SL/IV + AAS 200 mg VO + Benzodiazepínico IV (ativar hemodinâmica se supra de ST persistente pós-nitrato)',
+  'Hipertermia maligna (> 39–40°C): resfriamento ativo imediato com compressas de gelo e infusão de cristaloides gelados'
+ ]}
+]},
+int_ser:{l:'Síndrome Serotoninérgica (ISRS, IMAO, MDMA)',s:[
+ {id:'sup',t:'Critérios de Hunter para diagnóstico',it:[
+  'Verificar tríade: Alteração do estado mental (agitação, confusão) + Hiperatividade autonômica (diaforese, taquicardia, febre) + Hiperatividade neuromuscular (clônus espontâneo ou induzido, hiperreflexia patológica em MMII e rigidez)',
+  'Avaliar temperatura central (hipertermia severa com risco de coagulopatia e falência de múltiplos órgãos)'
+ ]},
+ {id:'esp',t:'Terapêutica e antídoto específico',it:[
+  'Suspensão imediata de todos os agentes serotoninérgicos (antidepressivos, tramadol, fentanil, ondansetrona, linezolida)',
+  'Benzodiazepínicos IV em doses tituladas (Diazepam 5–10 mg IV a cada 10 min) para controle muscular e tônus simpático',
+  'Antagonista serotoninérgico específico: Ciproeptadina 12 mg VO/SNG dose de ataque, seguido de 2 mg a cada 2h se sintomas persistirem (ou manutenção 8 mg 6/6h)',
+  'Hipertermia severa (> 41°C) ou rigidez torácica: Intubação em sequência rápida com bloqueador neuromuscular NÃO DESPOLARIZANTE (Rocurônio; Succinilcolina é CONTRAINDICADA pelo risco de hipercalemia maciça por rabdomiólise)'
+ ]}
+]},
+int_ad:{l:'Antidepressivos Tricíclicos (Amitriptilina, Nortriptilina)',s:[
+ {id:'sup',t:'Monitorização e cardiotoxicidade por bloqueio de canal de Na⁺',alerts:[
+  'Cardiotoxicidade aguda: QRS > 100 ms prediz risco elevado de convulsões; QRS > 160 ms prediz arritmias ventriculares malignas (TV/FV). Onda R proeminente em aVR (> 3 mm) é marcador de toxicidade aguda severa!'
+ ],it:[
+  'ECG de 12 derivações seriado a cada 15–30 min',
+  'Acesso venoso duplo e monitorização multiparamétrica contínua'
+ ]},
+ {id:'esp',t:'Alcalinização com Bicarbonato de Sódio 8,4%',alerts:[
+  'ANTIARRÍTMICOS CLASSE IA (Quinidina, Procainamida) E CLASSE III (Amiodarona) SÃO FORMALMENTE CONTRAINDICADOS pois bloqueiam canais de sódio/potássio e pioram a arritmia!',
+  'Flumazenil é FORMALMENTE CONTRAINDICADO por precipitar estado de mal epiléptico refratário letal!'
+ ],it:[
+  'INDICAÇÃO DE BICARBONATO DE SÓDIO 8,4%: Complexo QRS > 100 ms, onda R > 3 mm em aVR, arritmias ventriculares ou hipotensão arterial refratária a fluidos',
+  'Dose de ataque: Bicarbonato de Sódio 8,4% 1 a 2 mEq/kg (1–2 mL/kg da solução a 8,4%) IV em bólus rápido em 2–3 minutos',
+  'Repetir bólus a cada 5–10 minutos até estreitamento do QRS (< 100 ms) e elevação do pH sérico para 7,45 a 7,55',
+  'Manutenção: infusão contínua de 150 mEq de Bicarbonato em 850 mL de SG 5% a 150–200 mL/h, com dosagem seriada de gasometria e potássio sérico (repor K⁺ se hipocalemia induzida pela alcalose)',
+  'Arritmias ventriculares refratárias: Lidocaína 1,0 a 1,5 mg/kg IV em bólus (antiarrítmico de escolha)'
+ ]}
+]},
+int_pcm:{l:'Intoxicação por Paracetamol (Acetaminofeno)',s:[
+ {id:'sup',t:'Avaliação de dose tóxica e tempo de exposição',it:[
+  'Calcular dose total ingerida: ingestão > 150 mg/kg (ou > 7,5 g em adultos) é potencialmente hepatotóxica',
+  'Determinar o tempo exato decorrido desde a ingestão para interpretação no Nomograma de Rumack-Matthew'
+ ]},
+ {id:'esp',t:'Terapia com N-Acetilcisteína (NAC) IV',alerts:[
+  'Se ingestão tóxica conhecida (> 150 mg/kg ou > 7,5 g) ou tempo indeterminado/tardio (> 8 horas): INICIAR N-ACETILCISTEÍNA IMEDIATAMENTE sem esperar o resultado do laboratório! O benefício protetor máximo ocorre se infundida nas primeiras 8h, mas previne insuficiência hepática e morte mesmo tardiamente!'
+ ],it:[
+  'Protocolo de 21 horas de N-Acetilcisteína (NAC) IV:',
+  '1ª Etapa (Ataque): 150 mg/kg diluídos em 200 mL de SG 5% infundidos em 1 hora',
+  '2ª Etapa: 50 mg/kg diluídos em 500 mL de SG 5% infundidos nas 4 horas seguintes',
+  '3ª Etapa: 100 mg/kg diluídos em 1.000 mL de SG 5% infundidos nas 16 horas seguintes',
+  'Avaliar enzimas hepáticas (TGO/TGP) e coagulograma (INR) ao término da infusão antes de suspender'
+ ]},
+ {id:'inv',t:'Investigação complementar',it:[
+  'Dosagem sérica quantitativa de Paracetamol coletada entre 4h e 24h pós-ingestão e plotada no Nomograma de Rumack-Matthew',
+  'AST/TGO, ALT/TGP, Bilirrubinas, INR/TP, creatinina e gasometria com lactato'
+ ]}
+]},
+int_cv:{l:'Cardiotóxicos (Bloqueadores de Cálcio e Betabloqueadores)',s:[
+ {id:'sup',t:'Choque cardiogênico tóxico',it:[
+  'Bradicardia severa refratária com hipotensão profunda e colapso circulatório',
+  'Diferencial laboratorial: Bloqueadores de Canal de Cálcio cursam frequentemente com HIPERGLICEMIA severa (inibição de insulina pancreática); Betabloqueadores cursam com normo ou hipoglicemia'
+ ]},
+ {id:'esp',t:'Protocolo escalonado de ressuscitação cardiotoxicológica',it:[
+  '1ª Linha: Gluconato de Cálcio 10% 30–60 mL IV (ou Cloreto de Cálcio 10% 10–20 mL em cateter venoso central) em 5–10 min + Atropina 1 mg IV',
+  'Glucagon 5 a 10 mg IV em 2–5 min seguido de infusão a 2–5 mg/h (mais eficaz em betabloqueadores por estímulo direto de AMPc)',
+  'TERAPIA DE INSULINA EM ALTAS DOSES COM EUGLICEMIA (HIET): Insulina Regular 1 UI/kg IV em bólus + Glicose 50% 50 mL IV, seguido de infusão contínua de Insulina Regular a 1 UI/kg/h (titulando até 2–10 UI/kg/h) com SG 10% ou SG 50% contínuo para manter glicemia 150–250 mg/dL e monitorização horária de Potássio sérico (manter K⁺ 2,5–3,5 mEq/L sem reposição excessiva)',
+  'EMULSÃO LIPÍDICA A 20% (Intralipid): bólus de 1,5 mL/kg IV em 2–3 min seguido de infusão a 0,25 mL/kg/min por 30–60 min se choque refratário ou PCR iminente',
+  'Norepinefrina e Epinefrina em doses tituladas para manter PAM ≥ 65 mmHg'
+ ]}
+]},
+dlb:{l:'Dor lombar aguda',
+subExcl:[
+ {id:'dlb_mec',l:'Lombalgia Mecânica / Lombociatalgia Aguda'},
+ {id:'dlb_ceu',l:'Síndrome da Cauda Equina (Emergência Cirúrgica)'},
+ {id:'dlb_inf',l:'Infecção Espinhal (Abscesso Epidural / Espondilodiscite)'},
+ {id:'dlb_vasc',l:'Aneurisma de Aorta Abdominal (AAA) / Vascular'},
+ {id:'dlb_col',l:'Cólica Nefrética / Urolitíase Aguda'}
+],
+subAdd:[
+ {id:'feb',l:'Febre associada / Sepse'},
+ {id:'cho_hip',l:'Choque hemorrágico / Hipotensão'},
+ {id:'rnc',l:'Rebaixamento de consciência / Delirium'}
+],
+s:[
+ {id:'sup',t:'Rastreio sistemático de Red Flags (Sinais de Alarme)',alerts:[
+  'RED FLAGS DA LOMBALGIA: 1) Síndrome da Cauda Equina: retenção urinária com incontinência por transbordamento, anestesia em sela (períneo), fraqueza motora progressiva ou bilateral em MMII; 2) Infecção: febre, calafrios, usuário de drogas IV, imunossupressão, cirurgia espinhal prévia; 3) Vascular: início súbito em > 50 anos, massa pulsátil abdominal, hipotensão inexplicada (AAA roto); 4) Neoplasia: história prévia de câncer, perda ponderal inexplicada, dor pior em repouso noturno'
+ ],it:[
+  'Avaliação neurológica focada em membros inferiores: força motora (L4-extensão do joelho, L5-dorsiflexão do hálux, S1-flexão plantar), sensibilidade de dermátomos e reflexos patelar e aquileu',
+  'Pesquisa de anestesia em sela e palpação de globo vesical (retenção urinária aguda)',
+  'Palpação cuidadosa do abdome: busca ativa de massa aórtica pulsátil em pacientes com mais de 50 anos',
+  'Aferição de temperatura axilar e sinais vitais completos'
+ ]},
+ {id:'sin',t:'Analgesia multimodal e orientações na lombalgia mecânica',alerts:[
+  'O repouso absoluto no leito é FORMALMENTE CONTRAINDICADO pela literatura moderna (NICE / ACP): atrasa a reabilitação, aumenta a rigidez muscular e cronifica os sintomas. O paciente deve ser ativamente estimulado a manter atividades leves conforme tolerância!',
+  'EVITAR O USO ROTINEIRO DE OPIOIDES em lombalgia mecânica pura (risco de dependência, sedação e ausência de superioridade funcional comprovada)'
+ ],it:[
+  'Dipirona 1 a 2 g IV a cada 6h OU Paracetamol 750–1.000 mg VO a cada 6h',
+  'Anti-inflamatório Não Esteroidal (AINE): Cetoprofeno 100 mg IV 12/12h ou Ibuprofeno 600 mg VO 8/8h por curto período (3 a 5 dias), se função renal preservada e sem risco hemorrágico',
+  'Relaxante muscular adjuvante se espasmo paravertebral intenso: Ciclobenzaprina 5 a 10 mg VO à noite por 5 a 7 dias',
+  'Aplicação de calor local úmido na região lombar por 15 a 20 minutos várias vezes ao dia'
+ ]},
+ {id:'esp',t:'Conduta e intervenção específica',it:[
+  'Lombalgia mecânica simples sem red flags: analgesia oral ambulatorial, orientações ergonômicas e desmistificação do quadro',
+  'Suspeita de Cauda Equina ou Abscesso Epidural: NPO absoluto, leito monitorizado e acionamento emergencial da Neurocirurgia / Ortopedia de coluna',
+  'Suspeita de Aneurisma de Aorta Abdominal roto ou sintomático: acionamento imediato da Cirurgia Vascular com hipotensão permissiva e reposição com hemoderivados'
+ ]},
+ {id:'inv',t:'Investigação complementar racional',alerts:[
+  'NÃO SOLICITAR RADIOGRAFIAS de coluna na emergência para lombalgia mecânica sem red flags! Exame de baixo valor preditivo, irradiação desnecessária e que não altera a conduta!'
+ ],it:[
+  'Ressonância Magnética (RM) de coluna lombossacra de emergência: exame padrão-ouro indicado imediatamente se suspeita de Cauda Equina, déficit neurológico focal progressivo ou infecção espinhal',
+  'Tomografia Computadorizada (TC) de coluna ou abdome: indicada se RM contraindicada ou para avaliar trauma ósseo / cólica renal / aneurisma aórtico',
+  'Laboratório na suspeita de alarme: hemograma completo, PCR sérica, VHS, função renal e sedimento urinário'
+ ]},
+ {id:'dsp',t:'Disposição',it:[
+  'Cauda Equina / Abscesso Epidural / AAA roto: encaminhamento cirúrgico imediato e internação hospitalar/UTI',
+  'Lombalgia mecânica sem critérios de alarme: alta médica orientada com analgésicos orais, manutenção da marcha e orientação formal de retorno se retenção urinária, anestesia em sela, febre ou fraqueza nas pernas'
+ ]}
+]},
+dlb_mec:{l:'Lombalgia Mecânica / Lombociatalgia Aguda',s:[
+ {id:'sup',t:'Exame físico biomecânico',it:[
+  'Manobra de Lasègue (elevação da perna retificada): positiva se dor ciática irradiada abaixo do joelho entre 30° e 70° (sugestivo de compressão radicular L4-L5 ou L5-S1)',
+  'Teste de Lasègue cruzado: alta especificidade para hérnia discal se positivo'
+ ]},
+ {id:'sin',t:'Farmacoterapia ambulatorial',it:[
+  'Dipirona 1 g VO 6/6h + Cetoprofeno 100 mg VO 12/12h por 3–5 dias',
+  'Ciclobenzaprina 5–10 mg VO à noite para alívio do espasmo paravertebral agudo',
+  'Calor local úmido e deambulação leve estimulada'
+ ]},
+ {id:'dsp',t:'Critérios de alta',it:[
+  'Alta com orientações de postura e agendamento de fisioterapia ambulatorial se sintomas persistirem por > 4–6 semanas'
+ ]}
+]},
+dlb_ceu:{l:'Síndrome da Cauda Equina (Emergência Cirúrgica)',s:[
+ {id:'sup',t:'Reconhecimento emergencial',alerts:[
+  'SÍNDROME DA CAUDA EQUINA: A descompressão cirúrgica de emergência realizada preferencialmente em < 24–48 HORAS é mandatória para evitar paraplegia definitiva e incontinência fecal e urinária irreversíveis!'
+ ],it:[
+  'Documentar no prontuário: sensibilidade perianal em sela, tônus do esfíncter anal ao toque retal e volume residual pós-miccional (> 200 mL no USG ou sondagem vesical)',
+  'Jejum absoluto (NPO) e preparo pré-operatório imediato'
+ ]},
+ {id:'esp',t:'Conduta neurocirúrgica emergencial',it:[
+  'Acionamento prioritário da equipe de Neurocirurgia / Cirurgia de Coluna',
+  'Dexametasona 10 mg IV (se etiologia compressiva neoplásica/edema medular associado)',
+  'Passagem de Sonda Vesical de Demora para drenagem vesical protetora e balanço hídrico'
+ ]},
+ {id:'inv',t:'Confirmação por imagem',it:[
+  'Ressonância Magnética (RM) de coluna lombossacra de emergência: confirma hérnia discal maciça, hematoma peridural ou lesão tumoral compressiva'
+ ]},
+ {id:'dsp',t:'Disposição',it:[
+  'Transferência direta para o Centro Cirúrgico / Internação hospitalar de emergência'
+ ]}
+]},
+dlb_inf:{l:'Infecção Espinhal (Abscesso Epidural / Espondilodiscite)',s:[
+ {id:'sup',t:'Suspeita clínica e monitorização',it:[
+  'Tríade clássica: dor lombar severa localizada + febre + déficit neurológico progressivo',
+  'Investigar fatores de risco: uso de drogas injetáveis, diabetes mellitus, imunossupressão, infecção cutânea ou procedimento raquidiano recente'
+ ]},
+ {id:'esp',t:'Terapia antimicrobiana e descompressão',alerts:[
+  'Se houver qualquer déficit neurológico motor instalado ou progressivo: indicação de LAMINECTOMIA E DRENAGEM CIRÚRGICA DE EMERGÊNCIA!'
+ ],it:[
+  'Antibioticoterapia parenteral de amplo espectro em < 1h (após coleta de hemoculturas): Vancomicina 15–20 mg/kg IV 12/12h (cobertura de MRSA) + Cefepime 2 g IV 8/8h (ou Ceftriaxona 2 g IV 12/12h)',
+  'Avaliação cirúrgica imediata da Neurocirurgia'
+ ]},
+ {id:'inv',t:'Investigação diagnóstica',it:[
+  'Ressonância Magnética com contraste de coluna total (método de escolha)',
+  '2 pares de hemoculturas de sítios periféricos distintos',
+  'PCR sérica quantitativa e VHS para acompanhamento de resposta terapêutica'
+ ]}
+]},
+dlb_vasc:{l:'Aneurisma de Aorta Abdominal (AAA) / Vascular',s:[
+ {id:'sup',t:'Alta suspeição e estabilização hemodinâmica',alerts:[
+  'Dor lombar súbita com irradiação para flancos em paciente idoso, associada a hipotensão ou síncope: PENSAR PRIMARIAMENTE EM RUPTURA DE ANEURISMA DE AORTA ABDOMINAL!',
+  'Manter hipotensão permissiva (PAS 80–90 mmHg) se sangramento ativo enquanto aguarda a cirurgia!'
+ ],it:[
+  'Dois acessos venosos periféricos de grosso calibre (14–16G)',
+  'Tipagem sanguínea e prova cruzada para concentrados de hemácias, plasma e plaquetas'
+ ]},
+ {id:'esp',t:'Cirurgia vascular de emergência',it:[
+  'Acionamento IMEDIATO da Cirurgia Vascular para reparo cirúrgico aberto de emergência ou endovascular (EVAR)',
+  'Ácido Tranexâmico 1 g IV em 10 min se choque hemorrágico ativo'
+ ]},
+ {id:'inv',t:'Imagem confirmatória',it:[
+  'POCUS de aorta abdominal na sala de emergência (diâmetro > 3 cm confirma aneurisma; líquido livre intraperitoneal ou retroperitoneal indica rotura)',
+  'Angiotomografia de abdome e pelve com contraste se paciente hemodinamicamente estável'
+ ]}
+]},
+dlb_col:{l:'Cólica Nefrética / Urolitíase Aguda',s:[
+ {id:'sup',t:'Apresentação e suporte',it:[
+  'Dor lombar em cólica, intensa, súbita, irradiando para fossa ilíaca, bolsa escrotal ou grandes lábios',
+  'Sinais de gravidade: febre associada (risco de pielonefrite obstrutiva / urossepsse!), anúria ou rim único'
+ ]},
+ {id:'sin',t:'Analgesia de 1ª linha',alerts:[
+  'AINE parenteral é a primeira linha de analgesia comprovada na cólica nefrética: reduz a pressão intraureteral e o espasmo ureteral!'
+ ],it:[
+  'Cetorolaco 30 mg IV lento OU Cetoprofeno 100 mg IV em 100 mL SF',
+  'Dipirona 2 g IV associada',
+  'Morfina 2–4 mg IV se dor severa refratária ao AINE',
+  'Ondansetrana 4–8 mg IV se náuseas ou vômitos associados'
+ ]},
+ {id:'esp',t:'Terapia expulsiva e conduta urológica',it:[
+  'Cálculos ureterais distais de 5 a 10 mm em paciente estável: Tansulosina 0,4 mg VO 1×/dia (facilita eliminação espontânea)',
+  'Sinais de ITU associada / sepse obstrutiva: URGÊNCIA UROLÓGICA para descompressão imediata com cateter Duplo J ou Nefrostomia percutânea + Ceftriaxona 2 g IV'
+ ]},
+ {id:'inv',t:'Investigação complementar',it:[
+  'Tomografia Computadorizada de abdome e pelve sem contraste (TC de baixa dose): padrão-ouro para cálculo, dimensões e hidronefrose',
+  'Urina tipo 1 (hematúria microscópica presente em > 85%, leucocitúria, nitrito) e creatinina sérica'
+ ]}
 ]},
 ict:{l:'Icterícia / Insuficiência Hepática Aguda',
 subExcl:[
@@ -2746,41 +3149,151 @@ ict_cir:{l:'Cirrose Descompensada / ACLF',s:[
 {id:'esp',t:'Farmacoterapia',it:['Lactulose 20–30 mL VO/SNG + Rifaximina 550 mg VO 12/12h se encefalopatia','Ceftriaxona 2 g IV se suspeita de PBE (PMN no líquido ascítico ≥ 250/mm³)','Albumina 20% 1,5 g/kg no D1 e 1,0 g/kg no D3 se PBE confirmada (previne síndrome hepatorrenal)']},
 {id:'dsp',t:'Disposição',it:['Internação hospitalar monitorizada']}
 ]},
-emmi:{l:'Edema / Dor em MMII',subAdd:[{id:'emmi_tvp',l:'TVP isolada (sem TEP)'},{id:'tep',l:'TEP suspeito'},{id:'emmi_art',l:'Isquemia arterial aguda'},{id:'emmi_edem',l:'Edema bilateral (cardíaco/renal/hepático)'}],s:[
-{id:'sup',t:'Avaliação inicial',it:[
-'Palpar panturrilha bilateralmente — dor à compressão; medir circunferências (assimetria ≥ 3 cm sugere TVP)',
-'Avaliar coloração, temperatura e pulsos — diferencial entre TVP e isquemia arterial aguda',
-'Score de Wells para TVP — estratificação de risco pré-teste']},
-{id:'inv',t:'Investigação',it:[
-'Duplex scan venoso de MMII — padrão-ouro para TVP',
-'D-dímero se Wells baixo — valor normal exclui TVP em baixo risco (sensibilidade > 95%)',
-'BNP/NT-proBNP se edema bilateral — etiologia cardíaca',
-'Albumina, ureia, creatinina — hipoproteinemia, síndrome nefrótica',
-'AngioTC tórax se sintomas de TEP — dispneia, dor pleurítica, hipoxemia']}
+emmi:{l:'Edema / Dor em Membros Inferiores',
+subExcl:[
+ {id:'emmi_tvp',l:'Trombose Venosa Profunda (TVP de MMII)'},
+ {id:'emmi_art',l:'Isquemia Arterial Aguda (Os 6 "P"s de Pratt)'},
+ {id:'emmi_fas',l:'Infecção Necrosante de Partes Moles / Fasciíte'},
+ {id:'emmi_cel',l:'Celulite / Erisipela (Infecção não necrosante)'},
+ {id:'emmi_edem',l:'Edema Bilateral Sistêmico (Cardíaco / Hepático / Renal)'}
+],
+subAdd:[
+ {id:'tep',l:'TEP suspeito ou associado'},
+ {id:'cho_sep',l:'Sepse / Choque de partes moles'},
+ {id:'cho_hip',l:'Choque hipovolêmico / Isquêmico'},
+ {id:'eap',l:'Edema agudo de pulmão / IC associada'}
+],
+s:[
+ {id:'sup',t:'Avaliação sistemática e diagnóstico diferencial vascular',alerts:[
+  'DIFERENCIAÇÃO CRÍTICA: Unilateral (pensar em TVP, isquemia arterial aguda, infecção bacteriana, ruptura de cisto de Baker) vs Bilateral (Insuficiência Cardíaca descompensada, síndrome nefrótica, cirrose hepática, insuficiência venosa crônica)',
+  'ISQUEMIA ARTERIAL AGUDA É UMA EMERGÊNCIA TEMPO-DEPENDENTE: Membro pálido, sem pulsos, frio e doloroso exige cirurgia vascular em < 4–6 horas para evitar amputação!'
+ ],it:[
+  'Exame físico comparativo bilateral minucioso: palpação de pulsos periféricos (femoral, poplíteo, tibial posterior e pedioso dorsal)',
+  'Medição da circunferência das panturrilhas com fita métrica a 10 cm abaixo da tuberosidade tibial (assimetria ≥ 3 cm é sugestiva de TVP)',
+  'Avaliação de temperatura local, perfusão capilar distal, coloração cutânea (palidez, cianose, eritema), presença de bolhas e empastamento muscular'
+ ]},
+ {id:'sin',t:'Analgesia e posicionamento adequado',alerts:[
+  'NUNCA elevar o membro se houver suspeita de Isquemia Arterial Aguda: a elevação reduz a pressão de perfusão capilar periférica e acelera a necrose tecidual!'
+ ],it:[
+  'Elevação do membro a 30° se TVP ou celulite/insuficiência venosa (facilita o retorno venoso e reduz o edema)',
+  'Manter membro na horizontal ou levemente pendente se suspeita de isquemia arterial aguda',
+  'Dipirona 1 g IV a cada 6h + Morfina 2–4 mg IV se dor isquêmica aguda severa'
+ ]},
+ {id:'esp',t:'Diretriz de intervenção por etiologia',it:[
+  'Suspeita de TVP com escore de Wells provável (≥ 2): iniciar anticoagulação plena enquanto aguarda confirmação ultrassonográfica, se sem contraindicações hemorrágicas',
+  'Isquemia arterial aguda: heparinização sistêmica imediata com Heparina Não Fracionada (HNF) bolus e acionamento vascular emergencial',
+  'Infecção necrosante de partes moles: desbridamento cirúrgico de emergência e antibioticoterapia tripla imediata'
+ ]},
+ {id:'inv',t:'Investigação complementar escalonada',it:[
+  'Ultrassonografia com Doppler venoso de compressão de MMII: padrão-ouro para TVP (incompressibilidade da veia, ausência de fluxo fásico)',
+  'D-dímero de alta sensibilidade com ponto de corte ajustado pela idade (idade × 10 mcg/L se > 50 anos): utilizar APENAS se probabilidade de TVP improvável (Wells ≤ 1) para exclusão diagnóstica',
+  'Doppler arterial de MMII ou Angiotomografia arterial se suspeita de oclusão arterial aguda',
+  'Escore LRINEC (Laboratory Risk Indicator for Necrotizing Fasciitis) se sinais atípicos, bolhas ou crepitação: hemograma, PCR, sódio, glicose, creatinina'
+ ]},
+ {id:'dsp',t:'Disposição',it:[
+  'Isquemia arterial aguda e infecção necrosante: centro cirúrgico de emergência e UTI pós-operatória',
+  'TVP proximal não complicada de baixo risco com suporte adequado: elegível para anticoagulação domiciliar com DOAC oral seguro e acompanhamento ambulatorial',
+  'Edema bilateral por IC descompensada, sepse de partes moles ou flebite complicada: internação hospitalar'
+ ]}
 ]},
-emmi_tvp:{l:'TVP / TEP',s:[
-{id:'esp',t:'Anticoagulação',it:[
-'Rivaroxabana 15 mg 12/12h por 21 dias (sem heparina ponte) — 1ª opção em TVP/TEP estável',
-'HNF IV se instabilidade hemodinâmica — permite trombólise rápida se necessário',
-'TEP alto risco (instabilidade): alteplase 100 mg IV em 2h',
-'Filtro de veia cava apenas se contraindicação absoluta à anticoagulação']}
+emmi_tvp:{l:'Trombose Venosa Profunda (TVP de MMII)',s:[
+ {id:'sup',t:'Estratificação de probabilidade clínica pré-teste (Wells TVP)',alerts:[
+  'Calcular o Escore de Wells para TVP: Câncer ativo (+1), Paralisia/imobilização (+1), Acamado recente > 3d ou cirurgia em 12 sem (+1), Dor no trajeto venoso (+1), Edema em toda a perna (+1), Panturrilha > 3 cm maior (+1), Edema depressível assimétrico (+1), Veias colaterais superficiais (+1), Diagnóstico alternativo tão provável (-2). Wells ≥ 2 = Provável; Wells < 2 = Improvável'
+ ],it:[
+  'Se Wells improvável (< 2): solicitar D-dímero; se normal (< 500 ou ajustado pela idade), TVP descartada sem necessidade de Doppler. Se elevado: USG Doppler venoso',
+  'Se Wells provável (≥ 2): solicitar USG Doppler venoso de MMII direto'
+ ]},
+ {id:'esp',t:'Terapia anticoagulante plena (CHEST 2021/2024)',alerts:[
+  'DOACs orais em monoterapia são a 1ª ESCOLHA no tratamento da TVP aguda (superioridade de segurança hemorrágica e sem necessidade de heparina parenteral prévia em Rivaroxabana ou Apixabana)!'
+ ],it:[
+  '1ª Linha: Rivaroxabana 15 mg VO 12/12h por 21 dias com alimentos (seguido de 20 mg 1×/dia) OU Apixabana 10 mg VO 12/12h por 7 dias (seguido de 5 mg 12/12h)',
+  'Alternativa parenteral: Enoxaparina 1 mg/kg SC 12/12h (ou Fondaparinux 7,5 mg SC 1×/dia)',
+  'Insuficiência renal grave (ClCr < 15–30 mL/min) ou Phlegmasia cerulea dolens: Heparina Não Fracionada (HNF) bolus 80 UI/kg IV seguido de 18 UI/kg/h em BIC (alvo TTPa 1,5–2,5×)',
+  'Filtro de Veia Cava Inferior (FVCI): indicação restrita a contraindicação absoluta à anticoagulação ou TVP recorrente em anticoagulação plena terapêutica'
+ ]},
+ {id:'inv',t:'Exames de imagem',it:[
+  'USG Doppler venoso de MMII: avaliação do sistema venoso profundo proximal (femoral comum, femoral profunda, poplítea) e distal'
+ ]},
+ {id:'dsp',t:'Disposição',it:[
+  'TVP não complicada de membro inferior: tratamento ambulatorial seguro se paciente estável, sem dor incoercível, com função renal adequada e suporte familiar'
+ ]}
 ]},
-emmi_art:{l:'Isquemia arterial aguda',s:[
-{id:'esp',t:'Manejo de emergência',it:[
-'Cirurgia vascular de emergência — janela de viabilidade 6h; após isto reperfusão pode causar síndrome compartimental',
-'HNF 5.000 UI IV bolus imediato — prevenir extensão do trombo',
-'Não elevar o membro — agrava isquemia distal',
-'Morfina IV para analgesia — dor intensa é característica da isquemia aguda']},
-{id:'inv',t:'Avaliação',it:[
-'ITO (índice tornozelo-braquial) — < 0,9 DAP; < 0,4 isquemia crítica',
-'Angiotomografia arterial — localização da oclusão antes de embolectomia ou trombólise local']}
+emmi_art:{l:'Isquemia Arterial Aguda (Os 6 "P"s de Pratt)',s:[
+ {id:'sup',t:'Reconhecimento dos 6 "P"s e janela terapêutica',alerts:[
+  'JANELA DE VIABILIDADE TISSULAR DE 4 A 6 HORAS! Pesquisar os 6 "P"s: 1) Pain (dor lancinante súbita); 2) Pallor (palidez cadavérica); 3) Pulselessness (ausência de pulsos distais); 4) Paresthesia (parestesias/dormência - indica sofrimento isquêmico neural); 5) Paralysis (fraqueza/paralisia muscular - ALERTA CRÍTICO de isquemia avançada com risco de perda do membro!); 6) Poikilothermia (extremidade fria)'
+ ],it:[
+  'Palpação comparativa rigorosa de todos os pulsos periféricos',
+  'Proteção térmica passiva com algodão ortopédico (NÃO aplicar compressas quentes ou bolsas térmicas!)',
+  'Manter membro na horizontal ou levemente pendente (NUNCA elevar o membro!)'
+ ]},
+ {id:'esp',t:'Heparinização de emergência e revascularização cirúrgica',it:[
+  'Anticoagulação imediata em bólus: Heparina Não Fracionada (HNF) 5.000 a 10.000 UI IV (ou 80 UI/kg IV) em bólus imediato para prevenir propagação e trombose retrógrada, seguido de infusão contínua a 18 UI/kg/h',
+  'Acionamento IMEDIATO da Cirurgia Vascular de emergência para embolectomia cirúrgica por cateter de Fogarty, trombólise intra-arterial farmacomecânica ou bypass',
+  'Analgesia venosa potente com opioides (Morfina 2–4 mg IV ou Fentanil 50–100 mcg IV)'
+ ]},
+ {id:'inv',t:'Investigação complementar',it:[
+  'Angiotomografia arterial de membros inferiores se paciente estável e sem retardo para o bloco cirúrgico',
+  'Gasometria com lactato e CPK sérica (pesquisa precoce de rabdomiólise e síndrome de reperfusão / hipercalemia)'
+ ]},
+ {id:'dsp',t:'Disposição',it:[
+  'Transferência direta e imediata para Centro Cirúrgico / UTI vascular'
+ ]}
 ]},
-emmi_edem:{l:'Edema bilateral',s:[
-{id:'inv',t:'Investigação por etiologia',it:[
-'BNP/NT-proBNP + ecocardiograma — insuficiência cardíaca',
-'Albumina, proteinúria 24h — síndrome nefrótica ou hipoalbuminemia hepática',
-'Creatinina, ureia — síndrome nefrítica ou IRC',
-'TSH — mixedema']}
+emmi_fas:{l:'Infecção Necrosante de Partes Moles / Fasciíte',s:[
+ {id:'sup',t:'Reconhecimento de sinais de necrose tecidual',alerts:[
+  'EMERGÊNCIA CIRÚRGICA MÁXIMA: Sinais patognomônicos: dor excruciante desproporcional à celulite superficial, rápida progressão em poucas horas além do eritema, presença de bolhas hemorrágicas, anestesia cutânea focal e crepitação à palpação (gás subcutâneo). Não atrasar a cirurgia para exames laboratoriais!'
+ ],it:[
+  'Monitorização contínua de sinais vitais e rastreio de choque séptico',
+  'Dois acessos venosos periféricos de grosso calibre e ressuscitação volêmica vigorosa com Ringer Lactato'
+ ]},
+ {id:'esp',t:'Desbridamento cirúrgico de emergência e antibioticoterapia tripla (< 1h)',it:[
+  'Acionamento IMEDIATO da Cirurgia Geral / Vascular para DESBRIDAMENTO CIRÚRGICO EXTENSO de todo o tecido e fáscia necróticos (a intervenção precoce é o único determinante isolado de sobrevida)',
+  'Antibioticoterapia empírica tripla imediata:',
+  'Piperacilina-Tazobactam 4,5 g IV 6/6h (ou Meropenem 1 g IV 8/8h) +',
+  'Vancomicina 15–20 mg/kg IV 12/12h (cobertura de MRSA) +',
+  'Clindamicina 600 a 900 mg IV 8/8h (efeito antitoxina: inibe a síntese de toxinas eritrogênicas por Streptococcus pyogenes do grupo A)'
+ ]},
+ {id:'inv',t:'Investigação laboratorial e imagem',it:[
+  'Escore LRINEC (Laboratory Risk Indicator for Necrotizing Fasciitis): avalia PCR, leucócitos, hemoglobina, sódio, creatinina e glicose (pontuação ≥ 6 indica alto risco de infecção necrosante)',
+  'Coleta de 2 pares de hemoculturas e cultura do aspirado tecidual cirúrgico profundo',
+  'Radiografia simples ou TC: presença de gás nos planos fasciais profundos confirma o diagnóstico'
+ ]},
+ {id:'dsp',t:'Disposição',it:[
+  'Centro cirúrgico de emergência imediato seguido de internação em UTI'
+ ]}
+]},
+emmi_cel:{l:'Celulite / Erisipela (Infecção não necrosante)',s:[
+ {id:'sup',t:'Avaliação e demarcação da área infectada',it:[
+  'Diferenciação: Erisipela (eritema vivo, bordas elevadas nítidas, infecção dérmica superficial por Streptococcus) vs Celulite (eritema com bordas mal definidas, plano, infecção de tecido subcutâneo por Staphylococcus/Streptococcus)',
+  'Demarcar os limites do eritema com caneta dermográfica na admissão para acompanhar a resposta clínica nas primeiras 24–48h',
+  'Pesquisa de porta de entrada: tinea pedis interdigital, fissuras nos pés, úlceras ou ferimentos prévios'
+ ]},
+ {id:'esp',t:'Terapia antimicrobiana e medidas de suporte',it:[
+  'Casos leves/moderados elegíveis para tratamento oral ambulatorial: Cefalexina 500 mg VO 6/6h OU Amoxicilina-Clavulanato 875/125 mg VO 12/12h por 5 a 7 dias',
+  'Casos moderados a graves com indicação de antibioticoterapia parenteral hospitalar: Cefazolina 1 a 2 g IV 8/8h OU Oxacilina 2 g IV 4/4h (adicionar Vancomicina 15–20 mg/kg se fatores de risco para MRSA)',
+  'Elevação do membro afetado acima do nível do coração durante o repouso para favorecer a drenagem venolinfática',
+  'Tratamento tópico de portas de entrada fúngicas interdigitais (cetoconazol ou miconazol tópico)'
+ ]},
+ {id:'dsp',t:'Disposição',it:[
+  'Alta orientada se ausência de toxicidade sistêmica, tolerância oral e suporte domiciliar adequado',
+  'Internação hospitalar se falha do tratamento oral, imunossuprimido, sinais de sepse ou rápida progressão'
+ ]}
+]},
+emmi_edem:{l:'Edema Bilateral Sistêmico (Cardíaco / Hepático / Renal)',s:[
+ {id:'sup',t:'Avaliação de sobrecarga sistêmica',it:[
+  'Exame físico cardiorrespiratório completo: estase jugular patológica a 45°, refluxo hepatojugular, estertoração crepitante bibasal, ascite e edema de parede abdominal/sacro',
+  'Verificação de perda ponderal e pesquisa de uso de fármacos causadores de edema (especialmente bloqueadores de canais de cálcio como anlodipino)'
+ ]},
+ {id:'esp',t:'Manejo descongestivo',it:[
+  'Restrição de sódio na dieta e restrição hídrica se hiponatremia hipervolêmica associada',
+  'Furosemida 20 a 40 mg IV ou VO conforme sinais clínicos de congestão pulmonar ou sistêmica exuberante',
+  'Suspensão ou substituição de drogas vasodilatadoras periféricas associadas a edema maleolar isolado'
+ ]},
+ {id:'inv',t:'Investigação etiológica',it:[
+  'BNP / NT-proBNP séricos + ecocardiograma (descarte de insuficiência cardíaca descompensada)',
+  'Função renal (creatinina, ureia) e urina tipo 1 com quantificação de proteinúria (descarte de síndrome nefrótica/nefrítica)',
+  'Perfil hepático completo, albumina sérica e INR (descarte de cirrose hepática com insuficiência sintética)'
+ ]}
 ]},
 eap:{l:'IC aguda descompensada / EAP',s:[
 {id:'sup',t:'Suporte ventilatório e estabilização (ESC 2026)',it:[
@@ -4029,11 +4542,11 @@ function s4ImpHeader(){
 function s4Grid(){return `${s4ImpHeader()}<div class="sl">Síndrome clínica suspeita:</div><div class="sgrid" id="syndrome-grid">${SLIST.map(s=>`<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};S.subsind=null;S.subsinds=[];S.syndromeGridCollapsed=true;render()">${s.l}</button>`).join('')}</div></div>`;}
 function s4ResetBtn(){return `<div style="margin-bottom:10px"><button class="xbtn" onclick="S.syndromeGridCollapsed=false;render()" style="width:100%;padding:8px;font-size:13px"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar ao seletor</button></div>`;}
 function s4SubExcl(T){
- const lbl=S.sind==='dtx'?'Approach / Probabilidade clínica:':S.sind==='cho'?'Fenótipo hemodinâmico / Apresentação:':S.sind==='dsp'?'Fenótipo hemodinâmico / Apresentação:':S.sind==='neu'?'Etiologia neurovascular / Apresentação:':S.sind==='hdg'?'Origem presumida do sangramento:':S.sind==='abd'?'Mecanismo sindrômico (WSES 2022):':S.sind==='ict'?'Fenótipo de acometimento hepático:':'Subtipo clínico:';
+ const lbl=S.sind==='dtx'?'Approach / Probabilidade clínica:':S.sind==='cho'?'Fenótipo hemodinâmico / Apresentação:':S.sind==='dsp'?'Fenótipo hemodinâmico / Apresentação:':S.sind==='neu'?'Etiologia neurovascular / Apresentação:':S.sind==='hdg'?'Origem presumida do sangramento:':S.sind==='abd'?'Mecanismo sindrômico (WSES 2022):':S.sind==='ict'?'Fenótipo de acometimento hepático:':S.sind==='pal'?'Ritmo eletrocardiográfico / Tipo de arritmia:':S.sind==='int'?'Toxídrome clínica / Agente causal presumido:':S.sind==='dlb'?'Mecanismo etiológico / Sinais de alarme:':S.sind==='emmi'?'Padrão clínico e distribuição (Wells / WSES):':'Subtipo clínico:';
  return `<div class="card"><div class="st"><i class="ti ti-git-branch" aria-hidden="true"></i> ${lbl}</div><div class="sgrid">${T.subExcl.map(s=>`<button class="xbtn ${S.subsind===s.id?'on':''}" onclick="selSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`;
 }
 function s4SubAdd(T){
- const lbl=S.sind==='dtx'?'Ameaças à vida & diagnósticos diferenciais:':S.sind==='cho'?'Ameaças mecânicas / causas associadas:':S.sind==='dsp'?'Etiologias associadas / Descompensação:':S.sind==='neu'?'Complicações neurológicas associadas:':S.sind==='hdg'?'Complicações / Instabilidade associada:':S.sind==='abd'?'Sintomas / Complicações associadas:':S.sind==='ict'?'Complicações sistêmicas associadas:':'Subsíndromes presentes:';
+ const lbl=S.sind==='dtx'?'Ameaças à vida & diagnósticos diferenciais:':S.sind==='cho'?'Ameaças mecânicas / causas associadas:':S.sind==='dsp'?'Etiologias associadas / Descompensação:':S.sind==='neu'?'Complicações neurológicas associadas:':S.sind==='hdg'?'Complicações / Instabilidade associada:':S.sind==='abd'?'Sintomas / Complicações associadas:':S.sind==='ict'?'Complicações sistêmicas associadas:':S.sind==='pal'?'Complicações hemodinâmicas / Causas associadas:':S.sind==='int'?'Complicações sistêmicas e neurológicas associadas:':S.sind==='dlb'?'Complicações sistêmicas associadas:':S.sind==='emmi'?'Complicações vasculares e sistêmicas associadas:':S.sind==='feb'?'Disfunções orgânicas e focos associados:':'Subsíndromes presentes:';
  return `<div class="card"><div class="st"><i class="ti ti-list-tree" aria-hidden="true"></i> ${lbl}</div><div class="sgrid">${T.subAdd.map(s=>`<button class="xbtn ${S.subsinds.includes(s.id)?'on':''}" onclick="toggleSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`;
 }
 function s4Nav(){return `<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Gerar relatório <i class="ti ti-file-text" aria-hidden="true"></i></button></div>`;}
