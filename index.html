@@ -4,7 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net data:; img-src 'self' data:; connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com;">
-<title>Emergência Pro</title>
+<title>Plantão Ágil — Admissão com Condutas Baseadas em Evidências</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#0e7490">
+<meta property="og:title" content="Plantão Ágil">
+<meta property="og:description" content="Admissão com condutas baseadas em evidências">
+<meta property="og:image" content="logo.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" integrity="sha384-hs5SINUk7GPohxRis+rS7grpSWEbtOIJ3sRoseBKg3CDPIKpG55RfSenbvA6ALOt" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.3" integrity="sha384-iWpUQPQzWsFiosLgsS8o+e6E8y3Gm+EW2m/vAAo7A2H3fuc4KOKEx+5CAord2H2z" crossorigin="anonymous"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileReady" async defer></script>
@@ -29,7 +36,8 @@ input:focus,select:focus,textarea:focus{border-color:#a32d2d}
 .login-overlay{position:fixed;inset:0;background:#f3f4f6;display:flex;align-items:center;justify-content:center;z-index:1000;padding:1rem}
 .login-box{background:#fff;border-radius:12px;padding:2rem;width:100%;max-width:360px;border:.5px solid #e5e7eb;box-shadow:0 4px 24px rgba(0,0,0,.08)}
 .login-logo{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem}
-.login-hico{width:44px;height:44px;background:#fcebeb;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.login-hico{width:44px;height:44px;background:#f8fafc;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.login-hico img{width:100%;height:100%;object-fit:cover;display:block}
 .login-hico i{font-size:22px;color:#a32d2d}
 .login-fl{margin-bottom:12px}
 .login-fl label{display:block;font-size:12px;color:#6b7280;margin-bottom:4px;font-weight:500}
@@ -71,7 +79,8 @@ input:focus,select:focus,textarea:focus{border-color:#a32d2d}
 *{box-sizing:border-box;margin:0;padding:0}
 .app{max-width:680px;margin:0 auto;padding:1rem 0;font-family:var(--font-sans);color:var(--color-text-primary)}
 .hdr{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:.5px solid var(--color-border-tertiary)}
-.hico{width:40px;height:40px;background:#fcebeb;border-radius:var(--border-radius-md);display:flex;align-items:center;justify-content:center}
+.hico{width:40px;height:40px;background:#f8fafc;border-radius:var(--border-radius-md);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hico img{width:100%;height:100%;object-fit:cover;display:block}
 .hico i{font-size:20px;color:#a32d2d}
 .steps{display:flex;gap:6px;margin-bottom:1.5rem;overflow-x:auto;padding-bottom:4px}
 .step{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;font-size:12px;border:.5px solid var(--color-border-tertiary);cursor:pointer;white-space:nowrap;background:var(--color-background-primary);color:var(--color-text-secondary)}
@@ -367,9 +376,9 @@ textarea{resize:vertical;min-height:60px}
 <div class="login-overlay" id="loginOverlay" style="display:none">
  <div class="login-box">
  <div class="login-logo">
- <div class="login-hico"><i class="ti ti-building-hospital" aria-hidden="true"></i></div>
+ <div class="login-hico"><img src="logo.png" alt="Plantão Ágil"></div>
  <div>
- <div style="font-size:18px;font-weight:600;color:#111827">Emergência Pro</div>
+ <div style="font-size:18px;font-weight:600;color:#111827">Plantão Ágil</div>
  <div style="font-size:12px;color:#6b7280">Acesso restrito</div>
  </div>
  </div>
@@ -502,8 +511,8 @@ textarea{resize:vertical;min-height:60px}
 
 <div class="app" id="mainApp" style="display:none">
 <div class="hdr">
- <div class="hico"><i class="ti ti-building-hospital" aria-hidden="true"></i></div>
- <div><div style="font-size:18px;font-weight:500">Emergência Pro</div><div style="font-size:13px;color:var(--color-text-secondary)">Admissão com condutas baseadas em evidências</div></div>
+ <div class="hico"><img src="logo.png" alt="Plantão Ágil"></div>
+ <div><div style="font-size:18px;font-weight:500">Plantão Ágil</div><div style="font-size:13px;color:var(--color-text-secondary)">Admissão com condutas baseadas em evidências</div></div>
  <button class="reset-btn" onclick="resetCase()"><i class="ti ti-refresh" aria-hidden="true"></i> Reiniciar</button>
  <button class="hdr-btn-subtle" onclick="showShortcutModal()" title="Atalhos de teclado (Alt + /)"><i class="ti ti-keyboard" aria-hidden="true"></i> <span class="hide-mobile">Atalhos</span></button>
  <button class="shift-btn" id="shiftHdrBtn" onclick="showShiftPanel()" style="display:none"><i class="ti ti-stethoscope" aria-hidden="true"></i> Plantão</button>
@@ -2021,25 +2030,81 @@ cho_obs:{l:'Choque obstrutivo',s:[
 'Internação imediata em leito de Terapia Intensiva (UTI)'
 ]}
 ]},
-hdg:{l:'Hemorragia digestiva',s:[
-{id:'sup',t:'Monitorização e acesso',it:[
-'Dois acessos venosos periféricos ≥ 16G',
-'Monitor contínuo — FC > 100 com PA normal já indica choque classe II',
-'NPO absoluto — preparo para EDA de urgência']},
-{id:'esp',t:'Farmacológico',it:[
-'Omeprazol 80 mg IV bolus → 8 mg/h — reduz ressangramento pós-hemostasia endoscópica',
-'Octreotida 50 mcg IV bolus → 50 mcg/h se suspeita varicosa — reduz pressão portal em 30–40 min',
-'Ceftriaxona 1g IV/dia se cirrose com HDA — profilaxia reduz mortalidade',
-'Hemotransfusão se Hb < 7 g/dL (< 8 g/dL em DAC) — estratégia restritiva']},
-{id:'inv',t:'Investigação',it:[
-'Score Glasgow-Blatchford na admissão: < 1 → baixo risco; ≥ 6 → alto risco',
-'Hemograma, coagulograma, função hepática, ureia, creatinina',
-'Tipagem + reserva de CH se Hb < 8 ou instabilidade',
-'EDA em < 12h se instabilidade ou varizes; em < 24h nos demais']},
+hdg:{l:'Hemorragia digestiva',
+subExcl:[
+{id:'hda',l:'HDA — Hemorragia Digestiva Alta'},
+{id:'hdb',l:'HDB — Hemorragia Digestiva Baixa'}
+],
+subAdd:[
+{id:'cho_hip',l:'Choque hemorrágico / Instabilidade associada'}
+],
+s:[
+{id:'sup',t:'Ressuscitação e estabilização inicial (ACG 2021 / ESGE 2022)',it:[
+'Monitorização multiparamétrica contínua (ECG, oximetria de pulso, PANI a cada 5–15 min) — taquicardia desproporcional pode ser o primeiro sinal de choque classe II',
+'Dois acessos venosos periféricos de grosso calibre (14–16G) ou cateter venoso central / introdutor se acesso periférico difícil',
+'Jejum absoluto (NPO) rigoroso — preparo para procedimento endoscópico de urgência',
+'Estratégia transfusional restritiva: meta de hemoglobina entre 7,0 e 8,0 g/dL (transfundir concentrado de hemácias se Hb < 7,0 g/dL; meta Hb > 8,0 g/dL se síndrome coronariana aguda ou cardiopatia isquêmica grave)',
+'Controle térmico ativo: manter normotermia para prevenir a tríade letal da coagulopatia'
+]},
+{id:'sin',t:'Manejo de sintomas e suporte',it:[
+'Dipirona 1 g IV se dor epigástrica ou abdominal associada (CONTRAINDICADO o uso de anti-inflamatórios não esteroidais — AINEs)',
+'Ondansetrana 4–8 mg IV se náuseas ou vômitos incoercíveis'
+]},
+{id:'inv',t:'Investigação diagnóstica e estratificação de risco',it:[
+'Escore de Glasgow-Blatchford (GBS) na admissão: GBS = 0–1 identifica baixíssimo risco elegível para alta e EDA ambulatorial; GBS ≥ 6 prediz alta necessidade de intervenção endoscópica',
+'Tipagem sanguínea ABO/Rh, prova cruzada e reserva prioritária de concentrado de hemácias',
+'Hemograma seriado (lembrar que o hematócrito nas primeiras 2 horas pós-sangramento agudo pode não refletir a perda real)',
+'Coagulograma completo (TP/INR, TTPa, plaquetas, fibrinogênio), função renal (ureia desproporcional à creatinina sugere digestão de sangue no TGI alto) e eletrólitos'
+]},
 {id:'dsp',t:'Disposição',it:[
-'Glasgow-Blatchford 0 → alta com EDA eletiva em 24–48h',
-'Glasgow-Blatchford ≥ 1 → internação para EDA em < 24h',
-'Instabilidade ou varizes → EDA em < 12h + UTI/semi-intensivo']}
+'GBS 0–1 (estável, sem estigmas clínicos de gravidade): elegível para alta orientada e realização de EDA em 24–48h',
+'Instabilidade hemodinâmica, necessidade transfusional ou sangramento ativo: internação prioritária em leito de UTI ou Unidade Semi-intensiva'
+]}
+]},
+hda:{l:'HDA — Hemorragia Digestiva Alta',s:[
+{id:'sup',t:'Manejo hemodinâmico e proteção de via aérea',it:[
+'Intubação orotraqueal profilática recomendada antes da EDA se hematêmese volumosa ativa, rebaixamento de consciência ou risco elevado de aspiração pulmonar',
+'Passagem de Sonda Nasogástrica / Orogástrica com lavagem: opcional; NÃO é obrigatória, mas pode ser útil se dúvida diagnóstica ou preparo imediato da EDA'
+]},
+{id:'esp',t:'Farmacoterapia e timing da Endoscopia (ACG / ESGE)',alerts:[
+'Em pacientes cirróticos ou com suspeita de varizes de esôfago: iniciar TERLIPRESSINA (ou Octreotida) e CEFTRIAXONA IMEDIATAMENTE, antes mesmo da EDA!',
+'A transfusão liberal excessiva (Hb > 9 g/dL) eleva a pressão venosa portal e aumenta o risco de ressangramento varicoso e morte'
+],it:[
+'Inibidor de Bomba de Prótons (IBP): Omeprazol 80 mg IV em bolus seguido de 8 mg/h em infusão contínua por 72h (ou 40 mg IV 12/12h após hemostasia bem-sucedida) — neutraliza o pH gástrico e estabiliza o trombo plaquetário',
+'Se suspeita de HDA Varicosa / Hipertensão Portal: Terlipressina 2 mg IV em bolus a cada 4h (1ª escolha; reduz mortalidade) OU Octreotida 50 mcg IV bolus seguido de 50 mcg/h em BIC contínua por 2–5 dias',
+'Profilaxia antimicrobiana no cirrótico: Ceftriaxona 1 g IV 1×/dia por 7 dias (reduz sepse bacteriana e mortalidade em até 50%)',
+'Procinético pré-EDA: Eritromicina 250 mg IV em 30 min (administrada 30–90 min antes do exame) para promover esvaziamento de coágulos gástricos e otimizar visibilidade',
+'Timing da EDA: realizar em < 24h para todos os pacientes; em < 12h se choque hemorrágico, instabilidade pós-ressuscitação inicial ou suspeita de varizes de esôfago'
+]},
+{id:'inv',t:'Investigação complementar e marcadores',it:[
+'Endoscopia Digestiva Alta (EDA) de urgência para diagnóstico etiológico (úlcera péptica com classificação de Forrest, varizes esofagogástricas, Mallory-Weiss, neoplasia) e hemostasia terapêutica (ligadura elástica, clipagem, termocoagulação, hemospray)',
+'Razão Ureia / Creatinina: relação > 30 (com ureia em mg/dL) sugere forte probabilidade de sangramento proximal ao ângulo de Treitz'
+]},
+{id:'dsp',t:'Disposição',it:[
+'Após hemostasia endoscópica de úlceras Forrest Ia, Ib ou IIa ou ligadura de varizes: internação em UTI por pelo menos 24–48h com monitorização contínua de ressangramento'
+]}
+]},
+hdb:{l:'HDB — Hemorragia Digestiva Baixa',s:[
+{id:'sup',t:'Manejo inicial e diferenciação etiológica',it:[
+'Diferenciar hematoquezia volumosa por HDA maciça: se instabilidade hemodinâmica importante associada a hematoquezia, considerar EDA de urgência prévia à colonoscopia para descartar HDA rápida com trânsito hiperativo',
+'Reposição volêmica guiada por metas de perfusão tecidual (alvo PAM ≥ 65 mmHg e TEC < 3s)'
+]},
+{id:'esp',t:'Terapia hemostática e intervencionista (ACG 2023)',alerts:[
+'Colonoscopia na urgência sem preparo adequado de cólon tem baixo rendimento diagnóstico e eleva risco de perfuração; o preparo anterógrado com solução de polietilenoglicol (PEG) é seguro após ressuscitação inicial'
+],it:[
+'Correção de coagulopatia grave: reverter anticoagulantes (4F-PCC para varfarina/NOACs) se sangramento persistente com risco à vida; manter plaquetas > 50.000/mcL',
+'Colonoscopia em regime de internação após preparo anterógrado oral/SNG com PEG (4 a 6 litros) nas primeiras 24 horas para diagnóstico e hemostasia de divertículos sangrantes, ectasias vasculares ou pólipos',
+'Angiotomografia computadorizada de abdome com protocolo trifásico: indicada imediatamente em pacientes com instabilidade hemodinâmica ou sangramento ativo volumoso que impede preparo de cólon (detecta sangramentos a partir de 0,3–0,5 mL/min)',
+'Angiografia intervencionista percutânea com embolização superseletiva: opção de escolha para sangramento arterial ativo identificado por angioTC'
+]},
+{id:'inv',t:'Investigação complementar',it:[
+'Escore de Oakland para HDB na admissão: escore ≤ 8 prediz probabilidade > 95% de alta segura sem eventos adversos para investigação ambulatorial',
+'Exame proctológico e toque retal na admissão: excluir causas anorretais imediatas (hemorroidas volumosas com sangramento ativo, fissura anal, neoplasia retal palpável)'
+]},
+{id:'dsp',t:'Disposição',it:[
+'Oakland ≤ 8 e sinais vitais normais: alta segura com orientação e encaminhamento para colonoscopia ambulatorial rápida',
+'Oakland > 8, sangramento contínuo ou necessidade transfusional: internação hospitalar para preparo de cólon e investigação intervencionista'
+]}
 ]},
 neu:{l:'Síndrome neurovascular (AVC / AIT)',
 subExcl:[
@@ -2390,59 +2455,111 @@ feb:{l:'Síndrome febril / Infecciosa',s:[
 'Febre sem foco em imunossuprimido: internação e investigação ampla',
 'Foco identificado, estável, baixo risco: ATB oral com retorno em 48h']}
 ]},
-abd:{l:'Síndrome abdominal',subAdd:[{id:'dab',l:'Dor abdominal'},{id:'nv',l:'Náusea e Vômitos'},{id:'dia',l:'Diarreia'}],s:[
-{id:'sup',t:'Monitorização e acesso',it:[
-'Monitor contínuo se instabilidade hemodinâmica',
-'Dois acessos venosos periféricos se suspeita cirúrgica',
-'NPO se suspeita cirúrgica, obstrução ou procedimento iminente',
-'Analgesia não retarda diagnóstico — morfina ou dipirona IV para conforto (evidência contrária ao mito clássico)']},
-{id:'sin',t:'Analgesia e suporte',it:[
-'Dipirona 1 g IV ou cetorolaco 30 mg IV para dor moderada',
-'Morfina 2–4 mg IV se dor intensa',
-'Ondansetrona 4–8 mg IV se náusea / vômito associado',
-'SNG se vômitos incoercíveis, obstrução ou peritonite']},
-{id:'inv',t:'Investigação',it:[
-'POCUS: líquido livre, vesícula/colédoco, aorta, bexiga',
-'Hemograma, função renal, lipase, bilirrubinas, coagulograma',
-'β-hCG em mulheres em idade fértil — excluir gravidez ectópica',
-'RX abdome se suspeita de obstrução ou perfuração',
-'TC abdome com contraste se dor grave, sinais peritoneais ou dúvida diagnóstica']},
+abd:{l:'Síndrome abdominal aguda',
+subExcl:[
+{id:'dab_inf',l:'Inflamatório / Infeccioso (Apendicite, Colecistite, Diverticulite)'},
+{id:'dab_perf',l:'Perfurativo (Úlcera péptica rota, Perfuração colônica)'},
+{id:'dab_obs',l:'Obstrutivo (Aderências, Hérnia encarcerada, Volvo)'},
+{id:'dab_vasc',l:'Vascular / Isquêmico (Isquemia mesentérica, Ruptura de AAA)'},
+{id:'dab_hem',l:'Hemorrágico / Ginecológico (Gravidez ectópica rota, Cisto roto)'}
+],
+subAdd:[
+{id:'dab',l:'Mapeamento de dor por quadrante'},
+{id:'nv',l:'Náuseas e vômitos refratários'},
+{id:'dia',l:'Diarreia aguda / Enterite'},
+{id:'cho_hip',l:'Choque hemorrágico / Hipovolêmico'},
+{id:'cho_sep',l:'Sepse de foco abdominal'}
+],
+s:[
+{id:'sup',t:'Triagem de gravidade e suporte hemodinâmico (WSES 2022)',it:[
+'Monitorização multiparamétrica de sinais vitais: avaliar hipotensão, taquicardia desproporcional e sinais de peritonite generalizada',
+'Dois acessos venosos periféricos calibrosos (16–18G) na sala de emergência',
+'Jejum absoluto (NPO) rigoroso — manter estômago vazio para eventual cirurgia de urgência',
+'Ressuscitação com cristaloides balanceados: Ringer Lactato 1.000–2.000 mL IV para repor perdas em terceiro espaço e prevenir IRA pré-renal',
+'Sonda Nasogástrica (SNG) aberta: indicada se distensão abdominal importante, vômitos incoercíveis ou suspeita de obstrução mecânica / peritonite'
+]},
+{id:'sin',t:'Analgesia precoce multimodal (WSES 2022)',alerts:[
+'O mito clássico de reter analgesia até a avaliação do cirurgião é formalmente CONTRAINDICADO pela literatura moderna: a analgesia precoce alivia a dor, diminui a resposta de estresse e NÃO altera a precisão do exame físico nem adia a decisão cirúrgica!'
+],it:[
+'Dipirona 1–2 g IV em bólus a cada 6h',
+'Morfina 2–4 mg IV fracionada ou Fentanil 50–100 mcg IV se dor intensa (EVA ≥ 7) com reavaliação seriada',
+'Antiespasmódico / Escopolamina 20 mg IV se suspeita de cólica biliar ou renal pura',
+'Ondansetrana 4–8 mg IV se náuseas ou vômitos associados'
+]},
+{id:'esp',t:'Terapia antimicrobiana e conduta cirúrgica',it:[
+'Antibioticoterapia empírica precoce (< 1h se sinais de sepse ou peritonite): Ceftriaxona 2 g IV 12/12h + Metronidazol 500 mg IV 8/8h OU Piperacilina-Tazobactam 4,5 g IV 6/6h (se gravidade/UTI)',
+'Abdome agudo perfurativo ou vascular: acionamento imediato da Cirurgia Geral em caráter de EMERGÊNCIA para laparotomia ou videolaparoscopia',
+'Obstrução intestinal: radiografia de abdome em 3 posições ou TC; avaliar sinais de estrangulamento vascular / sofrimento de alça'
+]},
+{id:'inv',t:'Investigação complementar diagnóstica',it:[
+'POCUS abdominal na emergência: pesquisa de pneumoperitônio (reverberação subdiafragmática), líquido livre em cavidade peritoneal (espaço de Morrison, esplenorrenal e fundo de saco de Douglas), distensão de alças com peristalse de luta ou vesícula biliar com espessamento de parede e cálculo impactado',
+'Tomografia Computadorizada (TC) de abdome e pelve com contraste IV: método padrão-ouro para abdome agudo duvidoso, diverticulite, apendicite atípica e isquemia mesentérica',
+'β-hCG urinário ou sérico em toda mulher em idade fértil (obrigatório para excluir gravidez ectópica rota)',
+'Hemograma completo com leucograma (leucocitose com desvio à esquerda), PCR sérica, amilase e lipase (pancreatite aguda), bilirrubinas totais e frações, enzimas hepáticas e canaliculares',
+'Gasometria arterial com lactato sérico (hiperlactatemia com acidose metabólica em dor desproporcional é forte indício de isquemia mesentérica aguda!)'
+]},
 {id:'dsp',t:'Disposição',it:[
-'Sinais peritoneais, instabilidade ou suspeita cirúrgica: acionar cirurgião imediatamente',
-'Gravidez ectópica com instabilidade: cirurgia de emergência']}
+'Sinais de peritonite difusa, perfuração em víscera oca ou instabilidade hemodinâmica: centro cirúrgico emergencial imediato',
+'Abdome agudo em investigação estável: observação com reavaliação seriada do exame físico pelo mesmo examinador a cada 2–4 horas'
+]}
+]},
+dab_inf:{l:'Inflamatório / Infeccioso (Apendicite, Colecistite, Diverticulite)',s:[
+{id:'sup',t:'Suporte',it:['Jejum absoluto (NPO)','Acesso venoso calibroso e hidratação com Ringer Lactato','Analgesia multimodal com Dipirona 1 g IV e Morfina fracionada se dor intensa']},
+{id:'esp',t:'Antibioticoterapia direcionada',it:['Ceftriaxona 2 g IV 12/12h + Metronidazol 500 mg IV 8/8h (ou Ciprofloxacino 400 mg IV 12/12h se alergia grave)','Apendicite aguda: avaliação cirúrgica para apendicectomia videolaparoscópica de urgência','Colecistite aguda litiásica (Tokyo TG18): colecistectomia precoce em < 72h do início dos sintomas','Diverticulite aguda: antibiótico ambulatorial ou hospitalar conforme estadiamento de Hinchey']},
+{id:'inv',t:'Investigação',it:['USG de abdome superior (padrão ouro para colecistite e vias biliares)','TC de abdome e pelve com contraste (método de escolha para apendicite e diverticulite)','PCR sérica, hemograma e função renal']}
+]},
+dab_perf:{l:'Perfurativo (Úlcera péptica rota, Perfuração colônica)',s:[
+{id:'sup',t:'Emergência cirúrgica',alerts:['Sinais peritoneais com abdome em tábua e ar livre intraperitoneal exigem cirurgia IMEDIATA; não postergar para exames laboratoriais demorados!'],it:['Ressuscitação volêmica vigorosa com Ringer Lactato','SNG aberta com drenagem livre','NPO absoluto']},
+{id:'esp',t:'Manejo cirúrgico e farmacológico',it:['Acionamento emergencial da Cirurgia Geral para Laparotomia exploradora / rafia de úlcera com patch de Graham ou colectomia com colostomia','Piperacilina-Tazobactam 4,5 g IV 6/6h OU Ceftriaxona 2 g IV + Metronidazol 500 mg IV','Omeprazol 80 mg IV bolus seguido de 8 mg/h contínuo']},
+{id:'inv',t:'Confirmação radiológica',it:['RX de tórax em cúpulas diafragmáticas (ortostase) ou decúbito lateral esquerdo com raios horizontais (Hjelm-Laurell) — pneumoperitônio visível em > 80% das perfurações gastroduodenais','TC de abdome sem e com contraste se RX inconclusivo']}
+]},
+dab_obs:{l:'Obstrutivo (Aderências, Hérnia encarcerada, Volvulo)',s:[
+{id:'sup',t:'Manejo descompressivo e volêmico',it:['Sonda Nasogástrica calibrosa (16–18F) aberta em sifonagem ou aspiração suave imediata — alivia distensão, previne aspiração pulmonar e vômitos fecaloide','Hidratação IV agressiva com Ringer Lactato para reposição do sequestro de líquido no terceiro espaço e eletrólitos','Correção rigorosa de distúrbios hidroeletrolíticos (hipocalemia, hipocloremia e alcalose metabólica por vômitos) continua']},
+{id:'esp',t:'Terapêutica específica',alerts:['Sinais de estrangulamento isquêmico (febre, taquicardia contínua, leucocitose acentuada, acidose lática, dor desproporcional à palpação): indicação de CIRURGIA DE EMERGÊNCIA!'],it:['Hérnia encarcerada/estrangulada: cirurgia imediata; não realizar redução forçada (taxis) se suspeita de sofrimento isquêmico','Volvo de sigmoide: descompressão e desvolvulação por retossigmoidoscopia ou colonoscopia se sem sinais de perfuração/isquemia','Obstrução por bridas: conduta conservadora com SNG, hidratação e contraste hidrossolúvel (Gastrografin) se sem peritonite; cirurgia se sem resolução em 48–72h']},
+{id:'inv',t:'Investigação diagnóstica',it:['TC de abdome e pelve com contraste IV: método padrão-ouro para localizar o ponto de transição e avaliar sofrimento de alça','RX simples de abdome (rotina de abdome agudo: deitado, em pé e cúpulas): níveis hidroaéreos em degraus, empilhamento de moedas, ausência de ar no reto']}
+]},
+dab_vasc:{l:'Vascular / Isquêmico (Isquemia mesentérica, Ruptura de AAA)',s:[
+{id:'sup',t:'Reanimação e alta suspeição clínica',alerts:['A isquemia mesentérica aguda caracteriza-se classicamente por DOR ABDOMINAL SEVERA DESPROPORCIONAL AO EXAME FÍSICO INICIAL, em paciente com fibrilação atrial, doença vascular aterosclerótica ou vasculopatia!'],it:['Monitorização contínua de sinais vitais e gasometria com lactato seriado','Dois acessos venosos calibrosos e suporte vasopressor cauteloso (evitar vasoconstritores alfamiméticos puros que agravam a isquemia esplâncnica)','Jejum absoluto e analgesia com opioides potentes (Fentanil/Morfina)']},
+{id:'esp',t:'Terapia antitrombótica e revascularização emergencial',it:['Anticoagulação imediata com Heparina Não Fracionada (HNF) bolus 80 UI/kg seguido de 18 UI/kg/h em BIC (se excluído sangramento ativo na TC)','Angiotomografia de artérias mesentéricas (AngioTC) IMEDIATA: diagnostica oclusão de tronco da artéria mesentérica superior (AMS), trombose venosa mesentérica ou sinais de necrose transmural (pneumatose intestinal, gás na veia porta)','Revascularização vascular de emergência (embolectomia cirúrgica, angioplastia com stent ou laparotomia para ressecção de alças inviáveis)','Antibioticoterapia de amplo espectro com cobertura de flora colônica entérica (Piperacilina-Tazobactam 4,5 g IV 6/6h)']},
+{id:'inv',t:'Laboratório e imagem',it:['Gasometria arterial: acidose metabólica com anion gap elevado e hiperlactatemia progressiva','D-dímero sérico elevado (> 95% de sensibilidade)','AngioTC arterial e venosa abdominal']}
+]},
+dab_hem:{l:'Hemorrágico / Ginecológico (Gravidez ectópica rota, Cisto roto)',s:[
+{id:'sup',t:'Estabilização e hemostasia',it:['Verificação imediata de β-hCG e estabilidade hemodinâmica','Ressuscitação balanceada e tipagem sanguínea com prova cruzada de urgência','Hipotensão permissiva se sangramento ativo enquanto a paciente é transportada ao bloco cirúrgico']},
+{id:'esp',t:'Intervenção de emergência',alerts:['Gravidez ectópica com choque hipovolêmico ou líquido livre intra-abdominal volumoso: LAPAROTOMIA / LAPAROSCOPIA GINECOLÓGICA DE EMERGÊNCIA IMEDIATA!'],it:['Acionamento emergencial da equipe de Ginecologia e Obstetrícia','Ácido Tranexâmico 1 g IV em 10 min se choque hemorrágico ativo','Cirurgia hemostática urgente (salpingectomia / hemostasia ovariana)']},
+{id:'inv',t:'Investigação',it:['POCUS pélvico / FAST: presença de líquido livre no fundo de saco de Douglas e espaço de Morrison','β-hCG quantitativo sérico urgente','Hemograma seriado e coagulograma']}
 ]},
 dab:{l:'Dor abdominal',s:[
 {id:'inv',t:'Localização e etiologias suspeitas',it:[
-'QSD / Hipocôndrio D — pensar: colecistite, coledocolitíase, hepatite aguda',
-'Epigástrio — pensar: úlcera péptica, pancreatite, IAM inferior, RGE',
-'QIE / FIE — pensar: diverticulite, torção ovariana, hérnia',
-'QID / FID — pensar: apendicite, ileíte terminal, torção ovariana D',
-'Periumbilical — pensar: apendicite precoce, obstrução intestinal, isquemia mesentérica',
-'Hipogástrio — pensar: ITU, doença inflamatória pélvica, globo vesical',
-'Difusa — pensar: peritonite, isquemia mesentérica, obstrução, gastroenterite']}
+'QSD / Hipocôndrio D — pensar: colecistite, coledocolitíase, colangite, abscesso hepático',
+'Epigástrio — pensar: úlcera péptica, pancreatite aguda, IAM inferior (derivações DII, DIII, aVF), RGE',
+'QIE / FIE — pensar: diverticulite colônica, torção ovariana, gravidez ectópica, hérnia inguinal',
+'QID / FID — pensar: apendicite aguda, ileíte terminal/Crohn, torção ovariana/cisto roto, hérnia encarcerada',
+'Periumbilical — pensar: apendicite precoce, obstrução de delgado, isquemia mesentérica aguda',
+'Hipogástrio / Pelve — pensar: infecção urinária/retenção urinária, DIP, abscesso tubo-ovariano',
+'Difusa — pensar: peritonite secundária, isquemia mesentérica avançada, cetoacidose diabética, perfuração']}
 ]},
 nv:{l:'Náusea e Vômitos',s:[
-{id:'esp',t:'Manejo',it:[
-'Ondansetrona 4–8 mg IV — antiemético de 1ª linha, mínimos efeitos adversos',
-'Metoclopramida 10 mg IV se vômitos associados a gastroparesia ou estimulação central',
-'Hidratação IV com ringer lactato 500 mL se intolerância oral',
-'Omeprazol 40 mg IV se conteúdo hemático ou úlcera suspeita']},
+{id:'esp',t:'Manejo antiemético e hidroeletrolítico',it:[
+'Ondansetrana 4–8 mg IV — antiemético de 1ª linha (antagonista 5-HT3)',
+'Metoclopramida 10 mg IV lento se náuseas por gastroparesia ou estase gástrica (evitar se suspeita de obstrução intestinal mecânica)',
+'Dimenidrinato 30–50 mg IV ou Clorpromazina 12,5–25 mg IV se vômitos incoercíveis refratários',
+'Reposição de perdas hidroeletrolíticas com Ringer Lactato 500–1.000 mL IV + reposição de Potássio se hipocalemia induzida por vômitos']},
 {id:'inv',t:'Investigação conforme contexto',it:[
-'Glicemia — cetoacidose diabética com náusea/vômito',
-'β-hCG — hiperemese gravídica',
-'Lipase se dor epigástrica — pancreatite',
-'Eletrólitos — hipocalemia por vômitos repetidos']}
+'Glicemia capilar — excluir cetoacidose diabética (apresentação frequente com náusea, vômito e dor abdominal)',
+'β-hCG — gravidez / hiperemese gravídica',
+'Lipase sérica — pancreatite aguda',
+'Eletrólitos completos (Na, K, Cl, Mg) e gasometria venosa']}
 ]},
-dia:{l:'Diarreia',s:[
-{id:'esp',t:'Manejo',it:[
-'Hidratação oral ou IV conforme grau de desidratação — ringer lactato ou SRO',
-'Loperamida 2–4 mg VO se diarreia não complicada sem sangue — contraindicado em disenteria',
-'ATB empírico se: febre + diarreia mucossanguinolenta, imunossuprimido ou grave — ciprofloxacina ou azitromicina',
-'Reposição de potássio se hipocalemia confirmada']},
+dia:{l:'Diarreia aguda / Enterite',s:[
+{id:'esp',t:'Manejo e hidratação',it:[
+'Hidratação oral vigorosa com Soro de Reidratação Oral (SRO) ou IV com Ringer Lactato se desidratação moderada a grave',
+'Loperamida 2–4 mg VO apenas em diarreia aquosa não invasiva sem febre — formalmente CONTRAINDICADA em disenteria (fezes com sangue/muco) ou colite por C. difficile',
+'Antibioticoterapia empírica (Ciprofloxacino 500 mg VO 12/12h ou Azitromicina 500 mg VO 1×/dia por 3 dias): indicada apenas se disenteria com febre, paciente idoso, imunossuprimido ou sepse',
+'Reposição oral ou parenteral de potássio conforme dosagem sérica']},
 {id:'inv',t:'Investigação',it:[
-'Coprocultura + protoparasitológico se suspeita infecciosa grave ou prolongada',
-'Hemograma, função renal, eletrólitos',
-'Pesquisa de toxina C. difficile se uso recente de antibiótico']}
+'Coprocultura e pesquisa de leucócitos fecais se diarreia sanguinolenta ou febril prolongada',
+'Pesquisa de toxina A/B e GDH para Clostridioides difficile se uso prévio de antibióticos nos últimos 3 meses ou internação hospitalar recente',
+'Hemograma completo, função renal e eletrólitos']}
 ]},
 sinc:{l:'Síncope',
 subAdd:[
@@ -2574,31 +2691,60 @@ dlb:{l:'Dor lombar',s:[
 'Sinais de alarme (red flags): déficit neurológico, febre, perda de peso, neoplasia, trauma de alta energia',
 'Lombalgia mecânica sem red flags: alta com AINE oral, calor local e retorno se piora']}
 ]},
-ict:{l:'Icterícia / Insuficiência Hepática Aguda',s:[
-{id:'sup',t:'Avaliação de gravidade',it:[
-'Avaliar encefalopatia hepática (EH): asterixe, confusão, sonolência — EH + icterícia < 26 semanas = IHA (critério King\'s College)',
-'INR em IHA: INR > 1,5 com EH define insuficiência hepática aguda — internação imediata',
-'Glicemia horária em IHA — hipoglicemia grave por falência da gliconeogênese',
-'PA, FC e consciência — choque hepatorrenal e edema cerebral são emergências']},
-{id:'esp',t:'Suporte específico',it:[
-'Vitamina K 10 mg IV se coagulopatia — corrigir com plasma apenas se sangramento ativo',
-'Lactulose 15–30 mL 8/8h VO/SNG se EH — alvo 2–3 evacuações pastosas/dia',
-'Rifaximina 550 mg 12/12h VO como adjuvante na EH grau II–IV',
-'N-acetilcisteína IV em IHA por paracetamol — iniciar mesmo além de 24h',
-'Suspender hepatotóxicos: paracetamol, AINEs, estatinas',
-'Glicose IV se hipoglicemia — SG10% ou SG50% conforme gravidade']},
-{id:'inv',t:'Investigação',it:[
-'Bilirrubinas (total, direta, indireta), TGO, TGP, GGT, FA — perfil hepatocelular vs. colestático',
-'INR, TTPa — gravidade da coagulopatia',
-'Amônia sérica — correlaciona com grau de EH',
-'Sorologias: HBsAg, Anti-HBc IgM, Anti-HAV IgM, Anti-HCV, Anti-HEV IgM',
-'Ceruloplasmina/cobre urinário em < 40 anos — doença de Wilson',
-'USG abdome com Doppler — fluxo portal, vias biliares, lesão focal']},
-{id:'dsp',t:'Critérios de internação e transferência',it:[
-'IHA confirmada: UTI + avaliação imediata para transplante hepático de urgência',
-'King\'s (paracetamol): pH < 7,3 OU [INR > 6,5 + creatinina > 3,4 + EH III-IV] → indicação de transplante',
-'King\'s (não-paracetamol): etiologia desfavorável + ≥ 3 de: idade < 10 ou > 40a, bilirrubina > 17 mg/dL, INR > 3,5, icterícia > 7 dias antes de EH',
-'Colangite aguda (Tríade de Charcot: febre + icterícia + dor abdominal): ATB IV + drenagem biliar em < 24h']}
+ict:{l:'Icterícia / Insuficiência Hepática Aguda',
+subExcl:[
+{id:'ict_iha',l:'Insuficiência Hepática Aguda (IHA / Falência Fulminante)'},
+{id:'ict_col',l:'Colangite Aguda / Icterícia Obstrutiva'},
+{id:'ict_cir',l:'Cirrose Descompensada / Hepatopatia Crônica Agudizada (ACLF)'}
+],
+subAdd:[
+{id:'cho_sep',l:'Sepse / Choque séptico associado'},
+{id:'hdg',l:'HDA varicosa / Sangramento digestivo associado'}
+],
+s:[
+{id:'sup',t:'Avaliação de gravidade e suporte precoce (EASL Guidelines)',it:[
+'Avaliação estrita da presença de Encefalopatia Hepática (EH): asterixe / flapping, confusão mental, sonolência patológica ou agitação psicomotora',
+'Glicemia capilar horária na sala de emergência — risco crítico de hipoglicemia severa e súbita por colapso da gliconeogênese e depuração de insulina',
+'Monitorização multiparamétrica de sinais vitais e diurese horária (pesquisar precocemente Síndrome Hepatorrenal e choque vasoplégico)',
+'Jejum e via aérea protegida: intubação traqueal de sequência rápida precoce se Encefalopatia Hepática grau 3 ou 4 (GCS ≤ 8) para controle de PaCO₂ e prevenção de broncoaspiração'
+]},
+{id:'esp',t:'Terapia farmacológica específica e neuroproteção (EASL)',alerts:[
+'INSUFICIÊNCIA HEPÁTICA AGUDA: paciente sem cirrose prévia com INR > 1,5 E encefalopatia hepática em < 26 semanas do início dos sintomas. Acionar IMEDIATAMENTE a central de transplante hepático!',
+'NUNCA corrigir o INR com plasma fresco congelado profilático sem sangramento ativo, pois o INR é o marcador prognóstico primordial para os Critérios de King\'s College!'
+],it:[
+'N-acetilcisteína (NAC) precoce IV: protocolo de 21 horas (150 mg/kg em 200 mL SG5% em 1h, depois 50 mg/kg em 500 mL SG5% em 4h e 100 mg/kg em 1.000 mL SG5% em 16h) — recomendada tanto na intoxicação por Paracetamol quanto na IHA não-paracetamol (aumenta sobrevida livre de transplante)',
+'Manejo de Encefalopatia Hepática no cirrótico: Lactulose 20–30 mL VO/SNG a cada 2–4 horas até evacuação inicial, depois titular para 2–3 evacuações pastosas/dia + Rifaximina 550 mg VO 12/12h como adjuvante',
+'Colangite Aguda (Tríade de Charcot / Pêntade de Reynolds): antibioticoterapia IV imediata (Ceftriaxona 2 g IV 1×/dia + Metronidazol 500 mg IV 8/8h OU Piperacilina-Tazobactam 4,5 g IV 6/6h) + Descompressão biliar urgente por CPRE em < 12–24h',
+'Prevenção e controle de Edema Cerebral / Hipertensão Intracraniana na IHA grave: Salina Hipertônica a 3% contínua (alvo Na sérico 145–150 mEq/L), cabeceira a 30° e normocarbia (PaCO₂ 35–40 mmHg)',
+'Suspensão imediata de todos os fármacos potencialmente hepatotóxicos (paracetamol, sedativos, AINEs, antibióticos hepatotóxicos)'
+]},
+{id:'inv',t:'Investigação complementar etiológica',it:[
+'Perfil hepático e colestático completo: Bilirrubinas total e frações, TGO/AST, TGP/ALT (níveis > 1.000 UI/L sugerem hepatite viral, isquêmica ou tóxica/paracetamol), FA, GGT e Albumina',
+'Coagulograma urgente: TP/INR, TTPa, Fibrinogênio e dosagem de Fator V sérico',
+'Amônia sérica venosa ou arterial (nível > 150–200 mcmol/L prediz risco iminente de herniação cerebral)',
+'Painel viral agudo: Anti-HAV IgM, HBsAg, Anti-HBc IgM, Anti-HCV, Anti-HEV IgM, sorologia para Herpes Simplex, Citomegalovírus e Epstein-Barr',
+'USG de abdome com Doppler de vasos hepáticos no leito: avaliar desobstrução de via biliar intra e extra-hepática, perviedade da veia porta e veias supra-hepáticas (descartar Síndrome de Budd-Chiari)'
+]},
+{id:'dsp',t:'Critérios de King\'s College e disposição',it:[
+'Internação prioritária em UTI / Centro de Referência em Hepatologia com vaga zero para Transplante Hepático de Emergência',
+'Critérios de King\'s para Paracetamol: pH arterial < 7,30 após reanimação OU [INR > 6,5 + Creatinina > 3,4 mg/dL + Encefalopatia grau III/IV em 24h]',
+'Critérios de King\'s para Não-Paracetamol: INR > 6,5 isolado OU presença de 3 de 5 critérios: 1) Idade < 10 ou > 40 anos; 2) Etiologia não A/B ou idiossincrásica; 3) Icterícia > 7 dias antes da encefalopatia; 4) INR > 3,5; 5) Bilirrubina total > 17,5 mg/dL'
+]}
+]},
+ict_iha:{l:'Insuficiência Hepática Aguda (IHA)',s:[
+{id:'sup',t:'Manejo em UTI',it:['Monitorização contínua de sinais vitais, glicemia capilar horária e nível de consciência','Cabeceira elevada a 30° em posição neutra']},
+{id:'esp',t:'Terapêutica específica',alerts:['Acionar imediatamente equipe de transplante hepático de urgência!'],it:['N-acetilcisteína (NAC) IV em protocolo contínuo','Glicose 10% IV em infusão de manutenção contínua se glicemia < 90 mg/dL','Salina Hipertônica 3% para manter sódio 145–150 mEq/L se encefalopatia grau 3/4']},
+{id:'dsp',t:'Disposição',it:['Internação obrigatória em UTI de transplante hepático']}
+]},
+ict_col:{l:'Colangite Aguda / Obstrutiva',s:[
+{id:'sup',t:'Manejo inicial',it:['Ressuscitação volêmica com Ringer Lactato','Monitorização hemodinâmica']},
+{id:'esp',t:'Antimicrobianos e drenagem',it:['Piperacilina-Tazobactam 4,5 g IV 6/6h OU Ceftriaxona 2 g IV + Metronidazol 500 mg IV','Descompressão biliar urgente por CPRE ou drenagem percutânea trans-hepática em < 12–24h']},
+{id:'dsp',t:'Disposição',it:['Internação em UTI ou centro cirúrgico / endoscópico']}
+]},
+ict_cir:{l:'Cirrose Descompensada / ACLF',s:[
+{id:'sup',t:'Manejo',it:['Pesquisa ativa de gatilhos: infecção (PBE, ITU, pneumonia), HDA, constipação, desidratação','Paracentese diagnóstica imediata em todo paciente cirrótico admitido com ascite']},
+{id:'esp',t:'Farmacoterapia',it:['Lactulose 20–30 mL VO/SNG + Rifaximina 550 mg VO 12/12h se encefalopatia','Ceftriaxona 2 g IV se suspeita de PBE (PMN no líquido ascítico ≥ 250/mm³)','Albumina 20% 1,5 g/kg no D1 e 1,0 g/kg no D3 se PBE confirmada (previne síndrome hepatorrenal)']},
+{id:'dsp',t:'Disposição',it:['Internação hospitalar monitorizada']}
 ]},
 emmi:{l:'Edema / Dor em MMII',subAdd:[{id:'emmi_tvp',l:'TVP isolada (sem TEP)'},{id:'tep',l:'TEP suspeito'},{id:'emmi_art',l:'Isquemia arterial aguda'},{id:'emmi_edem',l:'Edema bilateral (cardíaco/renal/hepático)'}],s:[
 {id:'sup',t:'Avaliação inicial',it:[
@@ -3883,11 +4029,11 @@ function s4ImpHeader(){
 function s4Grid(){return `${s4ImpHeader()}<div class="sl">Síndrome clínica suspeita:</div><div class="sgrid" id="syndrome-grid">${SLIST.map(s=>`<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};S.subsind=null;S.subsinds=[];S.syndromeGridCollapsed=true;render()">${s.l}</button>`).join('')}</div></div>`;}
 function s4ResetBtn(){return `<div style="margin-bottom:10px"><button class="xbtn" onclick="S.syndromeGridCollapsed=false;render()" style="width:100%;padding:8px;font-size:13px"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar ao seletor</button></div>`;}
 function s4SubExcl(T){
- const lbl=S.sind==='dtx'?'Approach / Probabilidade clínica:':S.sind==='cho'?'Fenótipo hemodinâmico / Apresentação:':S.sind==='dsp'?'Fenótipo hemodinâmico / Apresentação:':S.sind==='neu'?'Etiologia neurovascular / Apresentação:':'Subtipo clínico:';
+ const lbl=S.sind==='dtx'?'Approach / Probabilidade clínica:':S.sind==='cho'?'Fenótipo hemodinâmico / Apresentação:':S.sind==='dsp'?'Fenótipo hemodinâmico / Apresentação:':S.sind==='neu'?'Etiologia neurovascular / Apresentação:':S.sind==='hdg'?'Origem presumida do sangramento:':S.sind==='abd'?'Mecanismo sindrômico (WSES 2022):':S.sind==='ict'?'Fenótipo de acometimento hepático:':'Subtipo clínico:';
  return `<div class="card"><div class="st"><i class="ti ti-git-branch" aria-hidden="true"></i> ${lbl}</div><div class="sgrid">${T.subExcl.map(s=>`<button class="xbtn ${S.subsind===s.id?'on':''}" onclick="selSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`;
 }
 function s4SubAdd(T){
- const lbl=S.sind==='dtx'?'Ameaças à vida & diagnósticos diferenciais:':S.sind==='cho'?'Ameaças mecânicas / causas associadas:':S.sind==='dsp'?'Etiologias associadas / Descompensação:':S.sind==='neu'?'Complicações neurológicas associadas:':'Subsíndromes presentes:';
+ const lbl=S.sind==='dtx'?'Ameaças à vida & diagnósticos diferenciais:':S.sind==='cho'?'Ameaças mecânicas / causas associadas:':S.sind==='dsp'?'Etiologias associadas / Descompensação:':S.sind==='neu'?'Complicações neurológicas associadas:':S.sind==='hdg'?'Complicações / Instabilidade associada:':S.sind==='abd'?'Sintomas / Complicações associadas:':S.sind==='ict'?'Complicações sistêmicas associadas:':'Subsíndromes presentes:';
  return `<div class="card"><div class="st"><i class="ti ti-list-tree" aria-hidden="true"></i> ${lbl}</div><div class="sgrid">${T.subAdd.map(s=>`<button class="xbtn ${S.subsinds.includes(s.id)?'on':''}" onclick="toggleSub('${s.id}')">${s.l}</button>`).join('')}</div></div>`;
 }
 function s4Nav(){return `<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Gerar relatório <i class="ti ti-file-text" aria-hidden="true"></i></button></div>`;}
