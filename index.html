@@ -2616,27 +2616,38 @@ dep:{l:'Derrame pleural sintomático',s:[
 'Citologia oncótica se derrame suspeito de maligno',
 'ADA ≥ 40 U/L — alta sensibilidade/especificidade para tuberculose pleural (endemia)']}
 ]},
-tep:{l:'TEP suspeito',s:[
-{id:'sup',t:'Avaliação e monitorização',it:[
-'POCUS: distensão VD, septo paradoxal (McConnell sign), IVC dilatada sem colapso — sugere TEP com sobrecarga VD',
-'ECG: taquicardia sinusal (mais comum), S1Q3T3, BRD novo, inversão de T de V1–V4 — inespecíficos mas sugestivos',
-'Monitor contínuo — TEP pode deteriorar rapidamente por falência progressiva de VD',
-'O2 titulado para SatO2 ≥ 94% — hipóxia piora vasoconstrição pulmonar']},
-{id:'esp',t:'Anticoagulação e reperfusão',it:[
-'TEP instável (choque): → Choque obstrutivo — alteplase 100 mg IV em 2h + ressuscitação hemodinâmica',
-'TEP estável: rivaroxabana 15 mg VO 12/12h por 21 dias (sem heparina ponte) — 1ª opção em TEP estável',
-'HNF IV se instabilidade hemodinâmica ou terapia trombolítica planejada — bolo 80 UI/kg + infusão 18 UI/kg/h',
-'Enoxaparina 1 mg/kg SC 12/12h como alternativa — não usar se ClCr < 30 mL/min']},
-{id:'inv',t:'Investigação',it:[
-'D-dímero: PERC ≤ 0 + Wells < 2 → baixo risco; D-dímero normal exclui TEP (sensibilidade > 97%)',
-'Wells: ≥ 2 → AngioTC de tórax diretamente (não esperar D-dímero)',
-'AngioTC de tórax — padrão ouro diagnóstico; 1ª escolha se instabilidade ou Wells alto',
-'Troponina + BNP — estratificação de gravidade; elevados = disfunção VD = pior prognóstico',
-'Gasometria: hipóxia + hipocapnia + alcalose resp. — sugestivo mas inespecífico; PaO2/FiO2 < 300 = grave']},
-{id:'dsp',t:'Disposição',it:[
-'TEP instável (choque/hipotensão/disfunção VD severa): UTI imediatamente após trombólise/anticoagulação',
-'TEP estável de baixo risco (PESI baixo, Hestia negativa): considerar alta precoce com anticoagulação oral e seguimento ambulatorial em 24–48h',
-'TEP de risco intermediário: enfermaria com monitorização ≥ 48h']}
+tep:{l:'Tromboembolismo pulmonar (TEP)',s:[
+{id:'sup',t:'Estratificação tripartite e suporte inicial (AHA 2026)',it:[
+'Estratificação de risco imediata em 3 estratos: 1) Alto Risco (Choque/Hipotensão PAS < 90 ou PCR); 2) Risco Intermediário (Submaciço: disfunção VD e/ou troponina); 3) Baixo Risco (sPESI = 0, Hestia negativo)',
+'Monitorização cardíaca contínua, oximetria de pulso e pressão arterial a cada 5–15 min',
+'Oxigenoterapia com alvo SpO₂ ≥ 94% (a hipoxemia aguda agrava a vasoconstrição arterial pulmonar e a sobrecarga de VD)',
+'RESTRIÇÃO HÍDRICA ESTRITA DO VENTRÍCULO DIREITO: infusão excessiva de fluidos dilata o VD, desvia o septo para a esquerda e reduz o enchimento de VE, colapsando o débito cardíaco!'
+]},
+{id:'esp',t:'Reperfusão e anticoagulação estratificada (AHA 2026)',alerts:[
+'ALTO RISCO (TEP MACIÇO): A reperfusão emergencial (trombólise sistêmica ou trombectomia percutânea por cateter) é mandatória para restaurar a pós-carga de VD e reverter o choque',
+'BAIXO RISCO: DOACs orais (Apixabana ou Rivaroxabana) são terapia de 1ª linha SEM necessidade de heparina parenteral prévia'
+],it:[
+'TEP DE ALTO RISCO (Instabilidade / Choque): Trombólise sistêmica química com Tenecteplase (TNK por peso: < 60 kg = 30 mg; 60–69 kg = 35 mg; 70–79 kg = 40 mg; 80–89 kg = 45 mg; ≥ 90 kg = 50 mg IV em bolus único de 5–10s) OU Alteplase (rtPA 100 mg IV em 2h, ou 50 mg em bolus se PCR iminente)',
+'Alternativa ao lítico no alto risco: Trombectomia percutânea assistida por cateter (CDT / aspiração mecânica) se contraindicação formal a trombolíticos sistêmicos ou choque persistente',
+'Anticoagulação no alto risco: Heparina Não Fracionada (HNF) bolus 80 UI/kg IV seguido de 18 UI/kg/h em BIC (alvo TTPa 1,5–2,5× controle; preferível por rápida reversibilidade)',
+'Suporte hemodinâmico de VD no alto risco: Norepinefrina 0,05–0,5 mcg/kg/min (mantém pressão de perfusão da coronária direita) + Dobutamina se choque com baixo débito',
+'RISCO INTERMEDIÁRIO-ALTO (Disfunção de VD + Troponina positiva): Anticoagulação plena imediata com Enoxaparina 1 mg/kg SC 12/12h; monitorização contínua e acionamento da equipe multidisciplinar (PERT); preparar trombólise de resgate se deterioração',
+'RISCO INTERMEDIÁRIO-BAIXO (Apenas VD dilatado OU troponina elevada, não ambos): Anticoagulação plena com Enoxaparina 1 mg/kg SC 12/12h ou DOAC oral',
+'BAIXO RISCO (Normotenso, sem disfunção de VD, troponina normal, sPESI=0): Apixabana 10 mg VO 12/12h por 7 dias (depois 5 mg 12/12h) OU Rivaroxabana 15 mg VO 12/12h por 21 dias (depois 20 mg 1×/dia com alimento)'
+]},
+{id:'inv',t:'Investigação complementar e biomarcadores',it:[
+'Angiotomografia computadorizada de artérias pulmonares (AngioTC): padrão-ouro diagnóstico; quantificar razão VD/VE (relação > 1,0 indica disfunção de VD)',
+'POCUS cardiotorácico no leito: Sinal de McConnell (acinesia da parede livre de VD com mobilidade apical preservada), Sinal do D (retificação do septo interventricular) e VCI pleatórica',
+'D-dímero de alta sensibilidade: utilizar cut-off ajustado pela idade (idade × 10 mcg/L se idade > 50 anos) em probabilidade clínica improvável (Wells ≤ 4 ou Geneva ≤ 5)',
+'Troponina ultrassensível e BNP / NT-proBNP para estratificação prognóstica e detecção de sobrecarga miocárdica de VD',
+'ECG de 12 derivações: pesquisar taquicardia sinusal, padrão S1Q3T3, inversão de onda T de V1 a V4 e BRD novo ou transitório',
+'Ultrassonografia por compressão venosa de MMII (USG Doppler vascular) para identificação do trombo primário (TVP)'
+]},
+{id:'dsp',t:'Disposição e critérios de desospitalização',it:[
+'Alto risco / Intermediário-alto: internação mandatória em UTI com vigilância hemodinâmica contínua',
+'Intermediário-baixo: internação em enfermaria monitorizada por pelo menos 48h',
+'Baixo risco elegível para alta precoce (< 24–48h): critérios de Hestia negativos, suporte social garantido, acesso a DOAC oral e retorno agendado em 72h'
+]}
 ]},
 dtx:{l:'Dor torácica',
 subExcl:[
