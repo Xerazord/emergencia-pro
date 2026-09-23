@@ -1,14 +1,52 @@
 # Compêndio de Condutas e Evidências Clínicas — Emergência Pro
 
-> Este documento contém o catálogo integral de condutas clínicas padronizadas do sistema **Emergência Pro**, com o texto exato da prescrição médica direta na aplicação e o embasamento científico completo baseado nas diretrizes mais recentes (ESC 2026, AHA 2026, ESICM 2025, WSES 2022, Surviving Sepsis, IDSA, SBPT, SBC).
+> Catálogo integral de condutas clínicas padronizadas do sistema **Emergência Pro**, com o texto exato da prescrição médica direta na aplicação, a desduplicação sistemática entre síndromes mãe e filha e o embasamento científico completo baseado nas diretrizes mais recentes (ESC 2026, AHA 2026, ESICM 2025, WSES 2022, Surviving Sepsis, IDSA, SBPT, SBC).
+
+---
+
+## 1. Auditoria Crítica de Evidências dos Alertas Clínicos do Sistema
+
+Para garantir que o sistema não propague orientações dogmáticas desprovidas de respaldo em desfechos clínicos reais, realizamos a auditoria crítica de todos os alertas exibidos aos usuários:
+
+### A. Alerta de Nitratos no Infarto de Ventrículo Direito (IAM de VD)
+
+- **Dogma Tradicional de Diretrizes**: As diretrizes cardiológicas da AHA/ACC e ESC historicamente contraindicam de forma categórica o uso de nitratos em pacientes com suspeita de infarto de ventrículo direito ou IAM de parede inferior com acometimento de VD, sob a premissa teórica de que a venodilatação súbita reduziria a pré-carga de um ventrículo direito complacente e dependente de volume, precipitando choque cardiogênico irreversível.
+
+- **Auditoria da Evidência Real**: Revisões sistemáticas e estudos observacionais contemporâneos (e.g. Ferguson et al., Robbins et al., e meta-análises recentes) demonstraram que a incidência de hipotensão significativa ou eventos adversos graves após administração de nitrato em pacientes com IAM de VD **não é estatisticamente diferente** da observada em IAM inferior isolado, **DESDE QUE o paciente não esteja previamente hipotenso (PAS < 90–100 mmHg)**. A contraindicação absoluta do nitrato na ausência de hipotensão constitui, portanto, um dogma baseado em extrapolação fisiopatológica, e não em ensaios clínicos controlados.
+
+- **Conduta Atualizada no Emergência Pro**: O alerta no sistema foi depurado para orientar restrição a nitratos apenas se houver **hipotensão ativa documentada (PAS < 100 mmHg), bradicardia/bloqueio AV avançado ou uso prévio de inibidores da fosfodiesterase-5 (Sildenafila nas últimas 24h ou Tadalafila nas últimas 48h)**.
+
+
+### B. Alerta de Betabloqueadores na Intoxicação por Cocaína / Simpaticomiméticos
+
+- **Dogma Tradicional de Diretrizes**: O conceito clássico de "estímulo alfa-adrenérgico desoposto" (*unopposed alpha stimulation*) afirmava que o bloqueio beta isolado causaria vasoconstrição coronariana maciça e crise hipertensiva refratária letal.
+
+- **Auditoria da Evidência Real**: Estudos observacionais e registros toxicológicos das últimas duas décadas demonstraram que o fenômeno é extremamente raro na prática clínica e que agentes combinados (como Labetalol) são relativamente seguros. Contudo, **a evidência permanece contundente em demonstrar que os Benzodiazepínicos IV (Diazepam/Midazolam) e vasodilatadores diretos (Nitratos/Nitroprussiato) são muito superiores como 1ª linha**, pois tratam a causa primária (o hiperestímulo central no SNC) sem risco hemodinâmico.
+
+- **Conduta Atualizada no Emergência Pro**: O alerta foi reformulado para focar no racional positivo: priorizar sedação com Benzodiazepínicos IV para controle de FC e PA, desaconselhando o reflexo automático de prescrever betabloqueador puro (Metoprolol IV) na fase hiperaguda.
+
+
+### C. Alertas de Segurança Crítica com Evidência Máxima (Preservados com Rigor)
+
+1. **SCA vs Dissecção Aguda de Aorta**: Heparinização plena e antiagregação dupla administradas inadvertidamente em dissecção aórtica tipo A elevam a mortalidade hospitalar para mais de 80% por tamponamento pericárdico agudo e exanguinação. Exige exclusão por AngioTC antes de antitrombóticos agressivos se houver assimetria de pulsos ou dor rasgante dorsal.
+
+2. **Reperfusão Química vs Sangramento Ativo**: Infusão de trombolíticos sistêmicos (TNK/rtPA) em pacientes com suspeita de AVCh, HSA ou peritonite perfurativa acarreta óbito por hemorragia incontrolável. A confirmação tomográfica prévia é obrigatória.
+
+3. **Expansão Volêmica Agressiva no Choque Cardiogênico**: A infusão rápida de cristaloides no ventrículo esquerdo falimentar não recruta débito cardíaco e agrava dramaticamente o edema agudo de pulmão por elevação da pressão capilar pulmonar de oclusão.
+
+4. **AINEs na Síndrome Coronariana Aguda**: Os anti-inflamatórios inibem a síntese de prostaglandinas cardioprotetoras, promovem vasoconstrição, aumentam o risco de reinfarto e estão associados a maior incidência de rotura miocárdica pós-infarto.
+
 
 ---
 
 
-## Choque indiferenciado (`cho`)
+## 2. Catálogo Desduplicado de Condutas por Síndrome Clínica
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+### Choque indiferenciado (`cho`)
+
+
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Monitorização multiparamétrica contínua: ECG, oximetria de pulso contínua, PANI a cada 3–5 min`
   - **Evidência & Justificativa**: A detecção precoce de alterações hemodinâmicas críticas (hipotensão profunda, taquiarritmias, bradicardia extrema) é vital para titular vasopressores e fluidos minuto a minuto. (ESICM 2025 / Surviving Sepsis).
@@ -29,7 +67,7 @@
   - **Evidência & Justificativa**: A hiperóxia (PaO₂ > 200 mmHg / SpO₂ 100%) induz vasoconstrição reflexa coronariana e cerebral, além de formação de radicais livres de oxigênio. (ESICM 2025 / ILCOR).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `POCUS protocolar à beira-leito — Débito e causas obstrutivas óbvias: contratilidade de VE, sinais de TEP maciço (Sinal de McConnell / dilatação aguda de VD), tamponamento cardíaco (derrame pericárdico com colapso de câmaras direitas) e pneumotórax hipertensivo (ausência de lung sliding)`
   - **Evidência & Justificativa**: O protocolo RUSH / FOCUS permite identificar causas mecânicas fatais e reversíveis em < 3 minutos na sala de emergência antes de qualquer exame de imagem formal. (ESICM 2025 / ACEP).
@@ -44,7 +82,7 @@
   - **Evidência & Justificativa**: Rastreio universal de disfunções orgânicas (SOFA Score), coagulopatia de consumo, lesão miocárdica isquêmica oculta e distúrbios hidroeletrolíticos associados. (ESICM 2025).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: CHOQUE INDIFERENCIADO SEM CAUSA ÓBVIA AO POCUS: A sepse oculta e a isquemia coronariana silenciosa são as causas mais letais. Se a avaliação clínica + POCUS inicial falhar em identificar o mecanismo do choque, acionar imediatamente o protocolo de salvamento empírico abaixo!
 
@@ -64,7 +102,7 @@
   - **Evidência & Justificativa**: A norepinefrina restaura a pressão de perfusão coronariana e cerebral precoce e induz venoconstrição esplâncnica, recrutando o volume não estressado para a circulação efetiva sem a sobrecarga lesiva de fluidos. Pode ser iniciada com segurança em acesso periférico calibroso enquanto se providencia o acesso central. (ESICM 2025 / SOAP II trial).
 
 
-### 3. Sintomáticos & Condutas S.O.S. (`sin`)
+#### Sintomáticos & Condutas S.O.S. (`sin`)
 
 - **Conduta no App**: `Controle térmico ativo/passivo: aquecimento se temperatura central < 36°C (hipotermia piora coagulopatia e disfunção ventricular)`
   - **Evidência & Justificativa**: A hipotermia inibe a cascata enzimática de coagulação, agrava a acidose e diminui a contratilidade miocárdica (tríade letal). (ATLS / ESICM).
@@ -73,7 +111,7 @@
   - **Evidência & Justificativa**: Alívio álgico seguro. AINEs precipitam lesão renal aguda e disfunção plaquetária; sedativos excessivos deprimem o drive simpático compensatório do choque. (ESICM).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Internação prioritária imediata em leito de Unidade de Terapia Intensiva (UTI) com vaga zero / prioridade 1`
   - **Evidência & Justificativa**: Todo paciente em choque indiferenciado requer monitorização invasiva, vigilância multiparamétrica contínua e enfermagem especializada 1:1. (ESICM / AMIB).
@@ -82,10 +120,10 @@
   - **Evidência & Justificativa**: A PANI subestima a pressão arterial no choque com vasoconstrição periférica intensa. A linha arterial garante precisão milimétrica e titulação segura de vasopressores. (ESICM 2025).
 
 
-## Choque séptico / vasoplégico (`cho_sep`)
+### Choque séptico / vasoplégico (`cho_sep`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Iniciar Norepinefrina precocemente (iniciar em veia periférica se necessário) para restaurar PAM ≥ 65 mmHg e recrutar volume estressado`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Surviving Sepsis Campaign / ESICM 2025).
@@ -93,11 +131,8 @@
 - **Conduta no App**: `Ressuscitação volêmica: Ringer Lactato 30 mL/kg nas primeiras 3h apenas se houver sinais de responsividade a fluidos (suspender se congestão ou dilatação de VD)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Surviving Sepsis Campaign / ESICM 2025).
 
-- **Conduta no App**: `Monitorização contínua do TEC (meta < 3s), diurese horária (> 0,5 mL/kg/h) e nível de consciência`
-  - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Surviving Sepsis Campaign / ESICM 2025).
 
-
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Administrar antibiótico de amplo espectro na 1ª HORA após coleta de culturas. Cada hora de atraso aumenta mortalidade em ~8%
 
@@ -126,7 +161,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Surviving Sepsis Campaign / ESICM 2025).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Coleta de 2 pares de hemoculturas de sítios venosos distintos ANTES do início do antibiótico (não atrasar ATB além de 45 min se dificuldade de punção)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Surviving Sepsis Campaign / ESICM 2025).
@@ -137,31 +172,22 @@
 - **Conduta no App**: `Gasometria com dosagem de lactato inicial e seriado em 2h e 4h`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Surviving Sepsis Campaign / ESICM 2025).
 
-- **Conduta no App**: `Hemograma completo, coagulograma, PCR, procalcitonina, função renal e eletrólitos`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Surviving Sepsis Campaign / ESICM 2025).
-
 - **Conduta no App**: `Radiografia de tórax no leito e/ou TC contrastada direcionada ao foco suspeito (abdome, pelve, tórax, SNC)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Surviving Sepsis Campaign / ESICM 2025).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
-
-- **Conduta no App**: `Internação obrigatória em UTI`
-  - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Surviving Sepsis Campaign / ESICM 2025).
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Reavaliação contínua da descalonamento de vasopressores conforme normalização do TEC e clearance de lactato`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Surviving Sepsis Campaign / ESICM 2025).
 
 
-## Choque hipovolêmico / hemorrágico (`cho_hip`)
+### Choque hipovolêmico / hemorrágico (`cho_hip`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Posicionamento supino com elevação de membros inferiores a 30° se tolerado`
-  - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ATLS 10ª Ed / European Guideline on Trauma Hemorrhage 2023).
-
-- **Conduta no App**: `Dois acessos venosos periféricos de grosso calibre (14–16G) ou cateter de infusão rápida (MAC / intraósseo)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ATLS 10ª Ed / European Guideline on Trauma Hemorrhage 2023).
 
 - **Conduta no App**: `Hipotensão permissiva (alvo PAM 50–60 mmHg / PAS 80–90 mmHg) no sangramento ativo não controlado, EXCETO em traumatismo cranioencefálico (meta PAS ≥ 100–110 mmHg)`
@@ -171,7 +197,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ATLS 10ª Ed / European Guideline on Trauma Hemorrhage 2023).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Evitar sobrecarga de cristaloides (> 1,5 L) no choque hemorrágico: hemodilui fatores de coagulação, causa hipotermia e estoura o coágulo hemostático
 
@@ -194,7 +220,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ATLS 10ª Ed / European Guideline on Trauma Hemorrhage 2023).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Tipagem sanguínea ABO/Rh, teste de compatibilidade cruzada e reserva de sangue de emergência (sangue O negativo imediato se choque exsanguinante)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ATLS 10ª Ed / European Guideline on Trauma Hemorrhage 2023).
@@ -212,7 +238,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ATLS 10ª Ed / European Guideline on Trauma Hemorrhage 2023).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Acionamento urgente da Cirurgia Geral / Vascular / Hemodinâmica para controle hemostático definitivo da fonte de sangramento`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ATLS 10ª Ed / European Guideline on Trauma Hemorrhage 2023).
@@ -221,10 +247,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ATLS 10ª Ed / European Guideline on Trauma Hemorrhage 2023).
 
 
-## Choque cardiogênico (`cho_car`)
+### Choque cardiogênico (`cho_car`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Posicionamento com cabeceira elevada a 30–45° (reduz congestão pulmonar e pré-carga de VE)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2026 / SCAI 2022).
@@ -239,7 +265,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2026 / SCAI 2022).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Em choque cardiogênico pós-IAM, a reperfusão coronariana emergencial por ICP primária é a única intervenção que comprovadamente reduz mortalidade a curto e longo prazo
 
@@ -265,7 +291,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ESC 2026 / SCAI 2022).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Ecocardiograma transtorácico no leito (POCUS): avaliar FEVE, acinesias segmentares, disfunção de VD, derrame pericárdico e complicações mecânicas (insuficiência mitral aguda, CIV)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2026 / SCAI 2022).
@@ -283,7 +309,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2026 / SCAI 2022).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Transferência emergencial para o laboratório de hemodinâmica (sala de cateterismo)`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2026 / SCAI 2022).
@@ -292,10 +318,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2026 / SCAI 2022).
 
 
-## Choque obstrutivo (`cho_obs`)
+### Choque obstrutivo (`cho_obs`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Reconhecer e distinguir os dois grandes mecanismos: 1) Contrapressão intratorácica/pericárdica externa (Pneumotórax, Tamponamento); 2) Contrapressão de pós-carga ao VD (TEP maciço)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AHA 2026 / ESC TEP / ATLS).
@@ -310,7 +336,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AHA 2026 / ESC TEP / ATLS).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: O choque obstrutivo é uma emergência mecânica: medicamentos isolados não resolvem a causa de base. Priorizar descompressão física imediata!
 
@@ -333,7 +359,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (AHA 2026 / ESC TEP / ATLS).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `POCUS imediato à beira-leito: janela pericárdica (derrame com colapso diastólico de VD), janela pulmonar (ausência de lung sliding no pneumotórax), coração direito (dilatação de VD / McConnell sign no TEP)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA 2026 / ESC TEP / ATLS).
@@ -351,7 +377,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA 2026 / ESC TEP / ATLS).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Acionamento urgente da Cirurgia Geral / Torácica (pneumotórax/tamponamento) ou Cirurgia Cardíaca / Hemodinâmica (TEP com indicação de trombectomia mecânica)`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AHA 2026 / ESC TEP / ATLS).
@@ -360,10 +386,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AHA 2026 / ESC TEP / ATLS).
 
 
-## Hemorragia digestiva (`hdg`)
+### Hemorragia digestiva (`hdg`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Monitorização multiparamétrica contínua (ECG, oximetria de pulso, PANI a cada 5–15 min)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ACG 2021 / ESGE 2022 (Hemorragia Digestiva Alta e Baixa)).
@@ -381,7 +407,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ACG 2021 / ESGE 2022 (Hemorragia Digestiva Alta e Baixa)).
 
 
-### 3. Sintomáticos & Condutas S.O.S. (`sin`)
+#### Sintomáticos & Condutas S.O.S. (`sin`)
 
 - **Conduta no App**: `Dipirona 1 g IV se dor epigástrica ou abdominal associada (CONTRAINDICADO o uso de anti-inflamatórios não esteroidais — AINEs)`
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (ACG 2021 / ESGE 2022 (Hemorragia Digestiva Alta e Baixa)).
@@ -390,7 +416,7 @@
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (ACG 2021 / ESGE 2022 (Hemorragia Digestiva Alta e Baixa)).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Cálculo do Escore de Glasgow-Blatchford (GBS) na admissão`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ACG 2021 / ESGE 2022 (Hemorragia Digestiva Alta e Baixa)).
@@ -405,7 +431,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ACG 2021 / ESGE 2022 (Hemorragia Digestiva Alta e Baixa)).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Alta médica orientada com agendamento de EDA ambulatorial em 24–48h (apenas se GBS 0–1 e estável)`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ACG 2021 / ESGE 2022 (Hemorragia Digestiva Alta e Baixa)).
@@ -414,10 +440,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ACG 2021 / ESGE 2022 (Hemorragia Digestiva Alta e Baixa)).
 
 
-## HDA — Hemorragia Digestiva Alta (`hda`)
+### HDA — Hemorragia Digestiva Alta (`hda`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Intubação orotraqueal profilática recomendada antes da EDA se hematêmese volumosa ativa, rebaixamento de consciência ou risco elevado de aspiração pulmonar`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ACG 2021 / ESGE 2022).
@@ -426,7 +452,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ACG 2021 / ESGE 2022).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Em pacientes cirróticos ou com suspeita de varizes de esôfago: iniciar TERLIPRESSINA (ou Octreotida) e CEFTRIAXONA IMEDIATAMENTE, antes mesmo da EDA!
 
@@ -448,7 +474,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ACG 2021 / ESGE 2022).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Endoscopia Digestiva Alta (EDA) de urgência para diagnóstico etiológico (úlcera péptica com classificação de Forrest, varizes esofagogástricas, Mallory-Weiss, neoplasia) e hemostasia terapêutica (ligadura elástica, clipagem, termocoagulação, hemospray)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ACG 2021 / ESGE 2022).
@@ -457,16 +483,16 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ACG 2021 / ESGE 2022).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Após hemostasia endoscópica de úlceras Forrest Ia, Ib ou IIa ou ligadura de varizes: internação em UTI por pelo menos 24–48h com monitorização contínua de ressangramento`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ACG 2021 / ESGE 2022).
 
 
-## HDB — Hemorragia Digestiva Baixa (`hdb`)
+### HDB — Hemorragia Digestiva Baixa (`hdb`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Diferenciar hematoquezia volumosa por HDA maciça: se instabilidade hemodinâmica importante associada a hematoquezia, considerar EDA de urgência prévia à colonoscopia para descartar HDA rápida com trânsito hiperativo`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ACG 2023 (Hemorragia Digestiva Baixa Aguda)).
@@ -475,7 +501,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ACG 2023 (Hemorragia Digestiva Baixa Aguda)).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Colonoscopia na urgência sem preparo adequado de cólon tem baixo rendimento diagnóstico e eleva risco de perfuração; o preparo anterógrado com solução de polietilenoglicol (PEG) é seguro após ressuscitação inicial
 
@@ -492,7 +518,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ACG 2023 (Hemorragia Digestiva Baixa Aguda)).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Escore de Oakland para HDB na admissão: escore ≤ 8 prediz probabilidade > 95% de alta segura sem eventos adversos para investigação ambulatorial`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ACG 2023 (Hemorragia Digestiva Baixa Aguda)).
@@ -501,7 +527,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ACG 2023 (Hemorragia Digestiva Baixa Aguda)).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Oakland ≤ 8 e sinais vitais normais: alta segura com orientação e encaminhamento para colonoscopia ambulatorial rápida`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ACG 2023 (Hemorragia Digestiva Baixa Aguda)).
@@ -510,10 +536,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ACG 2023 (Hemorragia Digestiva Baixa Aguda)).
 
 
-## Síndrome neurovascular (AVC / AIT) (`neu`)
+### Síndrome neurovascular (AVC / AIT) (`neu`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Ativação imediata do Código AVC e determinação estrita do "último visto bem" (tempo zero)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AHA/ASA 2026 (AVC Isquêmico e Hemorrágico)).
@@ -534,7 +560,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AHA/ASA 2026 (AVC Isquêmico e Hemorrágico)).
 
 
-### 3. Sintomáticos & Condutas S.O.S. (`sin`)
+#### Sintomáticos & Condutas S.O.S. (`sin`)
 
 - **Conduta no App**: `Posicionamento no leito: manter cabeceira a 0° se AVCi sem sinais de hipertensão intracraniana (otimiza fluxo cerebral penumbral); elevar a 30° se suspeita de AVCh, vômitos ou risco de broncoaspiração`
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (AHA/ASA 2026 (AVC Isquêmico e Hemorrágico)).
@@ -546,7 +572,7 @@
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (AHA/ASA 2026 (AVC Isquêmico e Hemorrágico)).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `TC de crânio sem contraste imediata: excluir sangramento intracraniano e avaliar precocemente o escore ASPECTS`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA/ASA 2026 (AVC Isquêmico e Hemorrágico)).
@@ -561,7 +587,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA/ASA 2026 (AVC Isquêmico e Hemorrágico)).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Internação obrigatória em Unidade de Cuidado Integral ao AVC (Unidade de AVC / UTI Neurológica)`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AHA/ASA 2026 (AVC Isquêmico e Hemorrágico)).
@@ -570,10 +596,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AHA/ASA 2026 (AVC Isquêmico e Hemorrágico)).
 
 
-## AVC Isquêmico Agudo (AVCi) (`avc_isq`)
+### AVC Isquêmico Agudo (AVCi) (`avc_isq`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Controle de PA em candidatos a trombólise: ALVO PRÉ-LÍTICO < 185/110 mmHg. Administrar Labetalol 10–20 mg IV em bolus lento (1–2 min) OU Nicardipina 5–15 mg/h OU Nitroprussiato de Sódio se refratário`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AHA/ASA 2026 (Diretriz de AVC Isquêmico Agudo)).
@@ -585,7 +611,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AHA/ASA 2026 (Diretriz de AVC Isquêmico Agudo)).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: TENECTEPLASE (TNK 0,25 mg/kg em bolus IV único, máx 25 mg): recomendada como primeira escolha pela AHA/ASA 2026 pela superioridade logística e alta taxa de recanalização em oclusão de grandes vasos
 
@@ -607,7 +633,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (AHA/ASA 2026 (Diretriz de AVC Isquêmico Agudo)).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Ecocardiograma transtorácico com Doppler (± transesofágico) para pesquisa de fonte cardioembólica (trombo intracavitário, forame oval patente, endocardite)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA/ASA 2026 (Diretriz de AVC Isquêmico Agudo)).
@@ -622,7 +648,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA/ASA 2026 (Diretriz de AVC Isquêmico Agudo)).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Internação obrigatória em Unidade de AVC (Stroke Unit) com vigilância neurológica rigorosa`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AHA/ASA 2026 (Diretriz de AVC Isquêmico Agudo)).
@@ -631,10 +657,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AHA/ASA 2026 (Diretriz de AVC Isquêmico Agudo)).
 
 
-## AVC Hemorrágico (AVCh / HSA) (`avc_hem`)
+### AVC Hemorrágico (AVCh / HSA) (`avc_hem`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Posicionamento com cabeceira elevada a 30° e cabeça em posição neutra (facilita drenagem venosa jugular e reduz a pressão intracraniana)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AHA/ASA 2022/2026 (Hemorragia Intraparenquimatosa)).
@@ -646,7 +672,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AHA/ASA 2022/2026 (Hemorragia Intraparenquimatosa)).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: A reversão da anticoagulação deve ser iniciada IMEDIATAMENTE antes mesmo de qualquer transferência ou procedimento: a expansão do hematoma ocorre majoritariamente nas primeiras 3–6 horas!
 
@@ -671,7 +697,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (AHA/ASA 2022/2026 (Hemorragia Intraparenquimatosa)).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `TC de crânio sem contraste imediata: mensurar volume do hematoma pela regra ABC/2 e calcular o ICH Score`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA/ASA 2022/2026 (Hemorragia Intraparenquimatosa)).
@@ -686,7 +712,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA/ASA 2022/2026 (Hemorragia Intraparenquimatosa)).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Acionamento emergencial da Neurocirurgia para drenagem ventricular externa (DVE se hidrocefalia aguda), craniectomia descompressiva ou evacuação de hematoma cerebelar (> 3 cm com compressão de tronco)`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AHA/ASA 2022/2026 (Hemorragia Intraparenquimatosa)).
@@ -695,10 +721,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AHA/ASA 2022/2026 (Hemorragia Intraparenquimatosa)).
 
 
-## Ataque Isquêmico Transitório (AIT) (`ait`)
+### Ataque Isquêmico Transitório (AIT) (`ait`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Calcular o escore ABCD2 na admissão: Idade ≥ 60a (1pt); PA ≥ 140/90 mmHg (1pt); Fraqueza unilateral (2pts) ou Fala sem fraqueza (1pt); Duração ≥ 60 min (2pts) ou 10–59 min (1pt); Diabetes (1pt)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AHA/ASA 2026 (AIT e Prevenção Secundária Precoce)).
@@ -710,7 +736,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AHA/ASA 2026 (AIT e Prevenção Secundária Precoce)).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Alto risco (ABCD2 ≥ 4) ou estenose vascular: DAPT IMEDIATA nas primeiras 24h com AAS 100–300 mg VO + Clopidogrel 300 mg VO (dose de ataque), seguido de AAS 100 mg + Clopidogrel 75 mg/dia por 21 dias`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (AHA/ASA 2026 (AIT e Prevenção Secundária Precoce)).
@@ -725,7 +751,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (AHA/ASA 2026 (AIT e Prevenção Secundária Precoce)).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Ressonância Magnética de Crânio (RM) com difusão (DWI)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA/ASA 2026 (AIT e Prevenção Secundária Precoce)).
@@ -737,7 +763,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA/ASA 2026 (AIT e Prevenção Secundária Precoce)).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `ABCD2 ≥ 4 ou déficit flutuante ou estenose carotídea > 50%: internação hospitalar para investigação acelerada`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AHA/ASA 2026 (AIT e Prevenção Secundária Precoce)).
@@ -746,10 +772,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AHA/ASA 2026 (AIT e Prevenção Secundária Precoce)).
 
 
-## Rebaixamento de consciência / Coma (`rnc`)
+### Rebaixamento de consciência / Coma (`rnc`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Posicionamento e aspiração de vias aéreas: decúbito lateral se sem suspeita de trauma cervical; cabeceira a 30° se suspeita de hipertensão intracraniana`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Neurocritical Care Society / AHA).
@@ -767,7 +793,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Neurocritical Care Society / AHA).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: NUNCA administrar glicose hipertônica sem tiamina prévia em pacientes desnutridos, etilistas ou com suspeita de encefalopatia de Wernicke!
 
@@ -786,7 +812,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Neurocritical Care Society / AHA).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `TC de crânio sem contraste em < 30 minutos: descartar hemorragia intracraniana, efeito de massa, hidrocefalia aguda e edema cerebral difuso`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Neurocritical Care Society / AHA).
@@ -804,7 +830,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Neurocritical Care Society / AHA).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Internação imediata em leito de Terapia Intensiva (UTI geral ou neurocrítica)`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Neurocritical Care Society / AHA).
@@ -813,10 +839,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Neurocritical Care Society / AHA).
 
 
-## Encefalopatia Tóxico-Metabólica (Uremia, Hepática, Hipoglicemia) (`rnc_met`)
+### Encefalopatia Tóxico-Metabólica (Uremia, Hepática, Hipoglicemia) (`rnc_met`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Manutenção de cabeceira a 30° e monitorização respiratória rigorosa (risco de broncoaspiração)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -828,7 +854,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Encefalopatia Hepática: Evitar sedativos, hipocalemia e constipação; rastrear infecção oculta (PBE) e sangramento digestivo.
 
@@ -847,7 +873,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Gasometria arterial com lactato e cálculo do Anion Gap e Delta-Gap`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -865,7 +891,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Internação em Unidade de Terapia Intensiva (UTI) ou Semi-intensiva até estabilidade metabólica e resolução do coma`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
@@ -874,10 +900,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Hipertensão Intracraniana Aguda / Efeito de Massa / Herniação (`rnc_hic`)
+### Hipertensão Intracraniana Aguda / Efeito de Massa / Herniação (`rnc_hic`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: HIPOTENSÃO É FATAL: Manter PAS ≥ 100–110 mmHg (ou PAM ≥ 80–90 mmHg) para assegurar Pressão de Perfusão Cerebral (PPC = PAM - PIC ≥ 60 mmHg). Cada episódio de hipotensão duplica a mortalidade!
 
@@ -896,7 +922,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Herniação iminente (anisocoria súbita, bradicardia com hipertensão [tríade de Cushing], postura de descerebração): infundir osmoterapia IMEDIATAMENTE sem atrasar para tomografia!
 
@@ -913,7 +939,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `TC de Crânio imediata sem contraste (< 15–20 min): avaliar desvio de linha média (> 5 mm é critério cirúrgico), apagamento de cisternas da base, efeito de massa e hematomas`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -928,7 +954,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Acionamento IMEDIATO da Neurocirurgia de plantão para avaliação cirúrgica emergencial (craniectomia descompressiva, drenagem de hematoma ou DVE)`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
@@ -937,10 +963,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Meningoencefalite Aguda / Infecção SNC (`rnc_inf`)
+### Meningoencefalite Aguda / Infecção SNC (`rnc_inf`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: ISOLAMENTO DE GOTÍCULAS: Máscara cirúrgica no paciente e PFF2/N95 na equipe até 24 horas de antibioticoterapia eficaz (suspeita de meningite meningocócica)
 
@@ -956,7 +982,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Dexametasona DEVE ser administrada 15–20 minutos ANTES ou CONCOMITANTE à primeira dose do antibiótico. Não administrar se o antibiótico já tiver sido iniciado há mais de 4 horas!
 
@@ -976,7 +1002,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Coleta imediata de 2 pares de hemoculturas de sítios distintos ANTES da infusão de antimicrobianos`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -991,7 +1017,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Internação obrigatória em leito de Terapia Intensiva (UTI) em isolamento de gotículas`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
@@ -1000,10 +1026,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Cefaleia (`cef`)
+### Cefaleia (`cef`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Monitor de sinais vitais e EVA na chegada`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (IHS / AHS / Diretrizes da Sociedade Brasileira de Cefaleia (SBCe)).
@@ -1021,7 +1047,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (IHS / AHS / Diretrizes da Sociedade Brasileira de Cefaleia (SBCe)).
 
 
-### 3. Sintomáticos & Condutas S.O.S. (`sin`)
+#### Sintomáticos & Condutas S.O.S. (`sin`)
 
 > ⚠ **Alerta Clínico**: EVITAR opioides como primeira linha — risco de cefaleia por uso excessivo, dependência e mascaramento de sinais
 
@@ -1045,7 +1071,7 @@
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (IHS / AHS / Diretrizes da Sociedade Brasileira de Cefaleia (SBCe)).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `TC de crânio sem contraste em < 1h se ≥ 1 sinal de alarme (SNNOOP10)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (IHS / AHS / Diretrizes da Sociedade Brasileira de Cefaleia (SBCe)).
@@ -1066,7 +1092,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (IHS / AHS / Diretrizes da Sociedade Brasileira de Cefaleia (SBCe)).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Alta médica após melhora da queixa`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (IHS / AHS / Diretrizes da Sociedade Brasileira de Cefaleia (SBCe)).
@@ -1087,10 +1113,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (IHS / AHS / Diretrizes da Sociedade Brasileira de Cefaleia (SBCe)).
 
 
-## Suspeita de cefaleia primária (`cef_prim`)
+### Suspeita de cefaleia primária (`cef_prim`)
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Avaliar abuso de analgésico: > 10–15 dias/mês configura cefaleia por uso excessivo (rebote)
 
@@ -1116,7 +1142,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Receita de analgésico de resgate (paracetamol 750 mg ou ibuprofeno 400 mg até 8/8h por ≤ 2–3 dias)`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
@@ -1140,10 +1166,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Suspeita de HSA (`cef_hsa`)
+### Suspeita de HSA (`cef_hsa`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Monitor cardíaco + oximetria contínua + acesso venoso ≥ 18G em todos os casos`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AHA/ASA 2023 (Hemorragia Subaracnóidea Aneurismática)).
@@ -1161,7 +1187,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AHA/ASA 2023 (Hemorragia Subaracnóidea Aneurismática)).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Evitar redução agressiva de PA (PAS < 120) — risco de isquemia em zona de penumbra
 
@@ -1186,7 +1212,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (AHA/ASA 2023 (Hemorragia Subaracnóidea Aneurismática)).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `TC de crânio sem contraste em < 30 min da chegada`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA/ASA 2023 (Hemorragia Subaracnóidea Aneurismática)).
@@ -1210,7 +1236,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA/ASA 2023 (Hemorragia Subaracnóidea Aneurismática)).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Ativar neurocirurgia / hemodinâmica imediatamente após confirmação`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AHA/ASA 2023 (Hemorragia Subaracnóidea Aneurismática)).
@@ -1231,10 +1257,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AHA/ASA 2023 (Hemorragia Subaracnóidea Aneurismática)).
 
 
-## Meningoencefalite (`cef_men`)
+### Meningoencefalite (`cef_men`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: Não atrasar antibiótico para coleta de LP — iniciar em < 1h da suspeita
 
@@ -1253,7 +1279,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (IDSA / ESCMID Meningitis Guideline).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Dexametasona perde benefício se administrada > 1h após ATB — programar simultânea
 
@@ -1272,7 +1298,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (IDSA / ESCMID Meningitis Guideline).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `TC de crânio antes da LP se: GCS < 11, déficit focal, papiledema, convulsão recente, imunossupressão grave, > 60 anos`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (IDSA / ESCMID Meningitis Guideline).
@@ -1293,7 +1319,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (IDSA / ESCMID Meningitis Guideline).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Internação em UTI se GCS ≤ 12, convulsão, sinais de choque, instabilidade hemodinâmica ou sinais de HIC`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (IDSA / ESCMID Meningitis Guideline).
@@ -1314,34 +1340,34 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (IDSA / ESCMID Meningitis Guideline).
 
 
-## Trombose venosa cerebral (`cef_tvc`)
+### Trombose venosa cerebral (`cef_tvc`)
 
 
-## Dissecção de artéria cervical (`cef_dac`)
+### Dissecção de artéria cervical (`cef_dac`)
 
 
-## AVC hemorrágico (`cef_avch`)
+### AVC hemorrágico (`cef_avch`)
 
 
-## Cefaleia pós-punção dural (`cef_ppl`)
+### Cefaleia pós-punção dural (`cef_ppl`)
 
 
-## Hipertensão intracraniana idiopática (`cef_hii`)
+### Hipertensão intracraniana idiopática (`cef_hii`)
 
 
-## Cefaleia pós-TCE (`cef_tce`)
+### Cefaleia pós-TCE (`cef_tce`)
 
 
-## Rinossinusite aguda (`cef_sin`)
+### Rinossinusite aguda (`cef_sin`)
 
 
-## Neuralgia do trigêmeo (`cef_trig`)
+### Neuralgia do trigêmeo (`cef_trig`)
 
 
-## Síndrome dispneica (`dsp`)
+### Síndrome dispneica (`dsp`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Posicionamento sentado ou cabeceira elevada a 45–90° (posição de Fowler)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2026 / GOLD 2025 / GINA 2025 / SBPT).
@@ -1359,7 +1385,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2026 / GOLD 2025 / GINA 2025 / SBPT).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Rastreio etiológico emergencial CHAMPIT: Coronariana (SCA), Hipertensiva, Arritmia, Mecânica (valvopatia aguda/CIV), Pulmonar (TEP), Infecciosa (sepse/pneumonia), Tamponamento pericárdico`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ESC 2026 / GOLD 2025 / GINA 2025 / SBPT).
@@ -1374,7 +1400,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ESC 2026 / GOLD 2025 / GINA 2025 / SBPT).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `POCUS pulmonar (Protocolo BLUE): diferenciar perfil B (linhas B bilaterais difusas = EAP) de perfil A (deslizamento preservado = asma/DPOC/TEP), consolidação (pneumonia) e ausência de deslizamento (pneumotórax)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2026 / GOLD 2025 / GINA 2025 / SBPT).
@@ -1395,7 +1421,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2026 / GOLD 2025 / GINA 2025 / SBPT).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Internação em Unidade de Terapia Intensiva (UTI) se necessidade de VNI mantida, IOT, instabilidade hemodinâmica ou disfunção orgânica`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2026 / GOLD 2025 / GINA 2025 / SBPT).
@@ -1404,10 +1430,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2026 / GOLD 2025 / GINA 2025 / SBPT).
 
 
-## Síndrome febril / Sepse (`feb`)
+### Síndrome febril / Sepse (`feb`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Rastreio de sepse à beira-leito com escore NEWS2 ou SOFA (aumento ≥ 2 pontos em relação ao basal na presença de infecção confirmada ou suspeita define Sepse)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Surviving Sepsis Campaign 2021/2025).
@@ -1425,7 +1451,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Surviving Sepsis Campaign 2021/2025).
 
 
-### 3. Sintomáticos & Condutas S.O.S. (`sin`)
+#### Sintomáticos & Condutas S.O.S. (`sin`)
 
 - **Conduta no App**: `Dipirona 1 g IV ou Paracetamol 1 g IV/VO a cada 6h se temperatura ≥ 38,0°C ou desconforto álgico importante (evitar AAS e AINEs)`
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Surviving Sepsis Campaign 2021/2025).
@@ -1434,7 +1460,7 @@
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Surviving Sepsis Campaign 2021/2025).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Sepse ou choque séptico: administrar antibioticoterapia de amplo espectro na PRIMEIRA HORA da triagem! Coletar hemoculturas antes, mas NÃO atrasar o início do antibiótico se houver dificuldade de punção além de 45 min
 
@@ -1454,7 +1480,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Surviving Sepsis Campaign 2021/2025).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Coleta de 2 pares de hemoculturas de sítios venosos periféricos distintos com técnica estéril rigorosa`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Surviving Sepsis Campaign 2021/2025).
@@ -1472,7 +1498,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Surviving Sepsis Campaign 2021/2025).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Sepse com disfunção orgânica ou hipotensão requerendo vasopressor: internação obrigatória em UTI`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Surviving Sepsis Campaign 2021/2025).
@@ -1484,10 +1510,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Surviving Sepsis Campaign 2021/2025).
 
 
-## Síndrome abdominal aguda (`abd`)
+### Síndrome abdominal aguda (`abd`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Monitorização multiparamétrica contínua (ECG, SpO₂, PANI a cada 5–15 min)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (WSES 2022 / Surviving Sepsis Campaign).
@@ -1508,7 +1534,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (WSES 2022 / Surviving Sepsis Campaign).
 
 
-### 3. Sintomáticos & Condutas S.O.S. (`sin`)
+#### Sintomáticos & Condutas S.O.S. (`sin`)
 
 > ⚠ **Alerta Clínico**: Analgesia precoce é recomendada (WSES): alivia a dor e NÃO mascara sinais de peritonite cirúrgica.
 
@@ -1525,7 +1551,7 @@
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (WSES 2022 / Surviving Sepsis Campaign).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Ceftriaxona 2 g IV dose única diária + Metronidazol 500 mg IV 8/8h (iniciar na 1ª hora)`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (WSES 2022 / Surviving Sepsis Campaign).
@@ -1543,7 +1569,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (WSES 2022 / Surviving Sepsis Campaign).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `TC de abdome total com contraste venoso em caráter de urgência`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (WSES 2022 / Surviving Sepsis Campaign).
@@ -1567,7 +1593,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (WSES 2022 / Surviving Sepsis Campaign).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Acionamento imediato da equipe de Cirurgia Geral de plantão para avaliação cirúrgica emergencial`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (WSES 2022 / Surviving Sepsis Campaign).
@@ -1579,10 +1605,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (WSES 2022 / Surviving Sepsis Campaign).
 
 
-## Inflamatório / Infeccioso (Apendicite, Colecistite, Diverticulite) (`dab_inf`)
+### Inflamatório / Infeccioso (Apendicite, Colecistite, Diverticulite) (`dab_inf`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Jejum absoluto (NPO)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -1594,7 +1620,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Ceftriaxona 2 g IV 12/12h + Metronidazol 500 mg IV 8/8h (ou Ciprofloxacino 400 mg IV se alergia grave)`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -1606,7 +1632,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `USG de abdome superior (vias biliares e vesícula)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -1618,7 +1644,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Internação cirúrgica / leito monitorizado para programação de procedimento de urgência`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
@@ -1627,10 +1653,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Perfurativo (Úlcera péptica rota, Perfuração colônica, Colecistite rota) (`dab_perf`)
+### Perfurativo (Úlcera péptica rota, Perfuração colônica, Colecistite rota) (`dab_perf`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: Sinais peritoneais com abdome em tábua e ar livre intraperitoneal exigem cirurgia IMEDIATA; não postergar para exames demorados!
 
@@ -1647,7 +1673,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Acionamento imediato da Cirurgia Geral de plantão para laparotomia exploradora de urgência`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -1665,7 +1691,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `TC de abdome total com contraste venoso em caráter de urgência`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -1680,7 +1706,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Encaminhamento imediato ao Centro Cirúrgico para laparotomia exploradora`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
@@ -1689,10 +1715,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Obstrutivo (Aderências, Hérnia encarcerada, Volvulo) (`dab_obs`)
+### Obstrutivo (Aderências, Hérnia encarcerada, Volvulo) (`dab_obs`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Sonda Nasogástrica calibrosa (16–18F) aberta em sifonagem ou aspiração suave imediata`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -1704,7 +1730,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Sinais de estrangulamento isquêmico (febre, taquicardia contínua, leucocitose acentuada, acidose lática, dor desproporcional à palpação): indicação de CIRURGIA DE EMERGÊNCIA!
 
@@ -1718,7 +1744,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `TC de abdome e pelve com contraste IV: método padrão-ouro para localizar o ponto de transição e avaliar sofrimento de alça`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -1727,10 +1753,10 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Vascular / Isquêmico (Isquemia mesentérica, Ruptura de AAA) (`dab_vasc`)
+### Vascular / Isquêmico (Isquemia mesentérica, Ruptura de AAA) (`dab_vasc`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: A isquemia mesentérica aguda caracteriza-se classicamente por DOR ABDOMINAL SEVERA DESPROPORCIONAL AO EXAME FÍSICO INICIAL, em paciente com fibrilação atrial, doença vascular aterosclerótica ou vasculopatia!
 
@@ -1744,7 +1770,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Anticoagulação imediata com Heparina Não Fracionada (HNF) bolus 80 UI/kg seguido de 18 UI/kg/h em BIC (se excluído sangramento ativo na TC)`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -1759,7 +1785,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Gasometria arterial: acidose metabólica com anion gap elevado e hiperlactatemia progressiva`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -1771,10 +1797,10 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Hemorrágico / Ginecológico (Gravidez ectópica rota, Cisto roto) (`dab_hem`)
+### Hemorrágico / Ginecológico (Gravidez ectópica rota, Cisto roto) (`dab_hem`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Verificação imediata de β-hCG e estabilidade hemodinâmica`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -1786,7 +1812,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Gravidez ectópica com choque hipovolêmico ou líquido livre intra-abdominal volumoso: LAPAROTOMIA / LAPAROSCOPIA GINECOLÓGICA DE EMERGÊNCIA IMEDIATA!
 
@@ -1800,7 +1826,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `POCUS pélvico / FAST: presença de líquido livre no fundo de saco de Douglas e espaço de Morrison`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -1812,10 +1838,10 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Dor abdominal (`dab`)
+### Dor abdominal (`dab`)
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `QSD / Hipocôndrio D`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -1839,10 +1865,10 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Náusea e Vômitos (`nv`)
+### Náusea e Vômitos (`nv`)
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Ondansetrana 4–8 mg IV`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -1857,7 +1883,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Glicemia capilar`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -1872,10 +1898,10 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Diarreia aguda / Enterite (`dia`)
+### Diarreia aguda / Enterite (`dia`)
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Hidratação oral vigorosa com Soro de Reidratação Oral (SRO) ou IV com Ringer Lactato se desidratação moderada a grave`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -1890,7 +1916,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Coprocultura e pesquisa de leucócitos fecais se diarreia sanguinolenta ou febril prolongada`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -1902,10 +1928,10 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Síncope (`sinc`)
+### Síncope (`sinc`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `ECG de 12 derivações na admissão: obrigatório em 100% dos pacientes com síncope para busca ativa de canalopatias e arritmias`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -1923,7 +1949,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Ecocardiograma transtorácico: indicado se suspeita de cardiopatia estrutural (sopro cardíaco novo, estenose aórtica, disfunção ventricular ou ECG alterado)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -1938,7 +1964,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Alto Risco (Internação hospitalar obrigatória em leito monitorizado/telemetria): cardiopatia estrutural conhecida, síncope de esforço, ECG com achados de alto risco, PA sistólica < 90 mmHg persistente ou hemoglobina < 9 g/dL`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
@@ -1950,10 +1976,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Convulsão / Estado de Mal Epiléptico (`con`)
+### Convulsão / Estado de Mal Epiléptico (`con`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Proteção imediata contra trauma: posicionamento em decúbito lateral para evitar broncoaspiração, aspiração suave de secreções e remoção de objetos ao redor (NUNCA introduzir objetos ou dedos na boca)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (American Epilepsy Society (AES) / Neurocritical Care Society).
@@ -1971,7 +1997,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (American Epilepsy Society (AES) / Neurocritical Care Society).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: ESTADO DE MAL EPILÉPTICO (Crise contínua ≥ 5 minutos OU duas ou mais crises sem recuperação da consciência): iniciar benzodiazepínico IMEDIATAMENTE. O atraso no tratamento reduz a eficácia dos receptores GABA e aumenta a mortalidade!
 
@@ -1993,7 +2019,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (American Epilepsy Society (AES) / Neurocritical Care Society).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Painel metabólico urgente: glicemia, sódio sérico (pesquisar hiponatremia aguda como gatilho), cálcio ionizado, magnésio, ureia, creatinina e gasometria com lactato`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (American Epilepsy Society (AES) / Neurocritical Care Society).
@@ -2008,7 +2034,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (American Epilepsy Society (AES) / Neurocritical Care Society).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Estado de mal epiléptico ou necessidade de segunda linha de antiepilépticos: internação obrigatória em UTI`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (American Epilepsy Society (AES) / Neurocritical Care Society).
@@ -2020,10 +2046,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (American Epilepsy Society (AES) / Neurocritical Care Society).
 
 
-## Palpitações / Arritmias (`pal`)
+### Palpitações / Arritmias (`pal`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: REGRA DE OURO DAS ARRITMIAS: Pesquisar imediatamente os 5 sinais de INSTABILIDADE HEMODINÂMICA: 1) Hipotensão arterial / choque (PAS < 90 mmHg); 2) Dor torácica de padrão isquêmico agudo; 3) Alteração aguda do estado mental / síncope; 4) Insuficiência cardíaca aguda / congestão pulmonar; 5) Má perfusão periférica (TEC > 3s). Taquiarritmia instável com pulso exige CARDIOVERSÃO ELÉTRICA SINCRONIZADA IMEDIATA!
 
@@ -2043,7 +2069,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AHA/ACC/HRS 2023 / ESC 2024 (Arritmias Ventriculares e Supraventriculares)).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `TAQUIARRITMIA INSTÁVEL COM PULSO: Cardioversão Elétrica Sincronizada (CVES) de emergência. Sedação rápida se consciente (Etomidato 0,2 mg/kg IV ou Midazolam 2–5 mg IV + Fentanil 50 mcg IV). Energia inicial bifásica: TSV/Flutter: 50–100 J; FA: 120–200 J; TV monomórfica: 100 J`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (AHA/ACC/HRS 2023 / ESC 2024 (Arritmias Ventriculares e Supraventriculares)).
@@ -2055,7 +2081,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (AHA/ACC/HRS 2023 / ESC 2024 (Arritmias Ventriculares e Supraventriculares)).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Eletrólitos séricos urgentes: Potássio (K⁺), Magnésio (Mg²⁺) e Cálcio ionizado (distúrbios eletrolíticos são os principais gatilhos arrítmicos reversíveis)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA/ACC/HRS 2023 / ESC 2024 (Arritmias Ventriculares e Supraventriculares)).
@@ -2073,7 +2099,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA/ACC/HRS 2023 / ESC 2024 (Arritmias Ventriculares e Supraventriculares)).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Arritmia instável, TV sustentada, pós-cardioversão elétrica ou necessidade de suporte vasoativo/marcapasso: internação mandatória em UTI / UCO`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AHA/ACC/HRS 2023 / ESC 2024 (Arritmias Ventriculares e Supraventriculares)).
@@ -2085,10 +2111,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AHA/ACC/HRS 2023 / ESC 2024 (Arritmias Ventriculares e Supraventriculares)).
 
 
-## TSV (Reentrada Nodal / Via Acessória) (`pal_tsv`)
+### TSV (Reentrada Nodal / Via Acessória) (`pal_tsv`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: MANOBRA DE VALSALVA MODIFICADA (REVERT Trial): Paciente em decúbito a 45°, realiza expiração forçada contra seringa de 10–20 mL por 15 segundos (atingindo ~40 mmHg), seguido imediatamente de decúbito horizontal com elevação passiva dos membros inferiores a 45° por 15 segundos. Taxa de reversão comprovada de 43% (vs 17% da manobra clássica)!
 
@@ -2098,7 +2124,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Adenosina 6 mg IV em bólus hiper-rápido (técnica de duas seringas com torneirinha de 3 vias: adenosina seguida imediatamente por flush vigoroso de 20 mL de SF 0,9% com elevação súbita do membro)`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -2119,16 +2145,16 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `ECG de 12 derivações completo pós-reversão para ritmo sinusal: busca ativa de onda Delta e intervalo PR curto (< 120 ms) sugestivos de Síndrome de Wolff-Parkinson-White (WPW)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Fibrilação Atrial / Flutter Atrial (`pal_fa`)
+### Fibrilação Atrial / Flutter Atrial (`pal_fa`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Determinar o início exato dos sintomas: < 48 horas vs ≥ 48 horas (ou tempo indeterminado)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -2140,7 +2166,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: FA > 48 HORAS OU TEMPO INDETERMINADO: É FORMALMENTE CONTRAINDICADA a cardioversão (química ou elétrica) sem anticoagulação terapêutica por pelo menos 3 semanas ou Ecocardiograma Transesofágico (ETE) prévio para descartar trombo em apêndice atrial esquerdo! Risco inaceitável de AVC cardioembólico maciço!
 
@@ -2162,7 +2188,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Ecocardiograma transtorácico: diâmetro atrial esquerdo, hipertrofia ventricular, disfunção sistólica/diastólica e valvopatias`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -2174,10 +2200,10 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Taquicardia Ventricular Monomórfica com pulso (`pal_tv`)
+### Taquicardia Ventricular Monomórfica com pulso (`pal_tv`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: Toda taquicardia de QRS largo (≥ 120 ms) regular na emergência deve ser presumida e tratada como TAQUICARDIA VENTRICULAR até prova em contrário (especialmente se história prévia de infarto, cardiopatia estrutural ou idade > 50 anos). Administrar verapamil ou diltiazem em TV é potencialmente FATAL!
 
@@ -2190,7 +2216,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `SE INSTABILIDADE (Hipotensão, dor torácica, confusão, dispneia aguda): Cardioversão Elétrica Sincronizada IMEDIATA com 100 J bifásicos (escalonar para 200 J se falha)`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -2208,7 +2234,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `ECG de 12 derivações: critérios de Brugada, Vereckei (aVR) e Santos para confirmação de TV`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -2220,10 +2246,10 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## TV Polimórfica / Torsades de Pointes (`pal_tvp`)
+### TV Polimórfica / Torsades de Pointes (`pal_tvp`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: TORSADES DE POINTES: Taquicardia ventricular polimórfica associada a PROLONGAMENTO DO INTERVALO QTc (> 500 ms) no ritmo de base. Fármacos como Amiodarona, Procainamida e Sotalol são FORMALMENTE CONTRAINDICADOS pois aumentam ainda mais o QTc e precipitam PCR!
 
@@ -2233,7 +2259,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Sulfato de Magnésio 2 g IV diluído em 100 mL SG 5% infundido em 10–15 minutos (ou em bólus direto se instável). Pode ser repetido em 10–15 min se persistência`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -2251,7 +2277,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Painel eletrolítico completo: K⁺, Mg²⁺, Ca²⁺ ionizado séricos urgentes`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -2263,10 +2289,10 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Bradiarritmias Instáveis (BAV 2º/3º grau) (`pal_bra`)
+### Bradiarritmias Instáveis (BAV 2º/3º grau) (`pal_bra`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: Sinais de instabilidade por bradicardia: Hipotensão, alteração do estado mental, sinais de choque, dor torácica isquêmica ou insuficiência cardíaca aguda. Eletrodos de marcapasso transcutâneo devem ser fixados no tórax IMEDIATAMENTE!
 
@@ -2277,7 +2303,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: A Atropina NÃO deve ser utilizada (ou não deve retardar o marcapasso) em BAV de 2º grau Mobitz II e BAV Total (3º grau) com QRS largo ou após infarto agudo: nesses casos a lesão é infranodal e a atropina pode piorar o bloqueio por aumento desordenado da frequência atrial!
 
@@ -2299,7 +2325,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `ECG 12 derivações com derivações direitas (V3R, V4R): descartar IAM de ventrículo direito ou parede inferior como gatilho do BAV`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -2308,10 +2334,10 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Intoxicação exógena (`int`)
+### Intoxicação exógena (`int`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: CENTRO DE INFORMAÇÕES TOXICOLÓGICAS (CIT/CIATox): Ligue imediatamente para 0800 722 6001 (plantão 24h em todo o Brasil) para suporte toxicológico especializado!
 
@@ -2330,7 +2356,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AACT / EAPCCT (Toxicologia de Urgência)).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Carvão ativado NÃO adsorve: ácidos, bases/cáusticos, ferro, lítio, hidrocarbonetos e álcoois (etanol, metanol, etilenoglicol). Contraindicado em via aérea desprotegida!
 
@@ -2344,7 +2370,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (AACT / EAPCCT (Toxicologia de Urgência)).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Gasometria arterial com lactato e cálculo do Anion Gap e Osmolar Gap (descarte de acidose tóxica por metanol, etilenoglicol e salicilatos)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AACT / EAPCCT (Toxicologia de Urgência)).
@@ -2362,7 +2388,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AACT / EAPCCT (Toxicologia de Urgência)).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Tentativa de autoextermínio: internação obrigatória com vigilância e avaliação psiquiátrica antes de qualquer alta hospitalar`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AACT / EAPCCT (Toxicologia de Urgência)).
@@ -2374,10 +2400,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AACT / EAPCCT (Toxicologia de Urgência)).
 
 
-## Toxídrome Opioide (Fentanil, Morfina, Metadona) (`int_opi`)
+### Toxídrome Opioide (Fentanil, Morfina, Metadona) (`int_opi`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: Tríade clássica: Depressão respiratória grave (FR < 8–10 irpm) + Miose puntiforme + Coma / Rebaixamento de consciência. Apoiar ventilação com AMBU e oxigênio antes de administrar o antídoto!
 
@@ -2385,7 +2411,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Em dependentes crônicos de opioides: NÃO aplicar doses altas imediatas! Titular Naloxona em doses baixas (0,04 a 0,1 mg) com foco exclusivo em RESTAURAR O DRIVE RESPIRATÓRIO (FR > 10–12 irpm), evitando precipitar síndrome de abstinência aguda com tempestade adrenérgica, agressividade e edema pulmonar neurogênico!
 
@@ -2399,10 +2425,10 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Toxídrome Colinérgica (Organofosforados, Carbamatos) (`int_col`)
+### Toxídrome Colinérgica (Organofosforados, Carbamatos) (`int_col`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: A contaminação secundária da equipe de saúde por organofosforados através da pele do paciente é um RISCO REAL! Usar avental impermeável e luvas duplas de nitrilo/borracha antes de tocar o paciente!
 
@@ -2416,7 +2442,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: A meta da atropinização NÃO é a dilatação pupilar (midríase) nem taquicardia: O ALVO TERAPÊUTICO CRÍTICO É A CESSAÇÃO DA BRONCORREIA E VIAS AÉREAS SECAS!
 
@@ -2430,10 +2456,10 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Toxídrome Anticolinérgica (Anti-histamínicos, Atropina) (`int_acol`)
+### Toxídrome Anticolinérgica (Anti-histamínicos, Atropina) (`int_acol`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Tríade clássica: Midríase não reagente + Pele seca e quente (anidrose) + Delírio agitado com alucinações visuais e retenção urinária aguda (bexigoma)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -2445,7 +2471,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Fisostigmina é CONTRAINDICADA se houver alargamento de complexo QRS no ECG ou suspeita de intoxicação por antidepressivos tricíclicos (risco de assistolia fatal)!
 
@@ -2459,10 +2485,10 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Toxídrome Simpaticomimética (Cocaína, Crack, Anfetaminas) (`int_simp`)
+### Toxídrome Simpaticomimética (Cocaína, Crack, Anfetaminas) (`int_simp`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Quadro clínico: Taquicardia severa, crise hipertensiva, midríase fotorreagente, diaforese profusa (pele úmida — diferencial de anticolinérgico!), tremores e agitação psicomotora`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -2471,7 +2497,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: BETABLOQUEADORES PUROS SÃO FORMALMENTE CONTRAINDICADOS na intoxicação aguda por cocaína ou anfetaminas! O bloqueio beta isolado provoca estímulo alfa-adrenérgico sem oposição ("unopposed alpha stimulation"), resultando em vasoespasmo coronariano catastrófico e crise hipertensiva fulminante!
 
@@ -2482,16 +2508,16 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 - **Conduta no App**: `Dor torácica associada: tratar com Nitrato SL/IV + AAS 200 mg VO + Benzodiazepínico IV (ativar hemodinâmica se supra de ST persistente pós-nitrato)`
-  - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
+  - **Evidência & Justificativa**: Vasodilatador coronariano e venoso. Alivia dor isquêmica e reduz pré-carga de VE. Evitar se hipotensão ativa (PAS < 100 mmHg) ou inibidores de PDE-5 nas últimas 24–48h. Evidências atuais não sustentam contraindicação em IAM de VD se paciente normotenso. (ESC / AHA).
 
 - **Conduta no App**: `Hipertermia maligna (> 39–40°C): resfriamento ativo imediato com compressas de gelo e infusão de cristaloides gelados`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Síndrome Serotoninérgica (ISRS, IMAO, MDMA) (`int_ser`)
+### Síndrome Serotoninérgica (ISRS, IMAO, MDMA) (`int_ser`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Verificar tríade: Alteração do estado mental (agitação, confusão) + Hiperatividade autonômica (diaforese, taquicardia, febre) + Hiperatividade neuromuscular (clônus espontâneo ou induzido, hiperreflexia patológica em MMII e rigidez)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -2500,7 +2526,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Suspensão imediata de todos os agentes serotoninérgicos (antidepressivos, tramadol, fentanil, ondansetrona, linezolida)`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -2515,10 +2541,10 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Antidepressivos Tricíclicos (Amitriptilina, Nortriptilina) (`int_ad`)
+### Antidepressivos Tricíclicos (Amitriptilina, Nortriptilina) (`int_ad`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: Cardiotoxicidade aguda: QRS > 100 ms prediz risco elevado de convulsões; QRS > 160 ms prediz arritmias ventriculares malignas (TV/FV). Onda R proeminente em aVR (> 3 mm) é marcador de toxicidade aguda severa!
 
@@ -2529,7 +2555,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: ANTIARRÍTMICOS CLASSE IA (Quinidina, Procainamida) E CLASSE III (Amiodarona) SÃO FORMALMENTE CONTRAINDICADOS pois bloqueiam canais de sódio/potássio e pioram a arritmia!
 
@@ -2551,10 +2577,10 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Intoxicação por Paracetamol (Acetaminofeno) (`int_pcm`)
+### Intoxicação por Paracetamol (Acetaminofeno) (`int_pcm`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Calcular dose total ingerida: ingestão > 150 mg/kg (ou > 7,5 g em adultos) é potencialmente hepatotóxica`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -2563,7 +2589,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Se ingestão tóxica conhecida (> 150 mg/kg ou > 7,5 g) ou tempo indeterminado/tardio (> 8 horas): INICIAR N-ACETILCISTEÍNA IMEDIATAMENTE sem esperar o resultado do laboratório! O benefício protetor máximo ocorre se infundida nas primeiras 8h, mas previne insuficiência hepática e morte mesmo tardiamente!
 
@@ -2583,7 +2609,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Dosagem sérica quantitativa de Paracetamol coletada entre 4h e 24h pós-ingestão e plotada no Nomograma de Rumack-Matthew`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -2592,10 +2618,10 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Cardiotóxicos (Bloqueadores de Cálcio e Betabloqueadores) (`int_cv`)
+### Cardiotóxicos (Bloqueadores de Cálcio e Betabloqueadores) (`int_cv`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Bradicardia severa refratária com hipotensão profunda e colapso circulatório`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -2604,7 +2630,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Gluconato de Cálcio 10% 30–60 mL IV (ou Cloreto de Cálcio 10% 10–20 mL em cateter venoso central) em 5–10 min + Atropina 1 mg IV`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -2622,10 +2648,10 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Dor lombar aguda (`dlb`)
+### Dor lombar aguda (`dlb`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: RED FLAGS DA LOMBALGIA: 1) Síndrome da Cauda Equina: retenção urinária com incontinência por transbordamento, anestesia em sela (períneo), fraqueza motora progressiva ou bilateral em MMII; 2) Infecção: febre, calafrios, usuário de drogas IV, imunossupressão, cirurgia espinhal prévia; 3) Vascular: início súbito em > 50 anos, massa pulsátil abdominal, hipotensão inexplicada (AAA roto); 4) Neoplasia: história prévia de câncer, perda ponderal inexplicada, dor pior em repouso noturno
 
@@ -2642,7 +2668,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (North American Spine Society (NASS) / ACP).
 
 
-### 3. Sintomáticos & Condutas S.O.S. (`sin`)
+#### Sintomáticos & Condutas S.O.S. (`sin`)
 
 > ⚠ **Alerta Clínico**: O repouso absoluto no leito é FORMALMENTE CONTRAINDICADO pela literatura moderna (NICE / ACP): atrasa a reabilitação, aumenta a rigidez muscular e cronifica os sintomas. O paciente deve ser ativamente estimulado a manter atividades leves conforme tolerância!
 
@@ -2661,7 +2687,7 @@
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (North American Spine Society (NASS) / ACP).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Lombalgia mecânica simples sem red flags: analgesia oral ambulatorial, orientações ergonômicas e desmistificação do quadro`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (North American Spine Society (NASS) / ACP).
@@ -2673,7 +2699,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (North American Spine Society (NASS) / ACP).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 > ⚠ **Alerta Clínico**: NÃO SOLICITAR RADIOGRAFIAS de coluna na emergência para lombalgia mecânica sem red flags! Exame de baixo valor preditivo, irradiação desnecessária e que não altera a conduta!
 
@@ -2687,7 +2713,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (North American Spine Society (NASS) / ACP).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Cauda Equina / Abscesso Epidural / AAA roto: encaminhamento cirúrgico imediato e internação hospitalar/UTI`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (North American Spine Society (NASS) / ACP).
@@ -2696,10 +2722,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (North American Spine Society (NASS) / ACP).
 
 
-## Lombalgia Mecânica / Lombociatalgia Aguda (`dlb_mec`)
+### Lombalgia Mecânica / Lombociatalgia Aguda (`dlb_mec`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Manobra de Lasègue (elevação da perna retificada): positiva se dor ciática irradiada abaixo do joelho entre 30° e 70° (sugestivo de compressão radicular L4-L5 ou L5-S1)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -2708,7 +2734,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 3. Sintomáticos & Condutas S.O.S. (`sin`)
+#### Sintomáticos & Condutas S.O.S. (`sin`)
 
 - **Conduta no App**: `Dipirona 1 g VO 6/6h + Cetoprofeno 100 mg VO 12/12h por 3–5 dias`
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
@@ -2720,16 +2746,16 @@
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Alta com orientações de postura e agendamento de fisioterapia ambulatorial se sintomas persistirem por > 4–6 semanas`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Síndrome da Cauda Equina (Emergência Cirúrgica) (`dlb_ceu`)
+### Síndrome da Cauda Equina (Emergência Cirúrgica) (`dlb_ceu`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: SÍNDROME DA CAUDA EQUINA: A descompressão cirúrgica de emergência realizada preferencialmente em < 24–48 HORAS é mandatória para evitar paraplegia definitiva e incontinência fecal e urinária irreversíveis!
 
@@ -2740,7 +2766,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Acionamento prioritário da equipe de Neurocirurgia / Cirurgia de Coluna`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -2752,22 +2778,22 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Ressonância Magnética (RM) de coluna lombossacra de emergência: confirma hérnia discal maciça, hematoma peridural ou lesão tumoral compressiva`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Transferência direta para o Centro Cirúrgico / Internação hospitalar de emergência`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Infecção Espinhal (Abscesso Epidural / Espondilodiscite) (`dlb_inf`)
+### Infecção Espinhal (Abscesso Epidural / Espondilodiscite) (`dlb_inf`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Tríade clássica: dor lombar severa localizada + febre + déficit neurológico progressivo`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -2776,7 +2802,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Se houver qualquer déficit neurológico motor instalado ou progressivo: indicação de LAMINECTOMIA E DRENAGEM CIRÚRGICA DE EMERGÊNCIA!
 
@@ -2787,7 +2813,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Ressonância Magnética com contraste de coluna total (método de escolha)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -2799,23 +2825,20 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Aneurisma de Aorta Abdominal (AAA) / Vascular (`dlb_vasc`)
+### Aneurisma de Aorta Abdominal (AAA) / Vascular (`dlb_vasc`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: Dor lombar súbita com irradiação para flancos em paciente idoso, associada a hipotensão ou síncope: PENSAR PRIMARIAMENTE EM RUPTURA DE ANEURISMA DE AORTA ABDOMINAL!
 
 > ⚠ **Alerta Clínico**: Manter hipotensão permissiva (PAS 80–90 mmHg) se sangramento ativo enquanto aguarda a cirurgia!
 
-- **Conduta no App**: `Dois acessos venosos periféricos de grosso calibre (14–16G)`
-  - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
-
 - **Conduta no App**: `Tipagem sanguínea e prova cruzada para concentrados de hemácias, plasma e plaquetas`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Acionamento IMEDIATO da Cirurgia Vascular para reparo cirúrgico aberto de emergência ou endovascular (EVAR)`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -2824,7 +2847,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `POCUS de aorta abdominal na sala de emergência (diâmetro > 3 cm confirma aneurisma; líquido livre intraperitoneal ou retroperitoneal indica rotura)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -2833,10 +2856,10 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Cólica Nefrética / Urolitíase Aguda (`dlb_col`)
+### Cólica Nefrética / Urolitíase Aguda (`dlb_col`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Dor lombar em cólica, intensa, súbita, irradiando para fossa ilíaca, bolsa escrotal ou grandes lábios`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -2845,7 +2868,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 3. Sintomáticos & Condutas S.O.S. (`sin`)
+#### Sintomáticos & Condutas S.O.S. (`sin`)
 
 > ⚠ **Alerta Clínico**: AINE parenteral é a primeira linha de analgesia comprovada na cólica nefrética: reduz a pressão intraureteral e o espasmo ureteral!
 
@@ -2862,7 +2885,7 @@
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Cálculos ureterais distais de 5 a 10 mm em paciente estável: Tansulosina 0,4 mg VO 1×/dia (facilita eliminação espontânea)`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -2871,7 +2894,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Tomografia Computadorizada de abdome e pelve sem contraste (TC de baixa dose): padrão-ouro para cálculo, dimensões e hidronefrose`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -2880,10 +2903,10 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## Icterícia / Insuficiência Hepática Aguda (`ict`)
+### Icterícia / Insuficiência Hepática Aguda (`ict`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Avaliação estrita da presença de Encefalopatia Hepática (EH): asterixe / flapping, confusão mental, sonolência patológica ou agitação psicomotora`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AASLD / EASL (Insuficiência Hepática Aguda e Cirrose)).
@@ -2898,7 +2921,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AASLD / EASL (Insuficiência Hepática Aguda e Cirrose)).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: INSUFICIÊNCIA HEPÁTICA AGUDA: paciente sem cirrose prévia com INR > 1,5 E encefalopatia hepática em < 26 semanas do início dos sintomas. Acionar IMEDIATAMENTE a central de transplante hepático!
 
@@ -2920,7 +2943,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (AASLD / EASL (Insuficiência Hepática Aguda e Cirrose)).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Perfil hepático e colestático completo: Bilirrubinas total e frações, TGO/AST, TGP/ALT (níveis > 1.000 UI/L sugerem hepatite viral, isquêmica ou tóxica/paracetamol), FA, GGT e Albumina`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AASLD / EASL (Insuficiência Hepática Aguda e Cirrose)).
@@ -2938,7 +2961,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AASLD / EASL (Insuficiência Hepática Aguda e Cirrose)).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Internação prioritária em UTI / Centro de Referência em Hepatologia com vaga zero para Transplante Hepático de Emergência`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AASLD / EASL (Insuficiência Hepática Aguda e Cirrose)).
@@ -2950,10 +2973,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AASLD / EASL (Insuficiência Hepática Aguda e Cirrose)).
 
 
-## Insuficiência Hepática Aguda (IHA) (`ict_iha`)
+### Insuficiência Hepática Aguda (IHA) (`ict_iha`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Monitorização contínua de sinais vitais, glicemia capilar horária e nível de consciência`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -2962,7 +2985,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Acionar imediatamente equipe de transplante hepático de urgência!
 
@@ -2976,16 +2999,16 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Internação obrigatória em UTI de transplante hepático`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Colangite Aguda / Obstrutiva (`ict_col`)
+### Colangite Aguda / Obstrutiva (`ict_col`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Ressuscitação volêmica com Ringer Lactato`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -2994,7 +3017,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Piperacilina-Tazobactam 4,5 g IV 6/6h OU Ceftriaxona 2 g IV + Metronidazol 500 mg IV`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -3003,16 +3026,16 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Internação em UTI ou centro cirúrgico / endoscópico`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Cirrose Descompensada / ACLF (`ict_cir`)
+### Cirrose Descompensada / ACLF (`ict_cir`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Pesquisa ativa de gatilhos: infecção (PBE, ITU, pneumonia), HDA, constipação, desidratação`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -3021,7 +3044,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Lactulose 20–30 mL VO/SNG + Rifaximina 550 mg VO 12/12h se encefalopatia`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -3033,16 +3056,16 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Internação hospitalar monitorizada`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Edema / Dor em Membros Inferiores (`emmi`)
+### Edema / Dor em Membros Inferiores (`emmi`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: DIFERENCIAÇÃO CRÍTICA: Unilateral (pensar em TVP, isquemia arterial aguda, infecção bacteriana, ruptura de cisto de Baker) vs Bilateral (Insuficiência Cardíaca descompensada, síndrome nefrótica, cirrose hepática, insuficiência venosa crônica)
 
@@ -3058,7 +3081,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2021 / CHEST 2021 / WSES).
 
 
-### 3. Sintomáticos & Condutas S.O.S. (`sin`)
+#### Sintomáticos & Condutas S.O.S. (`sin`)
 
 > ⚠ **Alerta Clínico**: NUNCA elevar o membro se houver suspeita de Isquemia Arterial Aguda: a elevação reduz a pressão de perfusão capilar periférica e acelera a necrose tecidual!
 
@@ -3072,7 +3095,7 @@
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (ESC 2021 / CHEST 2021 / WSES).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Suspeita de TVP com escore de Wells provável (≥ 2): iniciar anticoagulação plena enquanto aguarda confirmação ultrassonográfica, se sem contraindicações hemorrágicas`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ESC 2021 / CHEST 2021 / WSES).
@@ -3084,7 +3107,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ESC 2021 / CHEST 2021 / WSES).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Ultrassonografia com Doppler venoso de compressão de MMII: padrão-ouro para TVP (incompressibilidade da veia, ausência de fluxo fásico)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2021 / CHEST 2021 / WSES).
@@ -3099,7 +3122,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2021 / CHEST 2021 / WSES).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Isquemia arterial aguda e infecção necrosante: centro cirúrgico de emergência e UTI pós-operatória`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2021 / CHEST 2021 / WSES).
@@ -3111,10 +3134,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2021 / CHEST 2021 / WSES).
 
 
-## Trombose Venosa Profunda (TVP de MMII) (`emmi_tvp`)
+### Trombose Venosa Profunda (TVP de MMII) (`emmi_tvp`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: Calcular o Escore de Wells para TVP: Câncer ativo (+1), Paralisia/imobilização (+1), Acamado recente > 3d ou cirurgia em 12 sem (+1), Dor no trajeto venoso (+1), Edema em toda a perna (+1), Panturrilha > 3 cm maior (+1), Edema depressível assimétrico (+1), Veias colaterais superficiais (+1), Diagnóstico alternativo tão provável (-2). Wells ≥ 2 = Provável; Wells < 2 = Improvável
 
@@ -3125,7 +3148,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: DOACs orais em monoterapia são a 1ª ESCOLHA no tratamento da TVP aguda (superioridade de segurança hemorrágica e sem necessidade de heparina parenteral prévia em Rivaroxabana ou Apixabana)!
 
@@ -3142,22 +3165,22 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `USG Doppler venoso de MMII: avaliação do sistema venoso profundo proximal (femoral comum, femoral profunda, poplítea) e distal`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `TVP não complicada de membro inferior: tratamento ambulatorial seguro se paciente estável, sem dor incoercível, com função renal adequada e suporte familiar`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Isquemia Arterial Aguda (Os 6 "P"s de Pratt) (`emmi_art`)
+### Isquemia Arterial Aguda (Os 6 "P"s de Pratt) (`emmi_art`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: JANELA DE VIABILIDADE TISSULAR DE 4 A 6 HORAS! Pesquisar os 6 "P"s: 1) Pain (dor lancinante súbita); 2) Pallor (palidez cadavérica); 3) Pulselessness (ausência de pulsos distais); 4) Paresthesia (parestesias/dormência - indica sofrimento isquêmico neural); 5) Paralysis (fraqueza/paralisia muscular - ALERTA CRÍTICO de isquemia avançada com risco de perda do membro!); 6) Poikilothermia (extremidade fria)
 
@@ -3171,7 +3194,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Anticoagulação imediata em bólus: Heparina Não Fracionada (HNF) 5.000 a 10.000 UI IV (ou 80 UI/kg IV) em bólus imediato para prevenir propagação e trombose retrógrada, seguido de infusão contínua a 18 UI/kg/h`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -3183,7 +3206,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Angiotomografia arterial de membros inferiores se paciente estável e sem retardo para o bloco cirúrgico`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -3192,16 +3215,16 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Transferência direta e imediata para Centro Cirúrgico / UTI vascular`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Infecção Necrosante de Partes Moles / Fasciíte (`emmi_fas`)
+### Infecção Necrosante de Partes Moles / Fasciíte (`emmi_fas`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: EMERGÊNCIA CIRÚRGICA MÁXIMA: Sinais patognomônicos: dor excruciante desproporcional à celulite superficial, rápida progressão em poucas horas além do eritema, presença de bolhas hemorrágicas, anestesia cutânea focal e crepitação à palpação (gás subcutâneo). Não atrasar a cirurgia para exames laboratoriais!
 
@@ -3212,7 +3235,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Acionamento IMEDIATO da Cirurgia Geral / Vascular para DESBRIDAMENTO CIRÚRGICO EXTENSO de todo o tecido e fáscia necróticos (a intervenção precoce é o único determinante isolado de sobrevida)`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -3230,7 +3253,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Escore LRINEC (Laboratory Risk Indicator for Necrotizing Fasciitis): avalia PCR, leucócitos, hemoglobina, sódio, creatinina e glicose (pontuação ≥ 6 indica alto risco de infecção necrosante)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -3242,16 +3265,16 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Centro cirúrgico de emergência imediato seguido de internação em UTI`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Celulite / Erisipela (Infecção não necrosante) (`emmi_cel`)
+### Celulite / Erisipela (Infecção não necrosante) (`emmi_cel`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Demarcação dos limites do eritema com caneta dermográfica na admissão`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -3263,7 +3286,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Casos leves/moderados elegíveis para tratamento oral ambulatorial: Cefalexina 500 mg VO 6/6h OU Amoxicilina-Clavulanato 875/125 mg VO 12/12h por 5 a 7 dias`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -3278,7 +3301,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Alta orientada se ausência de toxicidade sistêmica, tolerância oral e suporte domiciliar adequado`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
@@ -3287,10 +3310,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Edema Bilateral Sistêmico (Cardíaco / Hepático / Renal) (`emmi_edem`)
+### Edema Bilateral Sistêmico (Cardíaco / Hepático / Renal) (`emmi_edem`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Exame físico cardiorrespiratório completo: estase jugular patológica a 45°, refluxo hepatojugular, estertoração crepitante bibasal, ascite e edema de parede abdominal/sacro`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -3299,7 +3322,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Restrição de sódio na dieta e restrição hídrica se hiponatremia hipervolêmica associada`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -3311,7 +3334,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `BNP / NT-proBNP séricos + ecocardiograma (descarte de insuficiência cardíaca descompensada)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -3323,10 +3346,10 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-## IC aguda descompensada / EAP (`eap`)
+### IC aguda descompensada / EAP (`eap`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Posição ortopneica no leito (cabeceira a 90° com membros inferiores pendentes)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2026 (Insuficiência Cardíaca Aguda)).
@@ -3341,7 +3364,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2026 (Insuficiência Cardíaca Aguda)).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Evitar o uso rotineiro de opioides (morfina) no EAP: diretriz ESC 2026 contraindica o uso liberal por aumento do risco de intubação mecânica e mortalidade intra-hospitalar
 
@@ -3367,7 +3390,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ESC 2026 (Insuficiência Cardíaca Aguda)).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `POCUS cardiotorácico no leito: quantificar linhas B pulmonares (perfil de congestão), avaliar fração de ejeção de VE, contratilidade do VD e pesquisar valvopatias graves`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2026 (Insuficiência Cardíaca Aguda)).
@@ -3385,7 +3408,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2026 (Insuficiência Cardíaca Aguda)).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Acionamento emergencial da hemodinâmica se EAP secundário a SCA com supradesnivelamento de ST ou equivalente`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2026 (Insuficiência Cardíaca Aguda)).
@@ -3397,10 +3420,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2026 (Insuficiência Cardíaca Aguda)).
 
 
-## Agudização de DPOC (`dpoc_ag`)
+### Agudização de DPOC (`dpoc_ag`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Oxigenoterapia em cateter nasal`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (GOLD 2025 / SBPT).
@@ -3411,11 +3434,8 @@
 - **Conduta no App**: `IOT se falha da VNI, rebaixamento de consciência (GCS ≤ 8) ou apneia iminente`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (GOLD 2025 / SBPT).
 
-- **Conduta no App**: `Gasometria arterial basal`
-  - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (GOLD 2025 / SBPT).
 
-
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Salbutamol 2,5 mg NBZ + ipratrópio 0,5 mg`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (GOLD 2025 / SBPT).
@@ -3430,7 +3450,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (GOLD 2025 / SBPT).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Gasometria arterial`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (GOLD 2025 / SBPT).
@@ -3438,14 +3458,8 @@
 - **Conduta no App**: `RX tórax`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (GOLD 2025 / SBPT).
 
-- **Conduta no App**: `Hemograma, PCR, procalcitonina`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (GOLD 2025 / SBPT).
 
-- **Conduta no App**: `ECG`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (GOLD 2025 / SBPT).
-
-
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Alta: melhora com SatO2 > 90% em ar ambiente, FR < 24, tolerância oral e suporte adequado em casa`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (GOLD 2025 / SBPT).
@@ -3457,10 +3471,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (GOLD 2025 / SBPT).
 
 
-## Crise asmática (`asma`)
+### Crise asmática (`asma`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Leve-moderada: FR < 30, SatO2 ≥ 92%, fala em frases, sem uso musculatura acessória intensa`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (GINA 2025 / SBPT).
@@ -3472,7 +3486,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (GINA 2025 / SBPT).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Salbutamol 2,5 mg NBZ a cada 20 min por 3 doses; MDI 4–8 jatos com espaçador se cooperativo`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (GINA 2025 / SBPT).
@@ -3493,7 +3507,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (GINA 2025 / SBPT).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `SatO2 contínua + PEFR antes e após broncodilatador`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (GINA 2025 / SBPT).
@@ -3508,7 +3522,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (GINA 2025 / SBPT).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Alta após 1h: SatO2 > 94%, FR < 22, PEFR > 60–70% do previsto, tolerância oral de medicação`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (GINA 2025 / SBPT).
@@ -3520,10 +3534,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (GINA 2025 / SBPT).
 
 
-## Pneumonia grave (`pnm`)
+### Pneumonia grave (`pnm`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `O2 para SatO2 ≥ 94% (88–92% em DPOC)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ATS/IDSA / SBPT).
@@ -3538,7 +3552,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ATS/IDSA / SBPT).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `PNM adquirida na comunidade grave (UTI): ceftriaxona 1–2 g IV/dia + azitromicina 500 mg IV/dia`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ATS/IDSA / SBPT).
@@ -3556,7 +3570,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ATS/IDSA / SBPT).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Tratamento ambulatorial com antibioticoterapia oral (se CURB-65 0–1 e sem critérios de gravidade)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ATS/IDSA / SBPT).
@@ -3577,7 +3591,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ATS/IDSA / SBPT).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `CURB-65 0–1: ATB oral ambulatorial`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ATS/IDSA / SBPT).
@@ -3589,10 +3603,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ATS/IDSA / SBPT).
 
 
-## Derrame pleural sintomático (`dep`)
+### Derrame pleural sintomático (`dep`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `POCUS imediato`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (BTS Pleural Disease Guideline).
@@ -3607,7 +3621,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (BTS Pleural Disease Guideline).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `guiada por POCUS, retirar ≤ 1.500 mL por sessão (risco de edema de reexpansão)`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (BTS Pleural Disease Guideline).
@@ -3619,7 +3633,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (BTS Pleural Disease Guideline).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Critérios de Light`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (BTS Pleural Disease Guideline).
@@ -3634,10 +3648,10 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (BTS Pleural Disease Guideline).
 
 
-## Tromboembolismo pulmonar (TEP) (`tep`)
+### Tromboembolismo pulmonar (TEP) (`tep`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Estratificação de risco imediata em 3 estratos: 1) Alto Risco (Choque/Hipotensão PAS < 90 ou PCR); 2) Risco Intermediário (Submaciço: disfunção VD e/ou troponina); 3) Baixo Risco (sPESI = 0, Hestia negativo)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AHA 2026 / ESC TEP).
@@ -3652,7 +3666,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (AHA 2026 / ESC TEP).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: ALTO RISCO (TEP MACIÇO): A reperfusão emergencial (trombólise sistêmica ou trombectomia percutânea por cateter) é mandatória para restaurar a pós-carga de VD e reverter o choque
 
@@ -3680,7 +3694,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (AHA 2026 / ESC TEP).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Angiotomografia computadorizada de artérias pulmonares (AngioTC): padrão-ouro diagnóstico; quantificar razão VD/VE (relação > 1,0 indica disfunção de VD)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA 2026 / ESC TEP).
@@ -3701,7 +3715,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA 2026 / ESC TEP).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Alto risco / Intermediário-alto: internação mandatória em UTI com vigilância hemodinâmica contínua`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AHA 2026 / ESC TEP).
@@ -3713,10 +3727,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (AHA 2026 / ESC TEP).
 
 
-## Dor torácica (`dtx`)
+### Dor torácica (`dtx`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Monitorização cardíaca contínua (ECG, SatO₂, PA não-invasiva)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2023 / AHA 2026 (Dor Torácica e SCA)).
@@ -3734,13 +3748,13 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2023 / AHA 2026 (Dor Torácica e SCA)).
 
 
-### 3. Sintomáticos & Condutas S.O.S. (`sin`)
+#### Sintomáticos & Condutas S.O.S. (`sin`)
 
 - **Conduta no App**: `Dipirona 1–2 g IV lento se dor leve a moderada`
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (ESC 2023 / AHA 2026 (Dor Torácica e SCA)).
 
 - **Conduta no App**: `Nitrato SL (Isossorbida 5 mg) se dor isquêmica persistente e PAS > 100 mmHg [CONTRAINDICADO se uso de inibidor de PDE-5 em 24–48h ou suspeita de IAM de VD]`
-  - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (ESC 2023 / AHA 2026 (Dor Torácica e SCA)).
+  - **Evidência & Justificativa**: Vasodilatador coronariano e venoso. Alivia dor isquêmica e reduz pré-carga de VE. Evitar se hipotensão ativa (PAS < 100 mmHg) ou inibidores de PDE-5 nas últimas 24–48h. Evidências atuais não sustentam contraindicação em IAM de VD se paciente normotenso. (ESC / AHA).
 
 - **Conduta no App**: `Morfina 2–4 mg IV titulada apenas para dor intensa refratária [atenção: retarda absorção de antiplaquetários orais]`
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (ESC 2023 / AHA 2026 (Dor Torácica e SCA)).
@@ -3749,7 +3763,7 @@
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (ESC 2023 / AHA 2026 (Dor Torácica e SCA)).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Troponina de alta sensibilidade (hs-cTn) na admissão (0h) e seriada em 1h (protocolo 0h/1h ESC 2023)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2023 / AHA 2026 (Dor Torácica e SCA)).
@@ -3767,7 +3781,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2023 / AHA 2026 (Dor Torácica e SCA)).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Calcular escores de risco na admissão: HEART Score e EDACS`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2023 / AHA 2026 (Dor Torácica e SCA)).
@@ -3782,13 +3796,13 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2023 / AHA 2026 (Dor Torácica e SCA)).
 
 
-## Síndrome coronariana aguda (ver Dor Torácica) (`sca`)
+### Síndrome coronariana aguda (ver Dor Torácica) (`sca`)
 
 
-## SCA — OCA (Oclusão / Equivalente STEMI) (`sca_oca`)
+### SCA — OCA (Oclusão / Equivalente STEMI) (`sca_oca`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Ativar equipe de hemodinâmica imediatamente`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2023 / AHA 2026 (STEMI / OCA)).
@@ -3799,11 +3813,8 @@
 - **Conduta no App**: `ECG de 12D + derivações direitas (V3R/V4R) se IAM inferior e posteriores (V7–V9) se infradesnível em V1–V3`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2023 / AHA 2026 (STEMI / OCA)).
 
-- **Conduta no App**: `Monitorização contínua de arritmias e sinais vitais a cada 5 min`
-  - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2023 / AHA 2026 (STEMI / OCA)).
 
-
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: NÃO prescrever betabloqueador IV de rotina na sala de emergência — risco de precipitar choque cardiogênico
 
@@ -3825,7 +3836,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ESC 2023 / AHA 2026 (STEMI / OCA)).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Troponina hs seriada para confirmar curva enzimática e documentar extensão do infarto`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2023 / AHA 2026 (STEMI / OCA)).
@@ -3833,14 +3844,11 @@
 - **Conduta no App**: `Função renal urgente para contraste iodado na hemodinâmica`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2023 / AHA 2026 (STEMI / OCA)).
 
-- **Conduta no App**: `Hemograma com plaquetas e coagulograma (TP/INR, TTPa) basais`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2023 / AHA 2026 (STEMI / OCA)).
-
 - **Conduta no App**: `POCUS imediato: avaliar contratilidade regional e excluir complicações mecânicas (insuficiência mitral aguda, CIV, tamponamento)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2023 / AHA 2026 (STEMI / OCA)).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Transferência direta para a sala de hemodinâmica (porta-balão < 90 min)`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2023 / AHA 2026 (STEMI / OCA)).
@@ -3855,22 +3863,19 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2023 / AHA 2026 (STEMI / OCA)).
 
 
-## SCA — NOCA (Não-Oclusão / NSTEMI) (`sca_noca`)
+### SCA — NOCA (Não-Oclusão / NSTEMI) (`sca_noca`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Calcular escore GRACE 2.0 na admissão para definir timing de coronariografia invasiva`
-  - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2023 / AHA 2026 (NSTEMI / NOCA)).
-
-- **Conduta no App**: `Telemetria cardíaca contínua e vigilância de instabilidade hemodinâmica`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2023 / AHA 2026 (NSTEMI / NOCA)).
 
 - **Conduta no App**: `Repouso no leito durante a fase de dor ativa`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2023 / AHA 2026 (NSTEMI / NOCA)).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 > ⚠ **Alerta Clínico**: Trombólise química NÃO é indicada em NOCA/NSTEMI (risco supera benefício)
 
@@ -3884,7 +3889,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ESC 2023 / AHA 2026 (NSTEMI / NOCA)).
 
 - **Conduta no App**: `Nitrato IV (Nitroglicerina 10–200 mcg/min) se dor isquêmica persistente e PAS > 100 mmHg [evitar se uso de inibidor PDE-5]`
-  - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ESC 2023 / AHA 2026 (NSTEMI / NOCA)).
+  - **Evidência & Justificativa**: Vasodilatador coronariano e venoso. Alivia dor isquêmica e reduz pré-carga de VE. Evitar se hipotensão ativa (PAS < 100 mmHg) ou inibidores de PDE-5 nas últimas 24–48h. Evidências atuais não sustentam contraindicação em IAM de VD se paciente normotenso. (ESC / AHA).
 
 - **Conduta no App**: `Betabloqueador VO precoce (Metoprolol 25–50 mg VO ou Carvedilol 6,25 mg VO) se FC > 70 bpm, sem sinais de IC descompensada ou BAV`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ESC 2023 / AHA 2026 (NSTEMI / NOCA)).
@@ -3893,7 +3898,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ESC 2023 / AHA 2026 (NSTEMI / NOCA)).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Troponina hs protocolo 0h/1h ESC (descarte se 0h baixa e delta 1h < 3 ng/L; confirmação se 0h alta ou delta 1h significativo)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2023 / AHA 2026 (NSTEMI / NOCA)).
@@ -3901,11 +3906,8 @@
 - **Conduta no App**: `Ecocardiograma transtorácico em < 24h para avaliação de FEVE e valvopatias`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2023 / AHA 2026 (NSTEMI / NOCA)).
 
-- **Conduta no App**: `Função renal, glicemia, eletrólitos, hemograma e coagulograma`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2023 / AHA 2026 (NSTEMI / NOCA)).
 
-
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Estratégia invasiva muito precoce (< 2h): instabilidade hemodinâmica, choque cardiogênico, arritmias ventriculares malignas ou dor refratária`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2023 / AHA 2026 (NSTEMI / NOCA)).
@@ -3920,13 +3922,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2023 / AHA 2026 (NSTEMI / NOCA)).
 
 
-## Não Cardíaca / Pleurítica / Inflamatória (`dt_ncard`)
+### Não Cardíaca / Pleurítica / Inflamatória (`dt_ncard`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
-
-- **Conduta no App**: `Monitorização de sinais vitais e oximetria de pulso contínua`
-  - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Exame físico torácico focado: atrito pleural, atrito pericárdico, percussão torácica e ausculta pulmonar comparativa`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -3935,7 +3934,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 3. Sintomáticos & Condutas S.O.S. (`sin`)
+#### Sintomáticos & Condutas S.O.S. (`sin`)
 
 - **Conduta no App**: `Dipirona 1 g IV ou Paracetamol 750 mg VO a cada 6h`
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
@@ -3944,7 +3943,7 @@
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Radiografia de tórax PA e perfil`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -3952,11 +3951,8 @@
 - **Conduta no App**: `D-dímero se probabilidade clínica de TEP (Wells ≥ 2)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
-- **Conduta no App**: `Hemograma, PCR, ureia e creatinina séricas`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
-
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Alta orientada se dor controlada, sinais vitais normais e causas graves descartadas`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
@@ -3965,10 +3961,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Baixa Probabilidade / Musculoesquelética (`dt_baixo`)
+### Baixa Probabilidade / Musculoesquelética (`dt_baixo`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Palpação dirigida de arcos costais, articulações condroesternais e musculatura paravertebral`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -3977,7 +3973,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 3. Sintomáticos & Condutas S.O.S. (`sin`)
+#### Sintomáticos & Condutas S.O.S. (`sin`)
 
 - **Conduta no App**: `Dipirona 1 g VO/IV ou Paracetamol 750 mg VO a cada 6h`
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
@@ -3989,16 +3985,13 @@
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
-
-- **Conduta no App**: `ECG de 12 derivações na admissão (obrigatório em toda dor torácica)`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Troponina hs única ou seriada (0h/1h) se paciente com fatores de risco cardiovascular ou dúvida clínica`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Critérios de descarte rápido por HEART Score ≤ 3 e troponina normal`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
@@ -4007,10 +4000,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Pneumotórax hipertensivo / Espontâneo (`pntx`)
+### Pneumotórax hipertensivo / Espontâneo (`pntx`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Pneumotórax hipertensivo: DESCOMPRESSÃO IMEDIATA POR AGULHA (14G–16G) no 4º/5º EIC linha axilar anterior/média (ou 2º EIC hemiclavicular)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -4025,7 +4018,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 3. Sintomáticos & Condutas S.O.S. (`sin`)
+#### Sintomáticos & Condutas S.O.S. (`sin`)
 
 - **Conduta no App**: `Anestesia local infiltrativa ampla com Lidocaína 1% ou 2% sem vasoconstritor (pele, subcutâneo, periósteo costal e pleura parietal)`
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
@@ -4034,7 +4027,7 @@
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `POCUS pleuropulmonar imediato: ausência de deslizamento pleural (lung sliding), ausência de linhas B, presença de ponto de pulmão (lung point)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -4046,7 +4039,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Internação em leito de enfermaria cirúrgica ou UTI conforme estabilidade clínica`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
@@ -4058,10 +4051,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Dispepsia / Refluxo gastroesofágico (`disp`)
+### Dispepsia / Refluxo gastroesofágico (`disp`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Exclusão mandatória de SCA`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -4070,7 +4063,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 3. Sintomáticos & Condutas S.O.S. (`sin`)
+#### Sintomáticos & Condutas S.O.S. (`sin`)
 
 - **Conduta no App**: `Omeprazol 40 mg IV em bolus ou Pantoprazol 40 mg IV`
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
@@ -4085,7 +4078,7 @@
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Troponina hs seriada (0h/1h) e ECG de 12D se fatores de risco cardiovascular, diabético, idoso ou dor atípica`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -4094,7 +4087,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Alta com prescrição ambulatorial de IBP (Omeprazol 40 mg/dia pela manhã) se ECG e troponinas normais e dor controlada`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
@@ -4106,10 +4099,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
 
 
-## Dissecção de aorta (`diss`)
+### Dissecção de aorta (`diss`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Dois acessos calibrosos ≥ 16G; PA não invasiva contínua em ambos os MMSS (assimetria > 20 mmHg sugestiva)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2024 / AHA Aortic Disease Guideline).
@@ -4121,7 +4114,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2024 / AHA Aortic Disease Guideline).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `beta-bloqueador IV ANTES de qualquer vasodilatador`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ESC 2024 / AHA Aortic Disease Guideline).
@@ -4136,7 +4129,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ESC 2024 / AHA Aortic Disease Guideline).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `AngioTC tórax + abdome com contraste`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2024 / AHA Aortic Disease Guideline).
@@ -4151,7 +4144,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2024 / AHA Aortic Disease Guideline).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Stanford A: cirurgia cardíaca de emergência`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2024 / AHA Aortic Disease Guideline).
@@ -4163,10 +4156,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2024 / AHA Aortic Disease Guideline).
 
 
-## Pericardite (`peri`)
+### Pericardite (`peri`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Confirmar critérios diagnósticos (≥ 2): dor pleurítica torácica, atrito pericárdico, alterações ECG difusas (supra côncavo + depressão PR), derrame pericárdico novo`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC Pericardial Disease Guideline).
@@ -4178,7 +4171,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC Pericardial Disease Guideline).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `AINE alta dose: ibuprofeno 600 mg VO 8/8h ou AAS 750–1000 mg VO 8/8h por 1–2 semanas, redução gradual`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ESC Pericardial Disease Guideline).
@@ -4196,12 +4189,9 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (ESC Pericardial Disease Guideline).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Troponina`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC Pericardial Disease Guideline).
-
-- **Conduta no App**: `Hemograma, PCR, VHS`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC Pericardial Disease Guideline).
 
 - **Conduta no App**: `Ecocardiograma seriado se derrame moderado`
@@ -4211,7 +4201,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC Pericardial Disease Guideline).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Internar se ≥ 1 fator de mau prognóstico: febre > 38°C, início subagudo, derrame moderado-grande, tamponamento, miopericardite, falha ao AINE em 7 dias, imunossuprimido, anticoagulação, trauma`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC Pericardial Disease Guideline).
@@ -4220,10 +4210,10 @@
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC Pericardial Disease Guideline).
 
 
-## Síndrome esofágica aguda (`esof`)
+### Síndrome esofágica aguda (`esof`)
 
 
-### 1. Suporte Vital & Cuidados Gerais (`sup`)
+#### Suporte Vital & Cuidados Gerais (`sup`)
 
 - **Conduta no App**: `Diferenciar etiologias: Boerhaave (ruptura espontânea pós-vômito), impactação alimentar, laceração de Mallory-Weiss, ingestão cáustica, perfuração iatrogênica`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -4235,7 +4225,7 @@
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
-### 2. Terapia Específica & Drogas Vasoativas (`esp`)
+#### Terapia Específica & Drogas Vasoativas (`esp`)
 
 - **Conduta no App**: `Acesso venoso ≥ 18G; analgesia (morfina 2–5 mg IV) e antiemético (ondansetrona 4 mg IV)`
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
@@ -4250,7 +4240,7 @@
   - **Evidência & Justificativa**: Terapia medicamentosa específica direcionada à reversão da fisiopatologia de base e melhora do prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 4. Exames Complementares & Investigação (`inv`)
+#### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `TC tórax e abdome com contraste hidrossolúvel oral`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -4265,7 +4255,7 @@
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
-### 5. Disposição & Critérios de Vaga (`dsp`)
+#### Disposição & Critérios de Vaga (`dsp`)
 
 - **Conduta no App**: `Boerhaave / perfuração: cirurgia em < 24h reduz mortalidade de > 50% para < 10%`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (Diretrizes Médicas de Emergência).
