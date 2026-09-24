@@ -125,9 +125,6 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 
 #### Suporte Vital & Cuidados Gerais (`sup`)
 
-- **Conduta no App**: `Iniciar Norepinefrina precocemente (iniciar em veia periférica se necessário) para restaurar PAM ≥ 65 mmHg e recrutar volume estressado`
-  - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Surviving Sepsis Campaign / ESICM 2025).
-
 - **Conduta no App**: `Ressuscitação volêmica: Ringer Lactato 30 mL/kg nas primeiras 3h apenas se houver sinais de responsividade a fluidos (suspender se congestão ou dilatação de VD)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Surviving Sepsis Campaign / ESICM 2025).
 
@@ -163,13 +160,7 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 
 #### Exames Complementares & Investigação (`inv`)
 
-- **Conduta no App**: `Coleta de 2 pares de hemoculturas de sítios venosos distintos ANTES do início do antibiótico (não atrasar ATB além de 45 min se dificuldade de punção)`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Surviving Sepsis Campaign / ESICM 2025).
-
 - **Conduta no App**: `Coleta de culturas de sítios suspeitos: urocultura com antibiograma, cultura de secreção traqueal/escarro, cultura de líquor ou feridas`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Surviving Sepsis Campaign / ESICM 2025).
-
-- **Conduta no App**: `Gasometria com dosagem de lactato inicial e seriado em 2h e 4h`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Surviving Sepsis Campaign / ESICM 2025).
 
 - **Conduta no App**: `Radiografia de tórax no leito e/ou TC contrastada direcionada ao foco suspeito (abdome, pelve, tórax, SNC)`
@@ -293,10 +284,7 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 
 #### Exames Complementares & Investigação (`inv`)
 
-- **Conduta no App**: `Ecocardiograma transtorácico no leito (POCUS): avaliar FEVE, acinesias segmentares, disfunção de VD, derrame pericárdico e complicações mecânicas (insuficiência mitral aguda, CIV)`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2026 / SCAI 2022).
-
-- **Conduta no App**: `ECG de 12 derivações seriado + derivações direitas (V3R, V4R) e posteriores (V7–V9)`
+- **Conduta no App**: `Derivações direitas (V3R, V4R) e posteriores (V7–V9) no ECG para descarte de IAM de VD associado`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2026 / SCAI 2022).
 
 - **Conduta no App**: `Marcadores de necrose miocárdica: Troponina hs na admissão e seriada, BNP / NT-proBNP`
@@ -314,7 +302,7 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 - **Conduta no App**: `Transferência emergencial para o laboratório de hemodinâmica (sala de cateterismo)`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2026 / SCAI 2022).
 
-- **Conduta no App**: `Internação em Unidade de Terapia Intensiva Coronariana (UCO / UTI)`
+- **Conduta no App**: `Internação prioritária em Unidade de Terapia Intensiva Coronariana (UCO)`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2026 / SCAI 2022).
 
 
@@ -1453,9 +1441,6 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 
 #### Sintomáticos & Condutas S.O.S. (`sin`)
 
-- **Conduta no App**: `Dipirona 1 g IV ou Paracetamol 1 g IV/VO a cada 6h se temperatura ≥ 38,0°C ou desconforto álgico importante (evitar AAS e AINEs)`
-  - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Surviving Sepsis Campaign 2021/2025).
-
 - **Conduta no App**: `Medidas físicas de resfriamento passivo (despir paciente, compressas mornas)`
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Surviving Sepsis Campaign 2021/2025).
 
@@ -2212,9 +2197,6 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 - **Conduta no App**: `Desfibrilador ligado ao paciente com pás adesivas em modo sincronizado ativado`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
-- **Conduta no App**: `Dois acessos venosos periféricos calibrosos`
-  - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
-
 
 #### Terapia Específica & Drogas Vasoativas (`esp`)
 
@@ -2327,7 +2309,7 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 
 #### Exames Complementares & Investigação (`inv`)
 
-- **Conduta no App**: `ECG 12 derivações com derivações direitas (V3R, V4R): descartar IAM de ventrículo direito ou parede inferior como gatilho do BAV`
+- **Conduta no App**: `Derivações direitas (V3R, V4R) no ECG para descartar infarto de VD concomitante como etiologia do BAV`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 - **Conduta no App**: `Potássio sérico (descartar hipercalemia grave simulando BAVT), Digoxina sérica (descartar intoxicação digitálica)`
@@ -2547,9 +2529,6 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 #### Suporte Vital & Cuidados Gerais (`sup`)
 
 > ⚠ **Alerta Clínico**: Cardiotoxicidade aguda: QRS > 100 ms prediz risco elevado de convulsões; QRS > 160 ms prediz arritmias ventriculares malignas (TV/FV). Onda R proeminente em aVR (> 3 mm) é marcador de toxicidade aguda severa!
-
-- **Conduta no App**: `ECG de 12 derivações seriado a cada 15–30 min`
-  - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 - **Conduta no App**: `Acesso venoso duplo e monitorização multiparamétrica contínua`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
@@ -3401,9 +3380,6 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 - **Conduta no App**: `Troponina ultrassensível para descartar SCA como gatilho do EAP (CHAMPIT)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2026 (Insuficiência Cardíaca Aguda)).
 
-- **Conduta no App**: `ECG de 12 derivações: avaliar FA aguda, bloqueios atrioventriculares, sobrecarga e sinais de isquemia miocárdica`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2026 (Insuficiência Cardíaca Aguda)).
-
 - **Conduta no App**: `Função renal (creatinina, ureia), eletrólitos séricos (sódio, potássio) e gasometria venosa ou arterial com lactato`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2026 (Insuficiência Cardíaca Aguda)).
 
@@ -3453,9 +3429,6 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 #### Exames Complementares & Investigação (`inv`)
 
 - **Conduta no App**: `Gasometria arterial`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (GOLD 2025 / SBPT).
-
-- **Conduta no App**: `RX tórax`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (GOLD 2025 / SBPT).
 
 
@@ -3587,9 +3560,6 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 - **Conduta no App**: `Gasometria, hemograma, PCR, procalcitonina, função renal e hepática`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ATS/IDSA / SBPT).
 
-- **Conduta no App**: `RX tórax PA`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ATS/IDSA / SBPT).
-
 
 #### Disposição & Critérios de Vaga (`dsp`)
 
@@ -3607,9 +3577,6 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 
 
 #### Suporte Vital & Cuidados Gerais (`sup`)
-
-- **Conduta no App**: `POCUS imediato`
-  - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (BTS Pleural Disease Guideline).
 
 - **Conduta no App**: `obliteração do ângulo costofrênico (> 200 mL)`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (BTS Pleural Disease Guideline).
@@ -3699,16 +3666,16 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 - **Conduta no App**: `Angiotomografia computadorizada de artérias pulmonares (AngioTC): padrão-ouro diagnóstico; quantificar razão VD/VE (relação > 1,0 indica disfunção de VD)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA 2026 / ESC TEP).
 
-- **Conduta no App**: `POCUS cardiotorácico no leito: Sinal de McConnell (acinesia da parede livre de VD com mobilidade apical preservada), Sinal do D (retificação do septo interventricular) e VCI pleatórica`
+- **Conduta no App**: `POCUS direcionado: pesquisa de Sinal de McConnell, retificação do septo interventricular (Sinal do D) e diâmetro de VCI`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA 2026 / ESC TEP).
 
-- **Conduta no App**: `D-dímero de alta sensibilidade: utilizar cut-off ajustado pela idade (idade × 10 mcg/L se idade > 50 anos) em probabilidade clínica improvável (Wells ≤ 4 ou Geneva ≤ 5)`
+- **Conduta no App**: `D-dímero de alta sensibilidade com cut-off ajustado pela idade (idade × 10 mcg/L se > 50 anos) se Wells ≤ 4 ou Geneva ≤ 5`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA 2026 / ESC TEP).
 
 - **Conduta no App**: `Troponina ultrassensível e BNP / NT-proBNP para estratificação prognóstica e detecção de sobrecarga miocárdica de VD`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA 2026 / ESC TEP).
 
-- **Conduta no App**: `ECG de 12 derivações: pesquisar taquicardia sinusal, padrão S1Q3T3, inversão de onda T de V1 a V4 e BRD novo ou transitório`
+- **Conduta no App**: `Análise eletrocardiográfica direcionada para sobrecarga aguda de VD: padrão S1Q3T3, inversão de onda T em V1–V4 e BRD transitório`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (AHA 2026 / ESC TEP).
 
 - **Conduta no App**: `Ultrassonografia por compressão venosa de MMII (USG Doppler vascular) para identificação do trombo primário (TVP)`
@@ -3810,7 +3777,7 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 - **Conduta no App**: `Desfibrilador bifásico colado e pronto à beira-leito`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2023 / AHA 2026 (STEMI / OCA)).
 
-- **Conduta no App**: `ECG de 12D + derivações direitas (V3R/V4R) se IAM inferior e posteriores (V7–V9) se infradesnível em V1–V3`
+- **Conduta no App**: `Derivações direitas (V3R/V4R) se IAM inferior e posteriores (V7–V9) se infradesnível de ST em V1–V3`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (ESC 2023 / AHA 2026 (STEMI / OCA)).
 
 
@@ -3838,13 +3805,7 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 
 #### Exames Complementares & Investigação (`inv`)
 
-- **Conduta no App**: `Troponina hs seriada para confirmar curva enzimática e documentar extensão do infarto`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2023 / AHA 2026 (STEMI / OCA)).
-
 - **Conduta no App**: `Função renal urgente para contraste iodado na hemodinâmica`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2023 / AHA 2026 (STEMI / OCA)).
-
-- **Conduta no App**: `POCUS imediato: avaliar contratilidade regional e excluir complicações mecânicas (insuficiência mitral aguda, CIV, tamponamento)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2023 / AHA 2026 (STEMI / OCA)).
 
 
@@ -3856,7 +3817,7 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 - **Conduta no App**: `Se trombólise realizada: transferir imediatamente para centro terciário com hemodinâmica (estratégia farmacoinvasiva em 2–24h)`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2023 / AHA 2026 (STEMI / OCA)).
 
-- **Conduta no App**: `Pós-procedimento: internação mandatória em Unidade de Terapia Intensiva Coronariana (UCO)`
+- **Conduta no App**: `Internação pós-angioplastia primária em Unidade de Terapia Intensiva Coronariana (UCO)`
   - **Evidência & Justificativa**: Critérios de internação e alocação segura em leito de maior complexidade ou alta assistida. (ESC 2023 / AHA 2026 (STEMI / OCA)).
 
 - **Conduta no App**: `Equivalentes STEMI que exigem conduta de OCA: Padrão de De Winter, Wellens tipo A/B evolutivo, Sgarbossa modificado de Smith em BRE/marcapasso, supra em aVR com infra difuso`
@@ -3900,7 +3861,7 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 
 #### Exames Complementares & Investigação (`inv`)
 
-- **Conduta no App**: `Troponina hs protocolo 0h/1h ESC (descarte se 0h baixa e delta 1h < 3 ng/L; confirmação se 0h alta ou delta 1h significativo)`
+- **Conduta no App**: `Protocolo 0h/1h ESC: estratificação por curva dinâmica de troponina (descarte se 0h baixa e delta 1h < 3 ng/L; confirmação se delta 1h significativo)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2023 / AHA 2026 (NSTEMI / NOCA)).
 
 - **Conduta no App**: `Ecocardiograma transtorácico em < 24h para avaliação de FEVE e valvopatias`
@@ -3936,17 +3897,11 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 
 #### Sintomáticos & Condutas S.O.S. (`sin`)
 
-- **Conduta no App**: `Dipirona 1 g IV ou Paracetamol 750 mg VO a cada 6h`
-  - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
-
 - **Conduta no App**: `Cetoprofeno 100 mg IV ou Cetorolaco 30 mg IV`
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
 
 
 #### Exames Complementares & Investigação (`inv`)
-
-- **Conduta no App**: `Radiografia de tórax PA e perfil`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 - **Conduta no App**: `D-dímero se probabilidade clínica de TEP (Wells ≥ 2)`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
@@ -3975,9 +3930,6 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 
 #### Sintomáticos & Condutas S.O.S. (`sin`)
 
-- **Conduta no App**: `Dipirona 1 g VO/IV ou Paracetamol 750 mg VO a cada 6h`
-  - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
-
 - **Conduta no App**: `Anti-inflamatório oral (Ibuprofeno 400 mg VO 8/8h por 3–5 dias) se dor condroesternal e sem contraindicações`
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
 
@@ -3986,9 +3938,6 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 
 
 #### Exames Complementares & Investigação (`inv`)
-
-- **Conduta no App**: `Troponina hs única ou seriada (0h/1h) se paciente com fatores de risco cardiovascular ou dúvida clínica`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 
 #### Disposição & Critérios de Vaga (`dsp`)
@@ -4011,10 +3960,7 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 - **Conduta no App**: `Toracostomia com drenagem tubular em selo d'água (dreno de tórax 20F–28F) no 5º EIC entre a linha axilar anterior e média`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
-- **Conduta no App**: `Oxigenoterapia em alto fluxo (MNRL 10–15 L/min)`
-  - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
-
-- **Conduta no App**: `Monitorização hemodinâmica contínua`
+- **Conduta no App**: `Oxigenoterapia em alto fluxo por máscara não reinalante com reservatório a 10–15 L/min`
   - **Evidência & Justificativa**: Medida de suporte vital prioritário e estabilização de funções orgânicas vitais. (Diretrizes Médicas de Emergência).
 
 
@@ -4023,13 +3969,10 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 - **Conduta no App**: `Anestesia local infiltrativa ampla com Lidocaína 1% ou 2% sem vasoconstritor (pele, subcutâneo, periósteo costal e pleura parietal)`
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
 
-- **Conduta no App**: `Dipirona 1–2 g IV 6/6h + Morfina 2–4 mg IV se dor pleurítica aguda pós-drenagem`
-  - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
-
 
 #### Exames Complementares & Investigação (`inv`)
 
-- **Conduta no App**: `POCUS pleuropulmonar imediato: ausência de deslizamento pleural (lung sliding), ausência de linhas B, presença de ponto de pulmão (lung point)`
+- **Conduta no App**: `POCUS pleuropulmonar: pesquisa de lung point patognomônico e confirmação de ausência de lung sliding e linhas B`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 - **Conduta no App**: `Radiografia de tórax PA no leito PÓS-drenagem para confirmar expansão pulmonar e posicionamento do dreno`
@@ -4072,9 +4015,6 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
 
 - **Conduta no App**: `Dimeticona / Simeticona 40 gotas VO se plenitude pós-prandial ou meteorismo`
-  - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
-
-- **Conduta no App**: `Dipirona 1 g IV se dor epigástrica associada`
   - **Evidência & Justificativa**: Alívio sintomático criterioso respeitando a estabilidade hemodinâmica, função renal e contraindicações. (Diretrizes Médicas de Emergência).
 
 
@@ -4140,9 +4080,6 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 - **Conduta no App**: `Ecocardiograma transtorácico: derrame pericárdico, insuficiência aórtica, retalho intimal proximal`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2024 / AHA Aortic Disease Guideline).
 
-- **Conduta no App**: `ECG e troponina`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC 2024 / AHA Aortic Disease Guideline).
-
 
 #### Disposição & Critérios de Vaga (`dsp`)
 
@@ -4190,9 +4127,6 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 
 
 #### Exames Complementares & Investigação (`inv`)
-
-- **Conduta no App**: `Troponina`
-  - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC Pericardial Disease Guideline).
 
 - **Conduta no App**: `Ecocardiograma seriado se derrame moderado`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (ESC Pericardial Disease Guideline).
@@ -4245,7 +4179,7 @@ Para garantir que o sistema não propague orientações dogmáticas desprovidas 
 - **Conduta no App**: `TC tórax e abdome com contraste hidrossolúvel oral`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
-- **Conduta no App**: `RX tórax: sinal de Naclerio (V invertido), pneumomediastino, derrame pleural`
+- **Conduta no App**: `Pesquisa radiológica de pneumomediastino, derrame pleural e sinal de Naclerio (V invertido) no Rx de tórax`
   - **Evidência & Justificativa**: Investigação complementar essencial para elucidação etiológica, confirmação diagnóstica e prognóstico. (Diretrizes Médicas de Emergência).
 
 - **Conduta no App**: `EDA é diagnóstica em impactação, Mallory-Weiss e cáusticos; contraindicada em Boerhaave (risco de ampliar perfuração)`
