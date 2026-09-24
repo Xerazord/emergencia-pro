@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protocolo Tático — Dano Secundário, HSA & TCE Grave | Emergência Pro</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#0a0d13">
+<meta property="og:title" content="Emergência Pro — Protocolo Tático de Neuroemergência & Dano Secundário">
+<meta property="og:description" content="Modo Crunch Time, Pitfalls e condutas detalhadas de Dano Secundário, HSA, TCE Grave e Trauma na Emergência.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" integrity="sha384-hs5SINUk7GPohxRis+rS7grpSWEbtOIJ3sRoseBKg3CDPIKpG55RfSenbvA6ALOt" crossorigin="anonymous">
+
+<style>
+:root {
+  --bg-main: #0a0d13;
+  --bg-card: #121722;
+  --bg-card-alt: #161e2e;
+  --border-subtle: #20293a;
+  --border-glow: #10b981;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --accent-neon: #10b981;
+  --accent-neon-glow: rgba(16, 185, 129, 0.2);
+  --accent-amber: #f97316;
+  --accent-amber-glow: rgba(249, 115, 22, 0.2);
+  --accent-red: #ef4444;
+  --accent-red-glow: rgba(239, 68, 68, 0.2);
+  --accent-purple: #a855f7;
+  --accent-purple-glow: rgba(168, 85, 247, 0.2);
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'SFMono-Regular', 'Courier New', Courier, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  padding-bottom: 5rem;
+}
+
+/* ── Container ── */
+.container {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* ── Header Flutuante ── */
+.hdr-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background: rgba(10, 13, 19, 0.92);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.hdr-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #fff;
+}
+.brand-link img {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: block;
+}
+.brand-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand-badge {
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(249, 115, 22, 0.15);
+  border: 1px solid rgba(249, 115, 22, 0.4);
+  color: var(--accent-amber);
+  text-transform: uppercase;
+}
+.hdr-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-nav {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+}
+.btn-nav-ghost {
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.03);
+}
+.btn-nav-ghost:hover {
+  color: #fff;
+  border-color: #475569;
+}
+.btn-nav-primary {
+  background: var(--accent-neon);
+  color: #062419;
+  border: 1px solid var(--accent-neon);
+}
+.btn-nav-primary:hover {
+  background: #34d399;
+}
+
+/* ── Sticky Sub-Navbar de Tópicos (Anchor Navigation) ── */
+.topic-nav {
+  position: sticky;
+  top: 64px;
+  z-index: 90;
+  background: rgba(18, 23, 34, 0.95);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 8px 0;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.topic-nav-inner {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.tnav-btn {
+  padding: 6px 13px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.02);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+}
+.tnav-btn:hover, .tnav-btn.active {
+  color: #fff;
+  border-color: var(--accent-neon);
+  background: rgba(16, 185, 129, 0.1);
+}
+.tnav-btn.tnav-crunch {
+  color: var(--accent-amber);
+  border-color: rgba(249, 115, 22, 0.4);
+  background: rgba(249, 115, 22, 0.1);
+}
+.tnav-btn.tnav-crunch:hover {
+  background: rgba(249, 115, 22, 0.2);
+}
+
+/* ── Hero do Protocolo ── */
+.proto-hero {
+  padding: 2.5rem 0 1.5rem;
+}
+.proto-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent-amber);
+  background: rgba(249, 115, 22, 0.1);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  margin-bottom: 0.75rem;
+}
+.proto-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 0.75rem;
+}
+.proto-sub {
+  font-size: 1rem;
+  color: var(--text-muted);
+  max-width: 820px;
+  line-height: 1.5;
+}
+
+/* ── Badges de Evidência vs Opinião ── */
+.badge-evidence {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: var(--accent-neon);
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.badge-opinion {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(168, 85, 247, 0.18);
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  color: #d8b4fe;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+/* ── MODO CRUNCH TIME BOX (Top of Page) ── */
+.crunch-box {
+  background: linear-gradient(180deg, #161b26 0%, #10141d 100%);
+  border: 2px solid rgba(249, 115, 22, 0.6);
+  box-shadow: 0 0 35px var(--accent-amber-glow);
+  border-radius: 14px;
+  padding: 1.75rem;
+  margin: 1.5rem 0 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.crunch-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #f97316, #ef4444, #f97316);
+}
+.crunch-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.crunch-tag {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--accent-amber);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.crunch-meta {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+}
+.crunch-lead {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1.25rem;
+  padding: 10px 14px;
+  background: rgba(249, 115, 22, 0.1);
+  border-left: 4px solid var(--accent-amber);
+  border-radius: 0 8px 8px 0;
+}
+
+/* ── Grid de Metas do Crunch Time ── */
+.crunch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+.crunch-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 12px 14px;
+  transition: border-color 0.15s;
+}
+.crunch-card:hover {
+  border-color: #475569;
+}
+.cc-lbl {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.cc-val {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.4;
+}
+.cc-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ── PITFALLS BANNERS (O QUE NUNCA FAZER) ── */
+.pitfalls-container {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px dashed rgba(239, 68, 68, 0.4);
+}
+.pitfalls-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--accent-red);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+  margin-bottom: 10px;
+}
+.pitfall-banner {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-left: 4px solid var(--accent-red);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #fecaca;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.pitfall-banner i {
+  font-size: 1.2rem;
+  color: var(--accent-red);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ── Layout de Seções Detalhadas (CorePendium Style) ── */
+.section-block {
+  margin-bottom: 3.5rem;
+  scroll-margin-top: 130px;
+}
+.section-hdr {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title i {
+  color: var(--accent-neon);
+}
+.section-desc {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+}
+
+/* ── Cards de Conteúdo Estruturado ── */
+.card-detailed {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.card-detailed-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.callout-opinion {
+  background: rgba(168, 85, 247, 0.08);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  border-left: 4px solid var(--accent-purple);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+  color: #e9d5ff;
+}
+.callout-opinion b {
+  color: #fff;
+}
+.callout-evidence {
+  background: rgba(16, 185, 129, 0.06);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-left: 4px solid var(--accent-neon);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+  color: #d1fae5;
+}
+
+/* ── Escadinha dos Tiers da HIC (Visual Hierarchy) ── */
+.tier-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  transition: all 0.15s;
+}
+.tier-step:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.tier-num {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 800;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.tier-1 { background: rgba(16, 185, 129, 0.2); color: var(--accent-neon); border: 1px solid var(--accent-neon); }
+.tier-2 { background: rgba(249, 115, 22, 0.2); color: var(--accent-amber); border: 1px solid var(--accent-amber); }
+.tier-3 { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); }
+.tier-divider {
+  text-align: center;
+  margin: 14px 0;
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--accent-red);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  position: relative;
+}
+.tier-divider::before, .tier-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 30%;
+  height: 1px;
+  background: rgba(239, 68, 68, 0.3);
+}
+.tier-divider::before { left: 5%; }
+.tier-divider::after { right: 5%; }
+
+/* ── Tabelas Clínicas Escaneáveis ── */
+.table-wrap {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+.table-tactical {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  text-align: left;
+}
+.table-tactical th {
+  background: var(--bg-card-alt);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.table-tactical td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-main);
+}
+.table-tactical tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* ── Listas Bulletadas com Lead-in Bold ── */
+.list-tactical {
+  list-style: none;
+  margin: 0.75rem 0;
+}
+.list-tactical li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+  font-size: 0.92rem;
+  color: var(--text-main);
+}
+.list-tactical li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent-neon);
+  font-size: 1rem;
+}
+.list-tactical li b {
+  color: #fff;
+}
+
+/* ── Footer ── */
+.proto-footer {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 2rem;
+  margin-top: 4rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+.proto-footer a {
+  color: var(--accent-neon);
+  text-decoration: none;
+}
+
+@media print {
+  body { background: #fff !important; color: #000 !important; }
+  .hdr-wrap, .topic-nav, .btn-nav { display: none !important; }
+  .crunch-box, .card-detailed, .pitfall-banner { border: 1px solid #ccc !important; box-shadow: none !important; background: #fff !important; color: #000 !important; }
+  .crunch-lead, .cc-val, .card-detailed-title { color: #000 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Header Flutuante ── -->
+<header class="hdr-wrap">
+  <div class="container hdr-inner">
+    <a href="index.html" class="brand-link">
+      <img src="favicon.png" alt="Emergência Pro">
+      <span class="brand-title">
+        Emergência Pro
+        <span class="brand-badge">Protocolo Tático</span>
+      </span>
+    </a>
+
+    <div class="hdr-actions">
+      <a href="index.html" class="btn-nav btn-nav-ghost"><i class="ti ti-arrow-left"></i> Início</a>
+      <a href="app.html" class="btn-nav btn-nav-primary"><i class="ti ti-stethoscope"></i> Abrir no App de Admissão</a>
+    </div>
+  </div>
+</header>
+
+<!-- ── Barra de Navegação de Tópicos (Anchor Navigation) ── -->
+<nav class="topic-nav">
+  <div class="container topic-nav-inner">
+    <a href="#crunch-time" class="tnav-btn tnav-crunch"><i class="ti ti-bolt"></i> ⚡ Crunch Time & Pitfalls</a>
+    <a href="#dano-secundario" class="tnav-btn"><i class="ti ti-brain"></i> Dano Secundário & HIC</a>
+    <a href="#hsa" class="tnav-btn"><i class="ti ti-heart-rate-monitor"></i> HSA</a>
+    <a href="#tce-grave" class="tnav-btn"><i class="ti ti-activity"></i> TCE Grave & PIC</a>
+    <a href="#trauma-politrauma" class="tnav-btn"><i class="ti ti-shield"></i> Trauma & Politrauma</a>
+    <a href="#prognostico" class="tnav-btn"><i class="ti ti-chart-bar"></i> Prognóstico & Monitorização</a>
+  </div>
+</nav>
+
+<main class="container">
+
+  <!-- ── Hero do Documento ── -->
+  <section class="proto-hero">
+    <div class="proto-tag"><i class="ti ti-shield-check"></i> Condutas Imediatas Baseadas em Evidências & Prática Especializada</div>
+    <h1 class="proto-title">Dano Secundário na Lesão Neurológica Aguda, HSA e TCE Grave</h1>
+    <p class="proto-sub">
+      Estruturação de ações críticas para a admissão, estratificação de hipertensão intracraniana, metas sistêmicas, escadinha de intervenções (tiers) e advertências de segurança no doente neurológico crítico.
+    </p>
+  </section>
+
+  <!-- ========================================================
+       MODO CRUNCH TIME: AÇÕES IMEDIATAS & METAS NO MOMENTO ZERO
+       ======================================================== -->
+  <section id="crunch-time" class="crunch-box">
+    <div class="crunch-hdr">
+      <div class="crunch-tag">
+        <i class="ti ti-bolt"></i> Modo Crunch Time — Momento Zero (Admissão Crítica)
+      </div>
+      <div class="crunch-meta">
+        Ações imediatas e metas fisiológicas prioritárias
+      </div>
+    </div>
+
+    <div class="crunch-lead">
+      Primeira conduta no tratamento da lesão secundária: garantir as condições sistêmicas para proteger a fisiologia.
+    </div>
+
+    <!-- Grid de Metas do Momento Zero -->
+    <div class="crunch-grid">
+      <div class="crunch-card">
+        <div class="cc-lbl"><i class="ti ti-arrow-up-right"></i> Posicionamento da Cabeceira</div>
+        <div class="cc-val">Cabeceira elevada e cabeceira centrada.</div>
+        <div class="cc-sub">
+          <span class="badge-opinion"><i class="ti ti-user-check"></i> Opinião / Anedótico</span>
+          Relato anedótico de herniação cerebral em pacientes submetidos ao Trendellemburg para passagem de CVC.
+        </div>
+      </div>
+
+      <div class="crunch-card">
+        <div class="cc-lbl"><i class="ti ti-gauge"></i> Hemodinâmica & Alvos Pressóricos</div>
+        <div class="cc-val">Combater hipotensão.</div>
+        <div class="cc-sub">
+          PAM de 50 a 150 mantém o fluxo sanguíneo cerebral de forma constante.<br>
+          <span class="badge-evidence">BTF</span> PAS ≥ 100 em doentes sem PIC. Para doentes com PIC → PPC de 60-70.
+        </div>
+      </div>
+
+      <div class="crunch-card">
+        <div class="cc-lbl"><i class="ti ti-wind"></i> Ventilação & Capnografia</div>
+        <div class="cc-val">Manter normocapnia.</div>
+        <div class="cc-sub">
+          No indivíduo normal o fluxo sanguíneo cerebral é diretamente proporcional ao pCO2 de 20 a 80.<br>
+          Objetivo em geral: uso de capnógrafo + normocapnia.
+        </div>
+      </div>
+
+      <div class="crunch-card">
+        <div class="cc-lbl"><i class="ti ti-activity-heartbeat"></i> Oxigenação & Consumo de O2</div>
+        <div class="cc-val">Combater hipóxia e evitar aumento do consumo de O2.</div>
+        <div class="cc-sub">
+          Sedação é utilizada para reduzir o FSC, tendo em vista a redução de consumo de O2 sistêmico e cerebral.
+        </div>
+      </div>
+
+      <div class="crunch-card">
+        <div class="cc-lbl"><i class="ti ti-thermometer"></i> Controle Térmico</div>
+        <div class="cc-val">Combater hipertermia.</div>
+        <div class="cc-sub">
+          <span class="badge-opinion"><i class="ti ti-user-check"></i> Mnemônico Prático</span>
+          “Parou e não acordou, colchão térmico ganhou. Para não errar, 37C de temperatura deixar”.
+        </div>
+      </div>
+
+      <div class="crunch-card">
+        <div class="cc-lbl"><i class="ti ti-droplet"></i> Metabólico, Eletrólitos & Sangue</div>
+        <div class="cc-val">Evitar hiponatremia, evitar disglicemia e evitar anemia.</div>
+        <div class="cc-sub">
+          Meta de glicemia: 140-180 mg/dL.
+        </div>
+      </div>
+    </div>
+
+    <!-- BANNERS DE PITFALLS & O QUE NUNCA FAZER -->
+    <div class="pitfalls-container">
+      <div class="pitfalls-title">
+        <i class="ti ti-alert-triangle"></i> Pitfalls Críticos & O Que NUNCA Fazer
+      </div>
+
+      <div class="pitfall-banner">
+        <i class="ti ti-ban"></i>
+        <div>
+          <b>HSA (Hemorragia Subaracnoide):</b> NÃO USAR TRANSAMIN. NÃO INDUZIR HIPERMAGNESEMIA. NÃO ADMINISTRAR FLUÍDOS DE FORMA LIBERAL. NÃO INDUZIR HIPERTENSÃO DE MANEIRA PROFILÁTICA.
+        </div>
+      </div>
+
+      <div class="pitfall-banner">
+        <i class="ti ti-alert-circle"></i>
+        <div>
+          <b>Armadilha da Hiperventilação:</b> Hiperventilação abaixa a PIC, mas reduz o FSC, o que também pode gerar isquemia e mais lesão neurológica secundária; Utilizar como medida de ponte para após o início do trial de hiperventilação no paciente, seja realizar salina hipertônica, seja realizar TC.
+        </div>
+      </div>
+
+      <div class="pitfall-banner">
+        <i class="ti ti-alert-circle"></i>
+        <div>
+          <b>Predição Precoce de Prognóstico no TCE:</b> Tomar cuidado com predição de prognóstico precoce em pacientes com TCE por possibilidade razoável de melhora ao longo do tempo (1-2 anos).
+        </div>
+      </div>
+
+      <div class="pitfall-banner">
+        <i class="ti ti-alert-circle"></i>
+        <div>
+          <b>Exame Neurológico na Cefaleia em Trovoada:</b> Até 40% dos doentes com HSA têm exame neurológico normal na apresentação inicial. Cuidado com Cefaleia + Déficit focal / Cefaleia + história de aneurisma intracraniano.
+        </div>
+      </div>
+
+      <div class="pitfall-banner">
+        <i class="ti ti-alert-circle"></i>
+        <div>
+          <b>Vasoespasmo no Doppler Transcraniano:</b> Vigilância para vasoespasmo: Doppler transcraniano contínuo => cuidado para não gerar over-treatment.
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========================================================
+       SEÇÃO 1: DANO SECUNDÁRIO NA LESÃO NEUROLÓGICA AGUDA & HIC
+       ======================================================== -->
+  <section id="dano-secundario" class="section-block">
+    <div class="section-hdr">
+      <h2 class="section-title"><i class="ti ti-brain"></i> Dano Secundário na Lesão Neurológica Aguda</h2>
+      <div class="section-desc">Conceitos fundamentais e predição de Hipertensão Intracraniana</div>
+    </div>
+
+    <div class="card-detailed">
+      <h3 class="card-detailed-title">
+        <span>Conceito de Lesão Secundária</span>
+        <span class="badge-evidence"><i class="ti ti-book"></i> Evolução Histórica</span>
+      </h3>
+      <p style="color:var(--text-muted);margin-bottom:12px">
+        Em 1951 já se comentava que umas das ideias principais para prevenir lesão secundária e melhorar o prognóstico neurológico seriam manutenção de circulação sistêmica, prevenção de hipóxia e posicionamento da cabeceira.<br>
+        1977: descrição explícita de lesão cerebral secundária.
+      </p>
+      <ul class="list-tactical">
+        <li><b>Lesão primária:</b> decorrente do trauma direto ou da energia cinética do trauma transmitida.</li>
+        <li><b>Lesão secundária:</b> agressões que se iniciam após o momento do trauma, resultados de fatores intra e extracerebrais que se somam para inviabilizar a sobrevivência de células encefálicas poupadas pelo trauma inicial.</li>
+      </ul>
+    </div>
+
+    <div class="card-detailed">
+      <h3 class="card-detailed-title">
+        <span>Variáveis para Prever Hipertensão Intracraniana (HIC)</span>
+        <span class="badge-evidence"><i class="ti ti-eye"></i> Clínica & Imagem</span>
+      </h3>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:1rem">
+        <div style="background:var(--bg-card-alt);padding:14px;border-radius:8px;border:1px solid var(--border-subtle)">
+          <div style="font-size:0.8rem;font-family:var(--font-mono);color:var(--accent-neon);text-transform:uppercase;margin-bottom:6px">Variáveis Clínicas</div>
+          <ul class="list-tactical">
+            <li><b>Dilatação pupilar:</b> anisocoria ou midríase (especificidade > 80%).</li>
+            <li><b>Escala de Coma de Glasgow ≤ 8:</b> sensibilidade 75.8%.</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--bg-card-alt);padding:14px;border-radius:8px;border:1px solid var(--border-subtle)">
+          <div style="font-size:0.8rem;font-family:var(--font-mono);color:var(--accent-amber);text-transform:uppercase;margin-bottom:6px">Variáveis Radiológicas</div>
+          <ul class="list-tactical">
+            <li><b>Compressão das cisternas basais.</b></li>
+            <li><b>Desvio de linha média > 5 ou 10 mm.</b></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Callout: Opinião do Especialista (Sugestão do Estevão) -->
+      <div class="callout-opinion">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-weight:700">
+          <span class="badge-opinion"><i class="ti ti-user-check"></i> Opinião do Especialista / Modo de Fazer</span>
+          <span>Sugestão do Estevão:</span>
+        </div>
+        <ul class="list-tactical" style="margin-bottom:0">
+          <li><b>TC ou EF com sinais de HIC:</b> passagem de PIC;</li>
+          <li><b>TC ou EF sem sinais de HIC:</b> monitorização não-invasiva;</li>
+          <li><b>TC ou EF inconclusivos:</b> Bainha de nervo óptico, DTC, Brain 4 care;</li>
+        </ul>
+        <div style="margin-top:10px;font-size:0.85rem;color:#e9d5ff">
+          • Doppler Transcraniano é pouco acurado para definir a HIC;<br>
+          • Bainha de nervo óptico é útil à admissão, mas tem sua dinâmica temporal pouco conhecida;<br>
+          • Escapes de PIC = aumento de dose da PIC, geram repercussão no desfecho.
+        </div>
+      </div>
+    </div>
+
+    <!-- Escadinha de Prioridades na HIC (Tiers) -->
+    <div class="card-detailed">
+      <h3 class="card-detailed-title">
+        <span>Prioridades na HIC — Escadinha dos Tiers</span>
+        <span class="badge-evidence"><i class="ti ti-stairs"></i> Cada degrau aumenta a morbidade associada</span>
+      </h3>
+
+      <div class="tier-step">
+        <div class="tier-num tier-1">1</div>
+        <div><b>Medidas básicas</b> (manutenção de circulação, cabeceira centrada e elevada, normocapnia, controle térmico, glicêmico e sódio).</div>
+      </div>
+
+      <div class="tier-step">
+        <div class="tier-num tier-1">2</div>
+        <div><b>Aumentar sedação</b> (reduzir o FSC e o consumo de O2 cerebral).</div>
+      </div>
+
+      <div class="tier-step">
+        <div class="tier-num tier-2">3</div>
+        <div><b>Abrir DVE</b> (drenagem liquórica ventricular).</div>
+      </div>
+
+      <div class="tier-step">
+        <div class="tier-num tier-2">4</div>
+        <div><b>Terapia hiperosmolar</b> (salina hipertônica / manitol).</div>
+      </div>
+
+      <div class="tier-step">
+        <div class="tier-num tier-2">5</div>
+        <div>
+          <b>Induzir hipocapnia (cogitar):</b> hiperventilação abaixa a PIC, mas reduz o FSC, o que também pode gerar isquemia e mais lesão neurológica secundária; Utilizar como medida de ponte para após o início do trial de hiperventilação no paciente, seja realizar salina hipertonia, seja realizar TC; Objetivo em geral: uso de capnógrafo + normocapnia.
+        </div>
+      </div>
+
+      <div class="tier-divider">─── Linha de Resgate / Alta Morbidade Associada ───</div>
+
+      <div class="tier-step">
+        <div class="tier-num tier-3">6</div>
+        <div><b>Hipotermia:</b> medida de resgate, sem evidência de benefício.</div>
+      </div>
+
+      <div class="tier-step">
+        <div class="tier-num tier-3">7</div>
+        <div>
+          <b>Coma barbitúrico:</b> muito associado a hipotensão, pneumonia (por disfunção de linfócitos), discalemias (por shift de potássio para o meio intracelular, que se reverte após a finalização da terapia).
+        </div>
+      </div>
+
+      <div class="tier-step">
+        <div class="tier-num tier-3">8</div>
+        <div><b>Craniectomia descompressiva.</b></div>
+      </div>
+
+      <div style="margin-top:1.25rem;padding:12px;background:var(--bg-card-alt);border-radius:8px">
+        <div style="font-size:0.8rem;font-family:var(--font-mono);color:var(--text-dim);text-transform:uppercase;margin-bottom:6px">Prognóstico da Lesão Neurológica</div>
+        <ul class="list-tactical">
+          <li>Estudo que pegou pacientes com estado vegetativo persistente: na lesão não-traumática < 10% dos adultos ou crianças retornam à consciência, na lesão neurológica aguda traumática ~50% ganha consciência em 1 ano.</li>
+          <li>Tomar cuidado com predição de prognóstico precoce em pacientes com TCE por possibilidade razoável de melhora ao longo do tempo (1-2 anos).</li>
+          <li>A maior paciente dos sobreviventes de TCE grave volta ao trabalho, mas em média 21 meses após.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========================================================
+       SEÇÃO 2: HSA - HEMORRAGIA SUBARACNOIDE
+       ======================================================== -->
+  <section id="hsa" class="section-block">
+    <div class="section-hdr">
+      <h2 class="section-title"><i class="ti ti-heart-rate-monitor"></i> HSA — Hemorragia Subaracnoide</h2>
+      <div class="section-desc">Diagnóstico, escalas, tratamento agudo e complicações temporais</div>
+    </div>
+
+    <div class="card-detailed">
+      <h3 class="card-detailed-title">
+        <span>Definição, Epidemiologia e Etiologia</span>
+        <span class="badge-evidence"><i class="ti ti-chart-pie"></i> Dados Epidemiológicos</span>
+      </h3>
+      <ul class="list-tactical">
+        <li><b>Definição:</b> Sangramento entre membrana subaracnoide e pia-máter.</li>
+        <li><b>Epidemiologia:</b> Corresponde a 5-10% dos AVCs. Incidência 6-16 casos/100000 pessoas/ano. Risco 1,6x maior para mulher. Mortalidade ~40% em estudos e cerca de 1/3 dos sobreviventes dependerão de cuidados permanentes. Cerca de 5-15% dos pacientes não chegam vivos ao hospital e a complicação mais catastrófica é o ressangramento, que pode levar a 45% de mortalidade.</li>
+        <li><b>Etiologia:</b> Etiologicamente a maior prevalência é de causas traumáticas, mas estes casos apresentam fisiopatologia, gravidade e história natural da doença diferentes. A causa mais prevalente não-traumática é a presença de aneurisma intracraniano, seguida por outras causas como uso de simpatomiméticos, vasoconstrição cerebral reversível, etc.</li>
+        <li><b>HSA perimesencefálica:</b> Cerca de 10% de HSA são negativas à primeira arteriografia (pode ser repetida após 1 semana), mas podem ser HSA perimesencefálica, que é uma etiologia benigna de HSA, com sangramento apenas ao redor do mesencéfalo, que tem baixa mortalidade e baixo risco de ressangramento e vasoespasmo.</li>
+        <li><b>Lesão cerebral precoce:</b> lesão que ocorre nos 3 primeiros dias após a rotura do aneurisma. Envolve múltiplos mecanismos fisiopatológicos e é etapa definidora de prognóstico. Pode ocorrer parada circulatória cerebral seguida por lesão de reperfusão sequencial.</li>
+      </ul>
+    </div>
+
+    <div class="card-detailed">
+      <h3 class="card-detailed-title">
+        <span>Nomenclaturas (Refinando os Diferenciais Clínicos)</span>
+      </h3>
+      <div class="table-wrap">
+        <table class="table-tactical">
+          <thead>
+            <tr>
+              <th>Termo</th>
+              <th>Classificação</th>
+              <th>Definição & Conduta</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Vasoespasmo</b></td>
+              <td>Nomenclatura anatômica</td>
+              <td>Estreitamento arterial na arteriografia ou Doppler transcraniano. Vigilância para vasoespasmo: Doppler transcraniano contínuo => cuidado para não gerar over-treatment.</td>
+            </tr>
+            <tr>
+              <td><b>Deterioração neurológica tardia</b></td>
+              <td>Nomenclatura clínica</td>
+              <td>Déficit neurológico que ocorre após uma HSA, que pode ser por diversas causas.</td>
+            </tr>
+            <tr>
+              <td><b>Isquemia Cerebral Tardia</b></td>
+              <td>Nomenclatura clínica</td>
+              <td>Déficit neurológico agudo ou queda de pelo menos 2 pontos no Glasgow que persiste por mais de 1h, secundário a isquemia não explicada por outras causas (não necessita de identificação de vasoespasmo).<br>
+              Conduta inicial: TC + AngioTC para identificar hidrocefalia, vasoespasmo, ventriculite (se nenhum desses presentes).<br>
+              Exame útil para avaliação em tempo real: EEG contínuo identifica alterações precoces que denotam sofrimento neuronal.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card-detailed">
+      <h3 class="card-detailed-title">
+        <span>Apresentação Clínica & Regra de Ottawa para HSA</span>
+        <span class="badge-evidence"><i class="ti ti-checkbox"></i> Critérios de Ottawa (TC se ≥ 1)</span>
+      </h3>
+      <p style="margin-bottom:10px">
+        <b>Características Clínicas:</b> Cefaleia de forte intensidade e início abrupto -> classicamente chamada “em trovoada”, Cefaleia nova e diferente; Eventualmente com déficit focal; Até 40% dos doentes têm exame neurológico normal na apresentação inicial.<br>
+        <span style="color:var(--accent-red);font-weight:600">Cuidado com Cefaleia + Déficit focal / Cefaleia + história de aneurisma intracraniano.</span>
+      </p>
+
+      <div style="background:var(--bg-card-alt);padding:14px;border-radius:8px;border-left:4px solid var(--accent-neon)">
+        <div style="font-size:0.8rem;font-family:var(--font-mono);color:var(--accent-neon);text-transform:uppercase;margin-bottom:6px">Regra de Ottawa para HSA (se um ou mais presentes = TC Crânio):</div>
+        <ul class="list-tactical">
+          <li>Dor cervical ou rigidez cervical;</li>
+          <li>Idade > 40 anos;</li>
+          <li>Perda de consciência presenciada;</li>
+          <li>Início durante o esforço;</li>
+          <li>Cefaleia em Trovoada;</li>
+          <li>Limitação à flexão do pescoço no exame físico.</li>
+        </ul>
+      </div>
+
+      <div style="margin-top:1rem">
+        <b>Diagnóstico:</b>
+        <ul class="list-tactical">
+          <li>TC Crânio simples;</li>
+          <li>RNM > 24h;</li>
+          <li>LCR se dúvida diagnóstica após TC (busca por xantocromia);</li>
+          <li>Após o diagnóstico, deve-se identificar a causa: Padrão-ouro é Arteriografia de 4 vasos; Angio-TC é aceita; Angio-RNM não é tão útil para identificar causa de HSA, mas pode ser utilizada para screening de familiares de pacientes com HSA aneurismática.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card-detailed">
+      <h3 class="card-detailed-title">
+        <span>Escores de Classificação & Tratamento</span>
+        <span class="badge-evidence"><i class="ti ti-file-text"></i> Diretriz</span>
+      </h3>
+      <ul class="list-tactical">
+        <li><b>Escala de Hunt-Hess:</b> classicamente mais usada é muito subjetiva, por isso a preferência pela escala WFNS. Usar as escalas após ressuscitar adequadamente o doente, resolvendo hidrocefalia aguda antes de classificar, por exemplo.</li>
+        <li><b>Escala de Fisher modificada:</b> (mais usada) -> Correlaciona-se com chance de desenvolvimento de vasoespasmo. Fatores que pioram desfecho: idade, nível de consciência e quantidade de sangue na TC Crânio.</li>
+      </ul>
+
+      <div style="margin-top:1rem;background:var(--bg-card-alt);padding:14px;border-radius:8px">
+        <div style="font-size:0.8rem;font-family:var(--font-mono);color:var(--accent-neon);text-transform:uppercase;margin-bottom:8px">Metas de Tratamento na HSA:</div>
+        <ul class="list-tactical">
+          <li><b>Controle do aneurisma:</b> de preferência nas primeiras 24h.</li>
+          <li><b>Controle pressórico:</b> Meta PAS < 160 no aneurisma roto não tratado. Tolerar hipertensão em pacientes com aneurisma tratado.</li>
+          <li><b>Profilaxia anticonvulsivante:</b> até o aneurisma estar seguro, quando indicada. Mesmo na indicação de profilaxia primária é necessário fazer dose de ataque do anticonvulsivante prescrito.</li>
+          <li><b>Reversão de anticoagulação:</b> Emergência em qualquer sangramento intracraniano. Objetivos: INR < 1,4 / Plaquetas > 50000 (considerar DDAVP ou Transfusão de plaquetas).</li>
+          <li><b>Profilaxia de isquemia cerebral tardia:</b> Nimodipino 60mg 4/4h por 21 dias.</li>
+          <li><b>Tratar dor e ansiedade:</b> focar em analgesia escalonada (dipirona + AINES), possível usar Dexametasona para analgesia por reduzir meningite química. Evitar Opioide.</li>
+          <li><b>Profilaxia TEV:</b> CPI até clipagem. 1 dia após clipagem já dá pra avaliar introdução de profilaxia química.</li>
+          <li><b>Controle volêmico:</b> Não permitir hipovolemia = BH Neutro.</li>
+        </ul>
+      </div>
+
+      <!-- Callout Especialista: Clipar vs Embolizar e Milrinone -->
+      <div class="callout-opinion">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-weight:700">
+          <span class="badge-opinion"><i class="ti ti-user-check"></i> Opinião do Especialista / Decisão Prática</span>
+          <span>Tratamento do Aneurisma & Resgate:</span>
+        </div>
+        <p style="margin-bottom:8px">
+          <b>Quem clipar e quem embolizar?</b> Decisão específica de cada paciente e serviço. Depende de topografia, de lesões associadas (como hemorragia intraparenquimatosa) e disponibilidade. Se houver disponibilidade de ambos os meios, a neurointervenção é superior em desfechos na fase aguda e no seguimento, com menor mortalidade e melhor Rankin modificado.
+        </p>
+        <p>
+          <b>Manejo do Vasoespasmo:</b> O tratamento “padrão-ouro” é o trial de hipertensão com Noradrenalina até máximo de PAS 200-220, para checar resposta. Pode-se tentar Milrinone EV para aumentar DC (zero evidência sobre), cenário em que se usa Norepinefrina + Milrinone simultaneamente.
+        </p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:1rem">
+        <div style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.3);padding:12px;border-radius:8px">
+          <div style="font-size:0.8rem;font-family:var(--font-mono);color:var(--accent-red);text-transform:uppercase;margin-bottom:6px">Piora Neurológica nas Primeiras 72h:</div>
+          <ul class="list-tactical">
+            <li><b>Ressangramento (4-14% nas primeiras 24h):</b> mortalidade altíssima (chegando a 50-70%), tem maior risco nas primeiras 12h do quadro, sendo que 1/2 deles ocorre nas primeiras 6h.</li>
+            <li><b>Hidrocefalia obstrutiva aguda = DVE:</b> Incidência de 20-27%, cerca de 10 a 48% dos pacientes evoluem com hidrocefalia shunt-dependente, tratada com DVP.</li>
+            <li><b>Crise convulsiva.</b></li>
+          </ul>
+        </div>
+
+        <div style="background:rgba(249,115,22,0.05);border:1px solid rgba(249,115,22,0.3);padding:12px;border-radius:8px">
+          <div style="font-size:0.8rem;font-family:var(--font-mono);color:var(--accent-amber);text-transform:uppercase;margin-bottom:6px">Piora Neurológica Após 72h:</div>
+          <ul class="list-tactical">
+            <li><b>Vasoespasmo:</b> ocorre geralmente entre 4-12 dias, resolve-se geralmente com 21 dias. À angiografia 60-70% apresenta vasoespasmo, mas em apenas 32% deles apresenta-se clínica de vasoespasmo, com necessidade de tratamento. Causa de morte em 10 a 23 % dos pacientes com HSA. Seu principal fator de risco é o volume de sangue no espaço subaracnoídeo.</li>
+            <li><b>Screening do Vasoespasmo:</b> DTC (Velocidade de fluxo > 120 cm/s, ou VF aumentou > 50 cm/s em 24h, ou Índice de Lindergaard ≥ 3); Diagnóstico: Angiografia (padrão-ouro), AngioTC;</li>
+            <li><b>Tratamento:</b> Hipertensão induzida; para pacientes que não melhoram com tratamento clínico pode-se tentar terapia endovascular com angioplastia ou vasodilatador intra-arterial.</li>
+            <li><b>Deterioração neurológica tardia:</b> pode ser por vasoespasmo, ressangramento, edema, hidrocefalia, doenças clínicas, distúrbios do sódio (SIADH, Síndrome cerebral perdedora de sal, DI). Melhor monitorização: Neurocheck de horário. TC de perfusão pode diferenciar Isquemia Cerebral Tardia de Vasoespasmo.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========================================================
+       SEÇÃO 3: TCE GRAVE & MONITORIZAÇÃO MULTIMODAL
+       ======================================================== -->
+  <section id="tce-grave" class="section-block">
+    <div class="section-hdr">
+      <h2 class="section-title"><i class="ti ti-activity"></i> TCE Grave & Monitorização Multimodal</h2>
+      <div class="section-desc">Princípios do manejo, morfologia da PIC, Brain4Care e Trials</div>
+    </div>
+
+    <div class="card-detailed">
+      <h3 class="card-detailed-title">
+        <span>TCE Grave — Definição e Princípios</span>
+        <span class="badge-evidence"><i class="ti ti-alert-triangle"></i> Glasgow ≤ 8</span>
+      </h3>
+      <p style="margin-bottom:12px">
+        <b>TCE Grave = Glasgow ≤ 8.</b> Doença heterogênea e de fisiopatologia complexa, com muitos mecanismos de lesão cerebral e desenvolvimento de hipertensão intracraniana. O mecanismo específico apresentará prevalência maior de um caminho fisiopatológico, como liberação de radicais livres, ativação de correntes de cálcio, inflamação, lesão hipóxico-isquêmica.<br>
+        <b>Princípios do manejo:</b> Diagnóstico + Prognosticação + Prevenção de dano secundário.
+      </p>
+
+      <ul class="list-tactical">
+        <li><b>Doppler transcraniano para estimar PPC(ACM):</b> <code>PAM x Vdiastólica/média + 14</code> => ferramenta para avaliar autorregulação cerebral, HIC e presença de vasoespasmo.</li>
+        <li><b>Bainha de NO:</b> auxílio diagnóstico de HIC (cortes entre 5-6mm), mas precisa de presença bilateral do achado e não serve para acompanhar tratamento.</li>
+      </ul>
+
+      <!-- Callouts: Sugestões do Especialista -->
+      <div class="callout-opinion">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-weight:700">
+          <span class="badge-opinion"><i class="ti ti-user-check"></i> Opinião do Especialista / Prática Clínica</span>
+          <span>Condutas e Monitorização Complementares:</span>
+        </div>
+        <ul class="list-tactical" style="margin-bottom:0">
+          <li><b>Sugestão de estudo de vaso em todo TCE grave.</b></li>
+          <li><b>Profilaxia primária de crise:</b> sugestão de realizar em todos os pacientes com TCE grave nos primeiros 7 dias (TCE grave com lesão estrutural tem alto risco de desenvolvimento de Epilepsia).</li>
+          <li><b>Sugestão de EEG contínuo nas primeiras 72h do evento:</b> pois crises subclínicas incrementam a PIC.</li>
+        </ul>
+      </div>
+
+      <div style="margin-top:1rem;background:var(--bg-card-alt);padding:14px;border-radius:8px">
+        <div style="font-size:0.8rem;font-family:var(--font-mono);color:var(--accent-neon);text-transform:uppercase;margin-bottom:6px">PIC & Doutrina de Monro-Kellie:</div>
+        <ul class="list-tactical">
+          <li><b>Curva de PIC:</b> P1/P2/P3 -> avaliar morfologia da curva, não só valor. P1 é o início da sístole, P2 é a onda corrente (tidal wave) que representa o fluxo final de sangue e sua acomodação, que depende da complacência intracraniana, P3 é o nó dicrótico.</li>
+          <li><b>Tipo de Cateter:</b> Idealmente deve ser intraventricular para melhor monitorização e deve ser retirada o quanto antes. Limitação principal: hipertensão locorregional.</li>
+          <li><b>Indicação do BTF:</b> TCE Grave + alteração de TC ou 2 de 3 => idade > 40 anos, PAS < 90 ou postura patológica.</li>
+          <li><b>Brain4Care:</b> estratégia não-invasiva que apresenta morfologia de curva com correlação razoável à PIC/estimativa da complacência intracraniana.</li>
+          <li><b>Limiar:</b> PIC > 22 mmHg é um possível limiar de tratamento. Hoje em dia, sabe-se que o valor é relevante, mas não é o único parâmetro isolado. Depende de avaliação de complacência e autorregulação. Importante levar em consideração intensidade + duração do insulto.</li>
+        </ul>
+      </div>
+
+      <div style="margin-top:1rem">
+        <b>Craniectomia Descompressiva:</b> Trials principais DECRA e RESCUE-ICP. Craniectomia descompressiva permanece como medida de Tier 3. Sugere-se compartilhamento de decisão e entende-se que os desfechos funcionais medidos após 6 meses talvez sejam precocemente aferidos. Interroga-se a indicação de craniectomia primária X secundária.<br><br>
+        <b>Complicações “neurológicas”:</b>
+        <ul class="list-tactical">
+          <li>TVC (Trombose Venosa Cerebral).</li>
+          <li>Hiperatividade simpática paroxística -> hipertensão, taquicardia, febre, 1-2 semanas após, exacerba-se após os estímulos. Necessário interpretar como diagnóstico de exclusão.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========================================================
+       SEÇÃO 4: TRAUMA & POLITRAUMA
+       ======================================================== -->
+  <section id="trauma-politrauma" class="section-block">
+    <div class="section-hdr">
+      <h2 class="section-title"><i class="ti ti-shield"></i> Trauma & Politrauma</h2>
+      <div class="section-desc">O que o cirurgião e o intensivista precisam concordar</div>
+    </div>
+
+    <div class="card-detailed">
+      <h3 class="card-detailed-title">
+        <span>Fisiopatologia & Consenso de Berlim</span>
+        <span class="badge-evidence"><i class="ti ti-scale"></i> Consenso Internacional</span>
+      </h3>
+      <p style="margin-bottom:12px">
+        Agravo inflamatório agudo traumático gera uma morbidade adicional que pode repercutir na mortalidade ao longo prazo (5-15 anos) por disfunção imunológica agregada, agregando o quarto pico de mortalidade do trauma, agora em distribuição quadrimodal.
+      </p>
+
+      <div style="background:var(--bg-card-alt);padding:14px;border-radius:8px;border-left:4px solid var(--accent-neon);margin-bottom:1rem">
+        <div style="font-size:0.8rem;font-family:var(--font-mono);color:var(--accent-neon);text-transform:uppercase;margin-bottom:6px">Consenso de Berlim — O que é politrauma?</div>
+        <div><b>Trauma com > 30% de mortalidade</b> (2 lesões com AIS ≥ 3 + 1 critério de gravidade).</div>
+        <div style="margin-top:6px;font-size:0.85rem;color:var(--text-muted)">
+          Critérios de gravidade possíveis: Idade > 70a / Glasgow ≤ 8 / Hipotensão / BE < -6 / TTPA > 40 ou INR ≥ 1,4.
+        </div>
+      </div>
+
+      <div style="background:var(--bg-card-alt);padding:14px;border-radius:8px;margin-bottom:1rem">
+        <div style="font-size:0.8rem;font-family:var(--font-mono);color:var(--accent-amber);text-transform:uppercase;margin-bottom:6px">Passagem de Plantão e Sistematização: IMIST3AMBO</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px;font-size:0.85rem">
+          <div><b>I:</b> identificação</div>
+          <div><b>M:</b> mecanismo</div>
+          <div><b>I:</b> lesões</div>
+          <div><b>S:</b> sinais vitais</div>
+          <div><b>T3:</b> quem transportou, tratamentos que recebeu e tempos de transporte e lesão</div>
+          <div><b>AMBO:</b> alergias, medicações, doenças, agravantes do trauma (mortes no local, etc)</div>
+        </div>
+      </div>
+
+      <!-- Callout Especialista: Reanimação Polêmica e USG -->
+      <div class="callout-opinion">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-weight:700">
+          <span class="badge-opinion"><i class="ti ti-user-check"></i> Opinião do Especialista / Prática Clínica</span>
+          <span>Reanimação, Coagulopatia & Manejo Prático:</span>
+        </div>
+        <ul class="list-tactical" style="margin-bottom:0">
+          <li><b>Reanimação polêmica:</b> restringir cristaloide, administrar hemocomponentes de forma precoce e balanceada, com predileção por hemácias e plasma, na indisponibilidade de sangue total.</li>
+          <li><b>Reverter coagulopatia:</b> complexo protrombínico ou Plasma fresco congelado (versus fisiológico).</li>
+          <li><b>Ideia aos 20 minutos da aula:</b> guiar a IOT com USG para visualizar expansão esofágica.</li>
+          <li><b>Reforço importante:</b> temporalidade nas intervenções e metas específicas e crítica à ausência de celeridade em alguns atos do cuidado.</li>
+        </ul>
+      </div>
+
+      <p style="margin-top:10px">
+        <b>Hiperfibrinólise maligna induzida pelo trauma:</b> lesão endotelial difusa e isquemia tecidual mediada pela ativação paradoxal de fatores de coagulação que gera hiperfibrinólise.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ========================================================
+       SEÇÃO 5: COMO PROGNOSTICAR O TRAUMA NA UTI & MONITORIZAÇÃO
+       ======================================================== -->
+  <section id="prognostico" class="section-block">
+    <div class="section-hdr">
+      <h2 class="section-title"><i class="ti ti-chart-bar"></i> Prognóstico no Trauma & Monitorização</h2>
+      <div class="section-desc">Escores prognósticos, exame físico mínimo e sistematização da TC</div>
+    </div>
+
+    <div class="card-detailed">
+      <h3 class="card-detailed-title">
+        <span>Como Prognosticar o Trauma na UTI?</span>
+        <span class="badge-opinion"><i class="ti ti-user-check"></i> “No mínimo bastante ousado”</span>
+      </h3>
+      <p style="color:var(--text-muted);margin-bottom:12px">
+        Escore prognóstico: dispositivo que pode prever evento estatístico, tem utilidade para benchmarking e pode ter utilidade na aplicação diária -> isso tudo necessita de validação externa.<br>
+        Escores de trauma são anatômicos, fisiológicos ou combinados.
+      </p>
+
+      <ul class="list-tactical">
+        <li><b>AIS:</b> classificação de lesão de 1 a 6, sendo 1 lesão mínima e 6 uma lesão à qual não se pode sobreviver, por isso no hospital só chegariam as lesões de 1 a 5. Divide o corpo em 6 segmentos: cabeça e pescoço, face, tórax abdome, pelve e extremidades, externo. Valor: soma dos quadrados das 3 maiores lesões de segmentos diferentes.</li>
+        <li><b>New ISS:</b> soma dos quadrados das 3 maiores lesões, independentes do segmento.</li>
+        <li><b>RTS:</b> avalia gravidade através de parâmetros fisiológicos de sinais vitais.</li>
+        <li><b>TRISS (Trauma Score and Injury Severity Score):</b> escore combinado entre fisiologia e anatomia e deriva equação específica para prever mortalidade. Performa de maneira superior em relação aos puramente anatômicos ou fisiológicos.</li>
+      </ul>
+
+      <div style="margin-top:1rem;background:var(--bg-card-alt);padding:14px;border-radius:8px">
+        <div style="font-size:0.8rem;font-family:var(--font-mono);color:var(--accent-amber);text-transform:uppercase;margin-bottom:6px">Performance Preditiva & Subgrupo com TCE:</div>
+        <ul class="list-tactical">
+          <li><b>Avaliação da performance preditiva:</b> Discriminação; Calibração (concordância entre risco estimado e risco observado); Utilidade clínica através da curva de decisão.</li>
+          <li><b>Paciente com trauma na UTI:</b> > 2/3 tem TCE. Subgrupo específico em que os escores de trauma performam pior. O SOFA também se sai melhor por refletir o surgimento de outras disfunções orgânicas.</li>
+          <li><b>Para prognosticar TCE:</b> SOFA + idade + pupila.</li>
+          <li><b>SAPS 3 e SOFA:</b> performam de maneira razoável para limiares de decisão com pacientes de probabilidade intermediária de morte (30-50%).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card-detailed">
+      <h3 class="card-detailed-title">
+        <span>Monitorização Neurológica & Exame Físico Mínimo</span>
+        <span class="badge-evidence"><i class="ti ti-stethoscope"></i> Sistematização</span>
+      </h3>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:1rem">
+        <div style="background:var(--bg-card-alt);padding:14px;border-radius:8px">
+          <div style="font-size:0.8rem;font-family:var(--font-mono);color:var(--accent-neon);text-transform:uppercase;margin-bottom:6px">Exame Físico Mínimo</div>
+          <ul class="list-tactical">
+            <li><b>Nível de consciência (avalia o SARA) vs Conteúdo (funções cognitivas).</b></li>
+            <li><b>Coma:</b> olhos fechados, sem resposta a estímulos, sem ciclo sono-vigília, transição que dura em média 2 semanas.</li>
+            <li><b>Avaliação do nível de consciência:</b> Glasgow e FOUR.</li>
+            <li><b>Motricidade:</b> resposta a estímulos, tônus, reflexos, liberação piramidal.</li>
+            <li><b>Reflexos de tronco encefálico:</b> pupilas, oculocefálico, tosse.</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--bg-card-alt);padding:14px;border-radius:8px">
+          <div style="font-size:0.8rem;font-family:var(--font-mono);color:var(--accent-amber);text-transform:uppercase;margin-bottom:6px">TC no Trauma: Blood Can Be Very Bad</div>
+          <ul class="list-tactical">
+            <li><b>Blood:</b> procura sistematizada por sangue.</li>
+            <li><b>Can:</b> apagamento de cisternas basais (cisternas perimesencefálicas têm a maior sensibilidade e especificidade para desenvolvimento de HIC).</li>
+            <li><b>Be:</b> parênquima encefálico.</li>
+            <li><b>Very:</b> ventrículos.</li>
+            <li><b>Bad:</b> ossos.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="proto-footer">
+    <div style="margin-bottom:1rem">
+      <a href="app.html" class="btn-nav btn-nav-primary" style="padding:10px 24px;font-size:0.95rem">
+        <i class="ti ti-stethoscope"></i> Abrir Plataforma de Admissão (Emergência Pro)
+      </a>
+    </div>
+    <p>
+      Emergência Pro • Admissão e Condutas Baseadas em Evidências.<br>
+      Este material destina-se a apoio rápido e não substitui a avaliação e o julgamento clínico individualizado do médico assistente.
+    </p>
+  </footer>
+
+</main>
+
+<script>
+// Script para destacar link ativo na navegação de tópicos ao rolar
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.tnav-btn');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop - 140;
+    if (pageYOffset >= sectionTop) {
+      current = section.getAttribute('id');
+    }
+  });
+
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) {
+      link.classList.add('active');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
