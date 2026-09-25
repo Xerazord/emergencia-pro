@@ -364,6 +364,35 @@ textarea{resize:vertical;min-height:60px}
 .fab-drawer-textarea{flex:1;min-height:280px;resize:none;border:.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);font-family:var(--font-mono);font-size:12px;line-height:1.8;padding:.85rem;color:var(--color-text-primary)}
 .fab-drawer-footer{padding:.75rem 1.25rem;border-top:.5px solid var(--color-border-tertiary);display:flex;gap:8px;flex-shrink:0;justify-content:flex-end}
 
+/* ── Painel de Apoio à Decisão & Metas Fisiológicas ── */
+.decision-drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:190;display:flex;align-items:stretch;justify-content:flex-end}
+.decision-drawer{background:var(--color-background-primary);width:100%;max-width:500px;display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(0,0,0,.25);animation:slideInRight .2s ease-out;overflow:hidden}
+@keyframes slideInRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.decision-drawer-hdr{padding:1rem 1.25rem;border-bottom:.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--color-background-secondary)}
+.decision-drawer-tabs{display:flex;border-bottom:1px solid var(--color-border-tertiary);background:var(--color-background-primary);flex-shrink:0}
+.decision-tab{flex:1;padding:10px 6px;text-align:center;font-size:12.5px;font-weight:600;border:none;background:transparent;color:var(--color-text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;border-bottom:2px solid transparent;transition:all .15s;font-family:inherit}
+.decision-tab:hover{color:var(--color-text-primary);background:var(--color-background-secondary)}
+.decision-tab.active{color:#d97706;border-bottom-color:#d97706;background:rgba(217,119,6,0.06)}
+.decision-drawer-body{flex:1;min-height:0;overflow-y:auto;padding:1.15rem;display:flex;flex-direction:column;gap:12px}
+
+.decision-card{border:1px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);padding:12px;display:flex;flex-direction:column;gap:8px}
+.decision-card-title{font-size:13.5px;font-weight:600;color:var(--color-text-primary);display:flex;align-items:center;gap:6px}
+.decision-meta-item{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;line-height:1.5;color:var(--color-text-secondary)}
+.decision-meta-bullet{width:6px;height:6px;border-radius:50%;background:#d97706;margin-top:6px;flex-shrink:0}
+
+/* Botão Copiar e Limpar Paciente (LGPD) */
+.btn-clean-patient{background:#dc2626 !important;color:#fff !important;border:none !important;font-weight:600}
+.btn-clean-patient:hover{background:#b91c1c !important}
+
+/* Alerta de Conflito Interativo */
+.conflict-banner-interactive{background:#fef2f2;border:1px solid #fecaca;border-left:4px solid #dc2626;border-radius:6px;padding:10px 12px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .15s}
+.conflict-banner-interactive:hover{background:#fee2e2}
+
+@media(max-width:768px){
+  .decision-drawer-overlay{align-items:flex-end;justify-content:center}
+  .decision-drawer{max-width:100%;border-radius:16px 16px 0 0;max-height:88vh;animation:slideUpDrawer .2s ease-out}
+}
+
 /* ── Botão e Modal de Atalhos de Teclado ── */
 .hdr-btn-subtle{padding:6px 11px;background:#f3f4f6;border:.5px solid var(--color-border-secondary);color:var(--color-text-secondary);border-radius:20px;font-size:12px;cursor:pointer;font-weight:500;margin-left:6px;display:inline-flex;align-items:center;gap:5px;font-family:inherit}
 .hdr-btn-subtle:hover{background:#e5e7eb;color:var(--color-text-primary)}
@@ -543,6 +572,7 @@ textarea{resize:vertical;min-height:60px}
  <div class="hico"><img src="data:image/png;base64,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" alt="Emergência Pro"></div>
  <div><div style="font-size:18px;font-weight:500">Emergência Pro</div><div style="font-size:13px;color:var(--color-text-secondary)">Admissão com condutas baseadas em evidências</div></div>
  <button class="reset-btn" onclick="resetCase()"><i class="ti ti-refresh" aria-hidden="true"></i> Reiniciar</button>
+ <button class="hdr-btn-subtle" onclick="toggleDecisionDrawer()" title="Apoio à Decisão & Metas Fisiológicas (Alt + D)"><i class="ti ti-bolt" style="color:#d97706" aria-hidden="true"></i> <span class="hide-mobile">Apoio à Decisão</span></button>
  <a href="index.html" class="hdr-btn-subtle" title="Página Inicial / Sobre" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-flame" aria-hidden="true"></i> <span class="hide-mobile">Início</span></a>
  <a href="neuro_emergencia.html" class="hdr-btn-subtle" title="Protocolos Táticos (Crunch Time + Pitfalls)" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;border-color:rgba(249,115,22,0.4);color:#d97706"><i class="ti ti-bolt" aria-hidden="true"></i> <span class="hide-mobile">Crunch Time</span></a>
  <button class="hdr-btn-subtle" onclick="showShortcutModal()" title="Atalhos de teclado (Alt + /)"><i class="ti ti-keyboard" aria-hidden="true"></i> <span class="hide-mobile">Atalhos</span></button>
@@ -566,6 +596,7 @@ textarea{resize:vertical;min-height:60px}
    <div class="rel-col-actions">
     <button class="btng" onclick="copyRelCol()"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
     <button class="btng" style="background:#059669" onclick="copyPrescricaoOnly()" title="Copiar apenas a prescrição e condutas"><i class="ti ti-pill" aria-hidden="true"></i> Prescrição</button>
+    <button class="btng btn-clean-patient" onclick="copyAndClearPatient()" title="Copiar relatório e limpar dados do paciente da memória (LGPD)"><i class="ti ti-copy-check" aria-hidden="true"></i> Copiar & Limpar</button>
     <button class="btng" style="background:#185fa5" onclick="saveReportFromCol()"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar</button>
    </div>
   </div>
@@ -644,6 +675,34 @@ textarea{resize:vertical;min-height:60px}
   </div>
 </div>
 
+<!-- Floating Button para Apoio à Decisão no Mobile -->
+<button class="fab-report-btn" id="fabDecisionBtn" onclick="toggleDecisionDrawer()" aria-label="Apoio à Decisão e Metas Fisiológicas" title="Apoio à Decisão & Metas (Alt + D)" style="right:auto;left:20px;background:#d97706;box-shadow:0 4px 16px rgba(217,119,6,.4)">
+  <i class="ti ti-bolt" aria-hidden="true"></i>
+  <span>Metas & Decisão</span>
+</button>
+
+<!-- Drawer Retrátil de Apoio à Decisão & Metas Fisiológicas -->
+<div class="decision-drawer-overlay" id="decisionDrawerOverlay" style="display:none" onclick="if(event.target===this)closeDecisionDrawer()">
+  <div class="decision-drawer" id="decisionDrawer">
+    <div class="decision-drawer-hdr">
+      <div style="display:flex;align-items:center;gap:8px">
+        <i class="ti ti-bolt" style="font-size:20px;color:#d97706" aria-hidden="true"></i>
+        <div>
+          <div style="font-size:15px;font-weight:600;color:var(--color-text-primary)">Apoio à Decisão & Metas Fisiológicas</div>
+          <div style="font-size:11.5px;color:var(--color-text-secondary)">Pérolas beira-leito, alvos hemodinâmicos e segurança clínica</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeDecisionDrawer()" aria-label="Fechar Apoio à Decisão">×</button>
+    </div>
+    <div class="decision-drawer-tabs">
+      <button class="decision-tab active" id="decTabMetas" onclick="setDecisionTab('metas')"><i class="ti ti-target" aria-hidden="true"></i> Metas & Alvos</button>
+      <button class="decision-tab" id="decTabPerolas" onclick="setDecisionTab('perolas')"><i class="ti ti-bulb" aria-hidden="true"></i> Pérolas Clínicas</button>
+      <button class="decision-tab" id="decTabConflitos" onclick="setDecisionTab('conflitos')"><i class="ti ti-shield-alert" aria-hidden="true"></i> Conflitos <span class="badge-n" id="decConflictCount" style="display:none;background:#dc2626;color:#fff;margin-left:4px">0</span></button>
+    </div>
+    <div class="decision-drawer-body" id="decisionDrawerBody"></div>
+  </div>
+</div>
+
 <!-- Modal de Ajuda de Atalhos de Teclado -->
 <div class="modal-bg" id="shortcutModal" style="display:none" onclick="if(event.target===this)closeShortcutModal()">
   <div class="modal" style="max-width:540px">
@@ -662,6 +721,7 @@ textarea{resize:vertical;min-height:60px}
         <tr style="border-bottom:.5px solid #e5e7eb"><td style="padding:6px 0"><kbd class="kbd">Alt</kbd> + <kbd class="kbd">N</kbd> ou <kbd class="kbd">→</kbd></td><td style="color:#4b5563">Avançar para o próximo passo</td></tr>
         <tr style="border-bottom:.5px solid #e5e7eb"><td style="padding:6px 0"><kbd class="kbd">Alt</kbd> + <kbd class="kbd">P</kbd> ou <kbd class="kbd">←</kbd></td><td style="color:#4b5563">Voltar ao passo anterior</td></tr>
         <tr style="border-bottom:.5px solid #e5e7eb"><td style="padding:6px 0"><kbd class="kbd">Alt</kbd> + <kbd class="kbd">C</kbd> ou <kbd class="kbd">Ctrl</kbd>+<kbd class="kbd">Shift</kbd>+<kbd class="kbd">C</kbd></td><td style="color:#4b5563">Copiar relatório completo para área de transferência</td></tr>
+        <tr style="border-bottom:.5px solid #e5e7eb"><td style="padding:6px 0"><kbd class="kbd">Alt</kbd> + <kbd class="kbd">D</kbd></td><td style="color:#4b5563">Abrir / Fechar Apoio à Decisão & Metas Fisiológicas</td></tr>
         <tr style="border-bottom:.5px solid #e5e7eb"><td style="padding:6px 0"><kbd class="kbd">Alt</kbd> + <kbd class="kbd">S</kbd></td><td style="color:#4b5563">Salvar relatório e adicionar ao Plantão</td></tr>
         <tr style="border-bottom:.5px solid #e5e7eb"><td style="padding:6px 0"><kbd class="kbd">Alt</kbd> + <kbd class="kbd">R</kbd></td><td style="color:#4b5563">Alternar modo do relatório (Completo / Resumo)</td></tr>
         <tr style="border-bottom:.5px solid #e5e7eb"><td style="padding:6px 0"><kbd class="kbd">Esc</kbd></td><td style="color:#4b5563">Fechar qualquer modal, drawer ou painel aberto</td></tr>
@@ -1839,31 +1899,88 @@ const DRAFT_KEY='emergencia_draft_v2';
 const BUILD_VERSION='2026.05.20';
 
 let _saveTimer=null;
-function autoSave(){clearTimeout(_saveTimer);_saveTimer=setTimeout(()=>{try{localStorage.setItem(DRAFT_KEY,JSON.stringify(S));}catch(e){}},600);}
+function autoSave(){
+  clearTimeout(_saveTimer);
+  _saveTimer=setTimeout(()=>{
+    try{
+      sessionStorage.setItem(DRAFT_KEY,JSON.stringify(S));
+      localStorage.setItem(DRAFT_KEY,JSON.stringify(S));
+    }catch(e){}
+  },600);
+}
 function autoLoad(){
   try{
-    const saved=localStorage.getItem(DRAFT_KEY);
+    const saved=sessionStorage.getItem(DRAFT_KEY)||localStorage.getItem(DRAFT_KEY);
     if(!saved)return false;
     const parsed=JSON.parse(saved);
-    // Só restaurar se houver conteúdo significativo
     if(parsed&&(parsed.nome||parsed.queixa||parsed.step>0||parsed.imp)){
       if(confirm('Há um caso anterior em andamento. Deseja continuá-lo?')){
         Object.assign(S, deepMergeDefaults(INITIAL_S, parsed));
         return true;
       }else{
-        localStorage.removeItem(DRAFT_KEY);
+        clearDraft();
       }
     }
   }catch(e){}
   return false;
 }
-function clearDraft(){try{localStorage.removeItem(DRAFT_KEY);}catch(e){}}
+function clearDraft(){
+  try{
+    localStorage.removeItem(DRAFT_KEY);
+    sessionStorage.removeItem(DRAFT_KEY);
+  }catch(e){}
+}
 function resetCase(){
   if(!confirm('Reiniciar caso? Todos os dados do paciente atual serão perdidos.'))return;
+  resetCaseDirect();
+}
+function resetCaseDirect(){
   Object.assign(S,JSON.parse(JSON.stringify(INITIAL_S)));
   clearDraft();
+  gs(0);
   render();
 }
+
+function fallbackCopyText(txt){
+  const ta=document.createElement('textarea');
+  ta.value=txt;
+  ta.style.position='fixed';
+  ta.style.left='-9999px';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try{document.execCommand('copy');}catch(e){}
+  document.body.removeChild(ta);
+}
+
+function copyAndClearPatient(){
+  const txt=S.relMode==='resumo'?gResumo():gRel();
+  if(!txt||!txt.trim()){
+    showToast('Nenhum dado registrado para copiar.');
+    return;
+  }
+  const finalize=()=>{
+    clearDraft();
+    resetCaseDirect();
+    showToast('Copiado para o PEP! Dados do paciente removidos da memória (LGPD).');
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(finalize).catch(()=>{
+      fallbackCopyText(txt);
+      finalize();
+    });
+  }else{
+    fallbackCopyText(txt);
+    finalize();
+  }
+}
+
+window.addEventListener('pagehide',()=>{
+  try{
+    sessionStorage.removeItem(DRAFT_KEY);
+    localStorage.removeItem(DRAFT_KEY);
+  }catch(e){}
+});
 
 
 const QX_CATS=[
@@ -6845,7 +6962,46 @@ function rECG(){
 function rPOCUS(){const p=S.pocS;return`<div class="card"><div class="st"><i class="ti ti-wave-sine" aria-hidden="true"></i> POCUS</div>${[['pulmao','Pulmão'],['coracao','Coração'],['abdome','Abdome'],['mmii','MMII'],['outros','Outros']].map(([k,l])=>`<div style="margin-bottom:8px"><label>${l}</label><input type="text" value="${esc(p[k])}" oninput="S.pocS['${k}']=this.value" placeholder="${l}..."></div>`).join('')}</div>`;}
 function dispGrav(){const fr=parseFloat(S.fr),sat=parseFloat(S.sat),fala=S.dspEF.fala,cian=S.dspEF.cianose;let pts=0;if(S.fr&&(fr>30||fr<12))pts+=2;else if(S.fr&&fr>24)pts+=1;if(S.sat&&sat<90)pts+=2;else if(S.sat&&sat<94)pts+=1;if(fala==='Palavras soltas'||fala==='Impossível falar')pts+=2;else if(fala==='Frases incompletas')pts+=1;if(cian==='Central (lábios/língua)')pts+=2;if(pts>=4)return'grave';if(pts>=2)return'mod';return'leve';}
 function dispGravBadge(){if(S.queixa!=='Dispneia')return'';const hasData=S.fr||S.sat||S.dspEF.fala||S.dspEF.cianose;if(!hasData)return'';const g=dispGrav();const[level,txt]=g==='grave'?['grave','Gravidade sugerida: GRAVE — IOT/VNI considerar imediatamente']:g==='mod'?['mod','Gravidade sugerida: MODERADA — monitorização intensa, O2 alto fluxo']:['leve','Gravidade sugerida: LEVE — tratar e reavaliar'];return gravBadge(level,txt,{noMargin:true});}
-function s3(){const badge=(S.queixa==='Dispneia'&&QX_BADGE[S.queixa])?QX_BADGE[S.queixa]():'';return`${badge}<div id="step-3" class="card"><div class="st"><i class="ti ti-search" aria-hidden="true"></i> Tipo de exame físico</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem"><button class="xbtn ${S.ef==='amb'?'on':''}" onclick="S.ef='amb';render()"><i class="ti ti-walk" aria-hidden="true"></i> Ambulatorial</button><button class="xbtn ${S.ef==='crit'?'on':''}" onclick="S.ef='crit';render()"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Paciente crítico (ABCDE)</button></div></div>${S.ef==='amb'?`<div class="card"><div class="st">Padrão ambulatorial</div>${[['g','Geral'],['cv','AP Cardiovascular'],['re','AP Respiratório'],['ab','Abdome'],['ne','Neurológico'],['pe','Pele e MMII']].map(([k,l])=>{const tpl=(S.sexo==='M'||S.sexo==='F')?EF_TEMPLATES[S.sexo][k]:null;const ph=tpl||l+'...';const sug=tpl?`<button type="button" class="ef-sug-btn" onclick="if(!S.amb['${k}']){S.amb['${k}']=EF_TEMPLATES[S.sexo]['${k}'];render()}" title="Preencher com sugestão para o sexo selecionado">Sugestão</button>`:'';return`<div style="margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><label style="margin:0">${l}</label>${sug}</div><input type="text" value="${esc(S.amb[k])}" oninput="S.amb['${k}']=this.value" placeholder="${esc(ph)}"></div>`}).join('')}</div>`:''}${S.ef==='crit'?`<div class="card"><div class="st">ABCDE — Avaliação primária</div>${abcH()}</div>`:''}${S.ef&&QX_EF[S.queixa]?QX_EF[S.queixa]():''}${S.ef?rECG()+''+rPOCUS():''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.ef?`<button class="btnp" onclick="nx()">Impressão / Conduta <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
+function setNormalPhysicalExam(){
+ const s=(S.sexo==='M'||S.sexo==='F')?S.sexo:'M';
+ const tpl=EF_TEMPLATES[s];
+ S.amb={
+  g:tpl.g,
+  cv:tpl.cv,
+  re:tpl.re,
+  ab:tpl.ab,
+  ne:tpl.ne,
+  pe:tpl.pe
+ };
+ S.abc={
+  va:'Pérvia e Patente',
+  fon:'Preservada',
+  col:'Não indicado',
+  exp:'Simétrica',
+  mv:'Presente e Simétrico',
+  rud:[],
+  esf:[],
+  tec:'< 3s',
+  aus:['Regular'],
+  pul:'Simétricos',
+  abd:['Flácido'],
+  ao:4,
+  rv:5,
+  rm:6,
+  pup:'Isocóricas e Reativas',
+  def:[],
+  ede:'Ausente',
+  cac:'Sem cacifo',
+  pel:[]
+ };
+ if(!S.ef)S.ef='amb';
+ render();
+ showToast('Exame físico preenchido como sem alterações agudas! Edite eventuais particularidades.');
+}
+
+function s3(){
+ const badge=(S.queixa==='Dispneia'&&QX_BADGE[S.queixa])?QX_BADGE[S.queixa]():'';
+ return`${badge}<div id="step-3" class="card"><div class="st" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><span><i class="ti ti-search" aria-hidden="true"></i> Exame físico</span><button type="button" class="xbtn" style="background:#f0fdf4;border-color:#86efac;color:#15803d;font-weight:600;padding:6px 12px;font-size:12px" onclick="setNormalPhysicalExam()" title="Preenche todos os campos com padrão fisiológico normal"><i class="ti ti-circle-check" aria-hidden="true"></i> Exame Físico Sem Alterações Agudas (1 toque)</button></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem"><button class="xbtn ${S.ef==='amb'?'on':''}" onclick="S.ef='amb';render()"><i class="ti ti-walk" aria-hidden="true"></i> Ambulatorial</button><button class="xbtn ${S.ef==='crit'?'on':''}" onclick="S.ef='crit';render()"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Paciente crítico (ABCDE)</button></div></div>${S.ef==='amb'?`<div class="card"><div class="st">Padrão ambulatorial</div>${[['g','Geral'],['cv','AP Cardiovascular'],['re','AP Respiratório'],['ab','Abdome'],['ne','Neurológico'],['pe','Pele e MMII']].map(([k,l])=>{const tpl=(S.sexo==='M'||S.sexo==='F')?EF_TEMPLATES[S.sexo][k]:null;const ph=tpl||l+'...';const sug=tpl?`<button type="button" class="ef-sug-btn" onclick="if(!S.amb['${k}']){S.amb['${k}']=EF_TEMPLATES[S.sexo]['${k}'];render()}" title="Preencher com sugestão para o sexo selecionado">Sugestão</button>`:'';return`<div style="margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><label style="margin:0">${l}</label>${sug}</div><input type="text" value="${esc(S.amb[k])}" oninput="S.amb['${k}']=this.value" placeholder="${esc(ph)}"></div>`}).join('')}</div>`:''}${S.ef==='crit'?`<div class="card"><div class="st">ABCDE — Avaliação primária</div>${abcH()}</div>`:''}${S.ef&&QX_EF[S.queixa]?QX_EF[S.queixa]():''}${S.ef?rECG()+''+rPOCUS():''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.ef?`<button class="btnp" onclick="nx()">Impressão / Conduta <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
 
 function rCSec(sid,sec){const items=sec.it||[];const dc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]).length;const alertsHtml=(sec.alerts||[]).map(a=>`<div class="abox aw" style="margin-bottom:6px;font-size:12px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${esc(a)}</div>`).join('');const catNames={sup:'Suporte & Ressuscitação',inv:'Investigação',sin:'Sintomáticos',esp:'Específico',dsp:'Disposição/Alta'};const tagLbl=catNames[sec.id]||'';const tagHtml=tagLbl?`<span class="csec-tag csec-tag-${sec.id}">${tagLbl}</span>`:'';const uid='cs_'+sid+'_'+sec.id;const isCollapsedByDefault=(S.ef==='amb'&&sec.id==='sup'&&dc===0);const openCls=isCollapsedByDefault?'':' open';const badgeHint=isCollapsedByDefault?`<span class="sb" style="font-size:10px;background:#f3f4f6;color:#6b7280;margin-left:4px"><i class="ti ti-chevron-right" aria-hidden="true"></i> recolhido no ambulatorial (clique para abrir)</span>`:'';return`<div class="csec csec-${sec.id}"><div class="csh" onclick="tog('${uid}')"><span style="display:flex;align-items:center;gap:6px">${tagHtml}<span>${sec.t}</span>${badgeHint}</span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc} prescrito${dc>1?'s':''}</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb${openCls}" id="${uid}">${alertsHtml}${items.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);const hl=itemHasVitalHl(item)?' hl':'';return`<div class="chk ${cl}${hl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${esc(S.nts[sid+'_'+sec.id]||'')}</textarea></div></div></div>`;}
 
@@ -7168,6 +7324,280 @@ function rInteractiveDifferentialsCard(T){
  `;
 }
 
+function getCanonicalConductKey(txt){
+ if(!txt)return null;
+ const t=txt.toLowerCase();
+ // Monitorização
+ if(t.includes('monitorização')||t.includes('telemetria')||t.includes('cardioscopia')||t.includes('sinais vitais contínu')||t.includes('monitor multiparamétrico')){
+  return 'monitor';
+ }
+ // ECG
+ if(t.startsWith('ecg')||t.startsWith('eletrocardiograma')||t.includes('ecg 12')||t.includes('ecg de 12')||t.includes('eletrocardiograma de 12')||t.includes('repetir ecg')||(t.includes('ecg')&&(t.includes('derivaç')||t.includes('admissão')||t.includes('10 min')||t.includes('seriado')||t.includes('repetir')||t.includes('15-30')||t.includes('15–30')))){
+  return 'ecg';
+ }
+ // Acesso Venoso
+ if(t.includes('acesso venoso')||t.includes('acesso vascular')||t.includes('punção venosa')||t.includes('2 acessos')||t.includes('avp')){
+  return 'acesso';
+ }
+ // Oxigenoterapia
+ if(t.includes('oxigenoterapia')||t.includes('o2 suplementar')||t.includes('cânula nasal')||t.includes('cateter nasal')||t.includes('alvo spo2')){
+  return 'oxigenio';
+ }
+ // Glicemia Capilar
+ if(t.includes('glicemia capilar')||t.includes('hgt imediato')||t.includes('hgt na chegada')){
+  return 'glicemia';
+ }
+ // Diurese / Sonda Vesical
+ if(t.includes('cateter vesical')||t.includes('sonda vesical')||t.includes('diurese horária')){
+  return 'sonda_vesical';
+ }
+ // Repouso
+ if(t.includes('repouso no leito')||t.includes('repouso absoluto')||t.includes('cabeceira')){
+  return 'repouso';
+ }
+ // Gasometria + Lactato
+ if((t.includes('gasometria')&&t.includes('lactato'))||t.includes('lactato sérico')||t.includes('lactato basal')){
+  return 'gaso_lactato';
+ }
+ return null;
+}
+
+const CANONICAL_PRESCRIPTION_ORDERS={
+ ecg: 'Eletrocardiograma (ECG) de 12 derivações na admissão e seriado se recorrência ou instabilidade',
+ monitor: 'Monitorização multiparamétrica contínua (cardioscopia contínua, SpO2, PNI)',
+ acesso: 'Acesso venoso periférico calibroso imediato (16G ou 18G em membro superior)',
+ oxigenio: 'Oxigenoterapia suplementar sob demanda (titular para alvo SpO2 92–96%, ou 88–92% em DPOC/retentores)',
+ glicemia: 'Glicemia capilar imediata na admissão e vigilância seriada',
+ sonda_vesical: 'Cateter vesical de demora para controle estrito de diurese horária',
+ repouso: 'Repouso no leito com cabeceira elevada a 30 graus',
+ gaso_lactato: 'Coleta imediata de gasometria com dosagem de lactato sérico na admissão'
+};
+
+function cleanPrescriptionItem(txt){
+ if(!txt)return '';
+ let s=txt;
+ s=s.replace(/\[CONTRAINDICADO\s+se[^\]]+\]/gi,'(suspender se PAS < 100 mmHg ou inibidor PDE-5 em 24-48h)');
+ s=s.replace(/\[atenção:[^\]]+\]/gi,'');
+ s=s.replace(/\(GCS isolado não indica intubação mandatória em coma não-traumático\)/gi,'');
+ s=s.replace(/\(tendência de queda indica melhora da perfusão; não constitui meta isolada para volume ou vasopressor\)/gi,'');
+ s=s.replace(/\(evitar nitratos se suspeita de IAM de VD com instabilidade ou uso de inibidores de PDE-5\)/gi,'');
+ s=s.replace(/\s{2,}/g,' ').trim();
+ return s;
+}
+
+let _activeDecisionTab = 'metas';
+
+function openDecisionDrawer(tab = 'metas'){
+ _activeDecisionTab = tab;
+ const overlay = document.getElementById('decisionDrawerOverlay');
+ if(overlay) overlay.style.display = 'flex';
+ setDecisionTab(tab);
+}
+
+function closeDecisionDrawer(){
+ const overlay = document.getElementById('decisionDrawerOverlay');
+ if(overlay) overlay.style.display = 'none';
+}
+
+function toggleDecisionDrawer(){
+ const overlay = document.getElementById('decisionDrawerOverlay');
+ if(overlay && overlay.style.display === 'flex') closeDecisionDrawer();
+ else openDecisionDrawer(_activeDecisionTab || 'metas');
+}
+
+function setDecisionTab(tab){
+ _activeDecisionTab = tab;
+ ['metas','perolas','conflitos'].forEach(t=>{
+  const btn = document.getElementById('decTab' + t.charAt(0).toUpperCase() + t.slice(1));
+  if(btn) btn.classList.toggle('active', t === tab);
+ });
+ renderDecisionSupportContent(tab);
+}
+
+function updateDecisionConflictBadge(){
+ const alerts = getConflictAlerts(S);
+ const badge = document.getElementById('decConflictCount');
+ if(badge){
+  if(alerts.length){
+   badge.textContent = alerts.length;
+   badge.style.display = 'inline-block';
+  } else {
+   badge.style.display = 'none';
+  }
+ }
+}
+
+function renderDecisionSupportContent(tab){
+ const body = document.getElementById('decisionDrawerBody');
+ if(!body) return;
+ const sid = S.sind;
+ const sub = S.subsind;
+
+ if(tab === 'conflitos'){
+  const alerts = getConflictAlerts(S);
+  if(!alerts.length){
+   body.innerHTML = `
+    <div style="text-align:center;padding:40px 16px;color:var(--color-text-secondary)">
+     <i class="ti ti-shield-check" style="font-size:42px;color:#059669;display:block;margin-bottom:10px" aria-hidden="true"></i>
+     <strong style="display:block;font-size:15px;color:var(--color-text-primary);margin-bottom:6px">Nenhum Conflito Crítico Detectado</strong>
+     <p style="font-size:13px;line-height:1.5;margin:0">As condutas e hipóteses diagnósticas ativas não apresentam contraindicações farmacológicas cruzadas.</p>
+    </div>
+   `;
+   return;
+  }
+  body.innerHTML = alerts.map(a => `
+   <div class="decision-card" style="border-left:4px solid #dc2626;background:#fef2f2">
+    <div class="decision-card-title" style="color:#991b1b">
+     <i class="ti ti-alert-triangle" style="font-size:18px;color:#dc2626" aria-hidden="true"></i>
+     ${esc(a.title)}
+    </div>
+    <div style="font-size:13px;line-height:1.55;color:#374151">
+     ${esc(a.text)}
+    </div>
+   </div>
+  `).join('');
+  return;
+ }
+
+ if(tab === 'metas'){
+  let metasHtml = `
+   <div class="decision-card">
+    <div class="decision-card-title">
+     <i class="ti ti-gauge" style="color:#2563eb" aria-hidden="true"></i>
+     Metas Hemodinâmicas & Perfusão Imediatas
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet"></span>
+     <div><strong>Pressão Arterial Média (PAM):</strong> Alvo &ge; 65 mmHg (ou 70–75 mmHg em hipertensos prévios para preservar taxa de filtração renal).</div>
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet"></span>
+     <div><strong>Perfusão Periférica (TEC):</strong> Tempo de Enchimento Capilar &le; 3 segundos (parâmetro dinâmico superior de microcirculação).</div>
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet"></span>
+     <div><strong>Débito Urinário:</strong> &ge; 0,5 mL/kg/h em sonda vesical após estabilização inicial.</div>
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet"></span>
+     <div><strong>Cinética do Lactato Sérico:</strong> Dosar na admissão e repetir em 2–4 horas. Meta: clareamento &gt; 20% em 2–4h (reflete recuperação de perfusão tecidual).</div>
+    </div>
+   </div>
+  `;
+
+  if(sid === 'dtx' || sub === 'sca_oca' || sub === 'sca_noca'){
+   metasHtml += `
+    <div class="decision-card" style="border-top:3px solid #dc2626">
+     <div class="decision-card-title" style="color:#b91c1c">
+      <i class="ti ti-heart-rate-monitor" style="color:#dc2626" aria-hidden="true"></i>
+      Metas Clínicas — Síndrome Coronariana Aguda (SCA)
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#dc2626"></span>
+      <div><strong>Alvo de O₂:</strong> SpO₂ 90–96%. Evitar hiperóxia de rotina (&gt; 96%): vasoconstrição reflexa da microvasculatura coronariana.</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#dc2626"></span>
+      <div><strong>Frequência Cardíaca:</strong> 60–80 bpm se estável e sem IC descompensada.</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#dc2626"></span>
+      <div><strong>Tempo Porta-Balão (ICP primária):</strong> &lt; 90 min (&lt; 120 min se transferência inter-hospitalar).</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#dc2626"></span>
+      <div><strong>Tempo Porta-Agulha (trombólise):</strong> &lt; 30 min da admissão quando ICP &gt; 120 min.</div>
+     </div>
+    </div>
+   `;
+  } else if(sid === 'neu' || sub === 'avc_isq' || sub === 'avc_hem' || sid === 'rnc'){
+   metasHtml += `
+    <div class="decision-card" style="border-top:3px solid #7c3aed">
+     <div class="decision-card-title" style="color:#6d28d9">
+      <i class="ti ti-brain" style="color:#7c3aed" aria-hidden="true"></i>
+      Metas de Neuroproteção Aguda (AVC / RNC / TCE)
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#7c3aed"></span>
+      <div><strong>PA no AVCI Candidato à Trombólise:</strong> Manter PA &lt; 185/110 mmHg pré-lise e &lt; 180/105 mmHg nas primeiras 24h.</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#7c3aed"></span>
+      <div><strong>PA no AVCI Não Candidato à Reperfusão:</strong> Hipertensão permissiva (tratar se PA &gt; 220/120 mmHg; queda máx. 15% em 24h).</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#7c3aed"></span>
+      <div><strong>Pressão de Perfusão Cerebral (PPC):</strong> Alvo 60–70 mmHg em TCE grave / HIC (PPC = PAM &minus; PIC).</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#7c3aed"></span>
+      <div><strong>Controle Térmico Estrito:</strong> Normotermia (&lt; 37,5°C). Febrícula agrava isquemia secundária.</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#7c3aed"></span>
+      <div><strong>Ventilação & PaCO₂:</strong> Normocapnia estrita (PaCO₂ 35–40 mmHg). Não hiperventilar profilaticamente.</div>
+     </div>
+    </div>
+   `;
+  } else if(sid === 'cho'){
+   metasHtml += `
+    <div class="decision-card" style="border-top:3px solid #d97706">
+     <div class="decision-card-title" style="color:#b45309">
+      <i class="ti ti-activity" style="color:#d97706" aria-hidden="true"></i>
+      Metas no Choque & Ressuscitação
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#d97706"></span>
+      <div><strong>Golden Hour no Choque Séptico:</strong> Hemoculturas e antibiótico parenteral iniciado em &le; 1 hora.</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#d97706"></span>
+      <div><strong>Estratégia Transfusional Restritiva:</strong> Gatilho em Hb &lt; 7,0 g/dL (alvo 7–8 g/dL), exceto coronariopatia aguda instável.</div>
+     </div>
+    </div>
+   `;
+  }
+
+  body.innerHTML = metasHtml;
+  return;
+ }
+
+ if(tab === 'perolas'){
+  body.innerHTML = `
+   <div class="decision-card">
+    <div class="decision-card-title">
+     <i class="ti ti-bulb" style="color:#d97706" aria-hidden="true"></i>
+     Pérolas Clínicas & Armadilhas Beira-Leito
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet"></span>
+     <div><strong>Coma Não-Traumático x Intubação:</strong> Glasgow &le; 8 isolado NÃO é indicação mandatória cega de IOT se a via aérea estiver pérvia e protegida (ex: pós-ictal transitório, hipoglicemia rápida revertida, sedação sob vigilância).</div>
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet"></span>
+     <div><strong>AINEs em Síndromes Isquêmicas:</strong> AINEs aumentam risco de rotura miocárdica e mortalidade precoce em vigência de SCA. Evitar rotineiramente.</div>
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet"></span>
+     <div><strong>Nitrato SL / IV:</strong> Proibido se uso de Sildenafila nas últimas 24h ou Tadalafila nas últimas 48h, e em suspeita de IAM de VD com instabilidade (dependência crítica de pré-carga).</div>
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet"></span>
+     <div><strong>Analgesia no Abdome Agudo:</strong> O uso precoce de analgésicos (Dipirona, opioides titulados) NÃO mascara peritonite nem atrasa conduta cirúrgica; é boa prática humanizada.</div>
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet"></span>
+     <div><strong>Simpaticomiméticos (Cocaína):</strong> A droga de 1ª linha para controle hiperadrenérgico são Benzodiazepínicos IV. Evitar betabloqueadores puros (risco de vasoespasmo e hipertensão paradoxal).</div>
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet"></span>
+     <div><strong>Mulheres em Idade Fértil (Dor Abdominal):</strong> Teste de gravidez (Beta-hCG) é obrigatório entre 12 e 55 anos para descartar prenhez ectópica rota.</div>
+    </div>
+   </div>
+  `;
+ }
+}
+
 function rUnifiedConductsBoard(T){
  if(!T)return '';
  const sid=S.sind;
@@ -7230,6 +7660,33 @@ function rUnifiedConductsBoard(T){
   const totalItemsCount=motherItems.length+subItems.length+diffEntries.reduce((acc,d)=>acc+d.items.length,0);
   if(totalItemsCount===0)return '';
 
+  // Deduplicação canônica: não duplica em filhas itens comuns já presentes na mãe
+  const secSeenCanonical = new Set();
+  motherItems.forEach(it=>{
+   const ck = getCanonicalConductKey(it);
+   if(ck) secSeenCanonical.add(ck);
+  });
+
+  const filteredSubItems = [];
+  subItems.forEach((item, idx)=>{
+   const ck = getCanonicalConductKey(item);
+   if(ck && secSeenCanonical.has(ck)) return;
+   if(ck) secSeenCanonical.add(ck);
+   filteredSubItems.push({ item, idx });
+  });
+
+  const filteredDiffEntries = diffEntries.map(d=>{
+   const fItems = [];
+   d.items.forEach((item, idx)=>{
+    const ck = getCanonicalConductKey(item);
+    if(ck && secSeenCanonical.has(ck)) return;
+    if(ck) secSeenCanonical.add(ck);
+    fItems.push({ item, idx });
+   });
+   if(!fItems.length) return null;
+   return { ...d, fItems };
+  }).filter(Boolean);
+
   let catChecked=0;
   motherItems.forEach((_,i)=>{ if(S.chk[sid+'_'+catId+'_'+i]) catChecked++; });
   subItems.forEach((_,i)=>{ if(S.chk[subId+'_'+catId+'_'+i]) catChecked++; });
@@ -7262,7 +7719,7 @@ function rUnifiedConductsBoard(T){
      
      ${motherItems.length?`
       <div style="margin-bottom:8px">
-       ${(subItems.length||diffEntries.length)?`<div style="font-size:11.5px;font-weight:600;color:var(--color-text-secondary);text-transform:uppercase;margin-bottom:4px;letter-spacing:0.5px">Condutas Gerais — ${esc(T.l)}:</div>`:''}
+       ${(filteredSubItems.length||filteredDiffEntries.length)?`<div style="font-size:11.5px;font-weight:600;color:var(--color-text-secondary);text-transform:uppercase;margin-bottom:4px;letter-spacing:0.5px">Condutas Gerais — ${esc(T.l)}:</div>`:''}
        ${motherItems.map((item,idx)=>{
         const k=sid+'_'+catId+'_'+idx;
         const cl=ccls(k);
@@ -7275,12 +7732,12 @@ function rUnifiedConductsBoard(T){
        }).join('')}
       </div>`:''}
 
-     ${subItems.length?`
+     ${filteredSubItems.length?`
       <div style="margin-top:10px;margin-bottom:8px;padding-top:8px;border-top:1px dashed var(--color-border)">
        <div style="font-size:12px;font-weight:600;color:#991b1b;margin-bottom:6px;display:flex;align-items:center;gap:6px">
         <i class="ti ti-target" aria-hidden="true"></i> Conduta Específica — ${esc(subT.l)}:
        </div>
-       ${subItems.map((item,idx)=>{
+       ${filteredSubItems.map(({item,idx})=>{
         const k=subId+'_'+catId+'_'+idx;
         const cl=ccls(k);
         const hl=itemHasVitalHl(item)?' hl':'';
@@ -7292,12 +7749,12 @@ function rUnifiedConductsBoard(T){
        }).join('')}
       </div>`:''}
 
-     ${diffEntries.map(d=>`
+     ${filteredDiffEntries.map(d=>`
       <div style="margin-top:10px;margin-bottom:8px;padding-top:8px;border-top:1px dashed var(--color-border)">
        <div style="font-size:12px;font-weight:600;color:#047857;margin-bottom:6px;display:flex;align-items:center;gap:6px">
         <i class="ti ti-zoom-check" aria-hidden="true"></i> Conduta Direcionada — ${esc(d.label)}:
        </div>
-       ${d.items.map((item,idx)=>{
+       ${d.fItems.map(({item,idx})=>{
         const k=d.id+'_'+catId+'_'+idx;
         const cl=ccls(k);
         const hl=itemHasVitalHl(item)?' hl':'';
@@ -7351,8 +7808,20 @@ function s4SyndromeFull(T){
   if(T.subAdd)parts.push(s4SubAdd(T));
  }
 
- const conflictHtml=renderConflictAlertsHtml(S);
- if(conflictHtml)parts.push(conflictHtml);
+ const conflictAlerts=getConflictAlerts(S);
+ if(conflictAlerts.length){
+  parts.push(`
+   <div class="conflict-banner-interactive" onclick="openDecisionDrawer('conflitos')">
+    <span style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#991b1b">
+     <i class="ti ti-shield-alert" style="font-size:18px;color:#dc2626" aria-hidden="true"></i>
+     Atenção Farmacológica: ${conflictAlerts.length} conflito(s) terapêutico(s) identificado(s) entre condutas
+    </span>
+    <span style="font-size:12px;color:#b91c1c;text-decoration:underline;display:flex;align-items:center;gap:4px">
+     Ver no Apoio à Decisão <i class="ti ti-arrow-right" aria-hidden="true"></i>
+    </span>
+   </div>
+  `);
+ }
 
  parts.push(rUnifiedConductsBoard(T));
 
@@ -7561,24 +8030,34 @@ function buildCondutas(){
   });
  }
 
- // Deduplicação inteligente de itens idênticos ou redundantes
- const seen=new Set();
- const unique=[];
- for(const c of collected){
-  const norm=c.item.toLowerCase();
-  if(!seen.has(norm)){
-   seen.add(norm);
-   unique.push(c);
-  }
- }
+ // Deduplicação inteligente agressiva de itens idênticos ou redundantes
+ const seenCanonical=new Set();
+ const seenExact=new Set();
  const deduplicated=[];
- const hasSepseBundle=unique.some(u=>u.item.toLowerCase().includes('pacote sepse')&&u.item.toLowerCase().includes('lactato'));
- for(const u of unique){
-  const itL=u.item.toLowerCase();
-  if(hasSepseBundle&&(itL.includes('coleta de gasometria + lactato basal')||itL.includes('gasometria e lactato basal'))){
+ 
+ for(const c of collected){
+  const cKey=getCanonicalConductKey(c.item);
+  if(cKey){
+   if(!seenCanonical.has(cKey)){
+    seenCanonical.add(cKey);
+    const cleanOrder=CANONICAL_PRESCRIPTION_ORDERS[cKey]||c.item;
+    deduplicated.push({
+     ...c,
+     item:cleanOrder
+    });
+   }
    continue;
   }
-  deduplicated.push(u);
+  
+  const cleanItem=cleanPrescriptionItem(c.item);
+  const norm=cleanItem.toLowerCase();
+  if(!seenExact.has(norm)){
+   seenExact.add(norm);
+   deduplicated.push({
+    ...c,
+    item:cleanItem
+   });
+  }
  }
 
  const bCuidados=[];
@@ -7784,7 +8263,7 @@ function s5(){
  <div style="margin-bottom:6px"><input type="text" maxlength="500" value="${esc(S.condPendDesc)}" oninput="S.condPendDesc=this.value" placeholder="Descrição da pendência (deixe vazio para pular)"></div>
  <div class="r2"><div><label>Categoria</label><select onchange="S.condPendCat=this.value">${catOpts}</select></div><div><label>Prazo (min)</label><input type="number" min="1" max="2880" inputmode="numeric" value="${S.condPendPrazoMin||''}" oninput="S.condPendPrazoMin=parseInt(this.value,10)||null" placeholder="opcional"></div></div>
 </div>
-<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btng" onclick="navigator.clipboard.writeText(document.getElementById('relTxt').textContent).then(()=>showToast('Relatório copiado!'))"><i class="ti ti-copy" aria-hidden="true"></i> Copiar Relatório</button><button class="btng" style="background:#059669" onclick="copyPrescricaoOnly()"><i class="ti ti-pill" aria-hidden="true"></i> Copiar Prescrição</button><button class="btng" style="background:#185fa5" onclick="saveReport(document.getElementById('relTxt').textContent)"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar</button><button class="btns" onclick="showSaved()"><i class="ti ti-history" aria-hidden="true"></i> Ver salvos</button><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Editar</button></div></div>`;
+<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btng" onclick="navigator.clipboard.writeText(document.getElementById('relTxt').textContent).then(()=>showToast('Relatório copiado!'))"><i class="ti ti-copy" aria-hidden="true"></i> Copiar Relatório</button><button class="btng" style="background:#059669" onclick="copyPrescricaoOnly()"><i class="ti ti-pill" aria-hidden="true"></i> Copiar Prescrição</button><button class="btng btn-clean-patient" onclick="copyAndClearPatient()"><i class="ti ti-copy-check" aria-hidden="true"></i> Copiar e Limpar Paciente</button><button class="btng" style="background:#185fa5" onclick="saveReport(document.getElementById('relTxt').textContent)"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar</button><button class="btns" onclick="showSaved()"><i class="ti ti-history" aria-hidden="true"></i> Ver salvos</button><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Editar</button></div></div>`;
 }
 
 function copyPrescricaoOnly(){
@@ -7810,7 +8289,19 @@ function copyPrescricaoOnly(){
 function updateRelCol(){const ta=document.getElementById('relColTxt');if(!ta)return;ta.value=S.relMode==='resumo'?gResumo():gRel();const fb=document.getElementById('relModeFullBtn');const rb=document.getElementById('relModeResumoBtn');if(fb)fb.classList.toggle('on',S.relMode!=='resumo');if(rb)rb.classList.toggle('on',S.relMode==='resumo');}
 function copyRelCol(){const ta=document.getElementById('relColTxt');if(ta)navigator.clipboard.writeText(ta.value).then(()=>showToast('Copiado!'));}
 function saveReportFromCol(){const ta=document.getElementById('relColTxt');if(ta)saveReport(ta.value);}
-function render(){rs();const c=document.getElementById('con');c.innerHTML=s0()+s1()+s2()+s3()+s4()+s5();const rt=document.getElementById('relTxt');if(rt)rt.textContent=S.relMode==='resumo'?gResumo():gRel();if(typeof autoSave==='function')autoSave();updateRelCol();if(document.getElementById('fabDrawerOverlay')?.style.display==='flex')updateFabDrawerText();if(_pendingScroll){const el=document.getElementById(_pendingScroll);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});_pendingScroll=null;}}
+function render(){
+ rs();
+ const c=document.getElementById('con');
+ c.innerHTML=s0()+s1()+s2()+s3()+s4()+s5();
+ const rt=document.getElementById('relTxt');
+ if(rt)rt.textContent=S.relMode==='resumo'?gResumo():gRel();
+ if(typeof autoSave==='function')autoSave();
+ updateRelCol();
+ updateDecisionConflictBadge();
+ if(document.getElementById('decisionDrawerOverlay')?.style.display==='flex')renderDecisionSupportContent(_activeDecisionTab);
+ if(document.getElementById('fabDrawerOverlay')?.style.display==='flex')updateFabDrawerText();
+ if(_pendingScroll){const el=document.getElementById(_pendingScroll);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});_pendingScroll=null;}
+}
 
 // ─── Atalhos Globais de Teclado ───
 window.addEventListener('keydown', (e)=>{
@@ -7820,6 +8311,7 @@ window.addEventListener('keydown', (e)=>{
  if (e.key === 'Escape') {
   closeShortcutModal();
   closeFabDrawer();
+  closeDecisionDrawer();
   const ma = document.getElementById('modalArea'); if (ma) ma.innerHTML = '';
   const sm = document.getElementById('shiftModal'); if (sm && sm.style.display === 'flex') closeShiftModal();
   const am = document.getElementById('adminModal'); if (am && am.style.display === 'flex') closeAdminModal();
@@ -7833,7 +8325,7 @@ window.addEventListener('keydown', (e)=>{
   return;
  }
 
- // Alt + [0-5, N, P, C, S, R]
+ // Alt + [0-5, N, P, C, D, S, R]
  if (e.altKey && !e.ctrlKey && !e.metaKey) {
   if (['0','1','2','3','4','5'].includes(e.key)) {
    e.preventDefault();
@@ -7853,6 +8345,11 @@ window.addEventListener('keydown', (e)=>{
   if (e.key === 'c' || e.key === 'C') {
    e.preventDefault();
    copyRelCol();
+   return;
+  }
+  if (e.key === 'd' || e.key === 'D') {
+   e.preventDefault();
+   toggleDecisionDrawer();
    return;
   }
   if (e.key === 's' || e.key === 'S') {
