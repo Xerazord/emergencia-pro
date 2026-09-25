@@ -80,12 +80,14 @@ body {
   color: #fff;
 }
 .brand-img {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 0 15px var(--accent-neon-glow);
+  box-shadow: 0 0 14px var(--accent-neon-glow);
   display: block;
+  object-fit: cover;
+  border: 1px solid rgba(16, 185, 129, 0.4);
 }
 .brand-name {
   font-size: 1.15rem;
@@ -93,7 +95,7 @@ body {
   letter-spacing: -0.02em;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 .badge-tag {
   font-size: 0.65rem;
@@ -135,6 +137,9 @@ body {
   text-decoration: none;
   cursor: pointer;
   transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 .btn-ghost:hover {
   background: rgba(255, 255, 255, 0.08);
@@ -164,39 +169,146 @@ body {
 
 /* ── Hero Section ── */
 .hero {
-  padding: 5rem 0 4rem;
+  padding: 4.5rem 0 3.5rem;
   position: relative;
 }
-.hero-stickers {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1.25rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-}
-.sticker {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #161e2e;
-  border: 1.5px solid var(--border-subtle);
-  border-radius: 10px;
-  padding: 7px 14px;
+
+/* ── Rendered Tactical Hardware Bar ── */
+.hardware-bar-title {
+  text-align: center;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.hardware-bar-title::before, .hardware-bar-title::after {
+  content: "";
+  display: inline-block;
+  width: 40px;
+  height: 1px;
+  background: var(--border-subtle);
+}
+.tactical-hardware-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 2.75rem;
+}
+@media (max-width: 1024px) {
+  .tactical-hardware-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 680px) {
+  .tactical-hardware-grid { grid-template-columns: 1fr; }
+}
+.device-card {
+  background: #0d121c;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 12px 14px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+.device-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(16, 185, 129, 0.5);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.5), 0 0 16px rgba(16, 185, 129, 0.15);
+}
+.device-card.amber:hover {
+  border-color: rgba(249, 115, 22, 0.5);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.5), 0 0 16px rgba(249, 115, 22, 0.15);
+}
+.device-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.device-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
   color: var(--accent-neon);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  transform: rotate(-1deg);
-  transition: transform 0.2s, border-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
-.sticker:nth-child(even) {
+.device-card.amber .device-tag {
   color: var(--accent-amber);
-  transform: rotate(1.5deg);
 }
-.sticker:hover {
-  transform: scale(1.05) rotate(0deg);
-  border-color: var(--accent-neon);
+.device-status {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-neon);
+  box-shadow: 0 0 8px var(--accent-neon);
+  animation: pulse-dot 2s infinite;
+}
+.device-card.amber .device-status {
+  background: var(--accent-amber);
+  box-shadow: 0 0 8px var(--accent-amber);
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+.device-screen {
+  background: #06090e;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  padding: 8px;
+  min-height: 58px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 8px;
+  position: relative;
+}
+.device-screen-ecg {
+  width: 100%;
+  height: 28px;
+  stroke: #10b981;
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.device-vals {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #fff;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.device-lbl {
+  font-size: 0.58rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  font-weight: normal;
+}
+.device-foot {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  line-height: 1.3;
+}
+.device-foot small {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  font-weight: normal;
 }
 .hero-title-wrap {
   text-align: center;
@@ -639,7 +751,7 @@ body {
 <header class="nav-wrap">
   <div class="container nav-inner">
     <a href="index.html" class="brand">
-      <img src="favicon.png" alt="Emergência Pro" class="brand-img">
+      <img src="logo-96.png" alt="Emergência Pro" class="brand-img">
       <span class="brand-name">
         Emergência Pro
         <span class="badge-tag">Sala Vermelha</span>
@@ -656,7 +768,7 @@ body {
     </nav>
 
     <div class="nav-actions">
-      <a href="app.html" class="btn-ghost">Entrar no App</a>
+      <a href="app.html" class="btn-ghost"><i class="ti ti-login"></i> Entrar no App</a>
       <a href="app.html" class="btn-primary"><i class="ti ti-user-plus"></i> Cadastro</a>
     </div>
   </div>
@@ -666,15 +778,6 @@ body {
 <section class="hero">
   <div class="container">
     
-    <!-- Stickers estilo "Arte da Ressuscitação" -->
-    <div class="hero-stickers">
-      <div class="sticker"><i class="ti ti-heart-rate-monitor"></i> MONITOR MULTIPARAMÉTRICO</div>
-      <div class="sticker"><i class="ti ti-wind"></i> LARINGOSCÓPIO & IOT</div>
-      <div class="sticker"><i class="ti ti-bolt"></i> DESFIBRILADOR & DROGAS</div>
-      <div class="sticker"><i class="ti ti-activity"></i> VENTILAÇÃO EM AMBU</div>
-      <div class="sticker"><i class="ti ti-brain"></i> CIRCULAÇÃO CEREBRAL</div>
-    </div>
-
     <div class="hero-title-wrap">
       <div class="hero-eyebrow">
         <i class="ti ti-flame"></i> Sem prolixidade · Sem perda de dados críticos
@@ -701,6 +804,129 @@ body {
         <a href="#fluxo" class="btn-ghost">
           <i class="ti ti-eye"></i> Como Funciona
         </a>
+      </div>
+    </div>
+
+    <!-- ── Dispositivos de Sala de Emergência Renderizados Diretamente no Navegador ── -->
+    <div class="hardware-bar-title">
+      <i class="ti ti-activity"></i> Equipamentos Táticos & Suporte Avançado de Vida
+    </div>
+
+    <div class="tactical-hardware-grid">
+      <!-- 1. Monitor Multiparamétrico -->
+      <div class="device-card">
+        <div class="device-hdr">
+          <span class="device-tag"><i class="ti ti-heart-rate-monitor"></i> Monitor DII</span>
+          <span class="device-status" title="Sinal Vital Ativo"></span>
+        </div>
+        <div class="device-screen">
+          <svg class="device-screen-ecg" viewBox="0 0 160 30" preserveAspectRatio="none">
+            <path d="M 0 15 L 25 15 L 30 15 L 35 12 L 38 18 L 42 15 L 50 15 L 54 2 L 58 27 L 62 10 L 66 17 L 70 15 L 90 15 L 95 11 L 100 15 L 115 15 L 119 2 L 123 27 L 127 10 L 131 17 L 135 15 L 160 15" />
+          </svg>
+          <div class="device-vals">
+            <span><span class="device-lbl">FC </span>124<small style="font-size:0.55rem;color:#10b981">bpm</small></span>
+            <span><span class="device-lbl">SpO₂ </span>91%</span>
+            <span><span class="device-lbl">PA </span>85/50</span>
+          </div>
+        </div>
+        <div class="device-foot">
+          Monitor Multiparamétrico
+          <small>NEWS2 live & arritmias em tempo real</small>
+        </div>
+      </div>
+
+      <!-- 2. Vídeo-Laringoscópio / Via Aérea -->
+      <div class="device-card">
+        <div class="device-hdr">
+          <span class="device-tag"><i class="ti ti-wind"></i> Via Aérea / IOT</span>
+          <span class="device-status" title="Óptica Ativa"></span>
+        </div>
+        <div class="device-screen" style="flex-direction:row;align-items:center;justify-content:space-around">
+          <svg width="42" height="32" viewBox="0 0 42 32" fill="none">
+            <path d="M 4 28 C 8 20, 16 14, 28 8 L 38 4" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="36" cy="6" r="3" fill="#38bdf8"/>
+            <path d="M 36 6 L 42 2 L 42 12 Z" fill="rgba(56,189,248,0.3)"/>
+          </svg>
+          <div style="font-family:var(--font-mono);font-size:0.68rem;color:#cbd5e1;line-height:1.2">
+            <span style="color:#60a5fa;font-weight:700">LÂMINA ÓPTICA</span><br>
+            <span style="font-size:0.58rem;color:var(--text-dim)">CORMACK-LEHANE I/II</span>
+          </div>
+        </div>
+        <div class="device-foot">
+          Laringoscópio & Intubação
+          <small>Vigilância de patência e reflexos protetores</small>
+        </div>
+      </div>
+
+      <!-- 3. Desfibrilador Bifásico -->
+      <div class="device-card amber">
+        <div class="device-hdr">
+          <span class="device-tag"><i class="ti ti-bolt"></i> Cardioversor</span>
+          <span class="device-status" title="Carga Pronta"></span>
+        </div>
+        <div class="device-screen">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="font-family:var(--font-mono);font-size:1.15rem;font-weight:800;color:var(--accent-amber);line-height:1">
+              200<span style="font-size:0.65rem">J</span>
+            </div>
+            <span style="font-family:var(--font-mono);font-size:0.6rem;background:rgba(249,115,22,0.18);border:1px solid rgba(249,115,22,0.4);color:var(--accent-amber);padding:2px 6px;border-radius:4px;font-weight:700">
+              PRONTO
+            </span>
+          </div>
+          <div style="font-size:0.62rem;color:var(--text-dim);font-family:var(--font-mono);margin-top:4px">
+            ONDA BIFÁSICA TRUNCADA · PÁS OK
+          </div>
+        </div>
+        <div class="device-foot">
+          Desfibrilador & Choque
+          <small>Protocolo ACLS para FV/TV e cardioversão</small>
+        </div>
+      </div>
+
+      <!-- 4. Ventilação / AMBU com Válvula PEEP -->
+      <div class="device-card">
+        <div class="device-hdr">
+          <span class="device-tag"><i class="ti ti-activity"></i> Ventilação</span>
+          <span class="device-status" title="PEEP OK"></span>
+        </div>
+        <div class="device-screen" style="flex-direction:row;align-items:center;justify-content:space-around">
+          <svg width="36" height="30" viewBox="0 0 36 30" fill="none">
+            <ellipse cx="16" cy="15" rx="12" ry="8" stroke="#34d399" stroke-width="1.8" fill="rgba(16,185,129,0.12)"/>
+            <rect x="26" y="12" width="6" height="6" rx="2" fill="#10b981"/>
+            <path d="M 2 15 L 6 15" stroke="#34d399" stroke-width="2"/>
+          </svg>
+          <div style="font-family:var(--font-mono);font-size:0.68rem;color:#cbd5e1;line-height:1.2">
+            <span style="color:#34d399;font-weight:700">PEEP 8 cmH₂O</span><br>
+            <span style="font-size:0.58rem;color:var(--text-dim)">RESERVATÓRIO 100% O₂</span>
+          </div>
+        </div>
+        <div class="device-foot">
+          Bolsa-Válvula-Máscara
+          <small>Ambu com reservatório e PEEP titular</small>
+        </div>
+      </div>
+
+      <!-- 5. Perfusão Cerebral & Neuromonitoring -->
+      <div class="device-card">
+        <div class="device-hdr">
+          <span class="device-tag"><i class="ti ti-brain"></i> Neurofluxo</span>
+          <span class="device-status" title="PPC Estável"></span>
+        </div>
+        <div class="device-screen">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-family:var(--font-mono);font-size:0.8rem;color:#a855f7;font-weight:700">
+              PPC &gt; 60 <small style="font-size:0.6rem">mmHg</small>
+            </span>
+            <span style="font-family:var(--font-mono);font-size:0.62rem;color:#38bdf8">PAM &gt; 80</span>
+          </div>
+          <div style="font-size:0.62rem;color:var(--text-dim);font-family:var(--font-mono);margin-top:4px">
+            PROTEÇÃO PENUMBRA · EVITAR HIPÓXIA
+          </div>
+        </div>
+        <div class="device-foot">
+          Circulação Cerebral
+          <small>Dano secundário, AVCi e PIC na sala vermelha</small>
+        </div>
       </div>
     </div>
 

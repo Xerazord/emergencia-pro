@@ -1963,7 +1963,7 @@ const CT={
     "it": [
      "POCUS protocolar à beira-leito — Débito e causas obstrutivas óbvias: contratilidade de VE, sinais de TEP maciço (Sinal de McConnell / dilatação aguda de VD), tamponamento cardíaco (derrame pericárdico com colapso de câmaras direitas) e pneumotórax hipertensivo (ausência de lung sliding)",
      "POCUS protocolar — Avaliação inferencial de PVC e congestão venosa sistêmica: aferição do diâmetro e colapsabilidade da VCI + Doppler venoso de veias jugulares e femorais (pesquisa de padrão pulsátil congestivo retrógrado estilo VExUS)",
-     "Gasometria venosa imediata com dosagem de lactato sérico na admissão (meta: clareamento > 20% em 2h)",
+     "Coleta imediata de gasometria com dosagem de lactato sérico na admissão e controle seriado em 2–4 horas (tendência de queda indica melhora da perfusão; não constitui meta isolada para volume ou vasopressor)",
      "Laboratório de triagem imediata: hemograma completo, plaquetas, função renal (ureia, creatinina), eletrólitos, coagulograma (TP/INR, TTPa) e troponina"
     ]
    },
@@ -2363,8 +2363,8 @@ const CT={
     "id": "sup",
     "t": "Triagem imediata e protocolo código AVC (AHA/ASA 2026)",
     "it": [
-     "Ativação imediata do Código AVC e determinação estrita do \"último visto bem\" (tempo zero)",
-     "TC de crânio sem contraste em < 20 minutos da admissão na sala de emergência (não atrasar para colher exames laboratoriais)",
+     "Ativação imediata do Código AVC e determinação estrita da UVVB (Última Vez Visto Bem)",
+     "Acionamento prioritário da equipe de Neuroimagem / Radiologia para meta porta-TC < 20 minutos",
      "Glicemia capilar imediata na admissão (< 5 min)",
      "Avaliação e registro formal do escore NIHSS completo para determinar elegibilidade terapêutica",
      "Acesso venoso calibroso (18G) exclusivo, monitorização cardíaca contínua e oximetria de pulso (manter SpO₂ ≥ 94%)",
@@ -2455,7 +2455,7 @@ const CT={
     "t": "Manejo inicial e neuroproteção na emergência",
     "it": [
      "Posicionamento com cabeceira elevada a 30° e cabeça em posição neutra (facilita drenagem venosa jugular e reduz a pressão intracraniana)",
-     "Intubação orotraqueal com sequência rápida adaptada (Fentanil 2–3 mcg/kg + Etomidato/Cetamina) se GCS ≤ 8 ou perda de reflexos de via aérea para prevenir broncoaspiração e controle da PaCO₂",
+     "Vigilância de proteção e patência de VA para necessidade de IOT se associada a sinais de HIC/herniação iminente, disfagia intensa/perda de reflexos protetores ou insuficiência respiratória (controle de PaCO₂ 35–40 mmHg se IOT indicada)",
      "Evitar hipotensão e hipoxemia (manter PAS > 110 mmHg durante intubação e SpO₂ ≥ 95%)"
     ]
    },
@@ -2572,7 +2572,7 @@ const CT={
     "t": "MOMENTO ZERO: Manejo inicial do coma e proteção de via aérea (NCS)",
     "it": [
      "Posicionamento e aspiração de vias aéreas: decúbito lateral se sem suspeita de trauma cervical; cabeceira a 30° se suspeita de hipertensão intracraniana",
-     "Intubação Orotraqueal (IOT) em sequência rápida adaptada se GCS ≤ 8, perda de reflexos protetores de via aérea ou padrão ventilatório ineficaz",
+     "Vigilância de proteção e patência de VA para necessidade de IOT se RNC associada a HIC OU disfagia intensa OU insuficiência respiratória (GCS isolado não indica intubação mandatória em coma não-traumático)",
      "Glicemia capilar IMEDIATA na admissão (< 5 min)",
      "Monitorização contínua: oximetria de pulso (meta SpO₂ ≥ 94%), ECG contínuo, PA não invasiva a cada 5–15 min e temperatura central",
      "Coleta imediata de gasometria arterial e lactato sérico (pesquisar acidose metabólica grave com gap aumentado, hipóxia ou hipercapnia)"
@@ -4015,7 +4015,7 @@ const CT={
      "NUNCA induzir vômitos (xarope de ipeca é proscrito) e NUNCA realizar lavagem gástrica sem proteção definitiva de via aérea!"
     ],
     "it": [
-     "Proteção de via aérea: avaliar reflexo de tosse e deglutição; Intubação Traqueal imediata se Escala de Coma de Glasgow ≤ 8",
+     "Vigilância de proteção e patência de VA para necessidade de IOT se associada a hipoventilação/insuficiência respiratória, perda de reflexos protetores ou risco iminente de broncoaspiração (GCS isolado não indica intubação mandatória)",
      "Glicemia capilar IMEDIATA na admissão (< 5 min)",
      "Monitorização contínua de sinais vitais com atenção especial à TEMPERATURA CENTRAL (risco de hipertermia letal em simpaticomiméticos/serotoninérgica ou hipotermia em opioides/sedativos)",
      "ECG de 12 derivações precoce: mensurar complexo QRS (alargamento > 100 ms indica bloqueio de canal de sódio) e intervalo QTc (> 500 ms indica risco de Torsades)"
@@ -5980,10 +5980,10 @@ registerQx('Cefaleia',{
 
 // ─── Dispneia ──────────────────────────────────────────────────────────────
 const DSP_INICIO=['Súbito','Progressivo','Crônico agudizado','Oscilante'];
-const DSP_PADRAO=['Ortopneia','DPN (paroxística noturna)','Aos esforços','Em repouso','Posicional'];
+const DSP_PADRAO=['Ortopneia','Dispneia paroxística noturna (DPN)','Em repouso','Aos mínimos esforços','Aos moderados/grandes esforços','Platipneia / ortodeoxia','Trepopneia'];
 const DSP_MODIF=['Piora ao decúbito','Melhora sentado/Fowler','Piora ao esforço','Melhora com O2','Piora noturna'];
-const DSP_ASSOC_CV=['Edema MMII','Palpitações','Dor torácica','Síncope/pré-síncope'];
-const DSP_ASSOC_RESP=['Sibilos','Crepitações','Uso musc. acessória','Hemoptise','Tosse produtiva','Estridor'];
+const DSP_ASSOC_CV=['Edema MMII','Palpitações','Dor torácica anginosa','Síncope/pré-síncope'];
+const DSP_ASSOC_RESP=['Dor torácica de caráter pleurítico (ventilatório-dependente)','Sibilos','Crepitações','Uso musc. acessória','Hemoptise','Tosse produtiva','Tosse seca','Estridor laríngeo'];
 const DSP_ASSOC_INF=['Febre','Calafrios','Expectoração purulenta','Coriza / mialgia'];
 const DSP_CTX=['IC prévia','Asma/DPOC conhecido','Tabagismo importante','Imobilização recente','Cirurgia recente','TVP/TEP prévio','Neoplasia ativa','Imunossupressão'];
 const DSP_EF_FALA=['Frases completas','Frases incompletas','Palavras soltas','Impossível falar'];
@@ -5995,8 +5995,15 @@ const DSP_EF_SINAIS_CV=['Turgência jugular','Galope (B3)','Edema MMII com cacif
 function dspHda(S){
  const d=S.dsp;const parts=[];
  if(d.inicio)parts.push(`de início ${d.inicio.toLowerCase()}`);
- if(d.padrao.length)parts.push(`com padrão ${d.padrao.join(', ').toLowerCase()}`);
- if(d.modif.length)parts.push(d.modif.join(', ').toLowerCase());
+ if(d.padrao.length){
+  const pad=d.padrao.map(p=>{
+   const pl=p.toLowerCase();
+   if(pl.startsWith('ortopneia')||pl.startsWith('dispneia')) return `com ${pl}`;
+   return pl;
+  });
+  parts.push(pad.join(', '));
+ }
+ if(d.modif.length)parts.push(`com ${d.modif.join(' e ').toLowerCase()}`);
  const assoc=[...d.assocCV,...d.assocResp,...d.assocInf];
  if(assoc.length)parts.push(`associada a ${assoc.join(', ').toLowerCase()}`);
  if(d.ctx.length)parts.push(`em contexto de ${d.ctx.join(', ').toLowerCase()}`);
@@ -6359,17 +6366,21 @@ const NEU_ANTICOAG=['Nega uso de anticoagulantes','Varfarina / Marevan em uso','
 
 function neuHda(S){
  const n=S.neu;const parts=[];
- if(n.tempoUvvb||n.tipoUvvb){
-  let u=`com UVVB (última vez visto bem)${n.tempoUvvb?' há '+n.tempoUvvb:''}`;
-  if(n.tipoUvvb)u+=` (${n.tipoUvvb.toLowerCase()})`;
-  parts.push(u);
+ if(n.tipoUvvb==='UVVB indeterminada / sem testemunhas'){
+  parts.push('com UVVB indeterminada (sem testemunhas do ictus)');
+ } else if(n.tipoUvvb==='Horário de UVVB exato e testemunhado'){
+  parts.push(`com UVVB testemunhada${n.tempoUvvb?' há '+n.tempoUvvb:''}`);
+ } else if(n.tipoUvvb==='Wake-up stroke (UVVB antes de dormir)'){
+  parts.push(`com quadro de wake-up stroke (UVVB antes de dormir${n.tempoUvvb?' há '+n.tempoUvvb:''})`);
+ } else if(n.tempoUvvb){
+  parts.push(`com UVVB há ${n.tempoUvvb}`);
  }
  if(n.janela)parts.push(`classificado em ${n.janela.toLowerCase()}`);
  if(n.lado)parts.push(n.lado.toLowerCase());
  if(n.motor.length)parts.push(`apresentando ${n.motor.join(', ').toLowerCase()}`);
- if(n.linguagem.length)parts.push(`alterações de pares/linguagem: ${n.linguagem.join(', ').toLowerCase()}`);
+ if(n.linguagem.length)parts.push(`alterações de pares cranianos/linguagem: ${n.linguagem.join(', ').toLowerCase()}`);
  if(n.fossa.length)parts.push(`sinais de fossa posterior: ${n.fossa.join(', ').toLowerCase()}`);
- if(n.mimics.length)parts.push(`mimics/risco: ${n.mimics.join(', ').toLowerCase()}`);
+ if(n.mimics.length)parts.push(`fatores sugestivos de diferenciais: ${n.mimics.join(', ').toLowerCase()}`);
  if(n.anticoag.length)parts.push(`anticoagulação/contraindicações: ${n.anticoag.join(', ').toLowerCase()}`);
  return parts.length?`, ${parts.join('; ')}`:'';
 }
@@ -6394,7 +6405,7 @@ registerQx('Déficit neurológico agudo',{
    {key:'lado',label:'Hemisfério / Lado Acometido',type:'radio',options:NEU_LADO,autoOpenNext:'linguagem'},
    {key:'linguagem',label:'Linguagem e Pares Cranianos',type:'tags',options:NEU_LING,autoOpenNext:'fossa'},
    {key:'fossa',label:'Fossa Posterior e Sinais Cerebelares',type:'tags',options:NEU_FOSSA,autoOpenNext:'mimics'},
-   {key:'mimics',label:'Exclusão de Mimics & Gravidade',type:'tags',options:NEU_MIMICS,autoOpenNext:'anticoag'},
+   {key:'mimics',label:'Fatores Sugestivos de Diferenciais & Mimics',type:'tags',options:NEU_MIMICS,autoOpenNext:'anticoag'},
    {key:'anticoag',label:'Anticoagulação e Contraindicações',type:'tags',options:NEU_ANTICOAG}
   ],
   after:neuAfter
@@ -6790,13 +6801,13 @@ function rEdacs(){const e=S.edacs,ap=eAP();return`<div class="srow"><div style="
 
 function s0(){const t=Math.floor(S.idade/10),u=S.idade%10,needsInfo=['Vaga Zero','Transferência'].includes(S.orig);const sexOpts=[['','—'],['M','Masculino'],['F','Feminino'],['O','Outro']];return`<div id="step-0" class="card"><div class="st"><i class="ti ti-user" aria-hidden="true"></i> Identificação e origem</div><div style="margin-bottom:12px"><label>Nome do paciente</label><input type="text" value="${esc(S.nome)}" oninput="S.nome=this.value" placeholder="Nome completo"></div><div class="r2"><div><label>Idade</label><div class="age-drums"><div class="drum"><button class="drum-btn" onclick="cAgeDig(10,1)"><i class="ti ti-chevron-up" aria-hidden="true"></i></button><div class="drum-dig">${t}</div><button class="drum-btn" onclick="cAgeDig(10,-1)"><i class="ti ti-chevron-down" aria-hidden="true"></i></button></div><div class="drum"><button class="drum-btn" onclick="cAgeDig(1,1)"><i class="ti ti-chevron-up" aria-hidden="true"></i></button><div class="drum-dig">${u}</div><button class="drum-btn" onclick="cAgeDig(1,-1)"><i class="ti ti-chevron-down" aria-hidden="true"></i></button></div><span class="drum-unit">anos</span></div></div><div><label>Sexo</label><select onchange="S.sexo=this.value;render()">${sexOpts.map(([v,l])=>`<option value="${v}" ${S.sexo===v?'selected':''}>${l}</option>`).join('')}</select></div></div><div style="margin-top:10px"><label>Origem</label><select onchange="S.orig=this.value;render()">${['Demanda Espontânea','SAMU','Bombeiros','Vaga Zero','Transferência'].map(o=>`<option ${S.orig===o?'selected':''}>${o}</option>`).join('')}</select></div>${needsInfo?`<div style="margin-top:10px"><div style="margin-bottom:8px"><label>Instituição de origem</label><input type="text" value="${esc(S.origInst)}" oninput="S.origInst=this.value" placeholder="Nome da instituição"></div><div><label>Motivo da transferência / vaga zero</label><input type="text" value="${esc(S.origMotivo)}" oninput="S.origMotivo=this.value" placeholder="Diagnóstico / motivo da solicitação"></div></div>`:''}</div><div class="nav"><div></div><button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;}
 function s1(){const al=ALERTAS[S.queixa],isIT=S.queixa==='Intoxicação exógena',renderQx=QX_ANAMNESE[S.queixa],cm=CMAP[S.queixa]||['Início súbito','Progressivo','Persistente','Febre'];return`<div id="step-1" class="card"><div class="st"><i class="ti ti-stethoscope" aria-hidden="true"></i> Queixa principal</div>${!S.queixa?QX_CATS.map(cat=>`<div class="qcat qcat-${cat.id}"><div class="qcat-lbl">${cat.label}</div><div class="qgrid">${cat.items.map(q=>`<button class="qbtn" onclick="setQueixa('${q.replace(/'/g,"\\'")}')">${esc(q)}</button>`).join('')}</div></div>`).join(''):`<div class="selq"><span><i class="ti ti-check" aria-hidden="true"></i> ${esc(S.queixa)}</span><button onclick="setQueixa(null)">Mudar</button></div>${al?`<div class="abox ${al.c}"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${al.m}</div>`:''}${renderQx?renderQx():`<div class="sl">Características:</div><div class="tags">${cm.map(c=>`<span class="tag ${S.caract.includes(c)?'on':''}" onclick="ts(S.caract,\`${c}\`)">${c}</span>`).join('')}</div><div style="margin-top:10px"><label>Tempo de início</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>${isIT?`<div style="margin-top:8px"><label>Substâncias suspeitas</label><input type="text" value="${esc(S.itDrug)}" oninput="S.itDrug=this.value" placeholder="Ex: benzodiazepínico, antidepressivo tricíclico, álcool..."></div>`:''}`}`}</div><div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.queixa?`<button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
-function s2(){const va=vA();return`<div id="step-2" class="card"><div class="st"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i> Sinais vitais</div><div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:12px"><div><label>FC</label><input type="number" inputmode="numeric" min="0" max="300" value="${esc(S.fc)}" oninput="S.fc=this.value;uvb()" placeholder="bpm"></div><div><label>SatO2</label><input type="number" inputmode="numeric" min="0" max="100" value="${esc(S.sat)}" oninput="S.sat=this.value;uvb()" placeholder="%"></div><div><label>PA</label><input type="text" inputmode="numeric" pattern="\\d{2,3}/\\d{2,3}" value="${esc(S.pa)}" oninput="S.pa=this.value;uvb()" placeholder="120/80"></div><div><label>FR</label><input type="number" inputmode="numeric" min="0" max="80" value="${esc(S.fr)}" oninput="S.fr=this.value;uvb()" placeholder="irpm"></div><div><label>Temp.</label><input type="number" inputmode="decimal" step="0.1" min="25" max="45" value="${esc(S.temp)}" oninput="S.temp=this.value;uvb()" placeholder="°C"></div><div><label>Glicemia</label><input type="number" inputmode="numeric" min="0" max="1000" value="${esc(S.gli)}" oninput="S.gli=this.value;uvb()" placeholder="mg/dL"></div></div><div class="r2" style="margin-bottom:12px"><div><label>Peso estimado</label><input type="number" inputmode="decimal" step="0.5" min="0" max="300" value="${esc(S.peso)}" oninput="S.peso=this.value" placeholder="kg"></div><div><div class="sl" style="margin-bottom:4px">EVA (dor 0–10)</div><div style="display:flex;gap:3px">${[0,1,2,3,4,5,6,7,8,9,10].map(n=>`<button style="flex:1;padding:5px 0;border-radius:4px;border:.5px solid ${S.eva==n?'#a32d2d':'#d1d5db'};background:${S.eva==n?'#fcebeb':'#fff'};color:${S.eva==n?'#a32d2d':'#374151'};font-size:12px;cursor:pointer" onclick="S.eva=${n};render()">${n}</button>`).join('')}</div></div></div><div class="vbars" id="vbars">${vBH()}</div>${va.length?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> ${va.join(' | ')}</div>`:''}<div id="news2LiveBox" style="margin-top:8px">${renderNews2LiveCard()}</div></div><div class="card"><div class="st"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Antecedentes</div>${tags('HPP:',['HAS','DM2','ICC','AVC','DAC','IRC','DPOC','FA','Neo','Cirrose','HIV','Outras'],S.hpp,"ts(S.hpp,'%V')")}<div class="r2" style="margin-bottom:10px"><div><label>Medicações em uso</label><input type="text" value="${esc(S.muc)}" oninput="S.muc=this.value" placeholder="Ex: Metoprolol, AAS"></div><div><label>Alergias</label><input type="text" value="${esc(S.ale)}" oninput="S.ale=this.value"></div></div>${radio('Tabagismo:',['Não fumante','Ex-fumante','Fumante ativo'],S.tab,"S.tab='%V';render()")}${radio('Etilismo:',['Nega','Eventual','Regular','Abusivo'],S.etil,"S.etil='%V';render()")}<div><label>Drogas ilícitas</label><input type="text" value="${esc(S.drog)}" oninput="S.drog=this.value" placeholder="Nega ou descreva"></div></div><div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;}
+function s2(){const va=vA();return`<div id="step-2" class="card"><div class="st"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i> Sinais vitais</div><div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:12px"><div><label>FC</label><input type="number" inputmode="numeric" min="0" max="300" value="${esc(S.fc)}" oninput="S.fc=this.value;uvb()" placeholder="bpm"></div><div><label>SatO2</label><input type="number" inputmode="numeric" min="0" max="100" value="${esc(S.sat)}" oninput="S.sat=this.value;uvb()" placeholder="%"></div><div><label>PA</label><input type="text" inputmode="numeric" pattern="\\d{2,3}/\\d{2,3}" value="${esc(S.pa)}" oninput="S.pa=this.value;uvb()" placeholder="120/80"></div><div><label>FR</label><input type="number" inputmode="numeric" min="0" max="80" value="${esc(S.fr)}" oninput="S.fr=this.value;uvb()" placeholder="irpm"></div><div><label>Temp.</label><input type="number" inputmode="decimal" step="0.1" min="25" max="45" value="${esc(S.temp)}" oninput="S.temp=this.value;uvb()" placeholder="°C"></div><div><label>Glicemia</label><input type="number" inputmode="numeric" min="0" max="1000" value="${esc(S.gli)}" oninput="S.gli=this.value;uvb()" placeholder="mg/dL"></div></div><div class="r2" style="margin-bottom:12px"><div><label>Peso estimado</label><input type="number" inputmode="decimal" step="0.5" min="0" max="300" value="${esc(S.peso)}" oninput="S.peso=this.value" placeholder="kg"></div><div><div class="sl" style="margin-bottom:4px">EVA (dor 0–10)</div><div style="display:flex;gap:3px">${[0,1,2,3,4,5,6,7,8,9,10].map(n=>`<button style="flex:1;padding:5px 0;border-radius:4px;border:.5px solid ${S.eva==n?'#a32d2d':'#d1d5db'};background:${S.eva==n?'#fcebeb':'#fff'};color:${S.eva==n?'#a32d2d':'#374151'};font-size:12px;cursor:pointer" onclick="S.eva=${n};render()">${n}</button>`).join('')}</div></div></div><div class="vbars" id="vbars">${vBH()}</div>${va.length?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> ${va.join(' | ')}</div>`:''}<div id="news2LiveBox" style="margin-top:8px">${renderNews2LiveCard()}</div></div><div class="card"><div class="st"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Antecedentes</div>${tags('HPP:',['HAS','DM2','ICC','AVC','DAC','IRC','DPOC','FA','Neoplasia','Cirrose','HIV','Outras'],S.hpp,"ts(S.hpp,'%V')")}<div class="r2" style="margin-bottom:10px"><div><label>Medicações em uso</label><input type="text" value="${esc(S.muc)}" oninput="S.muc=this.value" placeholder="Ex: Metoprolol, AAS"></div><div><label>Alergias</label><input type="text" value="${esc(S.ale)}" oninput="S.ale=this.value"></div></div>${radio('Tabagismo:',['Não fumante','Ex-fumante','Fumante ativo'],S.tab,"S.tab='%V';render()")}${radio('Etilismo:',['Nega','Eventual','Regular','Abusivo'],S.etil,"S.etil='%V';render()")}<div><label>Drogas ilícitas</label><input type="text" value="${esc(S.drog)}" oninput="S.drog=this.value" placeholder="Nega ou descreva"></div></div><div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;}
 function abcH(){
  const a=S.abc,g=gcs();
  const aContent=`${radio('Estado:',['Pérvia e Patente','Obstruída'],a.va,"S.abc.va='%V';render()")}${radio('Fonação:',['Preservada','Prejudicada/Ausente'],a.fon,"S.abc.fon='%V';render()")}${radio('Colar cervical:',['Não indicado','Colocado/Mantido'],a.col,"S.abc.col='%V';render()")}${a.va==='Obstruída'?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> VA comprometida — manejo imediato</div>`:''}`;
  const bContent=`${radio('Expansibilidade:',['Simétrica','Assimétrica'],a.exp,"S.abc.exp='%V';render()")}${radio('MV:',['Presente e Simétrico','Reduzido','Abolido'],a.mv,"S.abc.mv='%V';render()")}${tags('Ruídos:',['Crépitos','Sibilos','Roncos','Atrito pleural'],a.rud,"ts(S.abc.rud,'%V')")}${tags('Esforço:',['Taquipneia','Dispneia','Uso musc. acessória','Respiração paradoxal'],a.esf,"ts(S.abc.esf,'%V')")}`;
  const cContent=`${radio('TEC:',['< 3s','> 3s','> 5s','Em flush'],a.tec,"S.abc.tec='%V';render()")}${tags('Ausculta:',['Regular','Irregular','Reduzida','Sopro','Bulhas hipofonéticas'],a.aus,"ts(S.abc.aus,'%V')")}${radio('Pulsos:',['Simétricos','Assimétricos','Filiformes','Ausentes'],a.pul,"S.abc.pul='%V';render()")}${tags('Abdome:',['Flácido','Dor à palpação','Defesa','Descompressão dolorosa','Distendido','Ruídos abolidos'],a.abd,"ts(S.abc.abd,'%V')")}${(a.tec==='> 5s'||a.pul==='Filiformes'||a.pul==='Ausentes')?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> Sinais de choque — ressuscitação imediata</div>`:''}`;
- const dContent=`<div class="gcsg"><div class="gcsc"><label>Ab. Ocular</label><select onchange="S.abc.ao=+this.value;render()"><option value="4" ${a.ao==4?'selected':''}>4-Espontânea</option><option value="3" ${a.ao==3?'selected':''}>3-Comando</option><option value="2" ${a.ao==2?'selected':''}>2-Dor</option><option value="1" ${a.ao==1?'selected':''}>1-Ausente</option></select></div><div class="gcsc"><label>R. Verbal</label><select onchange="S.abc.rv=+this.value;render()"><option value="5" ${a.rv==5?'selected':''}>5-Orientado</option><option value="4" ${a.rv==4?'selected':''}>4-Confuso</option><option value="3" ${a.rv==3?'selected':''}>3-Palavras</option><option value="2" ${a.rv==2?'selected':''}>2-Sons</option><option value="1" ${a.rv==1?'selected':''}>1-Ausente</option></select></div><div class="gcsc"><label>R. Motora</label><select onchange="S.abc.rm=+this.value;render()"><option value="6" ${a.rm==6?'selected':''}>6-Obedece</option><option value="5" ${a.rm==5?'selected':''}>5-Localiza</option><option value="4" ${a.rm==4?'selected':''}>4-Flex.N</option><option value="3" ${a.rm==3?'selected':''}>3-Flex.A</option><option value="2" ${a.rm==2?'selected':''}>2-Extensão</option><option value="1" ${a.rm==1?'selected':''}>1-Ausente</option></select></div></div><div class="gcst"><small style="color:var(--color-text-secondary)">Glasgow Coma Scale</small><div class="big">${g}/15</div><div style="margin-top:3px"><span class="sb ${gcsC(g)}">${gcsL(g)}</span></div></div>${g<=8?`<div class="abox ad"><i class="ti ti-alert-circle" aria-hidden="true"></i> GCS ≤ 8 — considerar IOT e proteção de VA</div>`:''}${radio('Pupilas:',['Isocóricas e Reativas','Anisocóricas','Midriáticas','Mióticas','Não reagentes'],a.pup,"S.abc.pup='%V';render()")}${tags('Déficits:',['Hemiparesia','Hemihipoestesia','PF central','Disartria','Afasia','Ataxia'],a.def,"ts(S.abc.def,'%V')")}${qxEFInCritical()}`;
+ const dContent=`<div class="gcsg"><div class="gcsc"><label>Ab. Ocular</label><select onchange="S.abc.ao=+this.value;render()"><option value="4" ${a.ao==4?'selected':''}>4-Espontânea</option><option value="3" ${a.ao==3?'selected':''}>3-Comando</option><option value="2" ${a.ao==2?'selected':''}>2-Dor</option><option value="1" ${a.ao==1?'selected':''}>1-Ausente</option></select></div><div class="gcsc"><label>R. Verbal</label><select onchange="S.abc.rv=+this.value;render()"><option value="5" ${a.rv==5?'selected':''}>5-Orientado</option><option value="4" ${a.rv==4?'selected':''}>4-Confuso</option><option value="3" ${a.rv==3?'selected':''}>3-Palavras</option><option value="2" ${a.rv==2?'selected':''}>2-Sons</option><option value="1" ${a.rv==1?'selected':''}>1-Ausente</option></select></div><div class="gcsc"><label>R. Motora</label><select onchange="S.abc.rm=+this.value;render()"><option value="6" ${a.rm==6?'selected':''}>6-Obedece</option><option value="5" ${a.rm==5?'selected':''}>5-Localiza</option><option value="4" ${a.rm==4?'selected':''}>4-Flex.N</option><option value="3" ${a.rm==3?'selected':''}>3-Flex.A</option><option value="2" ${a.rm==2?'selected':''}>2-Extensão</option><option value="1" ${a.rm==1?'selected':''}>1-Ausente</option></select></div></div><div class="gcst"><small style="color:var(--color-text-secondary)">Glasgow Coma Scale</small><div class="big">${g}/15</div><div style="margin-top:3px"><span class="sb ${gcsC(g)}">${gcsL(g)}</span></div></div>${g<=8?`<div class="abox aw"><i class="ti ti-alert-circle" aria-hidden="true"></i> GCS ≤ 8 — Vigilância de patência de VA (avaliar IOT se associada a HIC, disfagia grave ou insuficiência respiratória)</div>`:''}${radio('Pupilas:',['Isocóricas e Reativas','Anisocóricas','Midriáticas','Mióticas','Não reagentes'],a.pup,"S.abc.pup='%V';render()")}${tags('Déficits:',['Hemiparesia','Hemihipoestesia','PF central','Disartria','Afasia','Ataxia'],a.def,"ts(S.abc.def,'%V')")}${qxEFInCritical()}`;
  const eContent=`${radio('Edema MMII:',['Ausente','Presente'],a.ede,"S.abc.ede='%V';render()")}${a.ede==='Presente'?radio('Cacifo:',['Com cacifo','Sem cacifo'],a.cac,"S.abc.cac='%V';render()"):''}${tags('Pele:',['Palidez','Frialdade','Icterícia','Cianose','Lesões','Petéquias','Equimoses'],a.pel,"ts(S.abc.pel,'%V')")}`;
  return abcBlock('a','A — Via aérea',aContent)+abcBlock('b','B — Respiração',bContent)+abcBlock('c','C — Circulação',cContent)+abcBlock('d',`D — Neurológico (GCS: ${g}/15)`,dContent)+abcBlock('e','E — Exposição',eContent);
 }
@@ -7372,7 +7383,7 @@ function buildHDA(){
 }
 function buildAntecedentes(){
  const extraHpp=QX_HPP[S.queixa]?QX_HPP[S.queixa](S):[];
- const allHpp=[...S.hpp,...extraHpp];
+ const allHpp=[...S.hpp,...extraHpp].map(h=>h==='Neo'?'Neoplasia':h);
  const hab=S.tab||S.etil||S.drog?'\nHábitos: '+[S.tab&&'Tabagismo: '+S.tab,S.etil&&'Etilismo: '+S.etil,S.drog&&'Drogas: '+S.drog].filter(Boolean).join(' | '):'';
  return `${_sep()}\nANTECEDENTES\nHPP: ${allHpp.join(', ')||'Nega'} | MUC: ${S.muc||'Nega'} | Alergias: ${S.ale}${hab}`;
 }
@@ -7545,29 +7556,7 @@ function buildCondutas(){
  if(T.subAdd){
   S.subsinds.forEach(id=>{
    if(CT[id]){
-    if(MOMENTO_2_SYNDROMES.includes(S.sind)){
-     const sObj=CT[id];
-     if(sObj&&sObj.s){
-      const invSec=sObj.s.find(sec=>sec.id==='inv');
-      if(invSec){
-       (invSec.it||[]).forEach((it,i)=>{
-        if(S.chk[id+'_inv_'+i]){
-         const nt=S.nts[id+'_inv']||'';
-         collected.push({
-          sid:id,
-          sindLabel:sObj.l,
-          secId:'inv',
-          secTitle:invSec.t,
-          item:it.trim(),
-          note:nt.trim()
-         });
-        }
-       });
-      }
-     }
-    } else {
-     collect(id,CT[id]);
-    }
+    collect(id, CT[id]);
    }
   });
  }
@@ -7659,7 +7648,13 @@ function buildCondutas(){
 
  deduplicated.forEach(entry=>{
   const sec=entry.secId;
-  const it=entry.item;
+  const isDiff=entry.sid!==S.sind&&(T.subExcl?entry.sid!==S.subsind:true);
+  let tag='';
+  if(isDiff){
+   const shortTag=entry.sid==='rnc'?'RNC':entry.sid==='con'?'Convulsão':entry.sid==='int'?'Intoxicação':entry.sid==='cho'?'Choque':entry.sid==='tep'?'TEP':entry.sid==='pntx'?'Pneumotórax':entry.sid==='peri'?'Tamponamento':entry.sindLabel;
+   tag=`[${shortTag}] `;
+  }
+  const it=tag+entry.item;
   if(entry.note&&!bObsMap[sec])bObsMap[sec]=entry.note;
 
   if(sec==='inv'){
@@ -7671,9 +7666,9 @@ function buildCondutas(){
   } else if(sec==='esp'){
    bEspecifico.push(it);
   } else if(sec==='sup'){
-   if(isVasoactiveOrMeds(it)) bEspecifico.push(it);
-   else if(isFluidItem(it)) bVolume.push(it);
-   else if(isExamItem(it)) bExames.push(it);
+   if(isVasoactiveOrMeds(entry.item)) bEspecifico.push(it);
+   else if(isFluidItem(entry.item)) bVolume.push(it);
+   else if(isExamItem(entry.item)) bExames.push(it);
    else bCuidados.push(it);
   } else {
    bEspecifico.push(it);
