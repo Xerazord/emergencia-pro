@@ -7,29 +7,29 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
-<meta name="theme-color" content="#0a0d13">
+<meta name="theme-color" content="#0f172a">
 <meta property="og:title" content="Emergência Pro — Protocolo Tático de Neuroemergência & Dano Secundário">
 <meta property="og:description" content="Modo Crunch Time, Pitfalls e condutas detalhadas de Dano Secundário, HSA, TCE Grave e Trauma na Emergência.">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" integrity="sha384-hs5SINUk7GPohxRis+rS7grpSWEbtOIJ3sRoseBKg3CDPIKpG55RfSenbvA6ALOt" crossorigin="anonymous">
 
 <style>
 :root {
-  --bg-main: #0a0d13;
-  --bg-card: #121722;
-  --bg-card-alt: #161e2e;
-  --border-subtle: #20293a;
+  --bg-main: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card-alt: #162032;
+  --border-subtle: #334155;
   --border-glow: #10b981;
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --text-dim: #64748b;
   --accent-neon: #10b981;
-  --accent-neon-glow: rgba(16, 185, 129, 0.2);
-  --accent-amber: #f97316;
-  --accent-amber-glow: rgba(249, 115, 22, 0.2);
+  --accent-neon-glow: rgba(16, 185, 129, 0.08);
+  --accent-amber: #f59e0b;
+  --accent-amber-glow: rgba(245, 158, 11, 0.08);
   --accent-red: #ef4444;
-  --accent-red-glow: rgba(239, 68, 68, 0.2);
+  --accent-red-glow: rgba(239, 68, 68, 0.08);
   --accent-purple: #a855f7;
-  --accent-purple-glow: rgba(168, 85, 247, 0.2);
+  --accent-purple-glow: rgba(168, 85, 247, 0.08);
   --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-mono: 'SFMono-Regular', 'Courier New', Courier, monospace;
 }
@@ -58,7 +58,7 @@ body {
   z-index: 100;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  background: rgba(10, 13, 19, 0.92);
+  background: rgba(15, 23, 42, 0.92);
   border-bottom: 1px solid var(--border-subtle);
 }
 .hdr-inner {
@@ -218,9 +218,9 @@ body {
   font-weight: 700;
   padding: 2px 8px;
   border-radius: 4px;
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  color: var(--accent-neon);
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #a7f3d0;
   text-transform: uppercase;
   vertical-align: middle;
 }
@@ -233,32 +233,23 @@ body {
   font-weight: 700;
   padding: 2px 8px;
   border-radius: 4px;
-  background: rgba(168, 85, 247, 0.18);
-  border: 1px solid rgba(168, 85, 247, 0.5);
-  color: #d8b4fe;
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  color: #cbd5e1;
   text-transform: uppercase;
   vertical-align: middle;
 }
 
 /* ── MODO CRUNCH TIME BOX (Top of Page) ── */
 .crunch-box {
-  background: linear-gradient(180deg, #161b26 0%, #10141d 100%);
-  border: 2px solid rgba(249, 115, 22, 0.6);
-  box-shadow: 0 0 35px var(--accent-amber-glow);
+  background: #162032;
+  border: 1px solid var(--border-subtle);
+  border-top: 3px solid #d97706;
   border-radius: 14px;
   padding: 1.75rem;
   margin: 1.5rem 0 3rem;
   position: relative;
   overflow: hidden;
-}
-.crunch-box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #f97316, #ef4444, #f97316);
 }
 .crunch-hdr {
   display: flex;
@@ -290,8 +281,8 @@ body {
   color: #fff;
   margin-bottom: 1.25rem;
   padding: 10px 14px;
-  background: rgba(249, 115, 22, 0.1);
-  border-left: 4px solid var(--accent-amber);
+  background: rgba(245, 158, 11, 0.08);
+  border-left: 3px solid #d97706;
   border-radius: 0 8px 8px 0;
 }
 
@@ -339,24 +330,24 @@ body {
 .pitfalls-container {
   margin-top: 1.5rem;
   padding-top: 1.25rem;
-  border-top: 1px dashed rgba(239, 68, 68, 0.4);
+  border-top: 1px dashed rgba(239, 68, 68, 0.25);
 }
 .pitfalls-title {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.9rem;
-  font-weight: 800;
-  color: var(--accent-red);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #f87171;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-family: var(--font-mono);
   margin-bottom: 10px;
 }
 .pitfall-banner {
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.35);
-  border-left: 4px solid var(--accent-red);
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-left: 3px solid #dc2626;
   border-radius: 0 8px 8px 0;
   padding: 12px 16px;
   margin-bottom: 10px;
@@ -367,8 +358,8 @@ body {
   gap: 10px;
 }
 .pitfall-banner i {
-  font-size: 1.2rem;
-  color: var(--accent-red);
+  font-size: 1.15rem;
+  color: #f87171;
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -425,27 +416,27 @@ body {
   gap: 8px;
 }
 .callout-opinion {
-  background: rgba(168, 85, 247, 0.08);
-  border: 1px solid rgba(168, 85, 247, 0.35);
-  border-left: 4px solid var(--accent-purple);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid #9333ea;
   border-radius: 0 8px 8px 0;
   padding: 12px 16px;
   margin: 1rem 0;
   font-size: 0.9rem;
-  color: #e9d5ff;
+  color: var(--text-main);
 }
 .callout-opinion b {
   color: #fff;
 }
 .callout-evidence {
-  background: rgba(16, 185, 129, 0.06);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  border-left: 4px solid var(--accent-neon);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--accent-neon);
   border-radius: 0 8px 8px 0;
   padding: 12px 16px;
   margin: 1rem 0;
   font-size: 0.9rem;
-  color: #d1fae5;
+  color: var(--text-main);
 }
 
 /* ── Escadinha dos Tiers da HIC (Visual Hierarchy) ── */
@@ -475,9 +466,9 @@ body {
   justify-content: center;
   flex-shrink: 0;
 }
-.tier-1 { background: rgba(16, 185, 129, 0.2); color: var(--accent-neon); border: 1px solid var(--accent-neon); }
-.tier-2 { background: rgba(249, 115, 22, 0.2); color: var(--accent-amber); border: 1px solid var(--accent-amber); }
-.tier-3 { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); }
+.tier-1 { background: rgba(16, 185, 129, 0.12); color: #a7f3d0; border: 1px solid rgba(16, 185, 129, 0.3); }
+.tier-2 { background: rgba(245, 158, 11, 0.12); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.3); }
+.tier-3 { background: rgba(239, 68, 68, 0.12); color: #fecaca; border: 1px solid rgba(239, 68, 68, 0.3); }
 .tier-divider {
   text-align: center;
   margin: 14px 0;

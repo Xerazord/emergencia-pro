@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
-<meta name="theme-color" content="#0d1117">
+<meta name="theme-color" content="#0f172a">
 <meta property="og:title" content="Emergência Pro — A Arte da Ressuscitação">
 <meta property="og:description" content="Fluxograma clínico estruturado para documentação ágil e segura em sala de emergência. Menos tempo no teclado, mais tempo à beira do leito.">
 <meta property="og:image" content="logo.png">
@@ -15,19 +15,19 @@
 
 <style>
 :root {
-  --bg-main: #0a0d13;
-  --bg-card: #121722;
-  --bg-card-hover: #171e2c;
-  --bg-glass: rgba(18, 23, 34, 0.85);
-  --border-subtle: #20293a;
+  --bg-main: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card-hover: #27354a;
+  --bg-glass: rgba(15, 23, 42, 0.9);
+  --border-subtle: #334155;
   --border-glow: #10b981;
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --text-dim: #64748b;
   --accent-neon: #10b981;
-  --accent-neon-glow: rgba(16, 185, 129, 0.25);
-  --accent-amber: #f97316;
-  --accent-amber-glow: rgba(249, 115, 22, 0.25);
+  --accent-neon-glow: rgba(16, 185, 129, 0.08);
+  --accent-amber: #f59e0b;
+  --accent-amber-glow: rgba(245, 158, 11, 0.08);
   --accent-red: #ef4444;
   --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-mono: 'SFMono-Regular', 'Courier New', Courier, monospace;
@@ -41,10 +41,10 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   background-image: 
-    radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 85% 65%, rgba(249, 115, 22, 0.06) 0%, transparent 45%),
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 85% 65%, rgba(245, 158, 11, 0.02) 0%, transparent 45%),
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
 }
 
@@ -207,25 +207,25 @@ body {
   .tactical-hardware-grid { grid-template-columns: 1fr; }
 }
 .device-card {
-  background: #0d121c;
+  background: #1e293b;
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
   padding: 12px 14px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
   transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
   display: flex;
   flex-direction: column;
 }
 .device-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(16, 185, 129, 0.5);
-  box-shadow: 0 10px 24px rgba(0,0,0,0.5), 0 0 16px rgba(16, 185, 129, 0.15);
+  border-color: #475569;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
 }
 .device-card.amber:hover {
-  border-color: rgba(249, 115, 22, 0.5);
-  box-shadow: 0 10px 24px rgba(0,0,0,0.5), 0 0 16px rgba(249, 115, 22, 0.15);
+  border-color: #475569;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
 }
 .device-hdr {
   display: flex;
@@ -251,19 +251,19 @@ body {
   height: 7px;
   border-radius: 50%;
   background: var(--accent-neon);
-  box-shadow: 0 0 8px var(--accent-neon);
-  animation: pulse-dot 2s infinite;
+  box-shadow: none;
+  animation: pulse-dot 2.5s infinite;
 }
 .device-card.amber .device-status {
   background: var(--accent-amber);
-  box-shadow: 0 0 8px var(--accent-amber);
+  box-shadow: none;
 }
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.85); }
+  50% { opacity: 0.5; transform: scale(0.9); }
 }
 .device-screen {
-  background: #06090e;
+  background: #0f172a;
   border: 1px solid rgba(255,255,255,0.06);
   border-radius: 6px;
   padding: 8px;
@@ -321,8 +321,8 @@ body {
   gap: 8px;
   padding: 4px 14px;
   border-radius: 20px;
-  background: rgba(249, 115, 22, 0.12);
-  border: 1px solid rgba(249, 115, 22, 0.35);
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
   color: var(--accent-amber);
   font-size: 0.8rem;
   font-weight: 700;
@@ -341,12 +341,12 @@ body {
 }
 .hero-title .glow-neon {
   color: #34d399;
-  text-shadow: 0 0 25px rgba(52, 211, 153, 0.5);
+  text-shadow: none;
   display: block;
 }
 .hero-title .glow-amber {
   color: #fb923c;
-  text-shadow: 0 0 25px rgba(251, 146, 60, 0.4);
+  text-shadow: none;
 }
 .hero-sub {
   font-size: 1.15rem;
@@ -381,13 +381,13 @@ body {
   max-width: 980px;
   margin: 0 auto;
   background: var(--bg-card);
-  border: 1px solid #2d3748;
+  border: 1px solid var(--border-subtle);
   border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px rgba(16, 185, 129, 0.08);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.25);
   overflow: hidden;
 }
 .mockup-bar {
-  background: #0f131a;
+  background: #162032;
   padding: 12px 18px;
   display: flex;
   align-items: center;
@@ -402,7 +402,7 @@ body {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #2d3748;
+  background: #334155;
 }
 .mockup-dot.red { background: #ef4444; }
 .mockup-dot.yellow { background: #f59e0b; }
@@ -432,7 +432,7 @@ body {
   margin-bottom: 16px;
 }
 .vital-box {
-  background: #0a0d14;
+  background: #162032;
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
   padding: 8px 10px;
@@ -462,24 +462,24 @@ body {
   font-size: 0.75rem;
   padding: 4px 10px;
   border-radius: 6px;
-  background: #1c2433;
+  background: #1e293b;
   border: 1px solid var(--border-subtle);
   color: var(--text-muted);
 }
 .pill.active {
-  background: rgba(16, 185, 129, 0.15);
-  border-color: var(--accent-neon);
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.4);
   color: var(--accent-neon);
   font-weight: 600;
 }
 .pill.alarm {
-  background: rgba(239, 68, 68, 0.15);
-  border-color: var(--accent-red);
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.4);
   color: var(--accent-red);
   font-weight: 600;
 }
 .report-terminal {
-  background: #080a0f;
+  background: #131b28;
   border: 1px solid var(--border-subtle);
   border-radius: 10px;
   padding: 14px;
@@ -613,7 +613,7 @@ body {
 }
 .flow-row:hover { border-color: var(--accent-neon); }
 .flow-num {
-  background: #0f131a;
+  background: #162032;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -645,15 +645,15 @@ body {
   gap: 16px;
 }
 .syndrome-card {
-  background: #0d121b;
+  background: #1e293b;
   border: 1px solid var(--border-subtle);
   border-radius: 10px;
   padding: 16px;
   transition: all 0.2s;
 }
 .syndrome-card:hover {
-  border-color: var(--accent-amber);
-  background: #121824;
+  border-color: #475569;
+  background: #243044;
 }
 .syn-head {
   display: flex;
@@ -670,7 +670,7 @@ body {
   font-family: var(--font-mono);
   font-size: 0.68rem;
   color: var(--accent-amber);
-  background: rgba(249, 115, 22, 0.1);
+  background: rgba(245, 158, 11, 0.1);
   padding: 2px 6px;
   border-radius: 4px;
 }
@@ -682,8 +682,8 @@ body {
 
 /* ── Shift Management Showcase ── */
 .shift-showcase {
-  background: linear-gradient(180deg, #101520 0%, #0a0d13 100%);
-  border: 1px solid #232d40;
+  background: #1e293b;
+  border: 1px solid var(--border-subtle);
   border-radius: 16px;
   padding: 2.5rem;
   display: grid;
@@ -700,7 +700,7 @@ body {
   gap: 12px;
 }
 .metric-tile {
-  background: #0a0d13;
+  background: #162032;
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
   padding: 14px;
@@ -1206,17 +1206,17 @@ body {
     </div>
 
     <!-- Banner de Destaque: Protocolo Tático Crunch Time -->
-    <div style="margin-top:2rem;background:linear-gradient(135deg,rgba(249,115,22,0.12) 0%,rgba(16,185,129,0.08) 100%);border:1.5px solid rgba(249,115,22,0.4);border-radius:14px;padding:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap">
+    <div style="margin-top:2rem;background:#1e293b;border:1px solid var(--border-subtle);border-left:4px solid #f59e0b;border-radius:12px;padding:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap">
       <div>
         <div style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:0.75rem;color:var(--accent-amber);text-transform:uppercase;font-weight:700;margin-bottom:6px">
           <i class="ti ti-bolt"></i> Protocolo Tático de Alta Densidade
         </div>
-        <h3 style="font-size:1.25rem;font-weight:700;color:#fff;margin-bottom:4px">Dano Secundário, HSA, TCE Grave & Politrauma</h3>
-        <p style="font-size:0.9rem;color:var(--text-muted);max-width:640px">
+        <h3 style="font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:4px">Dano Secundário, HSA, TCE Grave & Politrauma</h3>
+        <p style="font-size:0.88rem;color:var(--text-muted);max-width:640px">
           Acesse o protocolo no modelo CorePendium/EMCrit com modo Crunch Time, banners de Pitfalls no momento zero, escadinha de intervenções de HIC e distinção clara entre evidências e prática de especialista.
         </p>
       </div>
-      <a href="neuro_emergencia.html" class="btn-primary" style="white-space:nowrap;padding:12px 22px">
+      <a href="neuro_emergencia.html" class="btn-primary" style="white-space:nowrap;padding:10px 20px">
         <i class="ti ti-external-link"></i> Abrir Guia Tático
       </a>
     </div>
