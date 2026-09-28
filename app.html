@@ -695,9 +695,9 @@ textarea{resize:vertical;min-height:60px}
       <button class="modal-close" onclick="closeDecisionDrawer()" aria-label="Fechar Apoio à Decisão">×</button>
     </div>
     <div class="decision-drawer-tabs">
-      <button class="decision-tab active" id="decTabMetas" onclick="setDecisionTab('metas')"><i class="ti ti-target" aria-hidden="true"></i> Metas & Alvos</button>
-      <button class="decision-tab" id="decTabPerolas" onclick="setDecisionTab('perolas')"><i class="ti ti-bulb" aria-hidden="true"></i> Pérolas Clínicas</button>
-      <button class="decision-tab" id="decTabConflitos" onclick="setDecisionTab('conflitos')"><i class="ti ti-shield-alert" aria-hidden="true"></i> Conflitos <span class="badge-n" id="decConflictCount" style="display:none;background:#dc2626;color:#fff;margin-left:4px">0</span></button>
+      <button class="decision-tab active" id="decTabMetas" onclick="setDecisionTab('metas')"><i class="ti ti-target" aria-hidden="true"></i> Metas Fisiológicas</button>
+      <button class="decision-tab" id="decTabPerolas" onclick="setDecisionTab('perolas')"><i class="ti ti-bulb" aria-hidden="true"></i> Pérolas & Conflitos <span class="badge-n" id="decConflictCount" style="display:none;background:#dc2626;color:#fff;margin-left:4px">0</span></button>
+      <button class="decision-tab" id="decTabDoses" onclick="setDecisionTab('doses')"><i class="ti ti-bolt" aria-hidden="true"></i> Doses & Checklists</button>
     </div>
     <div class="decision-drawer-body" id="decisionDrawerBody"></div>
   </div>
@@ -1857,6 +1857,30 @@ const S={step:0,nome:'',idade:30,sexo:'',orig:'Demanda Espontânea',origInst:'',
  rncQOpen:{instalacao:true},
  intQ:{circunstancia:'',tempoVia:[],doseCo:[],toxidromes:[]},
  intQOpen:{circunstancia:true},
+ trm:{mec:'',altaEnergia:[],protecao:[],cena:[],ativas:[]},
+ trmOpen:{mec:true},
+ agi:{evolucao:'',padrao:[],psicoticos:[],organica:[],psiqHpp:[]},
+ agiOpen:{evolucao:true},
+ tos:{tipo:'',duracao:'',padrao:[],assoc:[],risco:[]},
+ tosOpen:{tipo:true},
+ feb:{afericao:'',pico:'',padrao:'',foco:[],alarme:[],risco:[]},
+ febOpen:{afericao:true},
+ nau:{freq:'',aspecto:[],relacao:[],desidrat:[]},
+ nauOpen:{freq:true},
+ dia:{aspecto:'',duracao:'',assoc:[],epidem:[],volemia:[]},
+ diaOpen:{aspecto:true},
+ san:{sitio:[],vol:'',coag:[]},
+ sanOpen:{sitio:true},
+ lom:{carac:[],caudaEquina:[],alarme:[]},
+ lomOpen:{carac:true},
+ ictQ:{crono:'',colestase:[],gravidade:[],colangite:[],toxicos:[]},
+ ictQOpen:{crono:true},
+ ver:{tipo:'',duracao:'',redflags:[],auditivo:[]},
+ verOpen:{tipo:true},
+ palQ:{ritmo:'',inicio:'',instab:[],gatilhos:[]},
+ palQOpen:{ritmo:true},
+ edm:{lat:'',flogose:[],wells:[],toracicos:[]},
+ edmOpen:{lat:true},
  sincCalgary:{bivent:false,palp:false,esforco:false,supina:false,prod:false,orto:false,situac:false},
  sincCanadian:{histCard:false,paEmerg:false,tropo:false,ecgAnorm:false,dxEmerg:''},
  abcOpen:{a:true},
@@ -6662,6 +6686,478 @@ registerQx('Intoxicação exógena',{
  hda:intHda
 });
 
+// ─── Trauma ────────────────────────────────────────────────────────────────
+const TRM_MEC=['Colisão auto x auto / anteparo','Colisão moto x auto / anteparo','Capotamento / tombamento','Atropelamento por veículo automotor','Queda de nível (> 2 metros / escada)','Queda da própria altura (idoso / fragilidade)','Agressão física contusa','Ferimento por arma de fogo (FAF)','Ferimento por arma branca (FAB)','Trauma desportivo / lazer'];
+const TRM_ALTA_ENERGIA=['Óbito no mesmo habitáculo','Vítima ejetada do veículo','Deformidade de habitáculo > 30 cm','Extricação prolongada (> 20 min)','Atropelamento em alta velocidade','Queda de altura > 3 vezes a estatura do paciente'];
+const TRM_PROTECAO=['Cinto de segurança utilizado','Capacete utilizado e afivelado','Airbag deflagrado','Sem dispositivos de proteção relatados / desconhecido'];
+const TRM_CENA=['Perda de consciência transitória na cena com recuperação','Perda de consciência mantida na cena','Crise convulsiva pós-trauma relatada','Lúcido e orientado na cena (sem perda de consciência)','Necessidade de via aérea avançada / O2 no resgate','Colar cervical e prancha rígida aplicados pelo resgate'];
+const TRM_ATIVAS=['Dor em coluna cervical','Dor torácica ventilatório-dependente','Dor abdominal / pélvica','Déficit motor ou sensitivo em extremidades','Ferimento cortocontuso evidente com sangramento','Escoriações / contusões musculares difusas','Sem queixas álgicas espontâneas no momento'];
+
+function trmHda(S){
+ const t=S.trm;const parts=[];
+ if(t.mec)parts.push(`vítima de trauma por ${t.mec.toLowerCase()}`);
+ if(t.altaEnergia.length)parts.push(`apresentando fatores de alta energia: ${t.altaEnergia.join(', ').toLowerCase()}`);
+ if(t.protecao.length)parts.push(`dispositivos de proteção: ${t.protecao.join(', ').toLowerCase()}`);
+ if(t.cena.length)parts.push(`relato do resgate/cena: ${t.cena.join('; ').toLowerCase()}`);
+ if(t.ativas.length)parts.push(`queixas ativas na admissão: ${t.ativas.join(', ').toLowerCase()}`);
+ return parts.length?`, ${parts.join('; ')}`:'';
+}
+function trmAfter(S){
+ const t=S.trm;let out='';
+ if(t.altaEnergia.length || t.cena.includes('Perda de consciência mantida na cena') || t.cena.includes('Crise convulsiva pós-trauma relatada')){
+  out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ALERTA DE CINEMÁTICA DE ALTA ENERGIA / POLITRAUMA</strong> — Imobilização de coluna em prancha rígida e colar cervical; avaliação primária sistematizada ABCDE; FAST / e-FAST e tomografia computadorizada multislice corpo total (politrauma).</div>`;
+ }
+ out+=`<div style="margin-top:8px"><label>Tempo do trauma / ocorrência</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 45 min, há 2 horas"></div>`;
+ return out;
+}
+
+registerQx('Trauma',{
+ anamnese:{
+  sigla:'trm',
+  blocks:[
+   {key:'mec',label:'Mecanismo do Trauma',type:'radio',options:TRM_MEC,autoOpenNext:'altaEnergia'},
+   {key:'altaEnergia',label:'Cinemática e Fatores de Alta Energia',type:'tags',options:TRM_ALTA_ENERGIA,autoOpenNext:'protecao'},
+   {key:'protecao',label:'Dispositivos de Proteção Utilizados',type:'tags',options:TRM_PROTECAO,autoOpenNext:'cena'},
+   {key:'cena',label:'Estado Inicial na Cena / Resgate',type:'tags',options:TRM_CENA,autoOpenNext:'ativas'},
+   {key:'ativas',label:'Queixas Ativas na Admissão',type:'tags',options:TRM_ATIVAS}
+  ],
+  after:trmAfter
+ },
+ hda:trmHda
+});
+
+// ─── Agitação psicomotora ──────────────────────────────────────────────────
+const AGI_EVOL=['Hiperaguda (< 2 horas)','Aguda no mesmo dia','Subaguda / progressiva há dias','Flutuante / oscilante (delirium)'];
+const AGI_PADRAO=['Heteroagressividade física ativa (contra terceiros/equipe)','Heteroagressividade verbal intensa com ameaças','Agitação psicomotora desorganizada sem agressividade','Tentativa ativa de fuga / evasão do serviço','Desinibição comportamental / hipersexualidade','Comportamento bizarro / inadequado','Risco iminente de autoextermínio / autoagressão'];
+const AGI_PSIC=['Alucinações auditivas de comando','Alucinações visuais (zoopsias / vultos)','Delírios persecutórios / paranoides','Desorientação têmporo-espacial evidente','Fuga de ideias / discurso desconexo e acelerado','Ausência de sintomas psicóticos evidentes'];
+const AGI_ORG=['Febre recente ou sinais infecciosos (tosse, disúria)','Trauma cranioencefálico recente','Abuso agudo de álcool / substâncias psicoativas','Abstinência alcoólica recente (tremores, sudorese, taquicardia)','Glicemia capilar normal descartando hipoglicemia','Sem estigmas evidentes de causa orgânica'];
+const AGI_PSIQ_HPP=['Transtorno afetivo bipolar conhecido','Esquizofrenia / transtorno psicótico conhecido','Transtorno de personalidade','Abandono recente de tratamento psicofarmacológico','Sem antecedentes psiquiátricos conhecidos'];
+
+function agiHda(S){
+ const a=S.agi;const parts=[];
+ if(a.evolucao)parts.push(`de evolução ${a.evolucao.toLowerCase()}`);
+ if(a.padrao.length)parts.push(`manifestada por ${a.padrao.join(', ').toLowerCase()}`);
+ if(a.psicoticos.length)parts.push(`ao exame psíquico/sensopercepção: ${a.psicoticos.join(', ').toLowerCase()}`);
+ if(a.organica.length)parts.push(`rastreio de causas orgânicas: ${a.organica.join(', ').toLowerCase()}`);
+ if(a.psiqHpp.length)parts.push(`histórico prévio: ${a.psiqHpp.join(', ').toLowerCase()}`);
+ return parts.length?`, ${parts.join('; ')}`:'';
+}
+function agiAfter(S){
+ const a=S.agi;let out='';
+ if(a.padrao.includes('Heteroagressividade física ativa (contra terceiros/equipe)')||a.padrao.includes('Risco iminente de autoextermínio / autoagressão')){
+  out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>AGITAÇÃO GRAVE / RISCO IMINENTE</strong> — Priorizar segurança da equipe e do paciente. Contenção mecânica em 4 pontos se estritamente necessária após tentativa de desescalonamento verbal, acompanhada de sedação medicamentosa imediata (ex: Haloperidol 5 mg + Midazolam 5 mg ou Prometazina 50 mg IM/IV). Monitorização de oximetria e sinais vitais.</div>`;
+ }
+ out+=`<div style="margin-top:8px"><label>Tempo de início da agitação</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 1 hora, há 12 horas"></div>`;
+ return out;
+}
+
+registerQx('Agitação psicomotora',{
+ anamnese:{
+  sigla:'agi',
+  blocks:[
+   {key:'evolucao',label:'Evolução e Início Temporal',type:'radio',options:AGI_EVOL,autoOpenNext:'padrao'},
+   {key:'padrao',label:'Padrão Comportamental e Agressividade',type:'tags',options:AGI_PADRAO,autoOpenNext:'psicoticos'},
+   {key:'psicoticos',label:'Alterações Sensoperceptivas e de Pensamento',type:'tags',options:AGI_PSIC,autoOpenNext:'organica'},
+   {key:'organica',label:'Investigação de Causas Orgânicas',type:'tags',options:AGI_ORG,autoOpenNext:'psiqHpp'},
+   {key:'psiqHpp',label:'Histórico Psiquiátrico e MUC',type:'tags',options:AGI_PSIQ_HPP}
+  ],
+  after:agiAfter
+ },
+ hda:agiHda
+});
+
+// ─── Tosse ─────────────────────────────────────────────────────────────────
+const TOS_TIPO=['Seca e irritativa (não produtiva)','Produtiva com escarro hialino / mucoide','Produtiva com secreção purulenta amarelada/esverdeada','Hemoptoica (estrias de sangue no escarro)','Hemoptise franca com coágulos','Escarro com aspecto herrumbroso'];
+const TOS_DURACAO=['Aguda (< 3 semanas)','Subaguda (3 a 8 semanas)','Crônica (> 8 semanas)'];
+const TOS_PADRAO=['Predomínio noturno despertando o sono','Piora acentuada ao decúbito dorsal','Acessos paroxísticos com guincho inspiratório','Desencadeada por esforço ou ar frio','Tosse pós-prandial / engasgos'];
+const TOS_ASSOC=['Febre diária com calafrios','Dor torácica ventilatório-dependente (pleurítica)','Dispneia progressiva associada','Sibilância audível (chiado no peito)','Sudorese noturna profusa','Perda ponderal involuntária recente','Coriza / congestão nasal / odinofagia'];
+const TOS_RISCO=['Tabagismo ativo (fumante)','Ex-tabagista','Uso crônico de IECA (Enalapril / Captopril)','Contato domiciliar recente com tuberculose ativa','Asma / DPOC prévio conhecido','Exposição ocupacional a poeiras / mofo / biomassa'];
+
+function tosHda(S){
+ const t=S.tos;const parts=[];
+ if(t.tipo)parts.push(`caracterizada por tosse ${t.tipo.toLowerCase()}`);
+ if(t.duracao)parts.push(`de evolução ${t.duracao.toLowerCase()}`);
+ if(t.padrao.length)parts.push(`com padrão de ${t.padrao.join(' e ').toLowerCase()}`);
+ if(t.assoc.length)parts.push(`acompanhada de ${t.assoc.join(', ').toLowerCase()}`);
+ if(t.risco.length)parts.push(`fatores de risco/contexto: ${t.risco.join(', ').toLowerCase()}`);
+ return parts.length?`, ${parts.join('; ')}`:'';
+}
+function tosAfter(S){
+ const t=S.tos;let out='';
+ if(t.tipo.includes('Hemoptise franca com coágulos')){
+  out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ALERTA DE HEMOPTISE MACIÇA / POTENCIALMENTE GRAVE</strong> — Garantir patência de via aérea; decúbito lateral sobre o lado acometido se conhecido para proteger o pulmão são; reserva de sangue, TC de tórax com contraste e contato com pneumologia/cirurgia torácica.</div>`;
+ }
+ out+=`<div style="margin-top:8px"><label>Tempo de duração da tosse</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 4 dias, há 3 semanas"></div>`;
+ return out;
+}
+
+registerQx('Tosse',{
+ anamnese:{
+  sigla:'tos',
+  blocks:[
+   {key:'tipo',label:'Aspecto e Característica da Secreção',type:'radio',options:TOS_TIPO,autoOpenNext:'duracao'},
+   {key:'duracao',label:'Duração e Cronologia',type:'radio',options:TOS_DURACAO,autoOpenNext:'padrao'},
+   {key:'padrao',label:'Padrão Temporal e Fatores de Piora',type:'tags',options:TOS_PADRAO,autoOpenNext:'assoc'},
+   {key:'assoc',label:'Sintomas Associados',type:'tags',options:TOS_ASSOC,autoOpenNext:'risco'},
+   {key:'risco',label:'Fatores de Risco e Exposições',type:'tags',options:TOS_RISCO}
+  ],
+  after:tosAfter
+ },
+ hda:tosHda
+});
+
+// ─── Febre ─────────────────────────────────────────────────────────────────
+const FEB_AFER=['Febre aferida por termômetro no domicílio','Sensação febril referida (sem aferição termométrica)'];
+const FEB_PADRAO=['Diária contínua','Intermitente com calafrios trepidantes','Vespertina com sudorese profusa','Picos febris esporádicos'];
+const FEB_FOCO=['Respiratório (tosse, expectoração, dor torácica, coriza)','Urinário (disúria, polaciúria, dor lombar)','Gastrointestinal (dor abdominal, diarreia, náuseas)','Pele e partes moles (lesão eritematosa, calor, dor local)','Neurológico (cefaleia intensa, rigidez de nuca, fotofobia)','Sem foco infeccioso evidente pela anamnese inicial'];
+const FEB_ALARME=['Prostração intensa desproporcional','Confusão mental / sonolência nova','Extremidades frias / livedo reticular','Redução importante do volume urinário (oligúria)','Surgimento de petéquias / lesões purpúricas cutâneas','Sem sinais de gravidade / alerta sistêmico no momento'];
+const FEB_RISCO=['Imunossupressão / quimioterapia recente / corticoterapia','Diabetes descompensado','Uso recente de antibióticos nas últimas semanas','Viagem recente para área endêmica de arboviroses / malária','Portador de cateter venoso central ou prótese valvar/ortopédica'];
+
+function febHda(S){
+ const f=S.feb;const parts=[];
+ if(f.afericao)parts.push(`${f.afericao.toLowerCase()}${f.pico?' (pico de '+f.pico+'°C)':''}`);
+ if(f.padrao)parts.push(`padrão de febre ${f.padrao.toLowerCase()}`);
+ if(f.foco.length)parts.push(`rastreio de foco infeccioso: ${f.foco.join(', ').toLowerCase()}`);
+ if(f.alarme.length)parts.push(`sinais de alarme/gravidade: ${f.alarme.join(', ').toLowerCase()}`);
+ if(f.risco.length)parts.push(`fatores de risco: ${f.risco.join(', ').toLowerCase()}`);
+ return parts.length?`, ${parts.join('; ')}`:'';
+}
+function febAfter(S){
+ const f=S.feb;let out='';
+ if(f.risco.includes('Imunossupressão / quimioterapia recente / corticoterapia')){
+  out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ALERTA DE SUSPEITA DE NEUTROPENIA FEBRIL</strong> — Emergência oncológica! Coleta imediata de 2 pares de hemoculturas e início de antibioticoterapia antipseudomonas venosa empírica (Cefepima ou Piperacilina-Tazobactam) em menos de 60 minutos (Golden Hour).</div>`;
+ }
+ if(f.foco.includes('Neurológico (cefaleia intensa, rigidez de nuca, fotofobia)')){
+  out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>SUSPEITA DE MENINGOENCEFALITE AGUDA</strong> — Coleta rápida de líquor (após descartar HIC/massa expansiva se sinais focais) + início imediato de Ceftriaxona 2g IV + Ampicilina (se idoso/imunossuprimido) + Dexametasona prévia/concomitante. Não atrasar ATB para exames de imagem.</div>`;
+ }
+ out+=`<div style="margin-top:8px"><label>Pico térmico aferido (°C)</label><input type="text" value="${esc(S.feb.pico||'')}" oninput="S.feb.pico=this.value" placeholder="Ex: 38.8, 39.5"></div>`;
+ out+=`<div style="margin-top:8px"><label>Tempo de duração da febre</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 2 dias, há 5 dias"></div>`;
+ return out;
+}
+
+registerQx('Febre',{
+ anamnese:{
+  sigla:'feb',
+  blocks:[
+   {key:'afericao',label:'Aferição da Temperatura',type:'radio',options:FEB_AFER,autoOpenNext:'padrao'},
+   {key:'padrao',label:'Padrão da Febre',type:'radio',options:FEB_PADRAO,autoOpenNext:'foco'},
+   {key:'foco',label:'Rastreio de Foco Infeccioso Inicial',type:'tags',options:FEB_FOCO,autoOpenNext:'alarme'},
+   {key:'alarme',label:'Sinais de Alarme Sistêmico e Sepse',type:'tags',options:FEB_ALARME,autoOpenNext:'risco'},
+   {key:'risco',label:'Fatores de Risco e Epidemiologia',type:'tags',options:FEB_RISCO}
+  ],
+  after:febAfter
+ },
+ hda:febHda
+});
+
+// ─── Náusea e Vômitos ──────────────────────────────────────────────────────
+const NAU_FREQ=['Episódios isolados (1 a 2 vezes)','Frequentes (3 a 5 vezes ao dia)','Incoercíveis (repetidos, intolerância completa a líquidos/VO)'];
+const NAU_ASPECTO=['Conteúdo alimentar pós-prandial','Conteúdo bilioso (amarelado/esverdeado)','Conteúdo com rajas de sangue / hematêmese viva','Conteúdo em borra de café','Conteúdo fecaloide (odor pútrido / obstrução distal)'];
+const NAU_RELACAO=['Precedidos de náusea intensa e plenitude gástrica','Vômitos súbitos sem náusea prévia ("em jato" — alerta de HIC)','Associados a vertigem rotatória e nistagmo','Precedidos de dor abdominal intensa em cólica','Associados a diarreia líquida profusa'];
+const NAU_DESIDRAT=['Sede intensa e boca seca','Tontura postural ao levantar / lipotimia','Redução expressiva do débito urinário (oligúria)','Boa tolerância hídrica mantida entre os episódios'];
+
+function nauHda(S){
+ const n=S.nau;const parts=[];
+ if(n.freq)parts.push(`de frequência ${n.freq.toLowerCase()}`);
+ if(n.aspecto.length)parts.push(`com conteúdo ${n.aspecto.join(', ').toLowerCase()}`);
+ if(n.relacao.length)parts.push(`características associadas: ${n.relacao.join('; ').toLowerCase()}`);
+ if(n.desidrat.length)parts.push(`avaliação volêmica: ${n.desidrat.join(', ').toLowerCase()}`);
+ return parts.length?`, ${parts.join('; ')}`:'';
+}
+function nauAfter(S){
+ const n=S.nau;let out='';
+ if(n.aspecto.includes('Conteúdo fecaloide (odor pútrido / obstrução distal)')){
+  out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ALERTA DE OBSTRUÇÃO INTESTINAL BAIXA / ÍLEO COMPLICADO</strong> — Jejum oral absoluto, sondagem nasogástrica (SNG) aberta para descompressão em sifonagem, hidratação venosa vigorosa e avaliação urgente do Cirurgião Geral.</div>`;
+ }
+ if(n.relacao.includes('Vômitos súbitos sem náusea prévia ("em jato" — alerta de HIC)')){
+  out+=`<div class="abox aw" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> <strong>VÔMITOS EM JATO (SUSPEITA DE HIPERTENSÃO INTRACRANIANA)</strong> — Exame neurológico detalhado (fundoscopia / pupilas) e indicação de TC de crânio sem contraste de urgência.</div>`;
+ }
+ out+=`<div style="margin-top:8px"><label>Tempo de início dos sintomas</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 6 horas, há 24 horas"></div>`;
+ return out;
+}
+
+registerQx('Náusea e Vômitos',{
+ anamnese:{
+  sigla:'nau',
+  blocks:[
+   {key:'freq',label:'Frequência e Incoercibilidade',type:'radio',options:NAU_FREQ,autoOpenNext:'aspecto'},
+   {key:'aspecto',label:'Aspecto do Material Emitido',type:'tags',options:NAU_ASPECTO,autoOpenNext:'relacao'},
+   {key:'relacao',label:'Mecanismo e Sintomas Concomitantes',type:'tags',options:NAU_RELACAO,autoOpenNext:'desidrat'},
+   {key:'desidrat',label:'Sinais de Desidratação e Depleção',type:'tags',options:NAU_DESIDRAT}
+  ],
+  after:nauAfter
+ },
+ hda:nauHda
+});
+
+// ─── Diarreia ──────────────────────────────────────────────────────────────
+const DIA_ASPECTO=['Aquosa profusa (sem sangue ou muco)','Pastosa com restos alimentares','Disenteria franca (fezes com sangue vivo, muco e pus)','Fezes escurecidas pastosas / melena'];
+const DIA_DURACAO=['Aguda (< 14 dias)','Persistente (14 a 30 dias)','Crônica (> 30 dias)'];
+const DIA_ASSOC=['Dor abdominal difusa em cólica','Tenesmo retal e urgência evacuatória','Febre diária associada com calafrios','Náuseas e vômitos concomitantes','Síncope ou pré-síncope ao evacuar'];
+const DIA_EPIDEM=['Ingestão de alimentos suspeitos / refeições fora de casa','Casos semelhantes no domicílio ou comunidade próxima','Uso recente de antibióticos nas últimas 8 semanas (suspeita de C. difficile)','Viagem recente para área com saneamento precário','Doença inflamatória intestinal conhecida'];
+const DIA_VOLEMIA=['Boa aceitação de líquidos por via oral','Sinais clínicos de desidratação (sede, boca seca, astenia intensa)','Oligúria perceptível pelo paciente'];
+
+function diaHda(S){
+ const d=S.dia;const parts=[];
+ if(d.aspecto)parts.push(`caracterizada por fezes de aspecto ${d.aspecto.toLowerCase()}`);
+ if(d.duracao)parts.push(`de curso ${d.duracao.toLowerCase()}`);
+ if(d.assoc.length)parts.push(`associada a ${d.assoc.join(', ').toLowerCase()}`);
+ if(d.epidem.length)parts.push(`fatores epidemiológicos: ${d.epidem.join(', ').toLowerCase()}`);
+ if(d.volemia.length)parts.push(`estado de hidratação: ${d.volemia.join(', ').toLowerCase()}`);
+ return parts.length?`, ${parts.join('; ')}`:'';
+}
+function diaAfter(S){
+ const d=S.dia;let out='';
+ if(d.aspecto.includes('Disenteria franca (fezes com sangue vivo, muco e pus)')){
+  out+=`<div class="abox aw" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>DISENTERIA AGUDA INVASIVA</strong> — Avaliar toxemia; hidratação venosa / oral rigorosa. Evitar antidiarreicos inibidores de motilidade (Loperamida) pelo risco de megacólon tóxico.</div>`;
+ }
+ if(d.epidem.includes('Uso recente de antibióticos nas últimas 8 semanas (suspeita de C. difficile)')){
+  out+=`<div class="abox ai" style="margin-top:8px"><i class="ti ti-info-circle" aria-hidden="true"></i> <strong>USO RECENTE DE ANTIBIÓTICOS</strong> — Considerar colite por Clostridioides difficile. Solicitar pesquisa de toxina A/B nas fezes; hidratação e isolamento de contato entérico.</div>`;
+ }
+ out+=`<div style="margin-top:8px"><label>Tempo de duração da diarreia</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 2 dias, há 1 semana"></div>`;
+ return out;
+}
+
+registerQx('Diarreia',{
+ anamnese:{
+  sigla:'dia',
+  blocks:[
+   {key:'aspecto',label:'Aspecto das Fezes',type:'radio',options:DIA_ASPECTO,autoOpenNext:'duracao'},
+   {key:'duracao',label:'Duração e Cronologia',type:'radio',options:DIA_DURACAO,autoOpenNext:'assoc'},
+   {key:'assoc',label:'Sintomas Associados',type:'tags',options:DIA_ASSOC,autoOpenNext:'epidem'},
+   {key:'epidem',label:'Epidemiologia e Fatores de Risco',type:'tags',options:DIA_EPIDEM,autoOpenNext:'volemia'},
+   {key:'volemia',label:'Avaliação de Hidratação e Volemia',type:'tags',options:DIA_VOLEMIA}
+  ],
+  after:diaAfter
+ },
+ hda:diaHda
+});
+
+// ─── Sangramento ───────────────────────────────────────────────────────────
+const SAN_SITIO=['Gastrointestinal alto (hematêmese viva / fezes em melena)','Gastrointestinal baixo (enterorragia / sangue vivo nas fezes)','Trato respiratório (hemoptise franca com tosse)','Trato urinário (hematúria macroscópica com ou sem coágulos)','Otorrinolaringológico (epistaxe profusa / gengivorragia ativa)','Ginecológico (sangramento vaginal anormal volumoso)','Cutâneo-mucoso (petéquias disseminadas, púrpuras, equimoses espontâneas)'];
+const SAN_VOL=['Pequeno volume autolimitado sem tontura','Moderado volume recorrente','Volumoso com repercussão hemodinâmica'];
+const SAN_COAG=['Em uso regular de Varfarina / Marevan','Em uso de DOAC (Rivaroxabana, Apixabana, Dabigatrana)','Em uso de antiagregante (AAS, Clopidogrel)','Cirrose hepática ou coagulopatia conhecida','Trombocitopenia prévia relatada','Nega uso de anticoagulantes ou coagulopatias conhecidas'];
+
+function sanHda(S){
+ const s=S.san;const parts=[];
+ if(s.sitio.length)parts.push(`exteriorizado por ${s.sitio.join(', ').toLowerCase()}`);
+ if(s.vol)parts.push(`de volume estimado ${s.vol.toLowerCase()}`);
+ if(s.coag.length)parts.push(`perfil de coagulação/medicamentos: ${s.coag.join(', ').toLowerCase()}`);
+ return parts.length?`, ${parts.join('; ')}`:'';
+}
+function sanAfter(S){
+ const s=S.san;let out='';
+ if(s.vol==='Volumoso com repercussão hemodinâmica'||s.sitio.includes('Gastrointestinal alto (hematêmese viva / fezes em melena)')||s.sitio.includes('Gastrointestinal baixo (enterorragia / sangue vivo nas fezes)')){
+  out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ALERTA DE HEMORRAGIA POTENCIALMENTE GRAVE</strong> — Garantir 2 acessos venosos periféricos calibrosos (16G/18G). Solicitar tipagem sanguínea com Prova Cruzada e reserva de concentrado de hemácias. Monitorização hemodinâmica contínua. Iniciar IBP venoso em dose de ataque se suspeita de HDA.</div>`;
+ }
+ out+=`<div style="margin-top:8px"><label>Tempo de início do sangramento</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 1 hora, há 6 horas"></div>`;
+ return out;
+}
+
+registerQx('Sangramento',{
+ anamnese:{
+  sigla:'san',
+  blocks:[
+   {key:'sitio',label:'Sítio Anatômico Exteriorizado',type:'tags',options:SAN_SITIO,autoOpenNext:'vol'},
+   {key:'vol',label:'Volume Estimado e Repercussão',type:'radio',options:SAN_VOL,autoOpenNext:'coag'},
+   {key:'coag',label:'Anticoagulação e Coagulopatias',type:'tags',options:SAN_COAG}
+  ],
+  after:sanAfter
+ },
+ hda:sanHda
+});
+
+// ─── Dor lombar ────────────────────────────────────────────────────────────
+const LOM_CARAC=['Em cólica paroxística unilateral irradiando para fossa ilíaca/genitália (padrão calculoso)','Dor mecânica postural com piora aos movimentos e melhora ao repouso no leito','Dor súbita intensa em dorso/flanco sem relação com movimento (alerta de dissecção/AAA)','Dor inflamatória contínua com rigidez matinal e piora noturna'];
+const LOM_CAUDA=['Anestesia em sela (perda de sensibilidade perineal/anal)','Perda de controle de esfíncteres (incontinência fecal ou retenção urinária súbita)','Fraqueza motora aguda em membros inferiores (déficit de dorsiflexão / pé caído)','Ausência de déficits neurológicos ou esfincterianos (nega sinais de Cauda Equina)'];
+const LOM_ALARME=['Febre associada com calafrios (suspeita de pielonefrite/espondilodiscite)','Hematúria macroscópica ou disúria concomitante','Histórico de neoplasia prévia conhecida','Uso crônico de corticoide ou imunossupressão','Antecedente de trauma lombar recente'];
+
+function lomHda(S){
+ const l=S.lom;const parts=[];
+ if(l.carac.length)parts.push(`caracterizada por ${l.carac.join('; ').toLowerCase()}`);
+ if(l.caudaEquina.length)parts.push(`rastreio neurológico/cauda equina: ${l.caudaEquina.join(', ').toLowerCase()}`);
+ if(l.alarme.length)parts.push(`sinais de alarme/antecedentes: ${l.alarme.join(', ').toLowerCase()}`);
+ return parts.length?`, ${parts.join('; ')}`:'';
+}
+function lomAfter(S){
+ const l=S.lom;let out='';
+ if(l.caudaEquina.includes('Anestesia em sela (perda de sensibilidade perineal/anal)')||l.caudaEquina.includes('Perda de controle de esfíncteres (incontinência fecal ou retenção urinária súbita)')||l.caudaEquina.includes('Fraqueza motora aguda em membros inferiores (déficit de dorsiflexão / pé caído)')){
+  out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ALERTA CRÍTICO: SUSPEITA DE SÍNDROME DA CAUDA EQUINA</strong> — Emergência neurocirúrgica! Solicitar Ressonância Magnética de coluna lombo-sacra em caráter de urgência imediata. Avaliação neurocirúrgica em menos de 24–48h para prevenir sequela neurológica irreversível.</div>`;
+ }
+ if(l.carac.includes('Dor súbita intensa em dorso/flanco sem relação com movimento (alerta de dissecção/AAA)')){
+  out+=`<div class="abox aw" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> <strong>DOR SÚBITA INTENSA EM DORSO / FLANCO</strong> — Considerar rotura/expansão de Aneurisma de Aorta Abdominal (AAA) ou dissecção aórtica em pacientes > 50 anos ou hipertensos. POCUS aórtico / AngioTC abdominal imediata.</div>`;
+ }
+ out+=`<div style="margin-top:8px"><label>Tempo de início da dor</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 3 horas, 2 dias"></div>`;
+ return out;
+}
+
+registerQx('Dor lombar',{
+ anamnese:{
+  sigla:'lom',
+  blocks:[
+   {key:'carac',label:'Características e Padrão da Dor',type:'tags',options:LOM_CARAC,autoOpenNext:'caudaEquina'},
+   {key:'caudaEquina',label:'Rastreio de Síndrome da Cauda Equina (Red Flags Neurológicos)',type:'tags',options:LOM_CAUDA,autoOpenNext:'alarme'},
+   {key:'alarme',label:'Sinais de Alarme Infeccioso, Malignidade e Urológico',type:'tags',options:LOM_ALARME}
+  ],
+  after:lomAfter
+ },
+ hda:lomHda
+});
+
+// ─── Icterícia ─────────────────────────────────────────────────────────────
+const ICT_CRONO=['Início hiperagudo (< 7 dias) em paciente sem hepatopatia prévia (suspeita de IHA)','Início subagudo a progressivo há semanas','Curso flutuante e recorrente'];
+const ICT_COLESTASE=['Colúria franca (urina escura cor de refrigerante)','Acolia fecal (fezes claras/esbranquiçadas)','Prurido cutâneo difuso generalizado'];
+const ICT_GRAVIDADE=['Alteração do sono / inversão do ciclo sono-vigília','Lentificação psicomotora / confusão mental (encefalopatia)','Presença de flapping / asterixe','Sangramentos espontâneos (gengivorragia, equimoses)','Ausência de sinais de encefalopatia ou coagulopatia'];
+const ICT_COLANGITE=['Dor intensa em hipocôndrio direito','Febre com calafrios trepidantes (Tríade de Charcot)','Hipotensão ou choque associado (Pêntade de Reynolds)','Ausência de dor biliar ou febre associada'];
+const ICT_TOXICOS=['Ingestão de Paracetamol em dose excessiva','Uso de fitoterápicos / chás emagrecedores / anabolizantes','Uso recente de antibióticos (Amoxicilina-Clavulanato)','Consumo abusivo recente de bebidas alcoólicas','Histórico de cirrose ou hepatite viral B/C'];
+
+function ictQHda(S){
+ const i=S.ictQ;const parts=[];
+ if(i.crono)parts.push(`de instalação ${i.crono.toLowerCase()}`);
+ if(i.colestase.length)parts.push(`síndrome colestática: ${i.colestase.join(', ').toLowerCase()}`);
+ if(i.gravidade.length)parts.push(`rastreio de disfunção hepática: ${i.gravidade.join(', ').toLowerCase()}`);
+ if(i.colangite.length)parts.push(`sinais infecciosos biliares: ${i.colangite.join(', ').toLowerCase()}`);
+ if(i.toxicos.length)parts.push(`exposição hepatotóxica: ${i.toxicos.join(', ').toLowerCase()}`);
+ return parts.length?`, ${parts.join('; ')}`:'';
+}
+function ictQAfter(S){
+ const i=S.ictQ;let out='';
+ if(i.colangite.includes('Febre com calafrios trepidantes (Tríade de Charcot)')||i.colangite.includes('Hipotensão ou choque associado (Pêntade de Reynolds)')){
+  out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ALERTA: SUSPEITA DE COLANGITE AGUDA OBSTRUTIVA</strong> — Antibioticoterapia venosa empírica de amplo espectro imediata (ex: Ceftriaxona + Metronidazol ou Piperacilina-Tazobactam) + descompressão biliar urgente (CPRE ou drenagem percutânea/cirúrgica).</div>`;
+ }
+ if(i.crono.includes('Início hiperagudo (< 7 dias) em paciente sem hepatopatia prévia (suspeita de IHA)')){
+  out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>SUSPEITA DE INSUFICIÊNCIA HEPÁTICA AGUDA (IHA)</strong> — Dosar coagulograma (INR), função renal e transaminases imediatamente. Vigilância rigorosa de encefalopatia e edema cerebral. Contatar centro de transplante hepático precoce se INR > 1,5.</div>`;
+ }
+ out+=`<div style="margin-top:8px"><label>Tempo de evolução da icterícia</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 5 dias, 2 semanas"></div>`;
+ return out;
+}
+
+registerQx('Icterícia',{
+ anamnese:{
+  sigla:'ictQ',
+  blocks:[
+   {key:'crono',label:'Cronologia da Instalação',type:'radio',options:ICT_CRONO,autoOpenNext:'colestase'},
+   {key:'colestase',label:'Sinais de Síndrome Colestática',type:'tags',options:ICT_COLESTASE,autoOpenNext:'gravidade'},
+   {key:'gravidade',label:'Rastreio de Encefalopatia e Falência Hepática',type:'tags',options:ICT_GRAVIDADE,autoOpenNext:'colangite'},
+   {key:'colangite',label:'Rastreio de Colangite Aguda (Tríade de Charcot / Reynolds)',type:'tags',options:ICT_COLANGITE,autoOpenNext:'toxicos'},
+   {key:'toxicos',label:'Exposição a Hepatotoxinas e Antecedentes',type:'tags',options:ICT_TOXICOS}
+  ],
+  after:ictQAfter
+ },
+ hda:ictQHda
+});
+
+// ─── Vertigem ──────────────────────────────────────────────────────────────
+const VER_TIPO=['Vertigem rotatória verdadeira (sensação nítida de ambiente ou corpo rodando)','Desequilíbrio puro da marcha sem rotação','Sensação pré-sincopal de desmaio / escurecimento visual ao ortostatismo','Tontura inespecífica / flutuação'];
+const VER_DURACAO=['Crises curtas em segundos desencadeadas por movimentação cefálica (padrão VPPB)','Crises recorrentes de horas associadas a hipoacusia/zumbido (Ménière)','Quadro contínuo incapacitante há horas/dias com náusea intensa (neurite vs AVC cerebelar)'];
+const VER_REDFLAGS=['Ataxia de tronco severa (incapaz de sentar-se ou deambular sem apoio)','Diplopia aguda','Disartria / fala arrastada','Disfagia aguda','Assimetria facial / paresia de hemiface','Cefaleia occipital súbita intensa','Ausência de déficits neurológicos focais de fossa posterior'];
+const VER_AUDITIVO=['Hipoacusia unilateral súbita associada','Plenitude auricular / zumbido intenso','Náuseas e vômitos repetidos incapacitantes','Sem queixas auditivas'];
+
+function verHda(S){
+ const v=S.ver;const parts=[];
+ if(v.tipo)parts.push(`caracterizada por ${v.tipo.toLowerCase()}`);
+ if(v.duracao)parts.push(`de curso temporal ${v.duracao.toLowerCase()}`);
+ if(v.redflags.length)parts.push(`rastreio de sinais de fossa posterior/SNC: ${v.redflags.join(', ').toLowerCase()}`);
+ if(v.auditivo.length)parts.push(`comemorativos associados: ${v.auditivo.join(', ').toLowerCase()}`);
+ return parts.length?`, ${parts.join('; ')}`:'';
+}
+function verAfter(S){
+ const v=S.ver;let out='';
+ if(v.redflags.some(r=>!r.includes('Ausência'))){
+  out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ALERTA DE FOSSA POSTERIOR / AVC CEREBELAR OU DE TRONCO</strong> — Sinais de alarme centrais presentes. Realizar protocolo HINTS beira-leito ou Neuroimagem urgente (TC de crânio com angio arterial / Ressonância com Difusão). Não liberar o paciente sem descartar evento isquêmico/hemorrágico de fossa posterior.</div>`;
+ }
+ out+=`<div style="margin-top:8px"><label>Tempo de início da vertigem</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 2 horas, 1 dia"></div>`;
+ return out;
+}
+
+registerQx('Vertigem',{
+ anamnese:{
+  sigla:'ver',
+  blocks:[
+   {key:'tipo',label:'Caracterização da Tontura',type:'radio',options:VER_TIPO,autoOpenNext:'duracao'},
+   {key:'duracao',label:'Temporalidade e Desencadeantes',type:'radio',options:VER_DURACAO,autoOpenNext:'redflags'},
+   {key:'redflags',label:'Sinais de Alarme de Tronco / Cerebelo (Fossa Posterior)',type:'tags',options:VER_REDFLAGS,autoOpenNext:'auditivo'},
+   {key:'auditivo',label:'Sintomas Auditivos e Neurovegetativos',type:'tags',options:VER_AUDITIVO}
+  ],
+  after:verAfter
+ },
+ hda:verHda
+});
+
+// ─── Palpitações ───────────────────────────────────────────────────────────
+const PAL_RITMO=['Batimentos taquicárdicos muito rápidos e regulares ("como motor acelerado")','Batimentos completamente irregulares e descompassados ("pulos no peito")','Sensação de extra-sístoles isoladas ("paradas momentâneas seguidas de pancada forte")'];
+const PAL_INICIO=['Início e término súbitos e paroxísticos ("em liga-desliga")','Início e término graduais com aceleração progressiva'];
+const PAL_INSTAB=['Síncope franca durante as palpitações','Pré-síncope / lipotimia / tontura intensa','Dor precordial anginosa concomitante','Dispneia aguda com sensação de asfixia','Ausência de sinais de instabilidade hemodinâmica'];
+const PAL_GATILHOS=['Uso excessivo de cafeína / energéticos / estimulantes','Consumo abusivo de álcool nas horas precedentes','Uso de drogas ilícitas (cocaína / anfetaminas)','Histórico de cardiopatia arritmogênica ou cirurgia prévia','Histórico familiar de arritmia grave / morte súbita precoce','Sem fatores desencadeantes identificados'];
+
+function palQHda(S){
+ const p=S.palQ;const parts=[];
+ if(p.ritmo)parts.push(`percebidas como ${p.ritmo.toLowerCase()}`);
+ if(p.inicio)parts.push(`de início e término ${p.inicio.toLowerCase()}`);
+ if(p.instab.length)parts.push(`rastreio de instabilidade: ${p.instab.join(', ').toLowerCase()}`);
+ if(p.gatilhos.length)parts.push(`gatilhos e histórico: ${p.gatilhos.join(', ').toLowerCase()}`);
+ return parts.length?`, ${parts.join('; ')}`:'';
+}
+function palQAfter(S){
+ const p=S.palQ;let out='';
+ if(p.instab.some(i=>!i.includes('Ausência'))){
+  out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>SINAIS DE INSTABILIDADE HEMODINÂMICA EM ARRITMIA</strong> — Monitorização multiparamétrica imediata, oxigênio sob demanda, acesso venoso calibroso e ECG de 12 derivações. Se instabilidade mantida (hipotensão, angina, dispneia com congestão, síncope): preparar cardioversão elétrica sincronizada imediata.</div>`;
+ }
+ out+=`<div style="margin-top:8px"><label>Duração do episódio de palpitações</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 30 min, há 2 horas"></div>`;
+ return out;
+}
+
+registerQx('Palpitações',{
+ anamnese:{
+  sigla:'palQ',
+  blocks:[
+   {key:'ritmo',label:'Padrão do Ritmo Percebido',type:'radio',options:PAL_RITMO,autoOpenNext:'inicio'},
+   {key:'inicio',label:'Forma de Início e Término',type:'radio',options:PAL_INICIO,autoOpenNext:'instab'},
+   {key:'instab',label:'Sinais de Instabilidade Hemodinâmica',type:'tags',options:PAL_INSTAB,autoOpenNext:'gatilhos'},
+   {key:'gatilhos',label:'Gatilhos Adrenérgicos e Fatores de Risco',type:'tags',options:PAL_GATILHOS}
+  ],
+  after:palQAfter
+ },
+ hda:palQHda
+});
+
+// ─── Edema / Dor em MMII ───────────────────────────────────────────────────
+const EDM_LAT=['Unilateral agudo em membro inferior direito (MID)','Unilateral agudo em membro inferior esquerdo (MIE)','Bilateral simétrico em ambos os membros','Bilateral assimétrico com predomínio unilateral'];
+const EDM_FLOGOSE=['Dor e empastamento muscular da panturrilha à palpação profunda','Calor local e eritema cutâneo difuso mal delimitado','Edema frio depressível com cacifo evidente sem rubor','Cordão venoso superficial palpável e endurecido'];
+const EDM_WELLS=['Cirurgia de grande porte realizada nas últimas 12 semanas','Imobilização no leito > 3 dias ou viagem aérea recente prolongada','Neoplasia ativa em tratamento nos últimos 6 meses','Histórico pessoal prévio de TVP ou TEP','Uso de terapia de reposição hormonal ou anticoncepcional oral','Sem fatores de risco para tromboembolismo venoso'];
+const EDM_TORACICOS=['Dispneia súbita associada','Dor torácica de caráter pleurítico (ventilatório-dependente)','Tosse com expectoração hemoptoica','Ausência de queixas respiratórias ou torácicas (nega sinais de TEP)'];
+
+function edmHda(S){
+ const e=S.edm;const parts=[];
+ if(e.lat)parts.push(`apresentando padrão ${e.lat.toLowerCase()}`);
+ if(e.flogose.length)parts.push(`características locais: ${e.flogose.join(', ').toLowerCase()}`);
+ if(e.wells.length)parts.push(`fatores de risco para TEV: ${e.wells.join(', ').toLowerCase()}`);
+ if(e.toracicos.length)parts.push(`avaliação respiratória/TEP: ${e.toracicos.join(', ').toLowerCase()}`);
+ return parts.length?`, ${parts.join('; ')}`:'';
+}
+function edmAfter(S){
+ const e=S.edm;let out='';
+ if(e.lat.startsWith('Unilateral') && (e.wells.some(w=>!w.includes('Sem fatores')) || e.flogose.includes('Dor e empastamento muscular da panturrilha à palpação profunda'))){
+  out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ALERTA DE SUSPEITA DE TROMBOSE VENOSA PROFUNDA (TVP)</strong> — Solicitar Ultrassonografia Doppler venosa de membros inferiores de urgência ou D-Dímero conforme escore de probabilidade de Wells. Se sintomas torácicos associados, investigar TEP imediatamente (AngioTC de tórax).</div>`;
+ }
+ out+=`<div style="margin-top:8px"><label>Tempo de evolução do edema / dor</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 3 dias, há 1 semana"></div>`;
+ return out;
+}
+
+registerQx('Edema / Dor em MMII',{
+ anamnese:{
+  sigla:'edm',
+  blocks:[
+   {key:'lat',label:'Lateralidade e Simetria',type:'radio',options:EDM_LAT,autoOpenNext:'flogose'},
+   {key:'flogose',label:'Sinais Locais, Flogose e Palpação',type:'tags',options:EDM_FLOGOSE,autoOpenNext:'wells'},
+   {key:'wells',label:'Fatores de Risco de TEV (Critérios de Wells)',type:'tags',options:EDM_WELLS,autoOpenNext:'toracicos'},
+   {key:'toracicos',label:'Sintomas Torácicos e Suspeita de TEP',type:'tags',options:EDM_TORACICOS}
+  ],
+  after:edmAfter
+ },
+ hda:edmHda
+});
+
 function tog(id){const b=document.getElementById(id);if(b)b.classList.toggle('open');}
 function cyc(k){if(!S.chk[k])S.chk[k]='done';else delete S.chk[k];render();}
 function selSub(id){S.subsind=S.subsind===id?null:id;render();}
@@ -7406,8 +7902,9 @@ function toggleDecisionDrawer(){
 }
 
 function setDecisionTab(tab){
+ if(tab === 'conflitos') tab = 'perolas';
  _activeDecisionTab = tab;
- ['metas','perolas','conflitos'].forEach(t=>{
+ ['metas','perolas','doses'].forEach(t=>{
   const btn = document.getElementById('decTab' + t.charAt(0).toUpperCase() + t.slice(1));
   if(btn) btn.classList.toggle('active', t === tab);
  });
@@ -7430,36 +7927,22 @@ function updateDecisionConflictBadge(){
 function renderDecisionSupportContent(tab){
  const body = document.getElementById('decisionDrawerBody');
  if(!body) return;
+ if(tab === 'conflitos') tab = 'perolas';
  const sid = S.sind;
  const sub = S.subsind;
 
- if(tab === 'conflitos'){
-  const alerts = getConflictAlerts(S);
-  if(!alerts.length){
+ if(tab === 'metas'){
+  if(!sid){
    body.innerHTML = `
-    <div style="text-align:center;padding:40px 16px;color:var(--color-text-secondary)">
-     <i class="ti ti-shield-check" style="font-size:42px;color:#059669;display:block;margin-bottom:10px" aria-hidden="true"></i>
-     <strong style="display:block;font-size:15px;color:var(--color-text-primary);margin-bottom:6px">Nenhum Conflito Crítico Detectado</strong>
-     <p style="font-size:13px;line-height:1.5;margin:0">As condutas e hipóteses diagnósticas ativas não apresentam contraindicações farmacológicas cruzadas.</p>
+    <div style="text-align:center;padding:48px 16px;color:var(--color-text-secondary)">
+     <i class="ti ti-target" style="font-size:42px;color:#9ca3af;display:block;margin-bottom:12px" aria-hidden="true"></i>
+     <strong style="display:block;font-size:15px;color:var(--color-text-primary);margin-bottom:6px">Nenhuma Síndrome Selecionada</strong>
+     <p style="font-size:13px;line-height:1.5;margin:0">Selecione uma síndrome clínica no <strong>Passo 4 (Conduta & Síndromes)</strong> para visualizar as metas hemodinâmicas e fisiológicas direcionadas para este paciente.</p>
     </div>
    `;
    return;
   }
-  body.innerHTML = alerts.map(a => `
-   <div class="decision-card" style="border-left:4px solid #dc2626;background:#fef2f2">
-    <div class="decision-card-title" style="color:#991b1b">
-     <i class="ti ti-alert-triangle" style="font-size:18px;color:#dc2626" aria-hidden="true"></i>
-     ${esc(a.title)}
-    </div>
-    <div style="font-size:13px;line-height:1.55;color:#374151">
-     ${esc(a.text)}
-    </div>
-   </div>
-  `).join('');
-  return;
- }
 
- if(tab === 'metas'){
   let metasHtml = `
    <div class="decision-card">
     <div class="decision-card-title">
@@ -7468,7 +7951,7 @@ function renderDecisionSupportContent(tab){
     </div>
     <div class="decision-meta-item">
      <span class="decision-meta-bullet"></span>
-     <div><strong>Pressão Arterial Média (PAM):</strong> Alvo &ge; 65 mmHg (ou 70–75 mmHg em hipertensos prévios para preservar taxa de filtração renal).</div>
+     <div><strong>Pressão Arterial Média (PAM):</strong> Alvo &ge; 65 mmHg (ou 70–75 mmHg em hipertensos crônicos para preservar taxa de filtração renal).</div>
     </div>
     <div class="decision-meta-item">
      <span class="decision-meta-bullet"></span>
@@ -7476,7 +7959,7 @@ function renderDecisionSupportContent(tab){
     </div>
     <div class="decision-meta-item">
      <span class="decision-meta-bullet"></span>
-     <div><strong>Débito Urinário:</strong> &ge; 0,5 mL/kg/h em sonda vesical após estabilização inicial.</div>
+     <div><strong>Débito Urinário:</strong> &ge; 0,5 mL/kg/h em cateter vesical após estabilização inicial.</div>
     </div>
     <div class="decision-meta-item">
      <span class="decision-meta-bullet"></span>
@@ -7498,7 +7981,7 @@ function renderDecisionSupportContent(tab){
      </div>
      <div class="decision-meta-item">
       <span class="decision-meta-bullet" style="background:#dc2626"></span>
-      <div><strong>Frequência Cardíaca:</strong> 60–80 bpm se estável e sem IC descompensada.</div>
+      <div><strong>Frequência Cardíaca:</strong> 60–80 bpm se estável e sem insuficiência cardíaca descompensada.</div>
      </div>
      <div class="decision-meta-item">
       <span class="decision-meta-bullet" style="background:#dc2626"></span>
@@ -7531,7 +8014,7 @@ function renderDecisionSupportContent(tab){
      </div>
      <div class="decision-meta-item">
       <span class="decision-meta-bullet" style="background:#7c3aed"></span>
-      <div><strong>Controle Térmico Estrito:</strong> Normotermia (&lt; 37,5°C). Febrícula agrava isquemia secundária.</div>
+      <div><strong>Controle Térmico Estrito:</strong> Normotermia (&lt; 37,5°C). Febrícula agrava isquemia e lesão secundária.</div>
      </div>
      <div class="decision-meta-item">
       <span class="decision-meta-bullet" style="background:#7c3aed"></span>
@@ -7554,6 +8037,140 @@ function renderDecisionSupportContent(tab){
       <span class="decision-meta-bullet" style="background:#d97706"></span>
       <div><strong>Estratégia Transfusional Restritiva:</strong> Gatilho em Hb &lt; 7,0 g/dL (alvo 7–8 g/dL), exceto coronariopatia aguda instável.</div>
      </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#d97706"></span>
+      <div><strong>Vasopressor Precoce:</strong> Noradrenalina se hipotensão grave/refratária a alíquotas iniciais de cristaloide.</div>
+     </div>
+    </div>
+   `;
+  } else if(sid === 'dsp' || sid === 'tep'){
+   metasHtml += `
+    <div class="decision-card" style="border-top:3px solid #0284c7">
+     <div class="decision-card-title" style="color:#0369a1">
+      <i class="ti ti-lungs" style="color:#0284c7" aria-hidden="true"></i>
+      Metas na Síndrome Dispneica & Insuficiência Respiratória
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#0284c7"></span>
+      <div><strong>SpO₂ em DPOC / Retentor Crônico:</strong> Alvo 88–92% (evitar hiperóxia que induz perda de vasoconstrição hipóxica e narcose por CO₂).</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#0284c7"></span>
+      <div><strong>SpO₂ em EAP / TEP / Pneumonia:</strong> Alvo 92–96% sob oxigenoterapia titulada.</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#0284c7"></span>
+      <div><strong>EAP Hipertensivo:</strong> Redução rápida de 20–25% da PAM na 1ª hora com Nitroglicerina IV para redução de pós-carga.</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#0284c7"></span>
+      <div><strong>Ventilação Mecânica Protetora:</strong> Volume corrente 6 mL/kg de peso predito, Pressão de Platô &le; 30 cmH₂O e Driving Pressure &le; 15 cmH₂O.</div>
+     </div>
+    </div>
+   `;
+  } else if(sid === 'con'){
+   metasHtml += `
+    <div class="decision-card" style="border-top:3px solid #8b5cf6">
+     <div class="decision-card-title" style="color:#6d28d9">
+      <i class="ti ti-bolt" style="color:#8b5cf6" aria-hidden="true"></i>
+      Metas no Status Epiléptico & Crises
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#8b5cf6"></span>
+      <div><strong>Tempo t1 (5 min):</strong> Benzodiazepínico IV precoce (Diazepam 10 mg IV ou Midazolam 10 mg IM/IV).</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#8b5cf6"></span>
+      <div><strong>Tempo t2 (20–30 min):</strong> Anticonvulsivante de 2ª linha em dose plena (Levetiracetam 60 mg/kg ou Fenitoína 20 mg/kg).</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#8b5cf6"></span>
+      <div><strong>Glicemia & Temperatura:</strong> Corrigir hipoglicemia imediata (> 70 mg/dL) e evitar hipertermia.</div>
+     </div>
+    </div>
+   `;
+  } else if(sid === 'pal' || sid === 'sinc'){
+   metasHtml += `
+    <div class="decision-card" style="border-top:3px solid #f59e0b">
+     <div class="decision-card-title" style="color:#b45309">
+      <i class="ti ti-heartbeat" style="color:#f59e0b" aria-hidden="true"></i>
+      Metas nas Arritmias & Síncope
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#f59e0b"></span>
+      <div><strong>Critérios de Instabilidade (Cardioversão Elétrica):</strong> Hipotensão/choque, dor anginosa aguda, dispneia com congestão pulmonar, rebaixamento de consciência.</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#f59e0b"></span>
+      <div><strong>Eletrólitos Alvo:</strong> Potássio &ge; 4,0 mEq/L e Magnésio &ge; 2,0 mg/dL para prevenção de refratariedade arrítmica.</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#f59e0b"></span>
+      <div><strong>QTc de Segurança:</strong> &lt; 500 ms antes de infundir fármacos bloqueadores de canais de potássio.</div>
+     </div>
+    </div>
+   `;
+  } else if(sid === 'hdg'){
+   metasHtml += `
+    <div class="decision-card" style="border-top:3px solid #e11d48">
+     <div class="decision-card-title" style="color:#be123c">
+      <i class="ti ti-droplet" style="color:#e11d48" aria-hidden="true"></i>
+      Metas na Hemorragia Digestiva Alta (HDA)
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#e11d48"></span>
+      <div><strong>Ressuscitação Permissiva:</strong> PAM alvo de 65 mmHg (evitar sobrecarga volêmica que desestabiliza coágulo e agrava sangramento varicoso).</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#e11d48"></span>
+      <div><strong>Gatilho Transfusional Restritivo:</strong> Concentrado de hemácias se Hb &lt; 7,0 g/dL (alvo 7–8 g/dL).</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#e11d48"></span>
+      <div><strong>Tempo para EDA:</strong> &lt; 12h se suspeita de sangramento varicoso instável; &lt; 24h em sangramento não varicoso após estabilização inicial.</div>
+     </div>
+    </div>
+   `;
+  } else if(sid === 'ict'){
+   metasHtml += `
+    <div class="decision-card" style="border-top:3px solid #ca8a04">
+     <div class="decision-card-title" style="color:#a16207">
+      <i class="ti ti-virus" style="color:#ca8a04" aria-hidden="true"></i>
+      Metas na Insuficiência Hepática Aguda & Colangite
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#ca8a04"></span>
+      <div><strong>Glicemia Mínima:</strong> Manter &gt; 100 mg/dL com vigilância horária (perda da gliconeogênese).</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#ca8a04"></span>
+      <div><strong>Sódio Sérico Estrito:</strong> 140–145 mEq/L (hiponatremia agrava rapidamente o edema cerebral e risco de herniação).</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#ca8a04"></span>
+      <div><strong>Colangite Aguda:</strong> Descompressão biliar urgente (CPRE ou drenagem) se Tríade de Charcot ou sepse biliar.</div>
+     </div>
+    </div>
+   `;
+  } else if(sid === 'abd'){
+   metasHtml += `
+    <div class="decision-card" style="border-top:3px solid #16a34a">
+     <div class="decision-card-title" style="color:#15803d">
+      <i class="ti ti-shield" style="color:#16a34a" aria-hidden="true"></i>
+      Metas na Síndrome Abdominal Aguda
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#16a34a"></span>
+      <div><strong>Ressuscitação com Cristaloide Balanceado:</strong> Guiada por débito urinário &ge; 0,5 mL/kg/h e perfusão periférica.</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#16a34a"></span>
+      <div><strong>Tempo Porta-Antibiótico na Peritonite:</strong> Iniciar em &le; 1 hora da suspeita clínica.</div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#16a34a"></span>
+      <div><strong>Analgesia Multimodal:</strong> Controle da dor sem atrasar avaliação do cirurgião geral.</div>
+     </div>
     </div>
    `;
   }
@@ -7563,7 +8180,26 @@ function renderDecisionSupportContent(tab){
  }
 
  if(tab === 'perolas'){
-  body.innerHTML = `
+  const alerts = getConflictAlerts(S);
+  let perolasHtml = '';
+
+  if(alerts.length){
+   perolasHtml += `
+    <div class="decision-card" style="border-left:4px solid #dc2626;background:#fef2f2">
+     <div class="decision-card-title" style="color:#991b1b">
+      <i class="ti ti-alert-triangle" style="font-size:18px;color:#dc2626" aria-hidden="true"></i>
+      Conflitos Farmacológicos Ativos Detectados (${alerts.length})
+     </div>
+     ${alerts.map(a => `
+      <div style="margin-top:6px;padding-top:6px;border-top:1px dashed #fca5a5;font-size:12.5px;line-height:1.55;color:#374151">
+       <strong style="color:#991b1b">${esc(a.title)}:</strong> ${esc(a.text)}
+      </div>
+     `).join('')}
+    </div>
+   `;
+  }
+
+  perolasHtml += `
    <div class="decision-card">
     <div class="decision-card-title">
      <i class="ti ti-bulb" style="color:#d97706" aria-hidden="true"></i>
@@ -7571,7 +8207,7 @@ function renderDecisionSupportContent(tab){
     </div>
     <div class="decision-meta-item">
      <span class="decision-meta-bullet"></span>
-     <div><strong>Coma Não-Traumático x Intubação:</strong> Glasgow &le; 8 isolado NÃO é indicação mandatória cega de IOT se a via aérea estiver pérvia e protegida (ex: pós-ictal transitório, hipoglicemia rápida revertida, sedação sob vigilância).</div>
+     <div><strong>Coma Não-Traumático x Intubação:</strong> Glasgow &le; 8 isolado NÃO é indicação mandatória cega de IOT se a via aérea estiver pérvia e protegida (ex: pós-ictal transitório, hipoglicemia revertida, sedação sob vigilância).</div>
     </div>
     <div class="decision-meta-item">
      <span class="decision-meta-bullet"></span>
@@ -7587,11 +8223,117 @@ function renderDecisionSupportContent(tab){
     </div>
     <div class="decision-meta-item">
      <span class="decision-meta-bullet"></span>
-     <div><strong>Simpaticomiméticos (Cocaína):</strong> A droga de 1ª linha para controle hiperadrenérgico são Benzodiazepínicos IV. Evitar betabloqueadores puros (risco de vasoespasmo e hipertensão paradoxal).</div>
+     <div><strong>Simpaticomiméticos (Cocaína):</strong> A droga de 1ª linha para controle hiperadrenérgico são Benzodiazepínicos IV. Evitar betabloqueadores puros (risco de vasoespasmo coronariano e hipertensão paradoxal).</div>
     </div>
     <div class="decision-meta-item">
      <span class="decision-meta-bullet"></span>
      <div><strong>Mulheres em Idade Fértil (Dor Abdominal):</strong> Teste de gravidez (Beta-hCG) é obrigatório entre 12 e 55 anos para descartar prenhez ectópica rota.</div>
+    </div>
+   </div>
+
+   <div class="decision-card" style="border:1px dashed #cbd5e1;background:var(--color-background-primary)">
+    <div style="font-size:12px;color:var(--color-text-secondary);display:flex;align-items:center;gap:6px">
+     <i class="ti ti-info-circle" style="color:#64748b" aria-hidden="true"></i>
+     <span><strong>Pendências em desenvolvimento:</strong> "O que estamos procurando" em cada síndrome e checklists direcionados (ex.: protocolo HINTS e algoritmo STANDING para vertigem).</span>
+    </div>
+   </div>
+  `;
+
+  body.innerHTML = perolasHtml;
+  return;
+ }
+
+ if(tab === 'doses'){
+  body.innerHTML = `
+   <div class="decision-card" style="border-top:3px solid #dc2626">
+    <div class="decision-card-title" style="color:#b91c1c">
+     <i class="ti ti-activity" style="color:#dc2626" aria-hidden="true"></i>
+     Drogas Vasoativas — Diluições & Titulações Práticas
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet" style="background:#dc2626"></span>
+     <div>
+      <strong>Adrenalina Contínua (Solução Prática de Infusão):</strong><br>
+      • <strong>Diluição:</strong> 6 mg (6 ampolas de 1 mg/mL) em 100 mL de SF 0,9% (ou SG 5%).<br>
+      • <strong>Concentração:</strong> 60 mcg/mL.<br>
+      • <strong>Regra de Ouro Beira-Leito:</strong> <span style="color:#b91c1c;font-weight:600">1 mL/h na BIC = 1 mcg/min</span>.<br>
+      • <strong>Titulação:</strong> Iniciar em 1 a 2 mL/h (1 a 2 mcg/min) e titular a cada 2–3 min conforme PAM e perfusão (faixa usual: 1 a 20 mcg/min).
+     </div>
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet" style="background:#dc2626"></span>
+     <div>
+      <strong>Noradrenalina:</strong><br>
+      • Diluição: 4 ampolas (16 mg) em 234 mL SG 5% (conc: 64 mcg/mL).<br>
+      • Dose: 0,05 a 2 mcg/kg/min (titular para PAM &ge; 65 mmHg).
+     </div>
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet" style="background:#dc2626"></span>
+     <div>
+      <strong>Dobutamina:</strong><br>
+      • Diluição: 1 ampola (250 mg) em 230 mL SG 5% (conc: 1.000 mcg/mL).<br>
+      • Dose: 2,5 a 20 mcg/kg/min (inotrópico no choque cardiogênico / disfunção miocárdica).
+     </div>
+    </div>
+   </div>
+
+   <div class="decision-card" style="border-top:3px solid #059669">
+    <div class="decision-card-title" style="color:#047857">
+     <i class="ti ti-shield-check" style="color:#059669" aria-hidden="true"></i>
+     Antídotos & Reversão Específica na Emergência
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet" style="background:#059669"></span>
+     <div>
+      <strong>Naloxona (Intoxicação por Opioides):</strong><br>
+      • Dose: 0,04 a 0,4 mg IV a cada 2–3 min.<br>
+      • <strong>Alvo terapêutico:</strong> Recuperação da FR (&gt; 12 irpm) e proteção do drive ventilatório; <em>NÃO objetivar despertar completo</em> para evitar abstinência aguda severa.
+     </div>
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet" style="background:#059669"></span>
+     <div>
+      <strong>Bicarbonato de Sódio 8,4% (Bloqueadores de Canais de Na+ / Tricíclicos):</strong><br>
+      • Indicação: QRS &gt; 100 ms, arritmias ventriculares ou hipotensão por tricíclicos.<br>
+      • Dose: 1 a 2 mEq/kg (1 a 2 mL/kg) em bólus IV rápido. Alvo: estreitamento do QRS e pH sérico 7,50–7,55.
+     </div>
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet" style="background:#059669"></span>
+     <div>
+      <strong>Emulsão Lipídica 20% (LAST — Intoxicação por Anestésicos Locais):</strong><br>
+      • Bólus inicial: 1,5 mL/kg IV em 1 minuto.<br>
+      • Infusão contínua: 0,25 mL/kg/min.<br>
+      • Se colapso mantido: repetir bólus (máx 3 doses) e elevar infusão para 0,5 mL/kg/min (dose máxima acumulada: 10–12 mL/kg em 30 min).
+     </div>
+    </div>
+   </div>
+
+   <div class="decision-card" style="border-top:3px solid #7c3aed">
+    <div class="decision-card-title" style="color:#6d28d9">
+     <i class="ti ti-heartbeat" style="color:#7c3aed" aria-hidden="true"></i>
+     Causas Reversíveis de PCR — Abordagem Fisiológica Craniocaudal (A-B-C-D-E)
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet" style="background:#7c3aed"></span>
+     <div><strong>A — Via Aérea:</strong> Hipóxia hipoxêmica imediata, obstrução de via aérea alta por corpo estranho, secreções copiosas, sangue ou angioedema/laringoespasmo.</div>
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet" style="background:#7c3aed"></span>
+     <div><strong>B — Ventilação:</strong> Hipóxia alveolar, Insuficiência Respiratória Aguda (IRpA) grave isolada, Pneumotórax hipertensivo (descompressão torácica imediata), AutoPEEP severo com hiperinsuflação dinâmica e restrição venosa em asma/DPOC.</div>
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet" style="background:#7c3aed"></span>
+     <div><strong>C — Cardiovascular:</strong> Tromboembolismo Pulmonar (TEP maciço), Tamponamento cardíaco, Infarto Agudo do Miocárdio (SCA extensa), Efeitos hemodinâmicos da PEEP excessiva (queda crítica do retorno venoso), Arritmias ventriculares primárias ou distúrbios de condução que degeneram (WPW pré-excitado, BAVT, canalopatias), Choque circulatório de todos os tipos (preponderantemente hipovolêmico-hemorrágico como causa reversível imediata por reposição).</div>
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet" style="background:#7c3aed"></span>
+     <div><strong>D — Catástrofes Neurológicas:</strong> Eventos encefálicos graves cursando com PCR súbita (AVCs muito extensos, Hemorragia Subaracnóidea maciça - HSA, epilepsia refratária/status convulso prolongado), Hipoglicemia grave despercebida.</div>
+    </div>
+    <div class="decision-meta-item">
+     <span class="decision-meta-bullet" style="background:#7c3aed"></span>
+     <div><strong>E — Causas Externas e Metabólicas:</strong> Hipercalemia grave (estabilizar membrana com Gluconato de Cálcio), Acidose metabólica severa, Intoxicações exógenas, Hipotermia acidental profunda.</div>
     </div>
    </div>
   `;
@@ -7847,7 +8589,7 @@ function buildHDA(){
  if(S.tempo)hda+=`, com início há ${S.tempo}`;
  if(QX_HDA[S.queixa])hda+=QX_HDA[S.queixa](S);
  else if(S.caract.length)hda+=`. ${S.caract.join(', ').toLowerCase()}`;
- hda+='.';
+ hda = hda.replace(/[;,\.\s]+$/, '') + '.';
  return `${_sep()}\nHDA\n${hda}`;
 }
 function buildAntecedentes(){
