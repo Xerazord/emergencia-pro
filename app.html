@@ -2014,6 +2014,16 @@ const S={step:0,nome:'',idade:30,sexo:'',orig:'Demanda Espontânea',origInst:'',
  edmOpen:{lat:true},
  sincCalgary:{bivent:false,palp:false,esforco:false,supina:false,prod:false,orto:false,situac:false},
  sincCanadian:{histCard:false,paEmerg:false,tropo:false,ecgAnorm:false,dxEmerg:''},
+ wellsTep:{tvp:false,alt:false,fc:false,imob:false,prev:false,hemo:false,neo:false,evaluated:false},
+ wellsTvp:{neo:false,paral:false,imob:false,dor:false,edemaMembro:false,assimetria:false,cacifo:false,colaterais:false,prev:false,altMenos:false,evaluated:false},
+ nihss:{loc:0,qLoc:0,cLoc:0,olhar:0,campo:0,face:0,bracoE:0,bracoD:0,pernaE:0,pernaD:0,ataxia:0,sensib:0,ling:0,disart:0,extin:0,evaluated:false},
+ alvarado:{mig:false,anox:false,nau:false,dorFid:false,descomp:false,febre:false,leuco:false,desvio:false,evaluated:false},
+ tokyo:{locais:false,sist:false,img:false,disfunc:false,grau2:false,evaluated:false},
+ psiPort:{asilo:false,neo:false,hepato:false,icc:false,dcv:false,renal:false,rnc:false,fr:false,pas:false,temp:false,fc:false,ph:false,ureia:false,na:false,gli:false,ht:false,pao2:false,derrame:false,evaluated:false},
+ mascc:{sintomas:'5',pa:false,dpoc:false,solido:false,desid:false,amb:false,evaluated:false},
+ trmRules:{cct:{gcs:false,base:false,afund:false,vomit:false,idoso:false,amnesia:false,energia:false,evaluated:false}, cspine:{idoso:false,mecanismo:false,parestesia:false,baixoRisco:false,rotacao:false,evaluated:false}, nexus:{dor:false,focal:false,gcs15:false,intox:false,distracao:false,evaluated:false}},
+ childPugh:{bili:'1',alb:'1',inr:'1',ascite:'1',encef:'1'},
+ meld:{bili:'',cr:'',inr:'',na:'',dialise:false},
  abcOpen:{a:true},
  relMode:'full',
  syndromeGridCollapsed:false,
@@ -6166,12 +6176,21 @@ function cefAlarmBadge(){
  return gravBadge(level,`Cefaleia com ${n} ${n===1?'sinal':'sinais'} de alarme`);
 }
 function cefHda(S){
- const c=S.cef;const parts=[];
- if(c.inicio)parts.push(`de início ${c.inicio.toLowerCase()}`);
- if(c.loc.length)parts.push(`localizada em ${c.loc.join(', ').toLowerCase()}`);
- if(c.qual.length)parts.push(`em caráter ${c.qual.join(', ').toLowerCase()}`);
- if(c.modif.length)parts.push(c.modif.join(', ').toLowerCase());
- if(c.precip.length)parts.push(`com fatores precipitantes ${c.precip.join(', ').toLowerCase()}`);
+ const c=S.cef;
+ if(!c.inicio&&!c.loc.length&&!c.qual.length&&!c.modif.length&&!c.precip.length&&!c.assoc.length&&!c.alarm.length)return '';
+ let out='';
+ if(c.inicio) out+=`. Cefaleia de instalação ${c.inicio.toLowerCase()}`;
+ if(c.loc.length||c.qual.length){
+  const l=c.loc.length?`localizada em ${c.loc.join(' e ').toLowerCase()}`:'';
+  const q=c.qual.length?`de caráter ${c.qual.join(' e ').toLowerCase()}`:'';
+  out+=`. Dor ${[l,q].filter(Boolean).join(', ')}`;
+ }
+ if(c.modif.length||c.precip.length){
+  const m=[];
+  if(c.precip.length) m.push(`desencadeada por ${c.precip.join(', ').toLowerCase()}`);
+  if(c.modif.length) m.push(`fatores de alívio/piora: ${c.modif.join('; ').toLowerCase()}`);
+  out+=`. ${m.join('. ')}`;
+ }
  if(c.assoc.length){
   let s=c.assoc.join(', ').toLowerCase();
   const d=[];
@@ -6180,10 +6199,10 @@ function cefHda(S){
   if(c.descr.conv)d.push(`convulsão: ${c.descr.conv}`);
   if(c.descr.sinc)d.push(`síncope: ${c.descr.sinc}`);
   if(d.length)s+=` (${d.join('; ')})`;
-  parts.push(`associada a ${s}`);
+  out+=`. Sintomas acompanhantes: ${s}`;
  }
- if(c.alarm.length)parts.push(`com sinais de alarme: ${c.alarm.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join(', ')}`:'';
+ if(c.alarm.length) out+=`. Rastreio de sinais de alerta (red flags): ${c.alarm.join(', ').toLowerCase()}`;
+ return out;
 }
 function cefHpp(S){return S.cef.antec.slice();}
 
@@ -6265,21 +6284,24 @@ const DSP_EF_AUS=['MV normal','Estertores crepitantes bilaterais','Estertores un
 const DSP_EF_SINAIS_CV=['Turgência jugular','Galope (B3)','Edema MMII com cacifo','Cianose central','Pulso paradoxal','Sopro cardíaco audível'];
 
 function dspHda(S){
- const d=S.dsp;const parts=[];
- if(d.inicio)parts.push(`de início ${d.inicio.toLowerCase()}`);
+ const d=S.dsp;
+ if(!d.inicio&&!d.padrao.length&&!d.modif.length&&!d.assocCV.length&&!d.assocResp.length&&!d.assocInf.length&&!d.ctx.length)return '';
+ let out='';
+ if(d.inicio) out+=`. Quadro de dispneia de instalação ${d.inicio.toLowerCase()}`;
  if(d.padrao.length){
   const pad=d.padrao.map(p=>{
    const pl=p.toLowerCase();
-   if(pl.startsWith('ortopneia')||pl.startsWith('dispneia')) return `com ${pl}`;
-   return pl;
+   if(pl.startsWith('ortopneia')||pl.startsWith('dispneia')) return pl;
+   return `em padrão de ${pl}`;
   });
-  parts.push(pad.join(', '));
+  out+=`. Manifesta-se com ${pad.join(', ')}`;
  }
- if(d.modif.length)parts.push(`com ${d.modif.join(' e ').toLowerCase()}`);
+ if(d.modif.length) out+=`. Fatores modificadores e alívio postural: ${d.modif.join(' e ').toLowerCase()}`;
  const assoc=[...d.assocCV,...d.assocResp,...d.assocInf];
- if(assoc.length)parts.push(`associada a ${assoc.join(', ').toLowerCase()}`);
- if(d.ctx.length)parts.push(`em contexto de ${d.ctx.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join(', ')}`:'';
+ if(assoc.length) out+=`. Ao interrogatório direcionado, relata ${assoc.join(', ').toLowerCase()}`;
+ if(d.ctx.length) out+=`. Contexto clínico e antecedentes de relevância: ${d.ctx.join(', ').toLowerCase()}`;
+ if(S.wellsTep&&S.wellsTep.evaluated) out+=`. Escore de Wells para TEP calculado em ${wellsTepSc().toFixed(1)} pontos (${wellsTepInterp(wellsTepSc())})`;
+ return out;
 }
 function dspEFText(S){
  if(S.ef!=='crit')return '';
@@ -6292,7 +6314,10 @@ function dspEFText(S){
  return dp.length?`Dispneia — sinais específicos: ${dp.join(' | ')}`:'';
 }
 function dspAfter(S){
- return `<div style="margin-top:6px"><label>Tempo de início</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>`;
+ let out=`<div style="margin-top:6px"><label>Tempo de início</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>`;
+ const wSc=wellsTepSc();
+ out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_wells_tep')"><span style="font-weight:500"><i class="ti ti-calculator"></i> Escore de Wells para TEP (Opcional)</span><span class="sb ${wellsTepBadgeClass(wSc)}">${wSc.toFixed(1)} pts</span></div><div class="sbd" id="sc_wells_tep">${rWellsTep()}<div class="sres"><div class="snum">${wSc.toFixed(1)}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${wellsTepInterp(wSc)}</div></div></div></div>`;
+ return out;
 }
 
 registerQx('Dispneia',{
@@ -6423,16 +6448,16 @@ function rCanadian(){
 }
 
 function sincHda(S){
- const c=S.sinc;const parts=[];
- if(c.prod)parts.push(`pródromos ${c.prod.toLowerCase()}`);
- if(c.post)parts.push(`em ${c.post.toLowerCase()}`);
- if(c.gat.length)parts.push(`desencadeada por ${c.gat.join(', ').toLowerCase()}`);
- if(c.car.length)parts.push(`com ${c.car.join(', ').toLowerCase()}`);
- if(c.rec)parts.push(`recuperação ${c.rec.toLowerCase()}`);
- if(!parts.length&&!c.alar.length)return '';
- let txt=parts.length?`, perda de consciência com ${parts.join(', ')}`:'';
- if(c.alar.length)txt+=`${txt?', ':', '}com sinais de alarme: ${c.alar.join(', ').toLowerCase()}`;
- return txt;
+ const s=S.sinc;
+ if(!s.prod&&!s.post&&!s.gat.length&&!s.car.length&&!s.rec&&!s.alar.length&&!s.ante.length)return '';
+ let out='';
+ if(s.post) out+=`. Episódio sincopal ocorrido na postura ${s.post.toLowerCase()}`;
+ if(s.prod) out+=`. Pródromos relatados pelo paciente: ${s.prod.toLowerCase()}`;
+ if(s.gat.length) out+=`. Fatores desencadeantes: ${s.gat.join(', ').toLowerCase()}`;
+ if(s.car.length) out+=`. Características do evento descritas por testemunhas: ${s.car.join(', ').toLowerCase()}`;
+ if(s.rec) out+=`. Padrão de recuperação da consciência: ${s.rec.toLowerCase()}`;
+ if(s.alar.length) out+=`. Rastreio de sinais de alerta e alto risco cardiovascular: ${s.alar.join(', ').toLowerCase()}`;
+ return out;
 }
 function sincHpp(S){return S.sinc.ante.slice();}
 function sincEFText(S){
@@ -6443,12 +6468,7 @@ function sincEFText(S){
  return parts.length?`Síncope — exame específico: ${parts.join(' | ')}`:'';
 }
 function sincAfter(S){
- let out=sincBadge();
- const cSc=calcCalgaryScore();
- const canSc=calcCanadianScore();
- out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_calgary')"><span style="font-weight:500">Score Calgary (Vasovagal vs Cardíaca)</span><span class="sb ${calgaryBadgeClass()}">${cSc} pts</span></div><div class="sbd" id="sc_calgary">${rCalgary()}<div class="sres"><div class="snum">${cSc}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div><span class="sb ${calgaryBadgeClass()}">${calgaryInterp()}</span></div></div></div></div>`;
- out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_canadian')"><span style="font-weight:500">Canadian Syncope Risk Score (Risco em 30d)</span><span class="sb ${canadianBadgeClass()}">${canSc} pts</span></div><div class="sbd" id="sc_canadian">${rCanadian()}<div class="sres"><div class="snum">${canSc}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div><span class="sb ${canadianBadgeClass()}">${canadianInterp()}</span></div></div></div></div>`;
- return out;
+ return sincBadge();
 }
 
 registerQx('Síncope',{
@@ -6503,15 +6523,22 @@ function cvHasStatus(){const c=S.cv;return CV_STATUS_DUR.includes(c.dur)||c.alar
 function cvHasGrave(){const c=S.cv;return cvHasStatus()||c.alarm.some(a=>CV_GRAVE_ALARM.includes(a));}
 
 function cvHda(S){
- const c=S.cv;const segs=[];
- if(c.inicio){let ini=`início ${c.inicio.toLowerCase()}`;if(c.inicio==='Súbito com aura'&&c.descrAura)ini+=` (${c.descrAura.toLowerCase()})`;segs.push(ini);}
- if(c.padrao.length)segs.push(`padrão motor: ${c.padrao.join(', ').toLowerCase()}`);
- if(c.dur)segs.push(`duração: ${c.dur.toLowerCase()}`);
- if(c.pos.length)segs.push(`pós-ictal: ${c.pos.join(', ').toLowerCase()}`);
- if(c.evento.length)segs.push(`eventos associados: ${c.evento.join(', ').toLowerCase()}`);
- if(c.alarm.length)segs.push(`sinais de alarme: ${c.alarm.join(', ').toLowerCase()}`);
- if(!segs.length)return '';
- return `. Crise descrita pelo acompanhante, com ${segs.join('. ')}`;
+ const c=S.cv;
+ if(!c.inicio&&!c.padrao.length&&!c.dur&&!c.pos.length&&!c.evento.length&&!c.alarm.length)return '';
+ let out='';
+ if(c.inicio){
+  let ini=`Apresenta episódio convulsivo de início ${c.inicio.toLowerCase()}`;
+  if(c.inicio==='Súbito com aura'&&c.descrAura)ini+=` (aura caracterizada como ${c.descrAura.toLowerCase()})`;
+  out+=`. ${ini}`;
+ } else {
+  out+=`. Apresenta episódio convulsivo`;
+ }
+ if(c.padrao.length) out+=`. Padrão motor caracterizado por ${c.padrao.join(', ').toLowerCase()}`;
+ if(c.dur) out+=`, com duração estimada de ${c.dur.toLowerCase()}`;
+ if(c.evento.length) out+=`. Durante o evento, foram presenciados os seguintes achados: ${c.evento.join(', ').toLowerCase()}`;
+ if(c.pos.length) out+=`. No período pós-ictal, apresentou ${c.pos.join(', ').toLowerCase()}`;
+ if(c.alarm.length) out+=`. Identificados os seguintes sinais de alarme e gravidade: ${c.alarm.join(', ').toLowerCase()}`;
+ return out;
 }
 function cvHpp(S){return S.cv.antec.slice();}
 function cvBadge(){
@@ -6589,15 +6616,20 @@ const DT_PAL=['Não reproduzida à palpação parietal','Reproduzida pontualment
 const DT_SIN=['Diaforese fria profusa','Dispneia aguda concomitante','Sensação de morte iminente','Síncope / Pré-síncope associada','Náuseas e vômitos','Palpitações taquicárdicas','Parestesias de extremidades / perioral','Febre prévia','Hemoptise franca'];
 
 function dtHda(S){
- const d=S.dt;const parts=[];
- if(d.ini)parts.push(`de início ${d.ini.toLowerCase()}`);
- if(d.qual.length)parts.push(`de caráter ${d.qual.join(', ').toLowerCase()}`);
- if(d.irr.length)parts.push(`com irradiação para ${d.irr.join(', ').toLowerCase()}`);
- if(d.modif.length)parts.push(`com padrão de ${d.modif.join('; ').toLowerCase()}`);
- if(d.pal)parts.push(d.pal.toLowerCase());
- if(d.sem)parts.push(d.sem.toLowerCase());
- if(d.sin.length)parts.push(`acompanhada de ${d.sin.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join(', ')}`:'';
+ const d=S.dt;
+ if(!d.ini&&!d.qual.length&&!d.irr.length&&!d.modif.length&&!d.pal&&!d.sem&&!d.sin.length)return '';
+ let out='';
+ const car=[];
+ if(d.ini)car.push(`início ${d.ini.toLowerCase()}`);
+ if(d.qual.length)car.push(`caráter ${d.qual.join(', ').toLowerCase()}`);
+ if(d.irr.length)car.push(`irradiação para ${d.irr.join(', ').toLowerCase()}`);
+ if(car.length) out+=`. Apresenta dor torácica com ${car.join(', ')}`;
+ else out+=`. Apresenta quadro de dor torácica`;
+ if(d.modif.length) out+=`. Padrão e fatores modificadores: ${d.modif.join('; ').toLowerCase()}`;
+ if(d.pal) out+=`. Avaliação parietal: dor ${d.pal.toLowerCase()}`;
+ if(d.sem) out+=`. Comparação com episódios anteriores: ${d.sem.toLowerCase()}`;
+ if(d.sin.length) out+=`. Sintomas associados referidos: ${d.sin.join(', ').toLowerCase()}`;
+ return out;
 }
 function dtAfter(S){
  const d=S.dt;let out='';
@@ -6637,24 +6669,29 @@ const NEU_MIMICS=['Glicemia capilar normal no ictus (descarta hipoglicemia)','Cr
 const NEU_ANTICOAG=['Nega uso de anticoagulantes','Varfarina / Marevan em uso','DOAC em uso (Apixabana, Rivaroxabana, Dabigatrana)','Uso de heparina nas últimas 24h','AVC isquêmico ou TCE grave < 3 meses','Cirurgia de grande porte < 14 dias','Sangramento ativo gastrointestinal'];
 
 function neuHda(S){
- const n=S.neu;const parts=[];
+ const n=S.neu;
+ if(!n.tipoUvvb&&!n.tempoUvvb&&!n.janela&&!n.motor.length&&!n.lado&&!n.linguagem.length&&!n.fossa.length&&!n.mimics.length&&!n.anticoag.length)return '';
+ let out='';
  if(n.tipoUvvb==='UVVB indeterminada / sem testemunhas'){
-  parts.push('com UVVB indeterminada (sem testemunhas do ictus)');
+  out+=`. Paciente admitido com déficit neurológico focal de início não testemunhado (UVVB indeterminada)`;
  } else if(n.tipoUvvb==='Horário de UVVB exato e testemunhado'){
-  parts.push(`com UVVB testemunhada${n.tempoUvvb?' há '+n.tempoUvvb:''}`);
+  out+=`. Paciente admitido com déficit focal agudo de ictus testemunhado${n.tempoUvvb?' há '+n.tempoUvvb:''}`;
  } else if(n.tipoUvvb==='Wake-up stroke (UVVB antes de dormir)'){
-  parts.push(`com quadro de wake-up stroke (UVVB antes de dormir${n.tempoUvvb?' há '+n.tempoUvvb:''})`);
+  out+=`. Paciente com quadro de wake-up stroke (UVVB antes de dormir${n.tempoUvvb?' há '+n.tempoUvvb:''})`;
  } else if(n.tempoUvvb){
-  parts.push(`com UVVB há ${n.tempoUvvb}`);
+  out+=`. Paciente com déficit neurológico focal agudo com UVVB há ${n.tempoUvvb}`;
+ } else {
+  out+=`. Apresenta déficit neurológico focal agudo`;
  }
- if(n.janela)parts.push(`classificado em ${n.janela.toLowerCase()}`);
- if(n.lado)parts.push(n.lado.toLowerCase());
- if(n.motor.length)parts.push(`apresentando ${n.motor.join(', ').toLowerCase()}`);
- if(n.linguagem.length)parts.push(`alterações de pares cranianos/linguagem: ${n.linguagem.join(', ').toLowerCase()}`);
- if(n.fossa.length)parts.push(`sinais de fossa posterior: ${n.fossa.join(', ').toLowerCase()}`);
- if(n.mimics.length)parts.push(`fatores sugestivos de diferenciais: ${n.mimics.join(', ').toLowerCase()}`);
- if(n.anticoag.length)parts.push(`anticoagulação/contraindicações: ${n.anticoag.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join('; ')}`:'';
+ if(n.janela) out+=`. Enquadrado em ${n.janela.toLowerCase()}`;
+ if(n.lado) out+=`. Topografia clínica compatível com acometimento de ${n.lado.toLowerCase()}`;
+ if(n.motor.length) out+=`. Padrão do déficit motor/sensitivo: ${n.motor.join(', ').toLowerCase()}`;
+ if(n.linguagem.length) out+=`. Alterações de linguagem e pares cranianos: ${n.linguagem.join(', ').toLowerCase()}`;
+ if(n.fossa.length) out+=`. Sinais cerebelares e de fossa posterior: ${n.fossa.join(', ').toLowerCase()}`;
+ if(n.mimics.length) out+=`. Avaliação de mimics e potenciais diferenciais: ${n.mimics.join(', ').toLowerCase()}`;
+ if(n.anticoag.length) out+=`. Perfil antitrombótico e contraindicações à reperfusão: ${n.anticoag.join(', ').toLowerCase()}`;
+ if(S.nihss&&S.nihss.evaluated) out+=`. Escore NIHSS quantificado em ${nihssSc()} pontos (${nihssInterp(nihssSc())})`;
+ return out;
 }
 
 function neuAfter(S){
@@ -6664,6 +6701,8 @@ function neuAfter(S){
  } else if(n.tipoUvvb==='Wake-up stroke (UVVB antes de dormir)'||n.janela==='Janela 4,5 a 24h (avaliar trombectomia mecânica)'){
   out+=`<div class="abox aw" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> <strong>JANELA ESTENDIDA / WAKE-UP STROKE</strong> — Indicação de imagem multimodal avançada (TC + AngioTC + Perfusão / RM com mismatch DWI-FLAIR) para seleção de trombólise ou trombectomia mecânica (Critérios DAWN / DEFUSE-3 / WAKE-UP).</div>`;
  }
+ const nSc=nihssSc();
+ out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_nihss')"><span style="font-weight:500"><i class="ti ti-calculator"></i> Escore NIHSS (National Institutes of Health Stroke Scale)</span><span class="sb ${nihssBadgeClass(nSc)}">${nSc}/42 pts</span></div><div class="sbd" id="sc_nihss">${rNihss()}<div class="sres"><div class="snum">${nSc}<span style="font-size:13px;color:var(--color-text-secondary)">/42 pts</span></div><div style="font-size:13px">${nihssInterp(nSc)}</div></div></div></div>`;
  return out;
 }
 
@@ -6693,18 +6732,26 @@ const ABD_ALARME=['Parada de eliminação de gases e fezes > 24h (obstrução)',
 const ABD_GIN=['DUM recente e habitual (sem atraso)','Atraso menstrual relatado','Sangramento vaginal anormal concomitante','Uso de método contraceptivo (DIU, ACO, implante)','História de gravidez ectópica prévia','Corrimento vaginal purulento / dor à mobilização de colo (DIP)','Dor anexial unilateral intensa','Beta-hCG de urina solicitado / positivo'];
 
 function abdHda(S){
- const a=S.abdQ;const parts=[];
- if(a.inicio)parts.push(`de início ${a.inicio.toLowerCase()}`);
- if(a.loc.length)parts.push(`localizada em ${a.loc.join(', ').toLowerCase()}`);
- if(a.fatores.length)parts.push(`com fatores modificadores: ${a.fatores.join('; ').toLowerCase()}`);
- if(a.alarme.length)parts.push(`sinais de alarme/associados: ${a.alarme.join(', ').toLowerCase()}`);
+ const a=S.abdQ;
+ if(!a.inicio&&!a.loc.length&&!a.fatores.length&&!a.alarme.length&&!a.gin.length&&!a.dum)return '';
+ let out='';
+ if(a.inicio) out+=`. Apresenta dor abdominal de início ${a.inicio.toLowerCase()}`;
+ else out+=`. Apresenta dor abdominal`;
+ if(a.loc.length) out+=`, localizada em ${a.loc.join(', ').toLowerCase()}`;
+ if(a.fatores.length) out+=`. Fatores modificadores e posturais: ${a.fatores.join('; ').toLowerCase()}`;
+ if(a.alarme.length) out+=`. Sinais de alarme e manifestações associadas: ${a.alarme.join(', ').toLowerCase()}`;
  if(S.sexo==='F'&&(a.gin.length||a.dum)){
-  let g='em anamnese ginecológica direcionada';
+  let g='Anamnese ginecológica direcionada';
   if(a.dum)g+=` (DUM: ${a.dum})`;
   if(a.gin.length)g+=`: ${a.gin.join(', ').toLowerCase()}`;
-  parts.push(g);
+  out+=`. ${g}`;
  }
- return parts.length?`, ${parts.join('; ')}`:'';
+ if(S.alvarado&&S.alvarado.evaluated) out+=`. Escore de Alvarado para apendicite: ${alvaradoSc()}/10 pontos (${alvaradoInterp(alvaradoSc())})`;
+ if(S.tokyo&&S.tokyo.evaluated){
+  const tSt=tokyoStatus();
+  out+=`. Critérios de Tokyo (TG18/TG20 - Colecistite): ${tSt.text}`;
+ }
+ return out;
 }
 
 function abdAfter(S){
@@ -6718,6 +6765,10 @@ function abdAfter(S){
  if(S.sexo==='F'&&a.gin.includes('Atraso menstrual relatado')){
   out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>MULHER EM IDADE FÉRTIL COM ATRASO MENSTRUAL E DOR ABDOMINAL</strong> — Excluir gestação ectópica rota de imediato. Solicitar β-hCG urgente e POCUS/USG transvaginal.</div>`;
  }
+ const alvSc=alvaradoSc();
+ out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_alvarado')"><span style="font-weight:500"><i class="ti ti-calculator"></i> Escore de Alvarado (Apendicite Aguda)</span><span class="sb ${alvaradoBadgeClass(alvSc)}">${alvSc}/10 pts</span></div><div class="sbd" id="sc_alvarado">${rAlvarado()}<div class="sres"><div class="snum">${alvSc}<span style="font-size:13px;color:var(--color-text-secondary)">/10 pts</span></div><div style="font-size:13px">${alvaradoInterp(alvSc)}</div></div></div></div>`;
+ const tok=tokyoStatus();
+ out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_tokyo')"><span style="font-weight:500"><i class="ti ti-clipboard-check"></i> Critérios de Tokyo — TG18/TG20 (Colecistite Aguda)</span><span class="sb ${tok.cls}">${tok.text}</span></div><div class="sbd" id="sc_tokyo">${rTokyo()}<div class="sres"><div style="font-size:13px;font-weight:600">${tok.text}</div></div></div></div>`;
  return out;
 }
 
@@ -6743,12 +6794,15 @@ const RNC_SINAIS=['Crise convulsiva inicial relatada','Cefaleia súbita e intens
 const RNC_FUNC=['Totalmente independente prévio (atividades normais da vida diária)','Independente parcial / declínio cognitivo leve prévio','Demência moderada a avançada / restrito ao leito','Sequela neurológica motora prévia de AVC'];
 
 function rncHda(S){
- const r=S.rncQ;const parts=[];
- if(r.instalacao)parts.push(`de velocidade ${r.instalacao.toLowerCase()}`);
- if(r.contexto.length)parts.push(`em contexto de ${r.contexto.join(', ').toLowerCase()}`);
- if(r.sinais.length)parts.push(`apresentando ${r.sinais.join(', ').toLowerCase()}`);
- if(r.funcional)parts.push(`status funcional pré-mórbido: ${r.funcional.toLowerCase()}`);
- return parts.length?`, rebaixamento de consciência ${parts.join('; ')}`:'';
+ const r=S.rncQ;
+ if(!r.instalacao&&!r.contexto.length&&!r.sinais.length&&!r.funcional)return '';
+ let out='';
+ if(r.instalacao) out+=`. Apresenta rebaixamento do nível de consciência de instalação ${r.instalacao.toLowerCase()}`;
+ else out+=`. Apresenta rebaixamento do nível de consciência`;
+ if(r.contexto.length) out+=`. Contexto clínico e possíveis fatores precipitantes identificados: ${r.contexto.join(', ').toLowerCase()}`;
+ if(r.sinais.length) out+=`. Sinais associados observados: ${r.sinais.join(', ').toLowerCase()}`;
+ if(r.funcional) out+=`. Status funcional basal pré-mórbido: ${r.funcional.toLowerCase()}`;
+ return out;
 }
 
 function rncAfter(S){
@@ -6783,13 +6837,16 @@ const INT_DOSE_CO=['Dose maciça / frascos inteiros relatados','Cartelas vazias 
 const INT_TOX=['Toxíndrome Anticolinérgica (rubor, midríase, mucosas secas, retenção urinária, delírio)','Toxíndrome Colinérgica (miose, sudorese, broncorreia, fasciculações, bradicardia)','Toxíndrome Opioide (tríade: miose puntiforme, bradipneia/depressão respiratória, coma)','Toxíndrome Simpaticomimética (taquicardia, HAS grave, diaforese, midríase, agitação)','Toxíndrome Sedativo-Hipnótica (sonolência/coma, hipotensão leve, pupilas normais/mióticas)','Toxíndrome Serotoninérgica (hipertermia, clônus, hiper-reflexia, tremor)'];
 
 function intHda(S){
- const it=S.intQ;const parts=[];
- if(it.circunstancia)parts.push(`circunstância: ${it.circunstancia.toLowerCase()}`);
- if(it.tempoVia.length)parts.push(`via/tempo: ${it.tempoVia.join(', ').toLowerCase()}`);
- if(S.itDrug)parts.push(`substâncias presumidas: ${S.itDrug}`);
- if(it.doseCo.length)parts.push(`dose/co-ingestão: ${it.doseCo.join(', ').toLowerCase()}`);
- if(it.toxidromes.length)parts.push(`triagem de toxíndromes: ${it.toxidromes.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join('; ')}`:'';
+ const it=S.intQ;
+ if(!it.circunstancia&&!it.tempoVia.length&&!S.itDrug&&!it.doseCo.length&&!it.toxidromes.length)return '';
+ let out='';
+ if(it.circunstancia) out+=`. Quadro de suspeita de intoxicação exógena em circunstância de ${it.circunstancia.toLowerCase()}`;
+ else out+=`. Quadro de suspeita de intoxicação exógena`;
+ if(it.tempoVia.length) out+=`. Via de exposição e intervalo temporal: ${it.tempoVia.join(', ').toLowerCase()}`;
+ if(S.itDrug) out+=`. Substâncias e agentes suspeitos: ${S.itDrug}`;
+ if(it.doseCo.length) out+=`. Estimativa de dose e coingestões: ${it.doseCo.join(', ').toLowerCase()}`;
+ if(it.toxidromes.length) out+=`. Triagem clínica de toxíndromes: ${it.toxidromes.join(', ').toLowerCase()}`;
+ return out;
 }
 
 function intAfter(S){
@@ -6825,13 +6882,27 @@ const TRM_CENA=['Perda de consciência transitória na cena com recuperação','
 const TRM_ATIVAS=['Dor em coluna cervical','Dor torácica ventilatório-dependente','Dor abdominal / pélvica','Déficit motor ou sensitivo em extremidades','Ferimento cortocontuso evidente com sangramento','Escoriações / contusões musculares difusas','Sem queixas álgicas espontâneas no momento'];
 
 function trmHda(S){
- const t=S.trm;const parts=[];
- if(t.mec)parts.push(`vítima de trauma por ${t.mec.toLowerCase()}`);
- if(t.altaEnergia.length)parts.push(`apresentando fatores de alta energia: ${t.altaEnergia.join(', ').toLowerCase()}`);
- if(t.protecao.length)parts.push(`dispositivos de proteção: ${t.protecao.join(', ').toLowerCase()}`);
- if(t.cena.length)parts.push(`relato do resgate/cena: ${t.cena.join('; ').toLowerCase()}`);
- if(t.ativas.length)parts.push(`queixas ativas na admissão: ${t.ativas.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join('; ')}`:'';
+ const t=S.trm;
+ if(!t.mec&&!t.altaEnergia.length&&!t.protecao.length&&!t.cena.length&&!t.ativas.length)return '';
+ let out='';
+ if(t.mec) out+=`. Vítima de trauma por ${t.mec.toLowerCase()}`;
+ else out+=`. Vítima de trauma`;
+ if(t.altaEnergia.length) out+=`. Marcadores de cinemática de alta energia identificados: ${t.altaEnergia.join(', ').toLowerCase()}`;
+ if(t.protecao.length) out+=`. Dispositivos de proteção utilizados: ${t.protecao.join(', ').toLowerCase()}`;
+ if(t.cena.length) out+=`. Relato da cena e atendimento pré-hospitalar: ${t.cena.join('; ').toLowerCase()}`;
+ if(t.ativas.length) out+=`. Queixas ativas referidas na admissão: ${t.ativas.join(', ').toLowerCase()}`;
+ if(S.trmRules&&S.trmRules.evaluated){
+  const parts=[];
+  if(S.trmRules.cchrPos)parts.push('Canadian CT Head: Alto Risco (TC de crânio indicada)');
+  else if(S.trmRules.cchrMed)parts.push('Canadian CT Head: Risco Médio (TC recomendada)');
+  else parts.push('Canadian CT Head: Baixo Risco');
+  if(S.trmRules.ccsrHigh||S.trmRules.ccsrLow)parts.push('Canadian C-Spine: Positivo (Imagem cervical indicada)');
+  else parts.push('Canadian C-Spine: Negativo (Liberação sem imagem)');
+  if(S.trmRules.nexusPos)parts.push('NEXUS: Positivo (Imagem cervical indicada)');
+  else parts.push('NEXUS: Baixo risco');
+  out+=`. Regras clínicas validadas em trauma: ${parts.join(' | ')}`;
+ }
+ return out;
 }
 function trmAfter(S){
  const t=S.trm;let out='';
@@ -6839,6 +6910,7 @@ function trmAfter(S){
   out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ALERTA DE CINEMÁTICA DE ALTA ENERGIA / POLITRAUMA</strong> — Imobilização de coluna em prancha rígida e colar cervical; avaliação primária sistematizada ABCDE; FAST / e-FAST e tomografia computadorizada multislice corpo total (politrauma).</div>`;
  }
  out+=`<div style="margin-top:8px"><label>Tempo do trauma / ocorrência</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 45 min, há 2 horas"></div>`;
+ out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_trauma_rules')"><span style="font-weight:500"><i class="ti ti-shield-check"></i> Regras de Decisão Clínica em Trauma (Canadian Head, Canadian C-Spine, NEXUS)</span><span class="sb ${S.trmRules&&S.trmRules.evaluated?'smod':'sok'}">${S.trmRules&&S.trmRules.evaluated?'Avaliado':'Critérios'}</span></div><div class="sbd" id="sc_trauma_rules">${rTraumaRules()}</div></div>`;
  return out;
 }
 
@@ -6865,13 +6937,16 @@ const AGI_ORG=['Febre recente ou sinais infecciosos (tosse, disúria)','Trauma c
 const AGI_PSIQ_HPP=['Transtorno afetivo bipolar conhecido','Esquizofrenia / transtorno psicótico conhecido','Transtorno de personalidade','Abandono recente de tratamento psicofarmacológico','Sem antecedentes psiquiátricos conhecidos'];
 
 function agiHda(S){
- const a=S.agi;const parts=[];
- if(a.evolucao)parts.push(`de evolução ${a.evolucao.toLowerCase()}`);
- if(a.padrao.length)parts.push(`manifestada por ${a.padrao.join(', ').toLowerCase()}`);
- if(a.psicoticos.length)parts.push(`ao exame psíquico/sensopercepção: ${a.psicoticos.join(', ').toLowerCase()}`);
- if(a.organica.length)parts.push(`rastreio de causas orgânicas: ${a.organica.join(', ').toLowerCase()}`);
- if(a.psiqHpp.length)parts.push(`histórico prévio: ${a.psiqHpp.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join('; ')}`:'';
+ const a=S.agi;
+ if(!a.evolucao&&!a.padrao.length&&!a.psicoticos.length&&!a.organica.length&&!a.psiqHpp.length)return '';
+ let out='';
+ if(a.evolucao) out+=`. Apresenta agitação psicomotora de evolução ${a.evolucao.toLowerCase()}`;
+ else out+=`. Apresenta quadro de agitação psicomotora`;
+ if(a.padrao.length) out+=`. Padrão comportamental: ${a.padrao.join(', ').toLowerCase()}`;
+ if(a.psicoticos.length) out+=`. Exame do pensamento e sensopercepção: ${a.psicoticos.join(', ').toLowerCase()}`;
+ if(a.organica.length) out+=`. Investigação e rastreio de etiologias orgânicas: ${a.organica.join(', ').toLowerCase()}`;
+ if(a.psiqHpp.length) out+=`. Antecedentes psiquiátricos e uso prévio de substâncias: ${a.psiqHpp.join(', ').toLowerCase()}`;
+ return out;
 }
 function agiAfter(S){
  const a=S.agi;let out='';
@@ -6905,13 +6980,20 @@ const TOS_ASSOC=['Febre diária com calafrios','Dor torácica ventilatório-depe
 const TOS_RISCO=['Tabagismo ativo (fumante)','Ex-tabagista','Uso crônico de IECA (Enalapril / Captopril)','Contato domiciliar recente com tuberculose ativa','Asma / DPOC prévio conhecido','Exposição ocupacional a poeiras / mofo / biomassa'];
 
 function tosHda(S){
- const t=S.tos;const parts=[];
- if(t.tipo)parts.push(`caracterizada por tosse ${t.tipo.toLowerCase()}`);
- if(t.duracao)parts.push(`de evolução ${t.duracao.toLowerCase()}`);
- if(t.padrao.length)parts.push(`com padrão de ${t.padrao.join(' e ').toLowerCase()}`);
- if(t.assoc.length)parts.push(`acompanhada de ${t.assoc.join(', ').toLowerCase()}`);
- if(t.risco.length)parts.push(`fatores de risco/contexto: ${t.risco.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join('; ')}`:'';
+ const t=S.tos;
+ if(!t.tipo&&!t.duracao&&!t.padrao.length&&!t.assoc.length&&!t.risco.length)return '';
+ let out='';
+ if(t.tipo) out+=`. Apresenta quadro de tosse ${t.tipo.toLowerCase()}`;
+ else out+=`. Apresenta tosse`;
+ if(t.duracao) out+=`, de evolução ${t.duracao.toLowerCase()}`;
+ if(t.padrao.length) out+=`. Padrão e fatores modificadores: ${t.padrao.join(' e ').toLowerCase()}`;
+ if(t.assoc.length) out+=`. Sintomas associados relatados: ${t.assoc.join(', ').toLowerCase()}`;
+ if(t.risco.length) out+=`. Contexto epidemiológico e fatores de risco: ${t.risco.join(', ').toLowerCase()}`;
+ if(S.psiPort&&S.psiPort.evaluated){
+  const pSc=psiPortSc();
+  out+=`. Escore PSI / PORT (Pneumonia Severity Index): ${pSc} pontos — ${psiPortClass(pSc)}`;
+ }
+ return out;
 }
 function tosAfter(S){
  const t=S.tos;let out='';
@@ -6919,6 +7001,8 @@ function tosAfter(S){
   out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ALERTA DE HEMOPTISE MACIÇA / POTENCIALMENTE GRAVE</strong> — Garantir patência de via aérea; decúbito lateral sobre o lado acometido se conhecido para proteger o pulmão são; reserva de sangue, TC de tórax com contraste e contato com pneumologia/cirurgia torácica.</div>`;
  }
  out+=`<div style="margin-top:8px"><label>Tempo de duração da tosse</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 4 dias, há 3 semanas"></div>`;
+ const pSc=psiPortSc();
+ out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_psi_port')"><span style="font-weight:500"><i class="ti ti-calculator"></i> Escore PSI / PORT — Pneumonia Adquirida na Comunidade</span><span class="sb ${psiPortBadgeClass(pSc)}">${pSc} pts</span></div><div class="sbd" id="sc_psi_port">${rPsiPort()}<div class="sres"><div class="snum">${pSc}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${psiPortClass(pSc)}</div></div></div></div>`;
  return out;
 }
 
@@ -6945,13 +7029,20 @@ const FEB_ALARME=['Prostração intensa desproporcional','Confusão mental / son
 const FEB_RISCO=['Imunossupressão / quimioterapia recente / corticoterapia','Diabetes descompensado','Uso recente de antibióticos nas últimas semanas','Viagem recente para área endêmica de arboviroses / malária','Portador de cateter venoso central ou prótese valvar/ortopédica'];
 
 function febHda(S){
- const f=S.feb;const parts=[];
- if(f.afericao)parts.push(`${f.afericao.toLowerCase()}${f.pico?' (pico de '+f.pico+'°C)':''}`);
- if(f.padrao)parts.push(`padrão de febre ${f.padrao.toLowerCase()}`);
- if(f.foco.length)parts.push(`rastreio de foco infeccioso: ${f.foco.join(', ').toLowerCase()}`);
- if(f.alarme.length)parts.push(`sinais de alarme/gravidade: ${f.alarme.join(', ').toLowerCase()}`);
- if(f.risco.length)parts.push(`fatores de risco: ${f.risco.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join('; ')}`:'';
+ const f=S.feb;
+ if(!f.afericao&&!f.padrao&&!f.foco.length&&!f.alarme.length&&!f.risco.length)return '';
+ let out='';
+ if(f.afericao) out+=`. Quadro febril caracterizado por ${f.afericao.toLowerCase()}${f.pico?' (pico aferido de '+f.pico+' °C)':''}`;
+ else out+=`. Quadro febril`;
+ if(f.padrao) out+=`, com padrão ${f.padrao.toLowerCase()}`;
+ if(f.foco.length) out+=`. Rastreio inicial de foco infeccioso: ${f.foco.join(', ').toLowerCase()}`;
+ if(f.alarme.length) out+=`. Rastreio de sinais de alarme sistêmico e disfunção orgânica: ${f.alarme.join(', ').toLowerCase()}`;
+ if(f.risco.length) out+=`. Fatores de risco e antecedentes epidemiológicos: ${f.risco.join(', ').toLowerCase()}`;
+ if(S.mascc&&S.mascc.evaluated){
+  const mSc=masccSc();
+  out+=`. Escore MASCC para Neutropenia Febril: ${mSc}/26 pontos (${masccInterp(mSc)})`;
+ }
+ return out;
 }
 function febAfter(S){
  const f=S.feb;let out='';
@@ -6963,6 +7054,8 @@ function febAfter(S){
  }
  out+=`<div style="margin-top:8px"><label>Pico térmico aferido (°C)</label><input type="text" value="${esc(S.feb.pico||'')}" oninput="S.feb.pico=this.value" placeholder="Ex: 38.8, 39.5"></div>`;
  out+=`<div style="margin-top:8px"><label>Tempo de duração da febre</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 2 dias, há 5 dias"></div>`;
+ const mSc=masccSc();
+ out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_mascc')"><span style="font-weight:500"><i class="ti ti-shield-half"></i> Escore MASCC (Risco em Neutropenia Febril)</span><span class="sb ${masccBadgeClass(mSc)}">${mSc}/26 pts</span></div><div class="sbd" id="sc_mascc">${rMascc()}<div class="sres"><div class="snum">${mSc}<span style="font-size:13px;color:var(--color-text-secondary)">/26 pts</span></div><div style="font-size:13px">${masccInterp(mSc)}</div></div></div></div>`;
  return out;
 }
 
@@ -6988,12 +7081,15 @@ const NAU_RELACAO=['Precedidos de náusea intensa e plenitude gástrica','Vômit
 const NAU_DESIDRAT=['Sede intensa e boca seca','Tontura postural ao levantar / lipotimia','Redução expressiva do débito urinário (oligúria)','Boa tolerância hídrica mantida entre os episódios'];
 
 function nauHda(S){
- const n=S.nau;const parts=[];
- if(n.freq)parts.push(`de frequência ${n.freq.toLowerCase()}`);
- if(n.aspecto.length)parts.push(`com conteúdo ${n.aspecto.join(', ').toLowerCase()}`);
- if(n.relacao.length)parts.push(`características associadas: ${n.relacao.join('; ').toLowerCase()}`);
- if(n.desidrat.length)parts.push(`avaliação volêmica: ${n.desidrat.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join('; ')}`:'';
+ const n=S.nau;
+ if(!n.freq&&!n.aspecto.length&&!n.relacao.length&&!n.desidrat.length)return '';
+ let out='';
+ if(n.freq) out+=`. Apresenta episódios de náuseas e vômitos de frequência ${n.freq.toLowerCase()}`;
+ else out+=`. Apresenta episódios de náuseas e vômitos`;
+ if(n.aspecto.length) out+=`. Aspecto do conteúdo emético: ${n.aspecto.join(', ').toLowerCase()}`;
+ if(n.relacao.length) out+=`. Fatores correlacionados e padrão de ocorrência: ${n.relacao.join('; ').toLowerCase()}`;
+ if(n.desidrat.length) out+=`. Avaliação de hidratação e tolerância oral: ${n.desidrat.join(', ').toLowerCase()}`;
+ return out;
 }
 function nauAfter(S){
  const n=S.nau;let out='';
@@ -7029,13 +7125,16 @@ const DIA_EPIDEM=['Ingestão de alimentos suspeitos / refeições fora de casa',
 const DIA_VOLEMIA=['Boa aceitação de líquidos por via oral','Sinais clínicos de desidratação (sede, boca seca, astenia intensa)','Oligúria perceptível pelo paciente'];
 
 function diaHda(S){
- const d=S.dia;const parts=[];
- if(d.aspecto)parts.push(`caracterizada por fezes de aspecto ${d.aspecto.toLowerCase()}`);
- if(d.duracao)parts.push(`de curso ${d.duracao.toLowerCase()}`);
- if(d.assoc.length)parts.push(`associada a ${d.assoc.join(', ').toLowerCase()}`);
- if(d.epidem.length)parts.push(`fatores epidemiológicos: ${d.epidem.join(', ').toLowerCase()}`);
- if(d.volemia.length)parts.push(`estado de hidratação: ${d.volemia.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join('; ')}`:'';
+ const d=S.dia;
+ if(!d.aspecto&&!d.duracao&&!d.assoc.length&&!d.epidem.length&&!d.volemia.length)return '';
+ let out='';
+ if(d.aspecto) out+=`. Apresenta diarreia de aspecto ${d.aspecto.toLowerCase()}`;
+ else out+=`. Apresenta quadro diarreico`;
+ if(d.duracao) out+=`, de evolução ${d.duracao.toLowerCase()}`;
+ if(d.assoc.length) out+=`. Sintomas gastrointestinais e sistêmicos associados: ${d.assoc.join(', ').toLowerCase()}`;
+ if(d.epidem.length) out+=`. Investigação de fatores epidemiológicos e exposições: ${d.epidem.join(', ').toLowerCase()}`;
+ if(d.volemia.length) out+=`. Avaliação do estado de hidratação e volemia: ${d.volemia.join(', ').toLowerCase()}`;
+ return out;
 }
 function diaAfter(S){
  const d=S.dia;let out='';
@@ -7070,11 +7169,14 @@ const SAN_VOL=['Pequeno volume autolimitado sem tontura','Moderado volume recorr
 const SAN_COAG=['Em uso regular de Varfarina / Marevan','Em uso de DOAC (Rivaroxabana, Apixabana, Dabigatrana)','Em uso de antiagregante (AAS, Clopidogrel)','Cirrose hepática ou coagulopatia conhecida','Trombocitopenia prévia relatada','Nega uso de anticoagulantes ou coagulopatias conhecidas'];
 
 function sanHda(S){
- const s=S.san;const parts=[];
- if(s.sitio.length)parts.push(`exteriorizado por ${s.sitio.join(', ').toLowerCase()}`);
- if(s.vol)parts.push(`de volume estimado ${s.vol.toLowerCase()}`);
- if(s.coag.length)parts.push(`perfil de coagulação/medicamentos: ${s.coag.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join('; ')}`:'';
+ const s=S.san;
+ if(!s.sitio.length&&!s.vol&&!s.coag.length)return '';
+ let out='';
+ if(s.sitio.length) out+=`. Apresenta sangramento ativo exteriorizado por ${s.sitio.join(', ').toLowerCase()}`;
+ else out+=`. Apresenta quadro hemorrágico`;
+ if(s.vol) out+=`, de volume estimado ${s.vol.toLowerCase()}`;
+ if(s.coag.length) out+=`. Avaliação de coagulopatia e terapia antitrombótica prévia: ${s.coag.join(', ').toLowerCase()}`;
+ return out;
 }
 function sanAfter(S){
  const s=S.san;let out='';
@@ -7104,11 +7206,14 @@ const LOM_CAUDA=['Anestesia em sela (perda de sensibilidade perineal/anal)','Per
 const LOM_ALARME=['Febre associada com calafrios (suspeita de pielonefrite/espondilodiscite)','Hematúria macroscópica ou disúria concomitante','Histórico de neoplasia prévia conhecida','Uso crônico de corticoide ou imunossupressão','Antecedente de trauma lombar recente'];
 
 function lomHda(S){
- const l=S.lom;const parts=[];
- if(l.carac.length)parts.push(`caracterizada por ${l.carac.join('; ').toLowerCase()}`);
- if(l.caudaEquina.length)parts.push(`rastreio neurológico/cauda equina: ${l.caudaEquina.join(', ').toLowerCase()}`);
- if(l.alarme.length)parts.push(`sinais de alarme/antecedentes: ${l.alarme.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join('; ')}`:'';
+ const l=S.lom;
+ if(!l.carac.length&&!l.caudaEquina.length&&!l.alarme.length)return '';
+ let out='';
+ if(l.carac.length) out+=`. Apresenta dor lombar ${l.carac.join('; ').toLowerCase()}`;
+ else out+=`. Apresenta quadro de dor lombar`;
+ if(l.caudaEquina.length) out+=`. Rastreio específico de sinais de compressão medular / síndrome da cauda equina: ${l.caudaEquina.join(', ').toLowerCase()}`;
+ if(l.alarme.length) out+=`. Rastreio de sinais de alerta sistêmicos, infecciosos e neoplásicos: ${l.alarme.join(', ').toLowerCase()}`;
+ return out;
 }
 function lomAfter(S){
  const l=S.lom;let out='';
@@ -7143,13 +7248,16 @@ const ICT_COLANGITE=['Dor intensa em hipocôndrio direito','Febre com calafrios 
 const ICT_TOXICOS=['Ingestão de Paracetamol em dose excessiva','Uso de fitoterápicos / chás emagrecedores / anabolizantes','Uso recente de antibióticos (Amoxicilina-Clavulanato)','Consumo abusivo recente de bebidas alcoólicas','Histórico de cirrose ou hepatite viral B/C'];
 
 function ictQHda(S){
- const i=S.ictQ;const parts=[];
- if(i.crono)parts.push(`de instalação ${i.crono.toLowerCase()}`);
- if(i.colestase.length)parts.push(`síndrome colestática: ${i.colestase.join(', ').toLowerCase()}`);
- if(i.gravidade.length)parts.push(`rastreio de disfunção hepática: ${i.gravidade.join(', ').toLowerCase()}`);
- if(i.colangite.length)parts.push(`sinais infecciosos biliares: ${i.colangite.join(', ').toLowerCase()}`);
- if(i.toxicos.length)parts.push(`exposição hepatotóxica: ${i.toxicos.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join('; ')}`:'';
+ const i=S.ictQ;
+ if(!i.crono&&!i.colestase.length&&!i.gravidade.length&&!i.colangite.length&&!i.toxicos.length)return '';
+ let out='';
+ if(i.crono) out+=`. Apresenta quadro de icterícia de instalação ${i.crono.toLowerCase()}`;
+ else out+=`. Apresenta quadro de icterícia`;
+ if(i.colestase.length) out+=`. Sinais de síndrome colestática associada: ${i.colestase.join(', ').toLowerCase()}`;
+ if(i.colangite.length) out+=`. Sinais de infecção biliar e colangite: ${i.colangite.join(', ').toLowerCase()}`;
+ if(i.gravidade.length) out+=`. Rastreio de disfunção hepática aguda e encefalopatia: ${i.gravidade.join(', ').toLowerCase()}`;
+ if(i.toxicos.length) out+=`. Histórico de exposições hepatotóxicas e antecedentes: ${i.toxicos.join(', ').toLowerCase()}`;
+ return out;
 }
 function ictQAfter(S){
  const i=S.ictQ;let out='';
@@ -7185,12 +7293,15 @@ const VER_REDFLAGS=['Ataxia de tronco severa (incapaz de sentar-se ou deambular 
 const VER_AUDITIVO=['Hipoacusia unilateral súbita associada','Plenitude auricular / zumbido intenso','Náuseas e vômitos repetidos incapacitantes','Sem queixas auditivas'];
 
 function verHda(S){
- const v=S.ver;const parts=[];
- if(v.tipo)parts.push(`caracterizada por ${v.tipo.toLowerCase()}`);
- if(v.duracao)parts.push(`de curso temporal ${v.duracao.toLowerCase()}`);
- if(v.redflags.length)parts.push(`rastreio de sinais de fossa posterior/SNC: ${v.redflags.join(', ').toLowerCase()}`);
- if(v.auditivo.length)parts.push(`comemorativos associados: ${v.auditivo.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join('; ')}`:'';
+ const v=S.ver;
+ if(!v.tipo&&!v.duracao&&!v.redflags.length&&!v.auditivo.length)return '';
+ let out='';
+ if(v.tipo) out+=`. Apresenta quadro de tontura caracterizada por ${v.tipo.toLowerCase()}`;
+ else out+=`. Apresenta quadro de tontura/vertigem`;
+ if(v.duracao) out+=`, de curso temporal ${v.duracao.toLowerCase()}`;
+ if(v.redflags.length) out+=`. Rastreio de sinais centrais e de fossa posterior: ${v.redflags.join(', ').toLowerCase()}`;
+ if(v.auditivo.length) out+=`. Sintomas auditivos e autonômicos associados: ${v.auditivo.join(', ').toLowerCase()}`;
+ return out;
 }
 function verAfter(S){
  const v=S.ver;let out='';
@@ -7222,12 +7333,15 @@ const PAL_INSTAB=['Síncope franca durante as palpitações','Pré-síncope / li
 const PAL_GATILHOS=['Uso excessivo de cafeína / energéticos / estimulantes','Consumo abusivo de álcool nas horas precedentes','Uso de drogas ilícitas (cocaína / anfetaminas)','Histórico de cardiopatia arritmogênica ou cirurgia prévia','Histórico familiar de arritmia grave / morte súbita precoce','Sem fatores desencadeantes identificados'];
 
 function palQHda(S){
- const p=S.palQ;const parts=[];
- if(p.ritmo)parts.push(`percebidas como ${p.ritmo.toLowerCase()}`);
- if(p.inicio)parts.push(`de início e término ${p.inicio.toLowerCase()}`);
- if(p.instab.length)parts.push(`rastreio de instabilidade: ${p.instab.join(', ').toLowerCase()}`);
- if(p.gatilhos.length)parts.push(`gatilhos e histórico: ${p.gatilhos.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join('; ')}`:'';
+ const p=S.palQ;
+ if(!p.ritmo&&!p.inicio&&!p.instab.length&&!p.gatilhos.length)return '';
+ let out='';
+ if(p.ritmo) out+=`. Apresenta palpitações referidas como ${p.ritmo.toLowerCase()}`;
+ else out+=`. Apresenta queixa de palpitações`;
+ if(p.inicio) out+=`, de início e término ${p.inicio.toLowerCase()}`;
+ if(p.instab.length) out+=`. Avaliação direcionada de sinais de instabilidade hemodinâmica: ${p.instab.join(', ').toLowerCase()}`;
+ if(p.gatilhos.length) out+=`. Gatilhos adrenérgicos, antecedentes e fatores de risco: ${p.gatilhos.join(', ').toLowerCase()}`;
+ return out;
 }
 function palQAfter(S){
  const p=S.palQ;let out='';
@@ -7259,12 +7373,19 @@ const EDM_WELLS=['Cirurgia de grande porte realizada nas últimas 12 semanas','I
 const EDM_TORACICOS=['Dispneia súbita associada','Dor torácica de caráter pleurítico (ventilatório-dependente)','Tosse com expectoração hemoptoica','Ausência de queixas respiratórias ou torácicas (nega sinais de TEP)'];
 
 function edmHda(S){
- const e=S.edm;const parts=[];
- if(e.lat)parts.push(`apresentando padrão ${e.lat.toLowerCase()}`);
- if(e.flogose.length)parts.push(`características locais: ${e.flogose.join(', ').toLowerCase()}`);
- if(e.wells.length)parts.push(`fatores de risco para TEV: ${e.wells.join(', ').toLowerCase()}`);
- if(e.toracicos.length)parts.push(`avaliação respiratória/TEP: ${e.toracicos.join(', ').toLowerCase()}`);
- return parts.length?`, ${parts.join('; ')}`:'';
+ const e=S.edm;
+ if(!e.lat&&!e.flogose.length&&!e.wells.length&&!e.toracicos.length)return '';
+ let out='';
+ if(e.lat) out+=`. Apresenta edema / dor em membros inferiores com padrão ${e.lat.toLowerCase()}`;
+ else out+=`. Apresenta edema / dor em membros inferiores`;
+ if(e.flogose.length) out+=`. Sinais flogísticos e características ao exame local: ${e.flogose.join(', ').toLowerCase()}`;
+ if(e.wells.length) out+=`. Fatores de risco clínicos avaliados: ${e.wells.join(', ').toLowerCase()}`;
+ if(e.toracicos.length) out+=`. Rastreio de repercussão torácica e suspeita de TEP: ${e.toracicos.join(', ').toLowerCase()}`;
+ if(S.wellsTvp&&S.wellsTvp.evaluated){
+  const wSc=wellsTvpSc();
+  out+=`. Escore de Wells para TVP: ${wSc} pontos (${wellsTvpInterp(wSc)})`;
+ }
+ return out;
 }
 function edmAfter(S){
  const e=S.edm;let out='';
@@ -7272,6 +7393,8 @@ function edmAfter(S){
   out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ALERTA DE SUSPEITA DE TROMBOSE VENOSA PROFUNDA (TVP)</strong> — Solicitar Ultrassonografia Doppler venosa de membros inferiores de urgência ou D-Dímero conforme escore de probabilidade de Wells. Se sintomas torácicos associados, investigar TEP imediatamente (AngioTC de tórax).</div>`;
  }
  out+=`<div style="margin-top:8px"><label>Tempo de evolução do edema / dor</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 3 dias, há 1 semana"></div>`;
+ const wSc=wellsTvpSc();
+ out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_wells_tvp')"><span style="font-weight:500"><i class="ti ti-calculator"></i> Escore de Wells para TVP (Trombose Venosa Profunda)</span><span class="sb ${wellsTvpBadgeClass(wSc)}">${wSc} pts</span></div><div class="sbd" id="sc_wells_tvp">${rWellsTvp()}<div class="sres"><div class="snum">${wSc}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${wellsTvpInterp(wSc)}</div></div></div></div>`;
  return out;
 }
 
@@ -7541,6 +7664,305 @@ function showRel(txt){
 
 function rHear(){const H=S.hear;const aL=S.idade<45?'< 45a (0)':S.idade<65?'45–64a (1)':'≥ 65a (2)';const it=[{k:'h',l:'H — História',d:'Alt. suspeita=2 / Moderada=1 / Leve=0',o:[['0','Leve'],['1','Moderada'],['2','Alt. suspeita']]},{k:'e',l:'E — ECG',d:'Normal=0 / Inespecífico=1 / Isquemia nova=2',o:[['0','Normal'],['1','Inespec.'],['2','Isquemia']]},{k:'r',l:'R — Fatores de risco',d:'Sem FR=0 / 1–2=1 / ≥3 ou DAC=2',o:[['0','Sem FR'],['1','1–2 FR'],['2','≥3 FR']]},{k:'t',l:'T — Troponina',d:'≤ limite=0 / 1–3×=1 / >3×=2',o:[['0','Normal'],['1','1–3×'],['2','>3×']]}];return`<div class="srow"><div style="flex:1"><div class="slbl">A — Idade</div><div class="sdsc">Auto calculado</div></div><div class="sopts"><span class="sopt auto">${aL}</span></div></div>`+it.map(x=>`<div class="srow"><div style="flex:1"><div class="slbl">${x.l}</div><div class="sdsc">${x.d}</div></div><div class="sopts">${x.o.map(([v,lb])=>`<span class="sopt ${H[x.k]==v?'on':''}" onclick="S.hear['${x.k}']='${v}';render()">${lb} (${v})</span>`).join('')}</div></div>`).join('');}
 function rEdacs(){const e=S.edacs,ap=eAP();return`<div class="srow"><div style="flex:1"><div class="slbl">Idade / Sexo</div><div class="sdsc">Auto calculado (${S.idade} anos)</div></div><div style="display:flex;align-items:center;gap:6px"><span class="sopt auto">${ap} pts</span><div style="display:flex;gap:5px">${[['M','Masc'],['F','Fem']].map(([v,l])=>`<span class="sopt ${e.sx===v?'on':''}" onclick="S.edacs.sx='${v}';render()">${l}</span>`).join('')}</div></div></div>`+[{k:'cad',l:'DAC conhecida',d:'+4'},{k:'dia',l:'Diaforese',d:'+3'},{k:'rad',l:'Irradiação braço/ombro',d:'+5'},{k:'ins',l:'Piora à inspiração',d:'−4'},{k:'pal',l:'Reproduzida à palpação',d:'−6'}].map(x=>`<div class="srow"><div style="flex:1"><div class="slbl">${x.l}</div><div class="sdsc">${x.d} pts</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(e[x.k])===v?'on':''}" onclick="S.edacs['${x.k}']=${v};render()">${lb}</span>`).join('')}</div></div>`).join('')+`<div class="srow"><div style="flex:1"><div class="slbl">Troponina 0h / 2h</div></div><div style="display:flex;gap:5px"><input type="number" inputmode="decimal" step="0.1" min="0" value="${esc(e.t0)}" oninput="S.edacs.t0=this.value;render()" style="width:62px" placeholder="0h"><input type="number" inputmode="decimal" step="0.1" min="0" value="${esc(e.t2)}" oninput="S.edacs.t2=this.value;render()" style="width:62px" placeholder="2h"></div></div>`;}
+
+// ─── Wells para TEP ────────────────────────────────────────────────────────
+function wellsTepSc(){
+ const w=S.wellsTep;let p=0;
+ if(w.tvp)p+=3.0;if(w.alt)p+=3.0;if(w.fc)p+=1.5;if(w.imob)p+=1.5;if(w.prev)p+=1.5;if(w.hemo)p+=1.0;if(w.neo)p+=1.0;
+ return p;
+}
+function wellsTepInterp(pts){
+ if(pts<=1.5)return 'Baixo risco (~1,3% risco) — TEP improvável (avaliar PERC / D-Dímero)';
+ if(pts<=6.0)return 'Risco intermediário (~16% risco) — TEP provável (D-Dímero ou AngioTC)';
+ return 'Alto risco (~40% risco) — Alta probabilidade (AngioTC de tórax imediata / Anticoagulação)';
+}
+function wellsTepBadgeClass(pts){return pts<=1.5?'sok':pts<=6.0?'smod':'sgr';}
+function rWellsTep(){
+ const w=S.wellsTep;
+ const items=[
+  {k:'tvp',l:'Sinais clínicos de TVP',d:'Dor à palpação profunda ou edema unilateral (+3.0 pts)'},
+  {k:'alt',l:'Diagnóstico alternativo menos provável que TEP',d:'Gestalt do médico assistente (+3.0 pts)'},
+  {k:'fc',l:'FC > 100 bpm',d:'Taquicardia na admissão (+1.5 pts)'},
+  {k:'imob',l:'Imobilização ≥ 3 dias ou cirurgia recente < 4 sem',d:'Acamado no leito ou pós-operatório (+1.5 pts)'},
+  {k:'prev',l:'TVP ou TEP prévio documentado',d:'Histórico pessoal de evento tromboembólico (+1.5 pts)'},
+  {k:'hemo',l:'Hemoptise',d:'Expectoração sanguinolenta (+1.0 pt)'},
+  {k:'neo',l:'Neoplasia maligna ativa',d:'Em tratamento ativo ou paliativo < 6 meses (+1.0 pt)'}
+ ];
+ return items.map(x=>`<div class="srow"><div style="flex:1"><div class="slbl">${x.l}</div><div class="sdsc">${x.d}</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(w[x.k])===v?'on':''}" onclick="S.wellsTep['${x.k}']=${v};S.wellsTep.evaluated=true;render()">${lb}</span>`).join('')}</div></div>`).join('');
+}
+
+// ─── Wells para TVP ────────────────────────────────────────────────────────
+function wellsTvpSc(){
+ const w=S.wellsTvp;let p=0;
+ if(w.neo)p+=1;if(w.paral)p+=1;if(w.imob)p+=1;if(w.dor)p+=1;if(w.edemaMembro)p+=1;if(w.assimetria)p+=1;if(w.cacifo)p+=1;if(w.colaterais)p+=1;if(w.prev)p+=1;if(w.altMenos)p-=2;
+ return p;
+}
+function wellsTvpInterp(pts){
+ if(pts<=0)return 'Baixo risco (~5%) — TVP improvável (D-Dímero descarta)';
+ if(pts<=2)return 'Risco moderado (~17%) — Solicitar USG Doppler venoso ou D-Dímero';
+ return 'Alto risco (~53%–73%) — TVP provável (USG Doppler venoso de MMII imediato)';
+}
+function wellsTvpBadgeClass(pts){return pts<=0?'sok':pts<=2?'smod':'sgr';}
+function rWellsTvp(){
+ const w=S.wellsTvp;
+ const items=[
+  {k:'neo',l:'Câncer ativo',d:'Em tratamento ativo ou paliativo < 6 meses (+1 pt)'},
+  {k:'paral',l:'Paralisia, paresia ou imobilização gessada de MMII',d:'Restrição motora recente de membro inferior (+1 pt)'},
+  {k:'imob',l:'Acamamento recente > 3 dias ou cirurgia de grande porte < 12 sem',d:'Pós-operatório ou restrito ao leito (+1 pt)'},
+  {k:'dor',l:'Dor localizada ao longo do trajeto venoso profundo',d:'Hipersensibilidade em cordão venoso profundo (+1 pt)'},
+  {k:'edemaMembro',l:'Edema de todo o membro inferior',d:'Envolvimento de toda a perna afetada (+1 pt)'},
+  {k:'assimetria',l:'Assimetria de panturrilha > 3 cm',d:'Medida 10 cm abaixo da tuberosidade tibial anterior (+1 pt)'},
+  {k:'cacifo',l:'Edema depressível com cacifo no membro sintomático',d:'Cacifo presente apenas no lado afetado (+1 pt)'},
+  {k:'colaterais',l:'Veias superficiais colaterais não varicosas',d:'Circulação colateral visível (+1 pt)'},
+  {k:'prev',l:'TVP prévia documentada',d:'História de trombose venosa profunda (+1 pt)'},
+  {k:'altMenos',l:'Diagnóstico alternativo tão ou mais provável que TVP',d:'Ex: celulite, rotura de cisto de Baker, estase venosa crônica (−2 pts)'}
+ ];
+ return items.map(x=>`<div class="srow"><div style="flex:1"><div class="slbl">${x.l}</div><div class="sdsc">${x.d}</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(w[x.k])===v?'on':''}" onclick="S.wellsTvp['${x.k}']=${v};S.wellsTvp.evaluated=true;render()">${lb}</span>`).join('')}</div></div>`).join('');
+}
+
+// ─── NIHSS (National Institutes of Health Stroke Scale) ─────────────────────
+function nihssSc(){
+ const n=S.nihss||{};
+ return (+(n.loc||0))+(+(n.qLoc||0))+(+(n.cLoc||0))+(+(n.olhar||0))+(+(n.campo||0))+(+(n.face||0))+(+(n.bracoE||0))+(+(n.bracoD||0))+(+(n.pernaE||0))+(+(n.pernaD||0))+(+(n.ataxia||0))+(+(n.sensib||0))+(+(n.ling||0))+(+(n.disart||0))+(+(n.extin||0));
+}
+function nihssInterp(pts){
+ if(pts===0)return '0 pts — Sem déficit neurológico mensurável';
+ if(pts<=4)return 'AVC Leve (avaliar se déficit é incapacitante para trombólise)';
+ if(pts<=14)return 'AVC Moderado (indicação clássica de reperfusão / trombólise se em janela)';
+ if(pts<=24)return 'AVC Grave (alta suspeita de oclusão de grande vaso — avaliar trombectomia)';
+ return 'AVC Gravíssimo (prognóstico reservado / risco de transformação hemorrágica)';
+}
+function nihssBadgeClass(pts){return pts<=4?'sok':pts<=14?'smod':'sgr';}
+function rNihss(){
+ const n=S.nihss;
+ const it=[
+  {k:'loc',l:'1a. Nível de Consciência',o:[[0,'0-Alerta'],[1,'1-Sonolento'],[2,'2-Estupor'],[3,'3-Coma']]},
+  {k:'qLoc',l:'1b. Perguntas LOC (Mês e Idade)',o:[[0,'0-Ambas certas'],[1,'1-Uma certa'],[2,'2-Nenhuma certa']]},
+  {k:'cLoc',l:'1c. Comandos LOC (Olhos e Mão)',o:[[0,'0-Ambos certos'],[1,'1-Um certo'],[2,'2-Nenhum certo']]},
+  {k:'olhar',l:'2. Movimentos Oculares (Olhar Conjugado)',o:[[0,'0-Normal'],[1,'1-Paresia parcial'],[2,'2-Desvio forçado']]},
+  {k:'campo',l:'3. Campos Visuais (Hemianopsia)',o:[[0,'0-Normal'],[1,'1-Hemianopsia parcial'],[2,'2-Completa'],[3,'3-Cegueira/Bilateral']]},
+  {k:'face',l:'4. Paralisia Facial',o:[[0,'0-Normal'],[1,'1-Mínima/assimetria'],[2,'2-Parcial inferior'],[3,'3-Completa/plegia']]},
+  {k:'bracoE',l:'5a. Motor Braço Esquerdo (10 seg)',o:[[0,'0-Sem queda'],[1,'1-Queda s/ encostar'],[2,'2-Cai no leito'],[3,'3-Esforço s/ gravidade'],[4,'4-Plegia']]},
+  {k:'bracoD',l:'5b. Motor Braço Direito (10 seg)',o:[[0,'0-Sem queda'],[1,'1-Queda s/ encostar'],[2,'2-Cai no leito'],[3,'3-Esforço s/ gravidade'],[4,'4-Plegia']]},
+  {k:'pernaE',l:'6a. Motor Perna Esquerda (5 seg)',o:[[0,'0-Sem queda'],[1,'1-Queda s/ encostar'],[2,'2-Cai no leito'],[3,'3-Esforço s/ gravidade'],[4,'4-Plegia']]},
+  {k:'pernaD',l:'6b. Motor Perna Direita (5 seg)',o:[[0,'0-Sem queda'],[1,'1-Queda s/ encostar'],[2,'2-Cai no leito'],[3,'3-Esforço s/ gravidade'],[4,'4-Plegia']]},
+  {k:'ataxia',l:'7. Ataxia de Membros (Dismetria)',o:[[0,'0-Ausente'],[1,'1-Em 1 membro'],[2,'2-Em 2 membros']]},
+  {k:'sensib',l:'8. Sensibilidade (Dor/Agulha)',o:[[0,'0-Normal'],[1,'1-Perda parcial'],[2,'2-Perda grave/total']]},
+  {k:'ling',l:'9. Linguagem e Afasia',o:[[0,'0-Normal'],[1,'1-Afasia leve-mod'],[2,'2-Afasia grave'],[3,'3-Mudo/global']]},
+  {k:'disart',l:'10. Disartria (Clareza da Fala)',o:[[0,'0-Normal'],[1,'1-Leve/moderada'],[2,'2-Grave/anartria']]},
+  {k:'extin',l:'11. Extinção / Negligência',o:[[0,'0-Normal'],[1,'1-Inatenção parcial'],[2,'2-Negligência total']]}
+ ];
+ return it.map(x=>`<div class="srow"><div style="flex:1"><div class="slbl">${x.l}</div></div><div class="sopts">${x.o.map(([v,lb])=>`<span class="sopt ${Number(n[x.k])===v?'on':''}" onclick="S.nihss['${x.k}']=${v};S.nihss.evaluated=true;render()">${lb}</span>`).join('')}</div></div>`).join('');
+}
+
+// ─── Alvarado & Tokyo (Dor abdominal) ──────────────────────────────────────
+function alvaradoSc(){
+ const a=S.alvarado;let p=0;
+ if(a.mig)p+=1;if(a.anox)p+=1;if(a.nau)p+=1;if(a.dorFid)p+=2;if(a.descomp)p+=1;if(a.febre)p+=1;if(a.leuco)p+=2;if(a.desvio)p+=1;
+ return p;
+}
+function alvaradoInterp(pts){
+ if(pts<=4)return 'Baixa probabilidade (apendicite improvável — buscar outro foco)';
+ if(pts<=6)return 'Probabilidade intermediária (indicação de imagem / TC de abdome)';
+ return 'Alta probabilidade (≥ 7 pts — avaliação cirúrgica direta recomendada)';
+}
+function alvaradoBadgeClass(pts){return pts<=4?'sok':pts<=6?'smod':'sgr';}
+function rAlvarado(){
+ const a=S.alvarado;
+ const items=[
+  {k:'mig',l:'Migração da dor para FID',d:'Sinal de Kocher (+1 pt)'},
+  {k:'anox',l:'Anorexia / Inapetência',d:'Perda súbita de apetite (+1 pt)'},
+  {k:'nau',l:'Náuseas ou vômitos',d:'Episódios associados à dor (+1 pt)'},
+  {k:'dorFid',l:'Dor à palpação em FID',d:'Sensibilidade no ponto de McBurney (+2 pts)'},
+  {k:'descomp',l:'Descompressão dolorosa em FID',d:'Sinal de Blumberg positivo (+1 pt)'},
+  {k:'febre',l:'Temperatura ≥ 37,3 °C',d:'Febre ou febrícula aferida (+1 pt)'},
+  {k:'leuco',l:'Leucocitose > 10.000 /mm³',d:'Hemograma com leucocitose (+2 pts)'},
+  {k:'desvio',l:'Desvio à esquerda de neutrófilos > 75%',d:'Neutrofilia / bastonetes (+1 pt)'}
+ ];
+ return items.map(x=>`<div class="srow"><div style="flex:1"><div class="slbl">${x.l}</div><div class="sdsc">${x.d}</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(a[x.k])===v?'on':''}" onclick="S.alvarado['${x.k}']=${v};S.alvarado.evaluated=true;render()">${lb}</span>`).join('')}</div></div>`).join('');
+}
+
+function tokyoStatus(){
+ const t=S.tokyo||{};
+ if(t.disfunc)return{c:'sgr',cls:'sgr',txt:'Colecistite Grau III (Grave — Disfunção orgânica: choque/DVA, RNC, PaO2/FiO2 < 300, Cr > 2 ou Plaquetas < 100k)',text:'Colecistite Grau III (Grave — Disfunção orgânica: choque/DVA, RNC, PaO2/FiO2 < 300, Cr > 2 ou Plaquetas < 100k)'};
+ if(t.grau2)return{c:'smod',cls:'smod',txt:'Colecistite Grau II (Moderada — Leuco > 18k, massa dolorosa palpável ou duração > 72h)',text:'Colecistite Grau II (Moderada — Leuco > 18k, massa dolorosa palpável ou duração > 72h)'};
+ if(t.locais&&t.sist&&t.img)return{c:'smod',cls:'smod',txt:'Colecistite Grau I (Leve — Diagnóstico definitivo: Sinais locais + sistêmicos + imagem)',text:'Colecistite Grau I (Leve — Diagnóstico definitivo: Sinais locais + sistêmicos + imagem)'};
+ if(t.locais&&t.sist)return{c:'smod',cls:'smod',txt:'Suspeita clínica de Colecistite (Sinais locais + sistêmicos — aguarda confirmação por USG)',text:'Suspeita clínica de Colecistite (Sinais locais + sistêmicos — aguarda confirmação por USG)'};
+ return{c:'sok',cls:'sok',txt:'Critérios de Tokyo não preenchidos',text:'Critérios de Tokyo não preenchidos'};
+}
+function rTokyo(){
+ const t=S.tokyo;
+ const items=[
+  {k:'locais',l:'A. Sinais locais de inflamação',d:'Sinal de Murphy positivo ou dor/massa em HCD'},
+  {k:'sist',l:'B. Sinais sistêmicos de inflamação',d:'Febre, leucocitose ou PCR elevada'},
+  {k:'img',l:'C. Achados de imagem compatíveis',d:'USG/TC: espessamento de parede > 4mm, cálculo impactado, líquido pericolecístico'},
+  {k:'grau2',l:'Critérios de Gravidade Grau II',d:'Leuco > 18.000, massa dolorosa QSD, queixa > 72h'},
+  {k:'disfunc',l:'Critérios de Gravidade Grau III (Disfunção)',d:'Choque com DVA, RNC, insuficiência respiratória ou renal'}
+ ];
+ return items.map(x=>`<div class="srow"><div style="flex:1"><div class="slbl">${x.l}</div><div class="sdsc">${x.d}</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(t[x.k])===v?'on':''}" onclick="S.tokyo['${x.k}']=${v};S.tokyo.evaluated=true;render()">${lb}</span>`).join('')}</div></div>`).join('');
+}
+
+// ─── PSI / PORT (Tosse) ───────────────────────────────────────────────────
+function psiPortSc(){
+ const p=S.psiPort||{};let s=0;
+ const masc=S.sexo!=='F';
+ s+=masc?(S.idade||0):Math.max(0,(S.idade||0)-10);
+ if(p.asilo)s+=10;if(p.neo)s+=30;if(p.hepato)s+=20;if(p.icc)s+=10;if(p.dcv)s+=10;if(p.renal)s+=10;
+ if(p.rnc)s+=20;if(p.fr)s+=20;if(p.pas)s+=20;if(p.temp)s+=15;if(p.fc)s+=10;
+ if(p.ph)s+=30;if(p.ureia)s+=20;if(p.na)s+=20;if(p.gli)s+=10;if(p.ht)s+=10;if(p.pao2)s+=10;if(p.derrame)s+=10;
+ return s;
+}
+function psiPortClass(s){
+ if(s<=70)return'Classe I–II (Mortalidade ≤ 0,6%) — Tratamento ambulatorial seguro';
+ if(s<=90)return'Classe III (Mortalidade ~2,8%) — Observação breve / enfermaria selecionada';
+ if(s<=130)return'Classe IV (Mortalidade ~8,2%) — Internação hospitalar recomendada';
+ return 'Classe V (Mortalidade ~29,2%) — Internação em UTI recomendada';
+}
+function psiPortBadgeClass(s){return s<=70?'sok':s<=90?'smod':'sgr';}
+function rPsiPort(){
+ const p=S.psiPort;
+ const masc=S.sexo!=='F';
+ const idadePts=masc?S.idade:Math.max(0,S.idade-10);
+ const items=[
+  {k:'asilo',l:'Residente em asilo / casa de repouso',d:'+10 pts'},
+  {k:'neo',l:'Doença neoplásica ativa',d:'+30 pts'},
+  {k:'hepato',l:'Doença hepática crônica',d:'+20 pts'},
+  {k:'icc',l:'Insuficiência cardíaca congestiva (ICC)',d:'+10 pts'},
+  {k:'dcv',l:'Doença cerebrovascular (AVC prévio)',d:'+10 pts'},
+  {k:'renal',l:'Doença renal crônica',d:'+10 pts'},
+  {k:'rnc',l:'Alteração do estado mental / confusão',d:'+20 pts'},
+  {k:'fr',l:'FR ≥ 30 irpm',d:'+20 pts'},
+  {k:'pas',l:'PAS < 90 mmHg',d:'+20 pts'},
+  {k:'temp',l:'Temp < 35 °C ou ≥ 40 °C',d:'+15 pts'},
+  {k:'fc',l:'FC ≥ 125 bpm',d:'+10 pts'},
+  {k:'ph',l:'pH arterial < 7,35',d:'+30 pts'},
+  {k:'ureia',l:'Ureia ≥ 64 mg/dL (BUN ≥ 30)',d:'+20 pts'},
+  {k:'na',l:'Sódio sérico < 130 mEq/L',d:'+20 pts'},
+  {k:'gli',l:'Glicemia ≥ 250 mg/dL',d:'+10 pts'},
+  {k:'ht',l:'Hematócrito < 30%',d:'+10 pts'},
+  {k:'pao2',l:'PaO2 < 60 mmHg ou SatO2 < 90%',d:'+10 pts'},
+  {k:'derrame',l:'Derrame pleural no RX de tórax',d:'+10 pts'}
+ ];
+ return `<div class="srow"><div style="flex:1"><div class="slbl">Idade / Sexo (${S.idade} anos, ${masc?'Masc':'Fem'})</div><div class="sdsc">Auto calculado</div></div><div class="sopts"><span class="sopt auto">${idadePts} pts</span></div></div>`+items.map(x=>`<div class="srow"><div style="flex:1"><div class="slbl">${x.l}</div><div class="sdsc">${x.d}</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(p[x.k])===v?'on':''}" onclick="S.psiPort['${x.k}']=${v};S.psiPort.evaluated=true;render()">${lb}</span>`).join('')}</div></div>`).join('');
+}
+
+// ─── MASCC (Febre / Neutropenia Febril) ─────────────────────────────────────
+function masccSc(){
+ const m=S.mascc||{};let s=+(m.sintomas||0);
+ if(m.pa)s+=5;if(m.dpoc)s+=4;if(m.solido)s+=4;if(m.desid)s+=3;if(m.amb)s+=3;
+ if((S.idade||0)<60)s+=2;
+ return s;
+}
+function masccInterp(pts){
+ if(pts>=21)return '≥ 21 pts — Baixo risco de complicações graves (< 5% mortalidade). Avaliar conduta ambulatorial supervisionada.';
+ return '< 21 pts — Alto risco de complicações (~14% mortalidade). Hospitalização imediata + ATB antipseudomonas venoso em < 60 min.';
+}
+function masccBadgeClass(pts){return pts>=21?'sok':'sgr';}
+function rMascc(){
+ const m=S.mascc;
+ const agePts=S.idade<60?2:0;
+ return `
+  <div class="srow"><div style="flex:1"><div class="slbl">Gravidade dos sintomas clínicos</div><div class="sdsc">Impacto da febre e toxemia</div></div><div class="sopts">${[['5','Leve/Assintomático (+5)'],['3','Moderado (+3)'],['0','Grave (0)']].map(([v,lb])=>`<span class="sopt ${m.sintomas===v?'on':''}" onclick="S.mascc.sintomas='${v}';S.mascc.evaluated=true;render()">${lb}</span>`).join('')}</div></div>
+  <div class="srow"><div style="flex:1"><div class="slbl">Ausência de hipotensão arterial (PAS > 90 mmHg)</div><div class="sdsc">+5 pts</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(m.pa)===v?'on':''}" onclick="S.mascc.pa=${v};S.mascc.evaluated=true;render()">${lb}</span>`).join('')}</div></div>
+  <div class="srow"><div style="flex:1"><div class="slbl">Ausência de DPOC prévio</div><div class="sdsc">+4 pts</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(m.dpoc)===v?'on':''}" onclick="S.mascc.dpoc=${v};S.mascc.evaluated=true;render()">${lb}</span>`).join('')}</div></div>
+  <div class="srow"><div style="flex:1"><div class="slbl">Tumor sólido OU hematológico sem infecção fúngica prévia</div><div class="sdsc">+4 pts</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(m.solido)===v?'on':''}" onclick="S.mascc.solido=${v};S.mascc.evaluated=true;render()">${lb}</span>`).join('')}</div></div>
+  <div class="srow"><div style="flex:1"><div class="slbl">Ausência de desidratação grave necessitando de hidratação parenteral</div><div class="sdsc">+3 pts</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(m.desid)===v?'on':''}" onclick="S.mascc.desid=${v};S.mascc.evaluated=true;render()">${lb}</span>`).join('')}</div></div>
+  <div class="srow"><div style="flex:1"><div class="slbl">Início da febre em ambiente ambulatorial (fora do hospital)</div><div class="sdsc">+3 pts</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(m.amb)===v?'on':''}" onclick="S.mascc.amb=${v};S.mascc.evaluated=true;render()">${lb}</span>`).join('')}</div></div>
+  <div class="srow"><div style="flex:1"><div class="slbl">Idade < 60 anos (${S.idade} anos)</div><div class="sdsc">Auto calculado (+2 pts)</div></div><div class="sopts"><span class="sopt auto">${agePts} pts</span></div></div>
+ `;
+}
+
+// ─── Trauma Rules (Canadian CT Head, C-Spine, NEXUS) ────────────────────────
+function rTraumaRules(){
+ const r=S.trmRules;
+ const cct=r.cct,csp=r.cspine,nex=r.nexus;
+ const cctIndicated=cct.gcs||cct.base||cct.afund||cct.vomit||cct.idoso||cct.amnesia||cct.energia;
+ const cspIndicated=csp.idoso||csp.mecanismo||csp.parestesia||(!csp.baixoRisco)||(!csp.rotacao);
+ const nexLiberado=(!nex.dor)&&(!nex.focal)&&nex.gcs15&&(!nex.intox)&&(!nex.distracao)&&nex.evaluated;
+
+ return `
+  <div style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--color-text-primary)"><i class="ti ti-scan"></i> Canadian CT Head Rule (TCE Leve Glasgow 13–15)</div>
+  <div class="srow"><div style="flex:1"><div class="slbl">Critérios de Alto Risco para Neurocirurgia</div><div class="sdsc">Glasgow &lt; 15 após 2h, fratura aberta/afundada, sinais de fratura de base (Battle, guaxinim, hemotímpano, rinoliquorreia), ≥ 2 vômitos ou idade ≥ 65a</div></div><div class="sopts">${[['true','Presente'],['false','Ausente']].map(([v,lb])=>`<span class="sopt ${(cct.gcs||cct.base||cct.afund||cct.vomit||cct.idoso)=== (v==='true')?'on':''}" onclick="S.trmRules.cct.gcs=${v};S.trmRules.cct.evaluated=true;render()">${lb}</span>`).join('')}</div></div>
+  <div class="srow"><div style="flex:1"><div class="slbl">Critérios de Médio Risco para Lesão Cerebral</div><div class="sdsc">Amnésia retrógrada &gt; 30 min ou mecanismo de alta energia (atropelamento, ejeção, queda &gt; 1m)</div></div><div class="sopts">${[['true','Presente'],['false','Ausente']].map(([v,lb])=>`<span class="sopt ${(cct.amnesia||cct.energia)=== (v==='true')?'on':''}" onclick="S.trmRules.cct.amnesia=${v};S.trmRules.cct.evaluated=true;render()">${lb}</span>`).join('')}</div></div>
+  <div style="padding:6px 10px;margin-bottom:12px;border-radius:6px;background:${cctIndicated?'#fef2f2':'#f0fdf4'};color:${cctIndicated?'#991b1b':'#15803d'};font-size:12px"><strong>Resultado TC Crânio:</strong> ${cctIndicated?'TC DE CRÂNIO SEM CONTRASTE INDICADA':'Sem indicação mandatória de TC crânio por Canadian Rule'}</div>
+
+  <div style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--color-text-primary)"><i class="ti ti-bone"></i> Canadian C-Spine Rule (Coluna Cervical)</div>
+  <div class="srow"><div style="flex:1"><div class="slbl">Fator de Alto Risco (Idade ≥ 65a, mecanismo perigoso, parestesias)</div><div class="sdsc">Se presente: Exame de imagem obrigatório</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(csp.idoso)===v?'on':''}" onclick="S.trmRules.cspine.idoso=${v};S.trmRules.cspine.evaluated=true;render()">${lb}</span>`).join('')}</div></div>
+  <div class="srow"><div style="flex:1"><div class="slbl">Fator de Baixo Risco presente para avaliar ADM?</div><div class="sdsc">Colisão traseira simples, deambulando, sentado na emergência, início tardio, sem dor linha média</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(csp.baixoRisco)===v?'on':''}" onclick="S.trmRules.cspine.baixoRisco=${v};S.trmRules.cspine.evaluated=true;render()">${lb}</span>`).join('')}</div></div>
+  <div class="srow"><div style="flex:1"><div class="slbl">Consegue rodar pescoço 45° ativamente (E e D)?</div><div class="sdsc">Rotação ativa sem dor limitante</div></div><div class="sopts">${[['true','Sim (45°)'],['false','Não / Dor']].map(([v,lb])=>`<span class="sopt ${String(csp.rotacao)===v?'on':''}" onclick="S.trmRules.cspine.rotacao=${v};S.trmRules.cspine.evaluated=true;render()">${lb}</span>`).join('')}</div></div>
+  <div style="padding:6px 10px;margin-bottom:12px;border-radius:6px;background:${cspIndicated?'#fef2f2':'#f0fdf4'};color:${cspIndicated?'#991b1b':'#15803d'};font-size:12px"><strong>Resultado Coluna Cervical (Canadian):</strong> ${cspIndicated?'EXAME DE IMAGEM CERVICAL OBRIGATÓRIO':'Coluna cervical liberada sem imagem por Canadian C-Spine Rule'}</div>
+
+  <div style="font-size:13px;font-weight:600;margin:12px 0 6px 0;color:var(--color-text-primary)"><i class="ti ti-shield-check"></i> Critérios NEXUS (Liberação Clínica da Coluna Cervical)</div>
+  ${[
+   {k:'dor',l:'1. Dor na linha média cervical posterior à palpação',inv:true},
+   {k:'focal',l:'2. Presença de déficit neurológico focal',inv:true},
+   {k:'gcs15',l:'3. Nível normal de alerta (Glasgow 15)',inv:false},
+   {k:'intox',l:'4. Evidência de intoxicação por álcool ou drogas',inv:true},
+   {k:'distracao',l:'5. Presença de lesão dolorosa de distração',inv:true}
+  ].map(x=>`<div class="srow"><div style="flex:1"><div class="slbl">${x.l}</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(nex[x.k])===v?'on':''}" onclick="S.trmRules.nexus['${x.k}']=${v};S.trmRules.nexus.evaluated=true;render()">${lb}</span>`).join('')}</div></div>`).join('')}
+  <div style="padding:6px 10px;margin-top:6px;border-radius:6px;background:${nexLiberado?'#f0fdf4':'#fef2f2'};color:${nexLiberado?'#15803d':'#991b1b'};font-size:12px"><strong>Critérios NEXUS:</strong> ${nexLiberado?'Coluna cervical liberada clinicamente (sem exames de imagem)':'Critérios não preenchidos — manter imobilização cervical e solicitar imagem'}</div>
+ `;
+}
+
+// ─── Child-Pugh & MELD (Apoio à decisão / Icterícia) ────────────────────────
+function childPughSc(){
+ const c=S.childPugh||{};
+ return (+(c.bili||1))+(+(c.alb||1))+(+(c.inr||1))+(+(c.ascite||1))+(+(c.encef||1));
+}
+function childPughClass(s){
+ if(s<=6)return{classe:'Classe A',pontos:s,sobrevida:'Sobrevida 1 ano ~100%, 2 anos ~85%'};
+ if(s<=9)return{classe:'Classe B',pontos:s,sobrevida:'Sobrevida 1 ano ~80%, 2 anos ~57%'};
+ return{classe:'Classe C',pontos:s,sobrevida:'Sobrevida 1 ano ~45%, 2 anos ~35%'};
+}
+function calcMELD(){
+ const m=S.meld;
+ const bili=parseFloat(m.bili),cr=parseFloat(m.cr),inr=parseFloat(m.inr);
+ if(!bili||!cr||!inr||isNaN(bili)||isNaN(cr)||isNaN(inr))return null;
+ const b=Math.max(1,bili),c=m.dialise?4.0:Math.min(4.0,Math.max(1,cr)),i=Math.max(1,inr);
+ let meld=Math.round((9.57*Math.log(c))+(3.78*Math.log(b))+(11.2*Math.log(i))+6.43);
+ meld=Math.max(6,Math.min(40,meld));
+ return meld;
+}
+function insertChildPughMeldToProntuario(){
+ const cp=childPughSc();
+ const cpInf=childPughClass(cp);
+ const mSc=calcMELD();
+ let txt=`[Apoio à Decisão - Hepatologia]\nEscore Child-Pugh: ${cpInf.pontos} pontos (${cpInf.classe} — ${cpInf.sobrevida})`;
+ if(mSc!==null)txt+=`\nEscore MELD calculado: ${mSc} pontos (Mortalidade estimada em 90 dias)`;
+ if(!S.imp)S.imp=txt;
+ else S.imp+='\n\n'+txt;
+ navigator.clipboard.writeText(txt).then(()=>{
+  showToast('Escores Child-Pugh / MELD inseridos na impressão e copiados!');
+  render();
+ });
+}
+function rChildPughMeldDecision(){
+ const c=S.childPugh,m=S.meld;
+ const cpSc=childPughSc();
+ const cpInf=childPughClass(cpSc);
+ const mSc=calcMELD();
+ return `
+  <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:#1e3a8a"><i class="ti ti-calculator"></i> Escore Child-Pugh</div>
+  <div class="srow"><div style="flex:1"><div class="slbl">Bilirrubina total</div></div><div class="sopts">${[['1','< 2 (1)'],['2','2 a 3 (2)'],['3','> 3 (3)']].map(([v,lb])=>`<span class="sopt ${c.bili===v?'on':''}" onclick="S.childPugh.bili='${v}';render()">${lb}</span>`).join('')}</div></div>
+  <div class="srow"><div style="flex:1"><div class="slbl">Albumina sérica</div></div><div class="sopts">${[['1','> 3,5 (1)'],['2','2,8 a 3,5 (2)'],['3','< 2,8 (3)']].map(([v,lb])=>`<span class="sopt ${c.alb===v?'on':''}" onclick="S.childPugh.alb='${v}';render()">${lb}</span>`).join('')}</div></div>
+  <div class="srow"><div style="flex:1"><div class="slbl">INR / Coagulograma</div></div><div class="sopts">${[['1','< 1,7 (1)'],['2','1,7 a 2,3 (2)'],['3','> 2,3 (3)']].map(([v,lb])=>`<span class="sopt ${c.inr===v?'on':''}" onclick="S.childPugh.inr='${v}';render()">${lb}</span>`).join('')}</div></div>
+  <div class="srow"><div style="flex:1"><div class="slbl">Ascite</div></div><div class="sopts">${[['1','Ausente (1)'],['2','Leve / Tratável (2)'],['3','Moderada/Grave (3)']].map(([v,lb])=>`<span class="sopt ${c.ascite===v?'on':''}" onclick="S.childPugh.ascite='${v}';render()">${lb}</span>`).join('')}</div></div>
+  <div class="srow"><div style="flex:1"><div class="slbl">Encefalopatia Hepática</div></div><div class="sopts">${[['1','Ausente (1)'],['2','Grau 1–2 (2)'],['3','Grau 3–4 (3)']].map(([v,lb])=>`<span class="sopt ${c.encef===v?'on':''}" onclick="S.childPugh.encef='${v}';render()">${lb}</span>`).join('')}</div></div>
+  <div style="padding:6px 10px;margin:8px 0;background:#eff6ff;border-radius:6px;font-size:12px;color:#1e40af"><strong>Child-Pugh:</strong> ${cpInf.pontos} pontos — <strong>${cpInf.classe}</strong> (${cpInf.sobrevida})</div>
+
+  <div style="font-size:13px;font-weight:600;margin:12px 0 6px 0;color:#1e3a8a"><i class="ti ti-calculator"></i> Escore MELD (Model for End-Stage Liver Disease)</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px">
+   <div><label style="font-size:11px">Bilirrubina (mg/dL)</label><input type="number" step="0.1" value="${esc(m.bili)}" oninput="S.meld.bili=this.value;render()" style="width:100%" placeholder="Ex: 2.5"></div>
+   <div><label style="font-size:11px">Creatinina (mg/dL)</label><input type="number" step="0.1" value="${esc(m.cr)}" oninput="S.meld.cr=this.value;render()" style="width:100%" placeholder="Ex: 1.2"></div>
+   <div><label style="font-size:11px">INR</label><input type="number" step="0.1" value="${esc(m.inr)}" oninput="S.meld.inr=this.value;render()" style="width:100%" placeholder="Ex: 1.6"></div>
+  </div>
+  <div style="margin-bottom:8px;font-size:12px"><label><input type="checkbox" ${m.dialise?'checked':''} onchange="S.meld.dialise=this.checked;render()"> Diálise ≥ 2x na última semana (fixa Cr em 4.0)</label></div>
+  <div style="padding:6px 10px;margin-bottom:10px;background:#eff6ff;border-radius:6px;font-size:12px;color:#1e40af"><strong>MELD:</strong> ${mSc!==null?mSc+' pontos':'Preencha Bilirrubina, Creatinina e INR para calcular'}</div>
+
+  <button class="btng" style="width:100%;background:#1d4ed8;font-size:12.5px" onclick="insertChildPughMeldToProntuario()"><i class="ti ti-clipboard-plus"></i> Inserir no Prontuário / Copiar</button>
+ `;
+}
+
 
 
 function s0(){const t=Math.floor(S.idade/10),u=S.idade%10,needsInfo=['Vaga Zero','Transferência'].includes(S.orig);const sexOpts=[['','—'],['M','Masculino'],['F','Feminino'],['O','Outro']];return`<div id="step-0" class="card"><div class="st"><i class="ti ti-user" aria-hidden="true"></i> Identificação e origem</div><div style="margin-bottom:12px"><label>Nome do paciente</label><input type="text" value="${esc(S.nome)}" oninput="S.nome=this.value" placeholder="Nome completo"></div><div class="r2"><div><label>Idade</label><div class="age-drums"><div class="drum"><button class="drum-btn" onclick="cAgeDig(10,1)"><i class="ti ti-chevron-up" aria-hidden="true"></i></button><div class="drum-dig">${t}</div><button class="drum-btn" onclick="cAgeDig(10,-1)"><i class="ti ti-chevron-down" aria-hidden="true"></i></button></div><div class="drum"><button class="drum-btn" onclick="cAgeDig(1,1)"><i class="ti ti-chevron-up" aria-hidden="true"></i></button><div class="drum-dig">${u}</div><button class="drum-btn" onclick="cAgeDig(1,-1)"><i class="ti ti-chevron-down" aria-hidden="true"></i></button></div><span class="drum-unit">anos</span></div></div><div><label>Sexo</label><select onchange="S.sexo=this.value;render()">${sexOpts.map(([v,l])=>`<option value="${v}" ${S.sexo===v?'selected':''}>${l}</option>`).join('')}</select></div></div><div style="margin-top:10px"><label>Origem</label><select onchange="S.orig=this.value;render()">${['Demanda Espontânea','SAMU','Bombeiros','Vaga Zero','Transferência'].map(o=>`<option ${S.orig===o?'selected':''}>${o}</option>`).join('')}</select></div>${needsInfo?`<div style="margin-top:10px"><div style="margin-bottom:8px"><label>Instituição de origem</label><input type="text" value="${esc(S.origInst)}" oninput="S.origInst=this.value" placeholder="Nome da instituição"></div><div><label>Motivo da transferência / vaga zero</label><input type="text" value="${esc(S.origMotivo)}" oninput="S.origMotivo=this.value" placeholder="Diagnóstico / motivo da solicitação"></div></div>`:''}</div><div class="nav"><div></div><button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;}
@@ -8333,6 +8755,168 @@ function renderDecisionSupportContent(tab){
    `;
   }
 
+  // Cards Dinâmicos de Pérolas & Pitfalls por Queixa / Síndrome Selecionada
+  if(['Dispneia','Dor torácica'].includes(S.queixa)||S.sind==='sca'||S.sind==='dpoc'){
+   perolasHtml += `
+    <div class="decision-card" style="border-top:3px solid #0284c7">
+     <div class="decision-card-title" style="color:#0369a1">
+      <i class="ti ti-lungs" style="color:#0284c7" aria-hidden="true"></i>
+      Descarte e Investigação de TEP — Regra PERC & Algoritmo YEARS
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#0284c7"></span>
+      <div>
+       <strong>Regra PERC (Pulmonary Embolism Rule-out Criteria):</strong><br>
+       Aplicável <em>somente</em> se baixa probabilidade clínica de TEP (Gestalt ou Wells &lt; 2). Se todos os 8 critérios forem preenchidos negativamente, TEP está clinicamente descartado <strong>sem necessidade de dosar D-Dímero</strong> (&lt; 1,4% de falso negativo):<br>
+       • Idade &lt; 50 anos<br>
+       • FC &lt; 100 bpm<br>
+       • SatO₂ &ge; 95% em ar ambiente<br>
+       • Sem edema unilateral de membro inferior<br>
+       • Sem hemoptise<br>
+       • Sem cirurgia ou trauma recente (&lt; 4 semanas)<br>
+       • Sem história prévia de TVP / TEP<br>
+       • Sem uso de estrogênio oral (ACO / TRH)
+      </div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#0284c7"></span>
+      <div>
+       <strong>Algoritmo YEARS (Ajuste Dinâmico de D-Dímero):</strong><br>
+       Avalia 3 critérios: (1) Sinais clínicos de TVP, (2) Hemoptise, (3) TEP como diagnóstico mais provável.<br>
+       • <strong>0 itens YEARS:</strong> TEP descartado se D-Dímero &lt; 1.000 ng/mL.<br>
+       • <strong>&ge; 1 item YEARS:</strong> TEP descartado se D-Dímero &lt; 500 ng/mL.<br>
+       • Se D-Dímero acima do ponto de corte: indicar AngioTC de artérias pulmonares.
+      </div>
+     </div>
+    </div>
+   `;
+  }
+
+  if(S.queixa === 'Cefaleia'){
+   perolasHtml += `
+    <div class="decision-card" style="border-top:3px solid #dc2626">
+     <div class="decision-card-title" style="color:#b91c1c">
+      <i class="ti ti-brain" style="color:#dc2626" aria-hidden="true"></i>
+      Cefaleia Secundária de Risco — Mnemônico SNOOP10 & Regra de Ottawa para HSA
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#dc2626"></span>
+      <div>
+       <strong>Red Flags Mnemônico SNOOP10 (Investigar Causa Secundária):</strong><br>
+       • <strong>S (Systemic):</strong> Febre, perda de peso inexplicada, neoplasia prévia, HIV / imunossupressão.<br>
+       • <strong>N (Neurologic):</strong> Déficit neurológico focal novo, confusão mental, sonolência, convulsão.<br>
+       • <strong>O (Onset):</strong> Início súbito / trovoada (Thunderclap — pico em &lt; 1 minuto).<br>
+       • <strong>O (Older):</strong> Início de nova cefaleia após os 50 anos de idade.<br>
+       • <strong>P (Pattern change):</strong> Mudança radical de padrão evolutivo prévio habitual.<br>
+       • <strong>P (Postural):</strong> Piora ortostática (hipotensão liquórica) ou piora em decúbito (HIC).<br>
+       • <strong>P (Precipitated):</strong> Desencadeada por manobras de Valsalva, tosse, esforço físico ou coito.<br>
+       • <strong>P (Pulsatile tinnitus):</strong> Zumbido pulsátil síncrono com batimento.<br>
+       • <strong>P (Papilledema):</strong> Presença de papiledema ao exame de fundo de olho.<br>
+       • <strong>P (Pregnancy / Puerperium):</strong> Cefaleia em gestante ou puérpera.<br>
+       • <strong>P (Painful eye):</strong> Olho vermelho doloroso com manifestações autonômicas.<br>
+       • <strong>P (Post-trauma):</strong> Instalação pós-TCE recente.<br>
+       • <strong>P (Pathology of immune system):</strong> Suspeita de arterite de células gigantes / vasculites.
+      </div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#dc2626"></span>
+      <div>
+       <strong>Regra de Ottawa para Hemorragia Subaracnóidea (HSA):</strong><br>
+       Aplicável a pacientes alertas &ge; 15 anos com cefaleia aguda não-traumática com pico &lt; 1 hora. TC de crânio urgente se <strong>&ge; 1 critério presente</strong>:<br>
+       1. Idade &ge; 40 anos<br>
+       2. Dor ou rigidez cervical relatada<br>
+       3. Perda de consciência presenciada no início<br>
+       4. Início em trovoada (dor atinge pico máximo instantaneamente)<br>
+       5. Início durante esforço físico ou coito<br>
+       6. Flexão cervical dolorosa ou limitada ao exame físico
+      </div>
+     </div>
+    </div>
+   `;
+  }
+
+  if(S.queixa === 'Dor lombar'){
+   perolasHtml += `
+    <div class="decision-card" style="border-top:3px solid #ea580c">
+     <div class="decision-card-title" style="color:#c2410c">
+      <i class="ti ti-bone" style="color:#ea580c" aria-hidden="true"></i>
+      Red Flags da Coluna Lombar — Triagem de Emergências Cirúrgicas & Clínicas
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#ea580c"></span>
+      <div>
+       <strong>Síndrome da Cauda Equina (Emergência Cirúrgica - RM urgente &lt; 24h):</strong><br>
+       • Anestesia em sela (perda de sensibilidade perineal, perianal e nádegas)<br>
+       • Retenção urinária aguda com bexigoma ou incontinência por transbordamento<br>
+       • Incontinência fecal ou perda súbita de tônus anal ao toque retal<br>
+       • Fraqueza motora aguda / progressiva bilateral em membros inferiores (déficit L4-S1 / pé caído)
+      </div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#ea580c"></span>
+      <div>
+       <strong>Infecção Espinhal (Espondilodiscite / Abscesso Epidural):</strong> Febre, calafrios, imunossupressão, uso de drogas IV, procedimentos invasivos recentes ou foco infeccioso à distância.
+      </div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#ea580c"></span>
+      <div>
+       <strong>Malignidade / Metástase Óssea:</strong> Histórico prévio de neoplasia (mama, próstata, pulmão, rim, tireoide, mieloma), perda ponderal, dor noturna contínua que não melhora com repouso, idade &gt; 50 anos.
+      </div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#ea580c"></span>
+      <div>
+       <strong>Vascular (Aneurisma de Aorta Abdominal - AAA / Dissecção):</strong> Dor aguda em dorso/flanco em idoso hipertenso, massa pulsátil abdominal, choque/hipotensão ou síncope associada.
+      </div>
+     </div>
+    </div>
+   `;
+  }
+
+  if(S.queixa === 'Icterícia'){
+   perolasHtml += `
+    <div class="decision-card" style="border-top:3px solid #16a34a">
+     <div class="decision-card-title" style="color:#15803d">
+      <i class="ti ti-calculator" style="color:#16a34a" aria-hidden="true"></i>
+      Escores Hepatológicos — Child-Pugh & MELD (com Inserção no Prontuário)
+     </div>
+     <div style="margin-top:8px">
+      ${rChildPughMeldDecision()}
+     </div>
+    </div>
+   `;
+  }
+
+  if(S.queixa === 'Palpitações'||S.sind==='taqui'){
+   perolasHtml += `
+    <div class="decision-card" style="border-top:3px solid #dc2626">
+     <div class="decision-card-title" style="color:#b91c1c">
+      <i class="ti ti-bolt" style="color:#dc2626" aria-hidden="true"></i>
+      Critérios de Instabilidade Hemodinâmica em Taquiarritmias (ACLS / SBC)
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#dc2626"></span>
+      <div>
+       <strong>Os 5 Sinais Clássicos de Instabilidade Causada pela Taquicardia (FC habitualmente &gt; 150 bpm):</strong><br>
+       1. <strong>Hipotensão arterial ou Choque circulatório:</strong> PAS &lt; 90 mmHg, PAM &lt; 65 mmHg, extremidades frias, livedo, TEC &gt; 3 segundos.<br>
+       2. <strong>Rebaixamento agudo da consciência:</strong> Sonolência, torpor, confusão mental ou síncope por hipoperfusão encefálica.<br>
+       3. <strong>Dor precordial anginosa aguda:</strong> Desconforto isquêmico agudo miocárdico por aumento de consumo de O₂.<br>
+       4. <strong>Edema agudo de pulmão / Congestão pulmonar:</strong> Estertores crepitantes difusos, dispneia intensa, hipoxemia.<br>
+       5. <strong>Sinais clínicos de insuficiência cardíaca aguda de início recente.</strong>
+      </div>
+     </div>
+     <div class="decision-meta-item">
+      <span class="decision-meta-bullet" style="background:#dc2626"></span>
+      <div>
+       <strong>Conduta Imediata Obrigatória:</strong> Presença de <strong>qualquer</strong> sinal de instabilidade &rarr; indicação prioritária de <strong>Cardioversão Elétrica Sincronizada imediata</strong> com sedação venosa rápida (ex: Etomidato 0,2–0,3 mg/kg IV ou Midazolam 3–5 mg IV + Fentanil 50 mcg IV) e suporte de via aérea.<br>
+       <em>(Certificar-se de acionar o modo SYNC no cardioversor antes do disparo).</em>
+      </div>
+     </div>
+    </div>
+   `;
+  }
+
   perolasHtml += `
    <div class="decision-card">
     <div class="decision-card-title">
@@ -8749,17 +9333,52 @@ function buildEF(){
  const tipo=S.ef==='amb'?'Ambulatorial':S.ef==='crit'?'Crítico ABCDE':'não selecionado';
  return `${_sep()}\nEXAME FÍSICO (${tipo})\n${ef}`;
 }
-function buildScoresDT(){
- if(S.queixa!=='Dor torácica')return '';
- const trop=S.edacs.t0||S.edacs.t2?'\n Troponina 0h: '+(S.edacs.t0||'—')+' | 2h: '+(S.edacs.t2||'—'):'';
- return `\n${_sep()}\nSCORES PREDITIVOS\nHEAR: ${hSc()}/10 — ${hI(hSc())}\nEDACS: ${eSc()} pts — ${eI()}${trop}`;
+function buildPredictiveScores(){
+ const lines=[];
+ if(S.queixa==='Dor torácica'){
+  lines.push(`HEAR: ${hSc()}/10 — ${hI(hSc())}`);
+  const trop=S.edacs.t0||S.edacs.t2?' (Troponina 0h: '+(S.edacs.t0||'—')+' | 2h: '+(S.edacs.t2||'—')+')':'';
+  lines.push(`EDACS: ${eSc()} pts — ${eI()}${trop}`);
+ }
+ if(S.wellsTep&&S.wellsTep.evaluated){
+  lines.push(`Escore de Wells para TEP: ${wellsTepSc().toFixed(1)} pts — ${wellsTepInterp(wellsTepSc())}`);
+ }
+ if(S.wellsTvp&&S.wellsTvp.evaluated){
+  lines.push(`Escore de Wells para TVP: ${wellsTvpSc()} pts — ${wellsTvpInterp(wellsTvpSc())}`);
+ }
+ if(S.nihss&&S.nihss.evaluated){
+  lines.push(`NIHSS (AVC Isquêmico / Hemorrágico): ${nihssSc()}/42 pts — ${nihssInterp(nihssSc())}`);
+ }
+ if(S.alvarado&&S.alvarado.evaluated){
+  lines.push(`Escore de Alvarado (Apendicite Aguda): ${alvaradoSc()}/10 pts — ${alvaradoInterp(alvaradoSc())}`);
+ }
+ if(S.tokyo&&S.tokyo.evaluated){
+  const tSt=tokyoStatus();
+  lines.push(`Critérios de Tokyo (TG18/TG20 - Colecistite): ${tSt.text}`);
+ }
+ if(S.psiPort&&S.psiPort.evaluated){
+  const pSc=psiPortSc();
+  lines.push(`PSI / PORT (Pneumonia Adquirida na Comunidade): ${pSc} pts — ${psiPortClass(pSc)}`);
+ }
+ if(S.mascc&&S.mascc.evaluated){
+  lines.push(`Escore MASCC (Neutropenia Febril): ${masccSc()}/26 pts — ${masccInterp(masccSc())}`);
+ }
+ if(S.trmRules&&S.trmRules.evaluated){
+  const tr=[];
+  if(S.trmRules.cchrPos)tr.push('Canadian CT Head: Alto risco (TC de crânio indicada)');
+  else if(S.trmRules.cchrMed)tr.push('Canadian CT Head: Risco médio (TC recomendada)');
+  else tr.push('Canadian CT Head: Baixo risco');
+  if(S.trmRules.ccsrHigh||S.trmRules.ccsrLow)tr.push('Canadian C-Spine: Positivo (Imagem cervical indicada)');
+  else tr.push('Canadian C-Spine: Baixo risco (Sem imagem)');
+  if(S.trmRules.nexusPos)tr.push('NEXUS: Critérios positivos (Imagem indicada)');
+  else tr.push('NEXUS: Critérios negativos (Sem imagem cervical)');
+  lines.push(`Regras de Trauma (Canadian Head / Canadian C-Spine / NEXUS): ${tr.join(' | ')}`);
+ }
+ if(!lines.length)return '';
+ return `\n${_sep()}\nSCORES PREDITIVOS\n${lines.join('\n')}`;
 }
-function buildScoresSinc(){
- if(S.queixa!=='Síncope')return '';
- const cSc=calcCalgaryScore();
- const canSc=calcCanadianScore();
- return `\n${_sep()}\nSCORES PREDITIVOS (SÍNCOPE)\nScore Calgary: ${cSc} pts — ${calgaryInterp()}\nCanadian Syncope Risk Score: ${canSc} pts — ${canadianInterp()}`;
-}
+function buildScoresDT(){return buildPredictiveScores();}
+function buildScoresSinc(){return '';}
 function getActivePendingItems(){
  const T=S.sind?CT[S.sind]:null;
  const rawExams=[];
@@ -9078,7 +9697,7 @@ function buildCondutas(){
 }
 
 function gRel(){
- const parts=[buildHeader(),buildHDA(),buildAntecedentes(),buildVitais(),buildEF()+buildScoresDT()+buildScoresSinc(),`${_sep()}\nECG\n${buildEcgText()}`,`${_sep()}\nPOCUS\n${buildPocText()}`,buildCondutas(),_sep()];
+ const parts=[buildHeader(),buildHDA(),buildAntecedentes(),buildVitais(),buildEF()+buildPredictiveScores(),`${_sep()}\nECG\n${buildEcgText()}`,`${_sep()}\nPOCUS\n${buildPocText()}`,buildCondutas(),_sep()];
  return parts.filter(Boolean).join('\n');
 }
 
