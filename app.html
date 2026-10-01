@@ -1962,8 +1962,8 @@ const S={step:0,nome:'',idade:30,sexo:'',orig:'Demanda Espontânea',origInst:'',
  ecgS:{normal:false,ritmo:'',fcEcg:'',pr:'',qrs:'',qtc:'',st:[],ondaT:[],padroes:[]},
  ecgSOpen:{ritmo:true},
  itDrug:'',
- dt:{ini:'',qual:[],irr:[],modif:[],sem:null,pal:null,sin:[]},
- dtOpen:{ini:true},
+ dt:{loc:[],ini:'',qual:[],irr:[],modif:[],sem:null,pal:null,sin:[]},
+ dtOpen:{loc:true,ini:true},
  dsp:{inicio:'',padrao:[],modif:[],assocCV:[],assocResp:[],assocInf:[],ctx:[]},
  dspOpen:{inicio:true},
  dspEF:{fala:'',posic:'',cianose:'',aus:[],sinaisCV:[]},
@@ -2027,7 +2027,7 @@ const S={step:0,nome:'',idade:30,sexo:'',orig:'Demanda Espontânea',origInst:'',
  abcOpen:{a:true},
  relMode:'full',
  syndromeGridCollapsed:false,
- condStatus:'em_conduta',condReavalMin:null,condPendDesc:'',condPendCat:'outros',condPendPrazoMin:null};
+ condStatus:'em_conduta',condReavalMin:null,condPendDesc:'',condPendCat:'outros',condPendPrazoMin:null,cardOpen:{}};
 
 // Snapshot do estado inicial para resetCase()
 const INITIAL_S=JSON.parse(JSON.stringify(S));
@@ -6316,7 +6316,7 @@ function dspEFText(S){
 function dspAfter(S){
  let out=`<div style="margin-top:6px"><label>Tempo de início</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>`;
  const wSc=wellsTepSc();
- out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_wells_tep')"><span style="font-weight:500"><i class="ti ti-calculator"></i> Escore de Wells para TEP (Opcional)</span><span class="sb ${wellsTepBadgeClass(wSc)}">${wSc.toFixed(1)} pts</span></div><div class="sbd" id="sc_wells_tep">${rWellsTep()}<div class="sres"><div class="snum">${wSc.toFixed(1)}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${wellsTepInterp(wSc)}</div></div></div></div>`;
+ out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_wells_tep')"><span style="font-weight:500"><i class="ti ti-calculator"></i> Escore de Wells para TEP (Opcional)</span><span class="sb ${wellsTepBadgeClass(wSc)}">${wSc.toFixed(1)} pts</span></div><div class="sbd ${isCardOpen('sc_wells_tep',true)?'open':''}" id="sc_wells_tep">${rWellsTep()}<div class="sres"><div class="snum">${wSc.toFixed(1)}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${wellsTepInterp(wSc)}</div></div></div></div>`;
  return out;
 }
 
@@ -6607,6 +6607,7 @@ registerQx('Convulsão',{
 });
 
 // ─── Dor torácica ──────────────────────────────────────────────────────────
+const DT_LOC=['Retroesternal','Precordial','Hemitórax esquerdo','Hemitórax direito','Epigástrica','Dorso / Interescapular','Difusa e mal delimitada'];
 const DT_INI=['Súbito em repouso','Súbito ao esforço físico extenuante','Súbito após pico de estresse emocional','Súbito após vômito vigoroso (Boerhaave)','Progressivo / insidioso'];
 const DT_QUAL=['Opressiva / Em aperto','Dilacerante / Rasgante (sugere dissecção)','Pleurítica / Ventilatório-dependente','Em queimação / Pirose retroesternal','Em pontada / Agulhada','Sensação de peso precordial','Difusa e mal delimitada'];
 const DT_IRR=['MMSS esquerdo (borda ulnar)','MMSS direito','Bilateral para ambos os braços','Mandíbula / Dentes / Região cervical','Dorso interescapular','Dorso com padrão migratório crânio-caudal','Trapézio / Ombro esquerdo','Epigástrio / Andar superior do abdome'];
@@ -6617,9 +6618,10 @@ const DT_SIN=['Diaforese fria profusa','Dispneia aguda concomitante','Sensação
 
 function dtHda(S){
  const d=S.dt;
- if(!d.ini&&!d.qual.length&&!d.irr.length&&!d.modif.length&&!d.pal&&!d.sem&&!d.sin.length)return '';
+ if((!d.loc||!d.loc.length)&&!d.ini&&!d.qual.length&&!d.irr.length&&!d.modif.length&&!d.pal&&!d.sem&&!d.sin.length)return '';
  let out='';
  const car=[];
+ if(d.loc&&d.loc.length)car.push(`localização de início/maior intensidade em ${d.loc.join(', ').toLowerCase()}`);
  if(d.ini)car.push(`início ${d.ini.toLowerCase()}`);
  if(d.qual.length)car.push(`caráter ${d.qual.join(', ').toLowerCase()}`);
  if(d.irr.length)car.push(`irradiação para ${d.irr.join(', ').toLowerCase()}`);
@@ -6636,8 +6638,8 @@ function dtAfter(S){
  if((d.sin.includes('Parestesias de extremidades / perioral')||d.sin.includes('Sensação de morte iminente'))&&d.ini.includes('repouso'))out+=`<div class="abox aw"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Considerar etiologia isquêmica aguda ou hiperventilação</div>`;
  if(d.irr.includes('Dorso interescapular')||d.irr.includes('Dorso com padrão migratório crânio-caudal')||d.qual.includes('Dilacerante / Rasgante (sugere dissecção)'))out+=`<div class="abox ad"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ALERTA DE DISSECÇÃO AÓRTICA</strong> — Dor dilacerante ou interescapular migratória: CONTRAINDICADA anticoagulação plena/antiagregação até descartar dissecção por AngioTC de aorta torácica total!</div>`;
  out+=`<div style="margin-top:8px"><label>Tempo de início</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>`;
- out+=`<div class="scard"><div class="shdr" onclick="tog('hb')"><span style="font-weight:500">Score HEAR</span><span class="sb ${hC()}">${hSc()}/10</span></div><div class="sbd open" id="hb">${rHear()}<div class="sres"><div class="snum">${hSc()}<span style="font-size:13px;color:var(--color-text-secondary)">/10</span></div><div><span class="sb ${hC()}">${hI(hSc())}</span></div></div></div></div>`;
- out+=`<div class="scard"><div class="shdr" onclick="tog('eb')"><span style="font-weight:500">Score EDACS</span><span class="sb ${eC()}">${eSc()} pts</span></div><div class="sbd open" id="eb">${rEdacs()}<div class="sres"><div class="snum">${eSc()}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${eI()}</div></div></div></div>`;
+ out+=`<div class="scard"><div class="shdr" onclick="tog('hb')"><span style="font-weight:500">Score HEAR</span><span class="sb ${hC()}">${hSc()}/10</span></div><div class="sbd ${isCardOpen('hb',true)?'open':''}" id="hb">${rHear()}<div class="sres"><div class="snum">${hSc()}<span style="font-size:13px;color:var(--color-text-secondary)">/10</span></div><div><span class="sb ${hC()}">${hI(hSc())}</span></div></div></div></div>`;
+ out+=`<div class="scard"><div class="shdr" onclick="tog('eb')"><span style="font-weight:500">Score EDACS</span><span class="sb ${eC()}">${eSc()} pts</span></div><div class="sbd ${isCardOpen('eb',true)?'open':''}" id="eb">${rEdacs()}<div class="sres"><div class="snum">${eSc()}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${eI()}</div></div></div></div>`;
  return out;
 }
 
@@ -6645,6 +6647,7 @@ registerQx('Dor torácica',{
  anamnese:{
   sigla:'dt',
   blocks:[
+   {key:'loc',label:'Local de Início / Maior Intensidade',type:'tags',options:DT_LOC,autoOpenNext:'ini'},
    {key:'ini',label:'Início e Contexto',type:'radio',options:DT_INI,autoOpenNext:'qual'},
    {key:'qual',label:'Qualidade da Dor',type:'tags',options:DT_QUAL,autoOpenNext:'irr'},
    {key:'irr',label:'Irradiação',type:'tags',options:DT_IRR,autoOpenNext:'modif'},
@@ -6690,7 +6693,10 @@ function neuHda(S){
  if(n.fossa.length) out+=`. Sinais cerebelares e de fossa posterior: ${n.fossa.join(', ').toLowerCase()}`;
  if(n.mimics.length) out+=`. Avaliação de mimics e potenciais diferenciais: ${n.mimics.join(', ').toLowerCase()}`;
  if(n.anticoag.length) out+=`. Perfil antitrombótico e contraindicações à reperfusão: ${n.anticoag.join(', ').toLowerCase()}`;
- if(S.nihss&&S.nihss.evaluated) out+=`. Escore NIHSS quantificado em ${nihssSc()} pontos (${nihssInterp(nihssSc())})`;
+ if(S.nihss&&S.nihss.evaluated){
+  const nSc=nihssSc();
+  out+=`. Escore NIHSS quantificado em ${nSc} pontos${nihssBreakdown()} (${nihssInterp(nSc)})`;
+ }
  return out;
 }
 
@@ -6702,7 +6708,8 @@ function neuAfter(S){
   out+=`<div class="abox aw" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> <strong>JANELA ESTENDIDA / WAKE-UP STROKE</strong> — Indicação de imagem multimodal avançada (TC + AngioTC + Perfusão / RM com mismatch DWI-FLAIR) para seleção de trombólise ou trombectomia mecânica (Critérios DAWN / DEFUSE-3 / WAKE-UP).</div>`;
  }
  const nSc=nihssSc();
- out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_nihss')"><span style="font-weight:500"><i class="ti ti-calculator"></i> Escore NIHSS (National Institutes of Health Stroke Scale)</span><span class="sb ${nihssBadgeClass(nSc)}">${nSc}/42 pts</span></div><div class="sbd" id="sc_nihss">${rNihss()}<div class="sres"><div class="snum">${nSc}<span style="font-size:13px;color:var(--color-text-secondary)">/42 pts</span></div><div style="font-size:13px">${nihssInterp(nSc)}</div></div></div></div>`;
+ const nBk=nihssBreakdown();
+ out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_nihss')"><span style="font-weight:500"><i class="ti ti-calculator"></i> Escore NIHSS (National Institutes of Health Stroke Scale)</span><span class="sb ${nihssBadgeClass(nSc)}">${nSc}/42 pts${nBk}</span></div><div class="sbd ${isCardOpen('sc_nihss',true)?'open':''}" id="sc_nihss">${rNihss()}<div class="sres"><div class="snum">${nSc}<span style="font-size:13px;color:var(--color-text-secondary)">/42 pts</span>${nBk}</div><div style="font-size:13px">${nihssInterp(nSc)}</div></div></div></div>`;
  return out;
 }
 
@@ -6766,9 +6773,9 @@ function abdAfter(S){
   out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>MULHER EM IDADE FÉRTIL COM ATRASO MENSTRUAL E DOR ABDOMINAL</strong> — Excluir gestação ectópica rota de imediato. Solicitar β-hCG urgente e POCUS/USG transvaginal.</div>`;
  }
  const alvSc=alvaradoSc();
- out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_alvarado')"><span style="font-weight:500"><i class="ti ti-calculator"></i> Escore de Alvarado (Apendicite Aguda)</span><span class="sb ${alvaradoBadgeClass(alvSc)}">${alvSc}/10 pts</span></div><div class="sbd" id="sc_alvarado">${rAlvarado()}<div class="sres"><div class="snum">${alvSc}<span style="font-size:13px;color:var(--color-text-secondary)">/10 pts</span></div><div style="font-size:13px">${alvaradoInterp(alvSc)}</div></div></div></div>`;
+ out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_alvarado')"><span style="font-weight:500"><i class="ti ti-calculator"></i> Escore de Alvarado (Apendicite Aguda)</span><span class="sb ${alvaradoBadgeClass(alvSc)}">${alvSc}/10 pts</span></div><div class="sbd ${isCardOpen('sc_alvarado',true)?'open':''}" id="sc_alvarado">${rAlvarado()}<div class="sres"><div class="snum">${alvSc}<span style="font-size:13px;color:var(--color-text-secondary)">/10 pts</span></div><div style="font-size:13px">${alvaradoInterp(alvSc)}</div></div></div></div>`;
  const tok=tokyoStatus();
- out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_tokyo')"><span style="font-weight:500"><i class="ti ti-clipboard-check"></i> Critérios de Tokyo — TG18/TG20 (Colecistite Aguda)</span><span class="sb ${tok.cls}">${tok.text}</span></div><div class="sbd" id="sc_tokyo">${rTokyo()}<div class="sres"><div style="font-size:13px;font-weight:600">${tok.text}</div></div></div></div>`;
+ out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_tokyo')"><span style="font-weight:500"><i class="ti ti-clipboard-check"></i> Critérios de Tokyo — TG18/TG20 (Colecistite Aguda)</span><span class="sb ${tok.cls}">${tok.text}</span></div><div class="sbd ${isCardOpen('sc_tokyo',true)?'open':''}" id="sc_tokyo">${rTokyo()}<div class="sres"><div style="font-size:13px;font-weight:600">${tok.text}</div></div></div></div>`;
  return out;
 }
 
@@ -6910,7 +6917,7 @@ function trmAfter(S){
   out+=`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ALERTA DE CINEMÁTICA DE ALTA ENERGIA / POLITRAUMA</strong> — Imobilização de coluna em prancha rígida e colar cervical; avaliação primária sistematizada ABCDE; FAST / e-FAST e tomografia computadorizada multislice corpo total (politrauma).</div>`;
  }
  out+=`<div style="margin-top:8px"><label>Tempo do trauma / ocorrência</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 45 min, há 2 horas"></div>`;
- out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_trauma_rules')"><span style="font-weight:500"><i class="ti ti-shield-check"></i> Regras de Decisão Clínica em Trauma (Canadian Head, Canadian C-Spine, NEXUS)</span><span class="sb ${S.trmRules&&S.trmRules.evaluated?'smod':'sok'}">${S.trmRules&&S.trmRules.evaluated?'Avaliado':'Critérios'}</span></div><div class="sbd" id="sc_trauma_rules">${rTraumaRules()}</div></div>`;
+ out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_trauma_rules')"><span style="font-weight:500"><i class="ti ti-shield-check"></i> Regras de Decisão Clínica em Trauma (Canadian Head, Canadian C-Spine, NEXUS)</span><span class="sb ${S.trmRules&&S.trmRules.evaluated?'smod':'sok'}">${S.trmRules&&S.trmRules.evaluated?'Avaliado':'Critérios'}</span></div><div class="sbd ${isCardOpen('sc_trauma_rules',true)?'open':''}" id="sc_trauma_rules">${rTraumaRules()}</div></div>`;
  return out;
 }
 
@@ -7002,7 +7009,7 @@ function tosAfter(S){
  }
  out+=`<div style="margin-top:8px"><label>Tempo de duração da tosse</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 4 dias, há 3 semanas"></div>`;
  const pSc=psiPortSc();
- out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_psi_port')"><span style="font-weight:500"><i class="ti ti-calculator"></i> Escore PSI / PORT — Pneumonia Adquirida na Comunidade</span><span class="sb ${psiPortBadgeClass(pSc)}">${pSc} pts</span></div><div class="sbd" id="sc_psi_port">${rPsiPort()}<div class="sres"><div class="snum">${pSc}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${psiPortClass(pSc)}</div></div></div></div>`;
+ out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_psi_port')"><span style="font-weight:500"><i class="ti ti-calculator"></i> Escore PSI / PORT — Pneumonia Adquirida na Comunidade</span><span class="sb ${psiPortBadgeClass(pSc)}">${pSc} pts</span></div><div class="sbd ${isCardOpen('sc_psi_port',true)?'open':''}" id="sc_psi_port">${rPsiPort()}<div class="sres"><div class="snum">${pSc}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${psiPortClass(pSc)}</div></div></div></div>`;
  return out;
 }
 
@@ -7055,7 +7062,7 @@ function febAfter(S){
  out+=`<div style="margin-top:8px"><label>Pico térmico aferido (°C)</label><input type="text" value="${esc(S.feb.pico||'')}" oninput="S.feb.pico=this.value" placeholder="Ex: 38.8, 39.5"></div>`;
  out+=`<div style="margin-top:8px"><label>Tempo de duração da febre</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 2 dias, há 5 dias"></div>`;
  const mSc=masccSc();
- out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_mascc')"><span style="font-weight:500"><i class="ti ti-shield-half"></i> Escore MASCC (Risco em Neutropenia Febril)</span><span class="sb ${masccBadgeClass(mSc)}">${mSc}/26 pts</span></div><div class="sbd" id="sc_mascc">${rMascc()}<div class="sres"><div class="snum">${mSc}<span style="font-size:13px;color:var(--color-text-secondary)">/26 pts</span></div><div style="font-size:13px">${masccInterp(mSc)}</div></div></div></div>`;
+ out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_mascc')"><span style="font-weight:500"><i class="ti ti-shield-half"></i> Escore MASCC (Risco em Neutropenia Febril)</span><span class="sb ${masccBadgeClass(mSc)}">${mSc}/26 pts</span></div><div class="sbd ${isCardOpen('sc_mascc',true)?'open':''}" id="sc_mascc">${rMascc()}<div class="sres"><div class="snum">${mSc}<span style="font-size:13px;color:var(--color-text-secondary)">/26 pts</span></div><div style="font-size:13px">${masccInterp(mSc)}</div></div></div></div>`;
  return out;
 }
 
@@ -7394,7 +7401,7 @@ function edmAfter(S){
  }
  out+=`<div style="margin-top:8px"><label>Tempo de evolução do edema / dor</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: há 3 dias, há 1 semana"></div>`;
  const wSc=wellsTvpSc();
- out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_wells_tvp')"><span style="font-weight:500"><i class="ti ti-calculator"></i> Escore de Wells para TVP (Trombose Venosa Profunda)</span><span class="sb ${wellsTvpBadgeClass(wSc)}">${wSc} pts</span></div><div class="sbd" id="sc_wells_tvp">${rWellsTvp()}<div class="sres"><div class="snum">${wSc}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${wellsTvpInterp(wSc)}</div></div></div></div>`;
+ out+=`<div class="scard" style="margin-top:10px"><div class="shdr" onclick="tog('sc_wells_tvp')"><span style="font-weight:500"><i class="ti ti-calculator"></i> Escore de Wells para TVP (Trombose Venosa Profunda)</span><span class="sb ${wellsTvpBadgeClass(wSc)}">${wSc} pts</span></div><div class="sbd ${isCardOpen('sc_wells_tvp',true)?'open':''}" id="sc_wells_tvp">${rWellsTvp()}<div class="sres"><div class="snum">${wSc}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${wellsTvpInterp(wSc)}</div></div></div></div>`;
  return out;
 }
 
@@ -7412,7 +7419,16 @@ registerQx('Edema / Dor em MMII',{
  hda:edmHda
 });
 
-function tog(id){const b=document.getElementById(id);if(b)b.classList.toggle('open');}
+function isCardOpen(id, defaultOpen = true){
+ if(!S.cardOpen) S.cardOpen = {};
+ return S.cardOpen[id] !== undefined ? S.cardOpen[id] : defaultOpen;
+}
+function tog(id){
+ if(!S.cardOpen) S.cardOpen = {};
+ S.cardOpen[id] = !isCardOpen(id, true);
+ const b = document.getElementById(id);
+ if(b) b.classList.toggle('open', S.cardOpen[id]);
+}
 function cyc(k){if(!S.chk[k])S.chk[k]='done';else delete S.chk[k];render();}
 function selSub(id){S.subsind=S.subsind===id?null:id;render();}
 function toggleSub(id){const i=S.subsinds.indexOf(id);if(i>-1){S.subsinds.splice(i,1);Object.keys(S.chk).filter(k=>k.startsWith(id+'_inv_')).forEach(k=>delete S.chk[k]);}else{S.subsinds.push(id);}render();}
@@ -7724,6 +7740,23 @@ function rWellsTvp(){
 function nihssSc(){
  const n=S.nihss||{};
  return (+(n.loc||0))+(+(n.qLoc||0))+(+(n.cLoc||0))+(+(n.olhar||0))+(+(n.campo||0))+(+(n.face||0))+(+(n.bracoE||0))+(+(n.bracoD||0))+(+(n.pernaE||0))+(+(n.pernaD||0))+(+(n.ataxia||0))+(+(n.sensib||0))+(+(n.ling||0))+(+(n.disart||0))+(+(n.extin||0));
+}
+function nihssBreakdown(){
+ const n=S.nihss||{};
+ const map=[
+  ['loc','1A'],['qLoc','1B'],['cLoc','1C'],
+  ['olhar','2'],['campo','3'],['face','4'],
+  ['bracoE','5A'],['bracoD','5B'],['pernaE','6A'],['pernaD','6B'],
+  ['ataxia','7'],['sensib','8'],['ling','9'],['disart','10'],['extin','11']
+ ];
+ const abnormal=[];
+ map.forEach(([k,code])=>{
+  const val=+(n[k]||0);
+  if(val>0){
+   abnormal.push(`${code}.${val}`);
+  }
+ });
+ return abnormal.length ? ` (${abnormal.join(' / ')})` : '';
 }
 function nihssInterp(pts){
  if(pts===0)return '0 pts — Sem déficit neurológico mensurável';
@@ -9347,7 +9380,7 @@ function buildPredictiveScores(){
   lines.push(`Escore de Wells para TVP: ${wellsTvpSc()} pts — ${wellsTvpInterp(wellsTvpSc())}`);
  }
  if(S.nihss&&S.nihss.evaluated){
-  lines.push(`NIHSS (AVC Isquêmico / Hemorrágico): ${nihssSc()}/42 pts — ${nihssInterp(nihssSc())}`);
+  lines.push(`NIHSS (AVC Isquêmico / Hemorrágico): ${nihssSc()}/42 pts${nihssBreakdown()} — ${nihssInterp(nihssSc())}`);
  }
  if(S.alvarado&&S.alvarado.evaluated){
   lines.push(`Escore de Alvarado (Apendicite Aguda): ${alvaradoSc()}/10 pts — ${alvaradoInterp(alvaradoSc())}`);
