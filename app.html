@@ -119,6 +119,18 @@ input:focus,select:focus,textarea:focus{border-color:#a32d2d}
 .step{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;font-size:12px;border:.5px solid var(--color-border-tertiary);cursor:pointer;white-space:nowrap;background:var(--color-background-primary);color:var(--color-text-secondary)}
 .step.active{background:#fcebeb;border-color:#e24b4a;color:#a32d2d;font-weight:500}
 .step.done{background:#eaf3de;border-color:#639922;color:#3b6d11}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;font-size:10px;font-weight:700;background:rgba(0,0,0,0.06);margin-right:2px}
+.step.active .step-num{background:#a32d2d;color:#fff}
+.step.done .step-num{background:#16a34a;color:#fff}
+.sticky-clinical-cockpit{position:sticky;top:0;z-index:85;background:var(--color-background-primary,#ffffff);border:1px solid var(--color-border-tertiary,#e5e7eb);border-radius:12px;padding:8px 12px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.cockpit-info{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;font-weight:600;color:var(--color-text-primary,#111827)}
+.cockpit-meta{color:var(--color-text-secondary,#4b5563);font-size:12px;font-weight:500}
+.cockpit-badges{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.cockpit-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
+.cockpit-badge.badge-stable{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+.cockpit-badge.badge-unstable{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;animation:cockpitPulseRed 2s infinite ease-in-out}
+.cockpit-badge.badge-allergy{background:#fffbeb;color:#92400e;border:1px solid #fde68a}
+@keyframes cockpitPulseRed{0%{box-shadow:0 0 0 0 rgba(239,68,68,0.4)}70%{box-shadow:0 0 0 6px rgba(239,68,68,0)}100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}}
 .card{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:1rem}
 .st{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
 .st i{font-size:15px;color:#e24b4a}
@@ -135,9 +147,41 @@ textarea{resize:vertical;min-height:60px}
 .qgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
 .qcat{margin-bottom:12px}
 .qcat:last-child{margin-bottom:0}
-.qcat-lbl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.4px;color:var(--color-text-secondary);margin-bottom:6px;padding-left:2px}
+.qcat-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--color-text-secondary);margin-bottom:6px;padding-left:2px}
 .qcat-critica .qcat-lbl{color:#a32d2d}
 .qcat-externa .qcat-lbl{color:#a26b1f}
+.qcat-cardio .qcat-lbl{color:#dc2626}
+.qcat-cardio .qbtn{border-color:#fecaca;background:#fff5f5}
+.qcat-cardio .qbtn:hover{background:#fee2e2;border-color:#ef4444;color:#991b1b;font-weight:500}
+.qcat-resp .qcat-lbl{color:#0284c7}
+.qcat-resp .qbtn{border-color:#bae6fd;background:#f0f9ff}
+.qcat-resp .qbtn:hover{background:#e0f2fe;border-color:#0ea5e9;color:#0369a1;font-weight:500}
+.qcat-neuro .qcat-lbl{color:#7c3aed}
+.qcat-neuro .qbtn{border-color:#ddd6fe;background:#f5f3ff}
+.qcat-neuro .qbtn:hover{background:#ede9fe;border-color:#8b5cf6;color:#6d28d9;font-weight:500}
+.qcat-digest .qcat-lbl{color:#059669}
+.qcat-digest .qbtn{border-color:#a7f3d0;background:#f0fdf4}
+.qcat-digest .qbtn:hover{background:#dcfce7;border-color:#10b981;color:#047857;font-weight:500}
+.qcat-geral .qcat-lbl{color:#d97706}
+.qcat-geral .qbtn{border-color:#fde68a;background:#fffbeb}
+.qcat-geral .qbtn:hover{background:#fef3c7;border-color:#f59e0b;color:#b45309;font-weight:500}
+.qcat-trauma .qcat-lbl{color:#ea580c}
+.qcat-trauma .qbtn{border-color:#fed7aa;background:#fff7ed}
+.qcat-trauma .qbtn:hover{background:#ffedd5;border-color:#f97316;color:#c2410c;font-weight:500}
+.search-qx-box{margin-bottom:12px;position:relative}
+.search-qx-input{width:100%;padding:8px 32px 8px 12px;border-radius:8px;border:1px solid var(--color-border-secondary,#d1d5db);background:var(--color-background-primary,#ffffff);color:var(--color-text-primary,#111827);font-size:13.5px;box-sizing:border-box;transition:border-color .15s ease}
+.search-qx-input:focus{border-color:#a32d2d;outline:none;box-shadow:0 0 0 3px rgba(163,45,45,0.1)}
+.clear-search-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:none;background:none;color:#9ca3af;font-size:18px;cursor:pointer;line-height:1;padding:4px}
+.clear-search-btn:hover{color:#4b5563}
+.evidence-info-btn{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8;font-size:11px;cursor:pointer;margin-left:6px;vertical-align:middle;padding:0;line-height:1;transition:all .15s ease}
+.evidence-info-btn:hover{background:#2563eb;color:#ffffff;border-color:#1d4ed8;transform:scale(1.1)}
+.evidence-popover{position:absolute;z-index:1000;width:320px;max-width:90vw;background:var(--color-background-primary,#ffffff);border:1px solid var(--color-border-secondary,#cbd5e1);border-radius:10px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.15),0 8px 10px -6px rgba(0,0,0,0.1);padding:12px;display:none}
+.evidence-popover-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;font-size:13px;color:var(--color-text-primary,#111827)}
+.evidence-close-btn{border:none;background:none;font-size:18px;color:#9ca3af;cursor:pointer;line-height:1;padding:0 4px}
+.evidence-close-btn:hover{color:#374151}
+.evidence-badge{display:inline-block;padding:2px 6px;border-radius:4px;font-size:10.5px;font-weight:700}
+.evidence-badge.badge-class{background:#dcfce7;color:#15803d;border:1px solid #bbf7d0}
+.evidence-badge.badge-level{background:#dbeafe;color:#1e40af;border:1px solid #bfdbfe}
 .qbtn{padding:9px 7px;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-tertiary);background:var(--color-background-primary);font-size:13px;cursor:pointer;text-align:center;color:var(--color-text-primary)}
 .qbtn:hover,.qbtn.sel{background:#fcebeb;border-color:#e24b4a;color:#a32d2d;font-weight:500}
 .qcat-critica .qbtn{border-color:#f5c6c5;background:#fdf3f3}
@@ -694,6 +738,7 @@ textarea{resize:vertical;min-height:60px}
   </button>
  </div>
 </div>
+<div class="sticky-clinical-cockpit" id="stickyClinicalCockpit"></div>
 <div class="steps" id="sBar"></div>
 <div class="two-col-wrap">
  <div class="col-main" id="con"></div>
@@ -827,6 +872,12 @@ textarea{resize:vertical;min-height:60px}
       <button class="decision-tab" id="decTabDoses" onclick="setDecisionTab('doses')">
         <i class="ti ti-bolt" aria-hidden="true"></i> <span>Doses<span class="hide-mobile-tab-text"> & PCR</span></span>
       </button>
+    </div>
+    <div class="decision-search-box" style="padding:8px 16px;border-bottom:1px solid var(--color-border-tertiary)">
+      <div style="position:relative">
+        <input type="text" id="decisionSearchInput" placeholder="🔍 Buscar metas, doses, antídotos ou pérolas..." oninput="onDecisionSearch(this.value)" style="width:100%;padding:6px 28px 6px 10px;font-size:12px;border:1px solid var(--color-border-secondary,#cbd5e1);border-radius:6px;background:var(--color-background-primary,#ffffff);color:var(--color-text-primary,#111827);box-sizing:border-box">
+        <button id="decisionSearchClearBtn" onclick="clearDecisionSearch()" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);border:none;background:none;font-size:16px;color:#9ca3af;cursor:pointer;line-height:1">×</button>
+      </div>
     </div>
     <div class="decision-drawer-body" id="decisionDrawerBody"></div>
   </div>
@@ -2149,9 +2200,12 @@ window.addEventListener('pagehide',()=>{
 
 
 const QX_CATS=[
- {id:'critica',label:'Queixas tempo-dependentes',items:['Dor torácica','Déficit neurológico agudo','Dispneia','Dor abdominal','Rebaixamento de consciência']},
- {id:'externa',label:'Causas externas',items:['Trauma','Intoxicação exógena','Agitação psicomotora']},
- {id:'inespec',label:'Apresentações inespecíficas → diversos espectros de gravidade',items:['Tosse','Febre','Náusea e Vômitos','Diarreia','Sangramento','Dor lombar','Icterícia','Cefaleia','Vertigem','Convulsão','Síncope','Palpitações','Edema / Dor em MMII']}
+ {id:'cardio',label:'Cardiovascular',icon:'ti-heart',items:['Dor torácica','Síncope','Palpitações','Edema / Dor em MMII']},
+ {id:'resp',label:'Respiratório',icon:'ti-lungs',items:['Dispneia','Tosse']},
+ {id:'neuro',label:'Neurológico & Psiquiátrico',icon:'ti-brain',items:['Cefaleia','Déficit neurológico agudo','Convulsão','Rebaixamento de consciência','Vertigem','Agitação psicomotora']},
+ {id:'digest',label:'Digestivo & Abdominal',icon:'ti-stomach',items:['Dor abdominal','Náusea e Vômitos','Diarreia','Icterícia','Sangramento']},
+ {id:'geral',label:'Sistêmico, Infeccioso & Geral',icon:'ti-virus',items:['Febre','Intoxicação exógena','Dor lombar']},
+ {id:'trauma',label:'Trauma & Causas Externas',icon:'ti-ambulance',items:['Trauma']}
 ];
 const QUEIXAS=QX_CATS.flatMap(c=>c.items);
 const CMAP={
@@ -6047,6 +6101,7 @@ function gravBadge(level,label,opts){
 }
 function setQueixa(q){
  S.queixa=q;
+ S._qxSearch='';
  S.caract=[];
  S.tempo='';
  S.itDrug='';
@@ -7572,7 +7627,61 @@ function gcsL(n){return n>=14?'Leve':n>=9?'Moderado':'Grave';}
 function cAge(d){S.idade=Math.min(119,Math.max(0,S.idade+d));render();}
 function cAgeDig(place,dir){const t=Math.floor(S.idade/10),u=S.idade%10;if(place===10){const nt=(t+dir+13)%13;S.idade=Math.min(119,nt*10+u);}else{const nu=(u+dir+10)%10;S.idade=Math.min(119,Math.floor(S.idade/10)*10+nu);}render();}
 let _pendingScroll=null;
-function rs(){document.getElementById('sBar').innerHTML=STEPS.map((s,i)=>`<div class="step ${i===S.step?'active':i<S.step?'done':''}" onclick="gs(${i})"><i class="ti ${i<S.step?'ti-check':s.i}" aria-hidden="true"></i>${s.l}</div>`).join('');}
+function rs(){
+ const el = document.getElementById('sBar');
+ if(!el) return;
+ el.innerHTML=STEPS.map((s,i)=>`<div class="step ${i===S.step?'active':i<S.step?'done':''}" onclick="gs(${i})"><span class="step-num">${i<S.step?'✓':(i+1)}</span><i class="ti ${i<S.step?'ti-check':s.i}" aria-hidden="true"></i>${s.l}</div>`).join('');
+}
+
+function updateStickyClinicalCockpit(){
+ const el = document.getElementById('stickyClinicalCockpit');
+ if(!el) return;
+ const pNome = S.nome ? esc(S.nome) : '';
+ const pIdade = (typeof S.idade==='number' && S.idade>=0) ? S.idade+'a' : '—';
+ const pSexo = S.sexo === 'M' ? 'Masc' : S.sexo === 'F' ? 'Fem' : S.sexo === 'O' ? 'Outro' : '—';
+ const pQueixa = S.queixa ? esc(S.queixa) : 'Sem queixa definida';
+ 
+ const pas = S.pa ? parseInt(S.pa.split('/')[0], 10) : null;
+ const fc = parseInt(S.fc, 10);
+ const sat = parseInt(S.sat, 10);
+ const g = (typeof gcs === 'function') ? gcs() : 15;
+ const tec = S.abc?.tec;
+ const pul = S.abc?.pul;
+ const hasSupra = S.ecgS?.st?.some(s=>s.includes('Supra'));
+ 
+ const isCrit = (pas && pas < 90) ||
+                (fc && (fc > 130 || fc < 40)) ||
+                (sat && sat < 90) ||
+                (g <= 12 && S.abc?.ao) ||
+                (tec === '> 5s' || pul === 'Filiformes' || pul === 'Ausentes') ||
+                hasSupra ||
+                (S.sind === 'cho' || S.sind === 'pcr');
+
+ const statusBadge = isCrit
+   ? `<span class="cockpit-badge badge-unstable" title="Sinais vitais ou apresentação indicam gravidade iminente"><i class="ti ti-alert-triangle"></i> Instável / Crítico</span>`
+   : `<span class="cockpit-badge badge-stable" title="Parâmetros clínicos sem critérios imediatos de instabilidade"><i class="ti ti-circle-check"></i> Estável</span>`;
+   
+ const allergyBadge = (S.ale && S.ale.trim())
+   ? `<span class="cockpit-badge badge-allergy" title="${esc(S.ale.trim())}"><i class="ti ti-shield-alert"></i> Alergia: ${esc(S.ale.trim())}</span>`
+   : '';
+
+ el.innerHTML = `
+   <div class="cockpit-info">
+     <span style="display:flex;align-items:center;gap:6px">
+       <i class="ti ti-id" style="color:var(--color-brand,#a32d2d);font-size:16px"></i>
+       <span>${pNome ? `<strong>${pNome}</strong> • ` : ''}${pIdade}, ${pSexo}</span>
+     </span>
+     <span class="cockpit-meta">| <i class="ti ti-stethoscope"></i> ${pQueixa}</span>
+   </div>
+   <div class="cockpit-badges">
+     ${statusBadge}
+     ${allergyBadge}
+     <button class="hdr-action-btn hdr-btn-decision" onclick="toggleDecisionDrawer()" style="padding:3px 8px;font-size:11px" title="Abrir Apoio à Decisão">
+       <i class="ti ti-brain"></i> <span>Metas / Apoio</span>
+     </button>
+   </div>
+ `;
+}
 function gs(n){S.step=n;_pendingScroll='step-'+n;render();}
 function nx(){if(S.step<5){S.step++;_pendingScroll='step-'+S.step;render();}}
 function pv(){if(S.step>0){S.step--;_pendingScroll='step-'+S.step;render();}}
@@ -7999,7 +8108,112 @@ function rChildPughMeldDecision(){
 
 
 function s0(){const t=Math.floor(S.idade/10),u=S.idade%10,needsInfo=['Vaga Zero','Transferência'].includes(S.orig);const sexOpts=[['','—'],['M','Masculino'],['F','Feminino'],['O','Outro']];return`<div id="step-0" class="card"><div class="st"><i class="ti ti-user" aria-hidden="true"></i> Identificação e origem</div><div style="margin-bottom:12px"><label>Nome do paciente</label><input type="text" value="${esc(S.nome)}" oninput="S.nome=this.value" placeholder="Nome completo"></div><div class="r2"><div><label>Idade</label><div class="age-drums"><div class="drum"><button class="drum-btn" onclick="cAgeDig(10,1)"><i class="ti ti-chevron-up" aria-hidden="true"></i></button><div class="drum-dig">${t}</div><button class="drum-btn" onclick="cAgeDig(10,-1)"><i class="ti ti-chevron-down" aria-hidden="true"></i></button></div><div class="drum"><button class="drum-btn" onclick="cAgeDig(1,1)"><i class="ti ti-chevron-up" aria-hidden="true"></i></button><div class="drum-dig">${u}</div><button class="drum-btn" onclick="cAgeDig(1,-1)"><i class="ti ti-chevron-down" aria-hidden="true"></i></button></div><span class="drum-unit">anos</span></div></div><div><label>Sexo</label><select onchange="S.sexo=this.value;render()">${sexOpts.map(([v,l])=>`<option value="${v}" ${S.sexo===v?'selected':''}>${l}</option>`).join('')}</select></div></div><div style="margin-top:10px"><label>Origem</label><select onchange="S.orig=this.value;render()">${['Demanda Espontânea','SAMU','Bombeiros','Vaga Zero','Transferência'].map(o=>`<option ${S.orig===o?'selected':''}>${o}</option>`).join('')}</select></div>${needsInfo?`<div style="margin-top:10px"><div style="margin-bottom:8px"><label>Instituição de origem</label><input type="text" value="${esc(S.origInst)}" oninput="S.origInst=this.value" placeholder="Nome da instituição"></div><div><label>Motivo da transferência / vaga zero</label><input type="text" value="${esc(S.origMotivo)}" oninput="S.origMotivo=this.value" placeholder="Diagnóstico / motivo da solicitação"></div></div>`:''}</div><div class="nav"><div></div><button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;}
-function s1(){const al=ALERTAS[S.queixa],isIT=S.queixa==='Intoxicação exógena',renderQx=QX_ANAMNESE[S.queixa],cm=CMAP[S.queixa]||['Início súbito','Progressivo','Persistente','Febre'];return`<div id="step-1" class="card"><div class="st"><i class="ti ti-stethoscope" aria-hidden="true"></i> Queixa principal</div>${!S.queixa?QX_CATS.map(cat=>`<div class="qcat qcat-${cat.id}"><div class="qcat-lbl">${cat.label}</div><div class="qgrid">${cat.items.map(q=>`<button class="qbtn" onclick="setQueixa('${q.replace(/'/g,"\\'")}')">${esc(q)}</button>`).join('')}</div></div>`).join(''):`<div class="selq"><span><i class="ti ti-check" aria-hidden="true"></i> ${esc(S.queixa)}</span><button onclick="setQueixa(null)">Mudar</button></div>${al?`<div class="abox ${al.c}"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${al.m}</div>`:''}${renderQx?renderQx():`<div class="sl">Características:</div><div class="tags">${cm.map(c=>`<span class="tag ${S.caract.includes(c)?'on':''}" onclick="ts(S.caract,\`${c}\`)">${c}</span>`).join('')}</div><div style="margin-top:10px"><label>Tempo de início</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>${isIT?`<div style="margin-top:8px"><label>Substâncias suspeitas</label><input type="text" value="${esc(S.itDrug)}" oninput="S.itDrug=this.value" placeholder="Ex: benzodiazepínico, antidepressivo tricíclico, álcool..."></div>`:''}`}`}</div><div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.queixa?`<button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
+function qxMatchesQuery(qName, qry){
+ if(!qry) return true;
+ const q = qry.toLowerCase().trim();
+ const n = qName.toLowerCase();
+ if(n.includes(q)) return true;
+ const synMap = {
+  'Dor torácica': ['peito','dor precordial','infarto','coracao','angina','retroesternal','torax','toracica','dor no peito','pontada'],
+  'Dispneia': ['ar','falta de ar','cansaco','respirar','folego','chiado','dispneico','asfixia'],
+  'Cefaleia': ['cabeca','dor de cabeca','enxaqueca','migranea','têmpora','nuca'],
+  'Déficit neurológico agudo': ['derrame','avc','fraqueza','paralisia','boca torta','fala enrolada','plegia','paresia','isquemia'],
+  'Síncope': ['desmaio','lipotimia','perda de consciencia','apagou','desmaiou','teto preto'],
+  'Convulsão': ['crise convulsiva','ataque','epilepsia','abalo','tremor generalizado','baba'],
+  'Dor abdominal': ['barriga','dor de barriga','estomago','apendicite','vesicula','colica abdominal','ventre'],
+  'Náusea e Vômitos': ['vomito','enjoo','nausea','ansia','golfada','intolerancia alimentar'],
+  'Diarreia': ['desarranjo','fezes liquidas','evacuacoes','disenteria','soltura'],
+  'Sangramento': ['hemorragia','sangue','hemoptise','melena','hematuria','hematemese','epistaxe'],
+  'Dor lombar': ['costas','rins','coluna','lombalgia','ciatico','dor nas costas'],
+  'Icterícia': ['amarelo','pele amarela','olho amarelo','figado','coluria','acolia'],
+  'Vertigem': ['tontura','tonteira','labirintite','rodando','roda tudo','desequilibrio'],
+  'Palpitações': ['batedeira','arritmia','taquicardia','acelerado','coracao pulando'],
+  'Edema / Dor em MMII': ['perna inchada','edema','inchaço','dor na perna','panturrilha','tornozelo','tvp'],
+  'Trauma': ['queda','acidente','pancada','batida','tce','fratura','colisao','politrauma'],
+  'Intoxicação exógena': ['remedio','veneno','overdose','chumbinho','alcool','drogas','comprimidos'],
+  'Agitação psicomotora': ['surto','agressivo','agitado','nervoso','psico','desorientado'],
+  'Rebaixamento de consciência': ['coma','sonolento','torpor','desacordado','rebaixado','inconsciente','gcs'],
+  'Febre': ['calafrio','temperatura','quente','pirexia','febril'],
+  'Tosse': ['catarro','escarro','pigarro','secrecao','tosse seca']
+ };
+ const syns = synMap[qName];
+ if(syns && syns.some(s => s.includes(q) || q.includes(s))) return true;
+ return false;
+}
+
+function filterQueixas(val){
+ S._qxSearch = val;
+ render();
+ setTimeout(()=>{
+  const inp = document.getElementById('searchQxInput');
+  if(inp){ inp.focus(); inp.selectionStart = inp.selectionEnd = inp.value.length; }
+ }, 0);
+}
+
+function clearQueixaSearch(){
+ S._qxSearch = '';
+ render();
+}
+
+function s1(){
+ const al=ALERTAS[S.queixa],isIT=S.queixa==='Intoxicação exógena',renderQx=QX_ANAMNESE[S.queixa],cm=CMAP[S.queixa]||['Início súbito','Progressivo','Persistente','Febre'];
+ const qSearch = (S._qxSearch || '').trim();
+ 
+ const qxListHtml = QX_CATS.map(cat=>{
+  const matchingItems = cat.items.filter(q => qxMatchesQuery(q, qSearch));
+  if(qSearch && !matchingItems.length) return '';
+  return `
+   <div class="qcat qcat-${cat.id}">
+    <div class="qcat-lbl" style="display:flex;align-items:center;gap:5px">
+     ${cat.icon ? `<i class="ti ${cat.icon}" aria-hidden="true"></i>` : ''}
+     ${cat.label}
+    </div>
+    <div class="qgrid">
+     ${matchingItems.map(q=>`<button class="qbtn" onclick="setQueixa('${q.replace(/'/g,"\\'")}')">${esc(q)}</button>`).join('')}
+    </div>
+   </div>
+  `;
+ }).filter(Boolean).join('');
+
+ const noResultsHtml = (!qxListHtml && qSearch)
+  ? `<div style="text-align:center;padding:24px 12px;color:var(--color-text-secondary);background:var(--color-background-secondary);border-radius:8px;margin-bottom:12px">
+      <i class="ti ti-search-off" style="font-size:28px;color:#9ca3af;display:block;margin-bottom:6px" aria-hidden="true"></i>
+      <strong>Nenhuma queixa encontrada para "${esc(qSearch)}"</strong>
+      <p style="font-size:12px;margin:4px 0 10px 0">Verifique a ortografia ou selecione uma das 21 queixas disponíveis no catálogo.</p>
+      <button class="btns" style="padding:4px 12px;font-size:12px" onclick="clearQueixaSearch()">Limpar busca</button>
+     </div>`
+  : '';
+
+ return `
+  <div id="step-1" class="card">
+   <div class="st"><i class="ti ti-stethoscope" aria-hidden="true"></i> Queixa principal</div>
+   ${!S.queixa ? `
+    <div class="search-qx-box">
+     <input type="text" id="searchQxInput" class="search-qx-input" placeholder="🔍 Buscar queixa clínica (ex: peito, falta de ar, barriga, cabeça, febre)..." oninput="filterQueixas(this.value)" value="${esc(S._qxSearch||'')}">
+     ${S._qxSearch ? `<button class="clear-search-btn" onclick="clearQueixaSearch()" title="Limpar busca" aria-label="Limpar busca">×</button>` : ''}
+    </div>
+    ${noResultsHtml}
+    ${qxListHtml}
+   ` : `
+    <div class="selq">
+     <span><i class="ti ti-check" aria-hidden="true"></i> ${esc(S.queixa)}</span>
+     <button onclick="setQueixa(null)">Mudar</button>
+    </div>
+    ${al?`<div class="abox ${al.c}"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${al.m}</div>`:''}
+    ${renderQx ? renderQx() : `
+     <div class="sl">Características:</div>
+     <div class="tags">${cm.map(c=>`<span class="tag ${S.caract.includes(c)?'on':''}" onclick="ts(S.caract,\`${c}\`)">${c}</span>`).join('')}</div>
+     <div style="margin-top:10px"><label>Tempo de início</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>
+     ${isIT?`<div style="margin-top:8px"><label>Substâncias suspeitas</label><input type="text" value="${esc(S.itDrug)}" oninput="S.itDrug=this.value" placeholder="Ex: benzodiazepínico, antidepressivo tricíclico, álcool..."></div>`:''}
+    `}
+   `}
+  </div>
+  <div class="nav">
+   <button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>
+   ${S.queixa?`<button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}
+  </div>
+ `;
+}
 function s2(){const va=vA();return`<div id="step-2" class="card"><div class="st"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i> Sinais vitais</div><div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:12px"><div><label>FC</label><input type="number" inputmode="numeric" min="0" max="300" value="${esc(S.fc)}" oninput="S.fc=this.value;uvb()" placeholder="bpm"></div><div><label>SatO2</label><input type="number" inputmode="numeric" min="0" max="100" value="${esc(S.sat)}" oninput="S.sat=this.value;uvb()" placeholder="%"></div><div><label>PA</label><input type="text" inputmode="numeric" pattern="\\d{2,3}/\\d{2,3}" value="${esc(S.pa)}" oninput="S.pa=this.value;uvb()" placeholder="120/80"></div><div><label>FR</label><input type="number" inputmode="numeric" min="0" max="80" value="${esc(S.fr)}" oninput="S.fr=this.value;uvb()" placeholder="irpm"></div><div><label>Temp.</label><input type="number" inputmode="decimal" step="0.1" min="25" max="45" value="${esc(S.temp)}" oninput="S.temp=this.value;uvb()" placeholder="°C"></div><div><label>Glicemia</label><input type="number" inputmode="numeric" min="0" max="1000" value="${esc(S.gli)}" oninput="S.gli=this.value;uvb()" placeholder="mg/dL"></div></div><div class="r2" style="margin-bottom:12px"><div><label>Peso estimado</label><input type="number" inputmode="decimal" step="0.5" min="0" max="300" value="${esc(S.peso)}" oninput="S.peso=this.value" placeholder="kg"></div><div><div class="sl" style="margin-bottom:4px">EVA (dor 0–10)</div><div style="display:flex;gap:3px">${[0,1,2,3,4,5,6,7,8,9,10].map(n=>`<button style="flex:1;padding:5px 0;border-radius:4px;border:.5px solid ${S.eva==n?'#a32d2d':'#d1d5db'};background:${S.eva==n?'#fcebeb':'#fff'};color:${S.eva==n?'#a32d2d':'#374151'};font-size:12px;cursor:pointer" onclick="S.eva=${n};render()">${n}</button>`).join('')}</div></div></div><div class="vbars" id="vbars">${vBH()}</div>${va.length?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> ${va.join(' | ')}</div>`:''}<div id="news2LiveBox" style="margin-top:8px">${renderNews2LiveCard()}</div></div><div class="card"><div class="st"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Antecedentes</div>${tags('HPP:',['HAS','DM2','ICC','AVC','DAC','IRC','DPOC','FA','Neoplasia','Cirrose','HIV','Outras'],S.hpp,"ts(S.hpp,'%V')")}<div class="r2" style="margin-bottom:10px"><div><label>Medicações em uso</label><input type="text" value="${esc(S.muc)}" oninput="S.muc=this.value" placeholder="Ex: Metoprolol, AAS"></div><div><label>Alergias</label><input type="text" value="${esc(S.ale)}" oninput="S.ale=this.value"></div></div>${radio('Tabagismo:',['Não fumante','Ex-fumante','Fumante ativo'],S.tab,"S.tab='%V';render()")}${radio('Etilismo:',['Nega','Eventual','Regular','Abusivo'],S.etil,"S.etil='%V';render()")}<div><label>Drogas ilícitas</label><input type="text" value="${esc(S.drog)}" oninput="S.drog=this.value" placeholder="Nega ou descreva"></div></div><div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;}
 function abcH(){
  const a=S.abc,g=gcs();
@@ -8441,6 +8655,26 @@ function getCanonicalConductKey(txt){
  if((t.includes('gasometria')&&t.includes('lactato'))||t.includes('lactato sérico')||t.includes('lactato basal')){
   return 'gaso_lactato';
  }
+ // Dieta Zero / Jejum
+ if(t.includes('jejum')||t.includes('dieta zero')||t.includes('nada por via oral')||t.includes('npo')||t.includes('suspender dieta')){
+  return 'jejum';
+ }
+ // Ondansetrona
+ if(t.includes('ondansetrona')||t.includes('ondansetrana')){
+  return 'ondansetrana';
+ }
+ // Dipirona
+ if(t.includes('dipirona 1g')||t.includes('dipirona 1 g')||t.includes('dipirona 1000mg')||t.includes('dipirona iv')||t.includes('dipirona 2 ml')){
+  return 'dipirona';
+ }
+ // POCUS
+ if(t.includes('pocus')||t.includes('ultrassom point-of-care')||t.includes('ultrassonografia beira-leito')||t.includes('focus cardíaco')||t.includes('ultrassom focado')){
+  return 'pocus';
+ }
+ // Lab de Triagem
+ if(t.includes('hemograma, ureia, creatinina, eletrólitos')||t.includes('hemograma, eletrólitos, função renal')||t.includes('hemograma completo, ureia, creatinina')||(t.includes('hemograma')&&(t.includes('creatinina')||t.includes('cr'))&&(t.includes('ureia')||t.includes('ur')))){
+  return 'lab_triagem';
+ }
  return null;
 }
 
@@ -8452,7 +8686,12 @@ const CANONICAL_PRESCRIPTION_ORDERS={
  glicemia: 'Glicemia capilar imediata na admissão e vigilância seriada',
  sonda_vesical: 'Cateter vesical de demora para controle estrito de diurese horária',
  repouso: 'Repouso no leito com cabeceira elevada a 30 graus',
- gaso_lactato: 'Coleta imediata de gasometria com dosagem de lactato sérico na admissão'
+ gaso_lactato: 'Coleta imediata de gasometria com dosagem de lactato sérico na admissão',
+ jejum: 'Dieta zero / Jejum imediato por via oral',
+ ondansetrana: 'Ondansetrona 8 mg IV se náuseas ou vômitos',
+ dipirona: 'Dipirona 1 g (2 mL) IV diluído em 100 mL de SF 0,9% correr em 15–20 min se dor/febre',
+ pocus: 'Ultrassonografia Point-of-Care (POCUS) beira-leito direcionada protocolar',
+ lab_triagem: 'Exames laboratoriais de urgência: Hemograma completo, Ureia, Creatinina, Sódio, Potássio'
 };
 
 function cleanPrescriptionItem(txt){
@@ -8460,6 +8699,9 @@ function cleanPrescriptionItem(txt){
  let s=txt;
  s=s.replace(/\[CONTRAINDICADO\s+se[^\]]+\]/gi,'(suspender se PAS < 100 mmHg ou inibidor PDE-5 em 24-48h)');
  s=s.replace(/\[atenção:[^\]]+\]/gi,'');
+ s=s.replace(/\[diretriz:[^\]]+\]/gi,'');
+ s=s.replace(/\[classe\s+[i|v|x]+[^\]]*\]/gi,'');
+ s=s.replace(/\[[^\]]*(?:classe|nível|nivel|diretriz|sbc|aha|esc|ssc|guideline)[^\]]*\]/gi,'');
  s=s.replace(/\(GCS isolado não indica intubação mandatória em coma não-traumático\)/gi,'');
  s=s.replace(/\(tendência de queda indica melhora da perfusão; não constitui meta isolada para volume ou vasopressor\)/gi,'');
  s=s.replace(/\(evitar nitratos se suspeita de IAM de VD com instabilidade ou uso de inibidores de PDE-5\)/gi,'');
@@ -8510,6 +8752,46 @@ function updateDecisionConflictBadge(){
     el.style.display = 'none';
    }
   }
+ });
+}
+
+let _decisionSearchQuery = '';
+
+function onDecisionSearch(q){
+ _decisionSearchQuery = (q || '').trim().toLowerCase();
+ const clearBtn = document.getElementById('decisionSearchClearBtn');
+ if(clearBtn) clearBtn.style.display = _decisionSearchQuery ? 'block' : 'none';
+ renderDecisionSupportContent(_activeDecisionTab);
+}
+
+function clearDecisionSearch(){
+ const input = document.getElementById('decisionSearchInput');
+ if(input) input.value = '';
+ _decisionSearchQuery = '';
+ const clearBtn = document.getElementById('decisionSearchClearBtn');
+ if(clearBtn) clearBtn.style.display = 'none';
+ renderDecisionSupportContent(_activeDecisionTab);
+}
+
+function copySriDoses(w){
+ const kDose = (w * 1.5).toFixed(0);
+ const rDose = (w * 1.2).toFixed(0);
+ const fDose = (w * 2.0).toFixed(0);
+ const txt = `[Prescrição SRI — Peso ${w} kg]\n- Quetamina ${kDose} mg (${(kDose/50).toFixed(1)} mL) IV em bólus\n- Rocurônio ${rDose} mg (${(rDose/10).toFixed(1)} mL) IV em bólus\n- Fentanil ${fDose} mcg (${(fDose/50).toFixed(1)} mL) IV em bólus pré-procedimento`;
+ if(!S.imp) S.imp = txt; else S.imp += '\n\n' + txt;
+ navigator.clipboard.writeText(txt).then(()=>{
+  showToast(`Doses de SRI para ${w} kg copiadas e adicionadas à conduta!`);
+  render();
+ });
+}
+
+function copyNoraDose(w){
+ const mlh = ((0.1 * w * 60) / 64).toFixed(1);
+ const txt = `[DVA — Noradrenalina 64 mcg/mL]\n- Noradrenalina 4 ampolas (16 mg) em 234 mL SG 5% IV em BIC contínua.\n- Iniciar vazão a ${mlh} mL/h (dose inicial 0,1 mcg/kg/min para ${w} kg).\n- Titular a cada 2–5 min para alvo de PAM >= 65 mmHg e TEC <= 3s.`;
+ if(!S.imp) S.imp = txt; else S.imp += '\n\n' + txt;
+ navigator.clipboard.writeText(txt).then(()=>{
+  showToast(`Prescrição de Noradrenalina para ${w} kg copiada e adicionada!`);
+  render();
  });
 }
 
@@ -8995,7 +9277,97 @@ function renderDecisionSupportContent(tab){
  }
 
  if(tab === 'doses'){
+  const currentWeight = (parseFloat(S.peso) > 0) ? parseFloat(S.peso) : 70;
+  const isDefaultWeight = !parseFloat(S.peso);
+  const sriK1 = (currentWeight * 1.5).toFixed(0);
+  const sriK2 = (currentWeight * 2.0).toFixed(0);
+  const sriR = (currentWeight * 1.2).toFixed(0);
+  const sriF1 = (currentWeight * 2.0).toFixed(0);
+  const sriF2 = (currentWeight * 3.0).toFixed(0);
+  const sriM1 = (currentWeight * 0.2).toFixed(1);
+  const sriM2 = (currentWeight * 0.3).toFixed(1);
+  const sriE = (currentWeight * 0.3).toFixed(1);
+  const sriS = (currentWeight * 1.5).toFixed(0);
+
   body.innerHTML = `
+   <div class="decision-card" style="border-top:3px solid #2563eb;background:#f8fafc">
+    <div class="decision-card-title" style="color:#1d4ed8;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+     <span><i class="ti ti-calculator" style="color:#2563eb" aria-hidden="true"></i> Calculadora por Peso em Tempo Real</span>
+     <span class="sb" style="font-size:11px;background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe">
+      ${isDefaultWeight ? 'Peso Padrão: 70 kg' : 'Peso do Paciente: ' + currentWeight + ' kg'}
+     </span>
+    </div>
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px">
+     Doses calculadas em tempo real com base no peso informado no Passo 1:
+    </div>
+
+    <!-- Bloco SRI -->
+    <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:8px;padding:10px;margin-bottom:10px">
+     <div style="font-size:12.5px;font-weight:700;color:#0f172a;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px">
+      <span><i class="ti ti-stretcher" style="color:#2563eb"></i> Sequência Rápida de Intubação (SRI) — ${currentWeight} kg</span>
+      <button class="btng" style="padding:3px 8px;font-size:11px;background:#2563eb" onclick="copySriDoses(${currentWeight})">
+       <i class="ti ti-copy" aria-hidden="true"></i> Copiar / Inserir na Conduta
+      </button>
+     </div>
+     <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11.5px">
+      <div style="background:#f1f5f9;padding:5px 7px;border-radius:6px">
+       <strong>Quetamina (1,5–2 mg/kg):</strong><br>
+       <span style="font-weight:700;color:#1e3a8a">${sriK1} a ${sriK2} mg</span>
+       <span style="color:#64748b;font-size:10.5px"> (${(sriK1/50).toFixed(1)} a ${(sriK2/50).toFixed(1)} mL sol 50mg/mL)</span>
+      </div>
+      <div style="background:#f1f5f9;padding:5px 7px;border-radius:6px">
+       <strong>Rocurônio (1,2 mg/kg):</strong><br>
+       <span style="font-weight:700;color:#1e3a8a">${sriR} mg</span>
+       <span style="color:#64748b;font-size:10.5px"> (${(sriR/10).toFixed(1)} mL amp 10mg/mL)</span>
+      </div>
+      <div style="background:#f1f5f9;padding:5px 7px;border-radius:6px">
+       <strong>Fentanil (2–3 mcg/kg):</strong><br>
+       <span style="font-weight:700;color:#1e3a8a">${sriF1} a ${sriF2} mcg</span>
+       <span style="color:#64748b;font-size:10.5px"> (${(sriF1/50).toFixed(1)} a ${(sriF2/50).toFixed(1)} mL amp 50mcg/mL)</span>
+      </div>
+      <div style="background:#f1f5f9;padding:5px 7px;border-radius:6px">
+       <strong>Midazolam (0,2–0,3 mg/kg):</strong><br>
+       <span style="font-weight:700;color:#1e3a8a">${sriM1} a ${sriM2} mg</span>
+       <span style="color:#64748b;font-size:10.5px"> (${(sriM1/5).toFixed(1)} a ${(sriM2/5).toFixed(1)} mL amp 5mg/mL)</span>
+      </div>
+      <div style="background:#f1f5f9;padding:5px 7px;border-radius:6px">
+       <strong>Etomidato (0,3 mg/kg):</strong><br>
+       <span style="font-weight:700;color:#1e3a8a">${sriE} mg</span>
+       <span style="color:#64748b;font-size:10.5px"> (${(sriE/2).toFixed(1)} mL amp 2mg/mL)</span>
+      </div>
+      <div style="background:#f1f5f9;padding:5px 7px;border-radius:6px">
+       <strong>Succinilcolina (1,5 mg/kg):</strong><br>
+       <span style="font-weight:700;color:#1e3a8a">${sriS} mg</span>
+       <span style="color:#64748b;font-size:10.5px"> (frasco 100 mg reconstituído)</span>
+      </div>
+     </div>
+    </div>
+
+    <!-- Bloco Noradrenalina -->
+    <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:8px;padding:10px">
+     <div style="font-size:12.5px;font-weight:700;color:#0f172a;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px">
+      <span><i class="ti ti-activity" style="color:#dc2626"></i> Noradrenalina (Solução 64 mcg/mL) — ${currentWeight} kg</span>
+      <button class="btng" style="padding:3px 8px;font-size:11px;background:#dc2626" onclick="copyNoraDose(${currentWeight})">
+       <i class="ti ti-copy" aria-hidden="true"></i> Copiar / Inserir na Conduta
+      </button>
+     </div>
+     <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:6px">
+      Solução: 4 ampolas (16 mg) em 234 mL SG 5% (conc: 64 mcg/mL). Vazão (mL/h) = (Dose × Peso × 60) ÷ 64.
+     </div>
+     <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:5px;text-align:center;font-size:11px">
+      ${[0.05, 0.1, 0.2, 0.5, 1.0].map(rate => {
+        const mlh = ((rate * currentWeight * 60) / 64).toFixed(1);
+        return `
+         <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:3px">
+          <strong style="color:#991b1b">${rate} mcg/kg/min</strong><br>
+          <span style="font-size:12px;font-weight:700;color:#dc2626">${mlh} mL/h</span>
+         </div>
+        `;
+      }).join('')}
+     </div>
+    </div>
+   </div>
+
    <div class="decision-card" style="border-top:3px solid #dc2626">
     <div class="decision-card-title" style="color:#b91c1c">
      <i class="ti ti-activity" style="color:#dc2626" aria-hidden="true"></i>
@@ -9089,6 +9461,174 @@ function renderDecisionSupportContent(tab){
    </div>
   `;
  }
+
+ if(_decisionSearchQuery && body){
+  const cards = body.querySelectorAll('.decision-card');
+  let matchCount = 0;
+  cards.forEach(card => {
+   const txt = (card.textContent || '').toLowerCase();
+   if(txt.includes(_decisionSearchQuery)){
+    card.style.display = 'block';
+    matchCount++;
+   } else {
+    card.style.display = 'none';
+   }
+  });
+  if(matchCount === 0 && cards.length > 0){
+   body.innerHTML = `
+    <div style="text-align:center;padding:36px 16px;color:var(--color-text-secondary)">
+     <i class="ti ti-search-off" style="font-size:36px;color:#9ca3af;display:block;margin-bottom:8px" aria-hidden="true"></i>
+     <strong style="color:var(--color-text-primary)">Nenhum resultado para "${esc(_decisionSearchQuery)}"</strong>
+     <p style="font-size:12px;margin:6px 0 12px 0">Nenhum item nesta aba coincide com a sua busca.</p>
+     <button class="btns" style="padding:4px 12px;font-size:12px" onclick="clearDecisionSearch()">Limpar filtro</button>
+    </div>
+   `;
+  }
+ }
+}
+
+const EVIDENCE_REGISTRY = {
+ ecg_precoce: {
+  title: 'ECG Precoce em < 10 minutos',
+  guideline: 'Diretriz SBC SCA 2021 / AHA-ACC 2023',
+  recClass: 'Classe I',
+  evidenceLevel: 'Nível B',
+  rationale: 'A realização e interpretação do ECG de 12 derivações nos primeiros 10 minutos da chegada reduz o tempo porta-balão/porta-agulha e previne desfechos adversos.'
+ },
+ dapt_sca: {
+  title: 'Dupla Antiagregação Plaquetária (DAPT)',
+  guideline: 'Diretriz SBC SCA 2021 / ESC 2023',
+  recClass: 'Classe I',
+  evidenceLevel: 'Nível A',
+  rationale: 'Associação de AAS a um inibidor P2Y12 (Ticagrelor ou Clopidogrel) reduz reinfarto, trombose de stent e mortalidade cardiovascular.'
+ },
+ trombolise_avc: {
+  title: 'Trombólise Química no AVCI (< 4,5h)',
+  guideline: 'Diretriz AVC Agudo SBDC / AHA-ASA 2023',
+  recClass: 'Classe I',
+  evidenceLevel: 'Nível A',
+  rationale: 'Alteplase ou Tenecteplase em até 4,5h do ictus melhora significativamente a sobrevida livre de incapacidade funcional aos 90 dias.'
+ },
+ sepse_atb: {
+  title: 'Antibioticoterapia Precoce na Sepse',
+  guideline: 'Surviving Sepsis Campaign (SSC) 2021',
+  recClass: 'Classe I',
+  evidenceLevel: 'Nível B',
+  rationale: 'Início de antibiótico de amplo espectro na 1ª hora (Golden Hour) é a intervenção de maior impacto isolado na redução da mortalidade.'
+ },
+ nora_choque: {
+  title: 'Noradrenalina como Vasopressor de 1ª Linha',
+  guideline: 'Surviving Sepsis Campaign (SSC) 2021',
+  recClass: 'Classe I',
+  evidenceLevel: 'Nível A',
+  rationale: 'Noradrenalina restaura o tônus vascular com alvo de PAM ≥ 65 mmHg apresentando menor taquiarritmia que a dopamina.'
+ },
+ cve_taqui: {
+  title: 'Cardioversão Elétrica Sincronizada',
+  guideline: 'Diretriz SBC Arritmias / ACLS AHA 2024',
+  recClass: 'Classe I',
+  evidenceLevel: 'Nível B',
+  rationale: 'Taquiarritmias com instabilidade hemodinâmica, choque, EAP ou angina exigem cardioversão sincronizada imediata.'
+ },
+ iot_sri: {
+  title: 'Sequência Rápida de Intubação (SRI)',
+  guideline: 'Difficult Airway Society / Manual de IOT de Emergência',
+  recClass: 'Classe I',
+  evidenceLevel: 'Nível B',
+  rationale: 'Pré-oxigenação com hipnótico e bloqueador neuromuscular de ação rápida otimiza sucesso na 1ª tentativa e previne broncoaspiração.'
+ },
+ perc_tep: {
+  title: 'Regra de Exclusão PERC em Baixo Risco de TEP',
+  guideline: 'ESC Guidelines TEP 2019 / Annals Emerg Med',
+  recClass: 'Classe IIa',
+  evidenceLevel: 'Nível B',
+  rationale: 'Permite descartar TEP com segurança sem dosar D-Dímero ou solicitar AngioTC quando todos os 8 critérios são negativos.'
+ },
+ heparina_sca: {
+  title: 'Anticoagulação Plena na SCA',
+  guideline: 'Diretriz SBC / ESC NSTE-ACS 2023',
+  recClass: 'Classe I',
+  evidenceLevel: 'Nível A',
+  rationale: 'Enoxaparina ou Heparina não-fracionada reduz progressão trombótica coronariana e isquemia recorrente.'
+ },
+ trop_seriada: {
+  title: 'Troponina Ultrassensível Seriada',
+  guideline: '4ª Definição Universal de Infarto / ESC 2023',
+  recClass: 'Classe I',
+  evidenceLevel: 'Nível A',
+  rationale: 'Protocolos de 0/1h ou 0/2h de troponina ultrassensível permitem rule-out e rule-in diagnósticos rápidos e precisos de IAM.'
+ }
+};
+
+function getEvidenceKeyForItem(item){
+ if(!item) return null;
+ const t = item.toLowerCase();
+ if(t.startsWith('ecg') || t.includes('eletrocardiograma')) return 'ecg_precoce';
+ if(t.includes('aas') || t.includes('clopidogrel') || t.includes('ticagrelor') || t.includes('antiagrega')) return 'dapt_sca';
+ if(t.includes('trombolise') || t.includes('alteplase') || t.includes('tenecteplase')) return 'trombolise_avc';
+ if(t.includes('antibiótico') || t.includes('ceftriaxona') || t.includes('meropenem') || t.includes('golden hour')) return 'sepse_atb';
+ if(t.includes('noradrenalina') || t.includes('norepinefrina')) return 'nora_choque';
+ if(t.includes('cardioversão') || t.includes('cardioversao')) return 'cve_taqui';
+ if(t.includes('intubação') || t.includes('quetamina') || t.includes('rocurônio') || t.includes('sri')) return 'iot_sri';
+ if(t.includes('perc') || t.includes('years')) return 'perc_tep';
+ if(t.includes('enoxaparina') || t.includes('heparina')) return 'heparina_sca';
+ if(t.includes('troponina')) return 'trop_seriada';
+ return null;
+}
+
+function showEvidencePopover(e, key){
+ if(e){ e.stopPropagation(); if(e.preventDefault) e.preventDefault(); }
+ const ev = EVIDENCE_REGISTRY[key];
+ if(!ev) return;
+ let pop = document.getElementById('evidencePopover');
+ if(!pop){
+  pop = document.createElement('div');
+  pop.id = 'evidencePopover';
+  pop.className = 'evidence-popover';
+  document.body.appendChild(pop);
+ }
+ pop.innerHTML = `
+  <div class="evidence-popover-hdr">
+   <div style="display:flex;align-items:center;gap:6px">
+    <i class="ti ti-certificate" style="color:#2563eb;font-size:16px"></i>
+    <strong>${esc(ev.title)}</strong>
+   </div>
+   <button class="evidence-close-btn" onclick="closeEvidencePopover()" aria-label="Fechar">×</button>
+  </div>
+  <div style="font-size:11.5px;color:var(--color-text-secondary);margin-bottom:6px">
+   <i class="ti ti-book"></i> <strong>Referência:</strong> ${esc(ev.guideline)}
+  </div>
+  <div style="display:flex;gap:6px;margin-bottom:8px">
+   <span class="evidence-badge badge-class">${esc(ev.recClass)}</span>
+   <span class="evidence-badge badge-level">${esc(ev.evidenceLevel)}</span>
+  </div>
+  <div style="font-size:12px;line-height:1.45;color:var(--color-text-primary);background:var(--color-background-secondary);padding:6px 8px;border-radius:6px">
+   ${esc(ev.rationale)}
+  </div>
+ `;
+ pop.style.display = 'block';
+ if(e && e.target && typeof e.target.getBoundingClientRect === 'function'){
+  const rect = e.target.getBoundingClientRect();
+  const top = (window.scrollY || window.pageYOffset || 0) + rect.bottom + 6;
+  let left = (window.scrollX || window.pageXOffset || 0) + rect.left - 120;
+  if(left < 10) left = 10;
+  if(left + 320 > (window.innerWidth || 800)) left = Math.max(10, (window.innerWidth || 800) - 330);
+  pop.style.top = top + 'px';
+  pop.style.left = left + 'px';
+ }
+}
+
+function closeEvidencePopover(){
+ const pop = document.getElementById('evidencePopover');
+ if(pop) pop.style.display = 'none';
+}
+
+function isGenericVitalSupportItem(txt){
+ if(!txt) return false;
+ const t = txt.toLowerCase();
+ return t.includes('monitorização') || t.includes('acesso venoso') || t.includes('oxigenoterapia') ||
+        t.includes('glicemia capilar') || t.includes('momento zero') || t.includes('gasometria') ||
+        t.includes('jejum') || t.includes('repouso');
 }
 
 function rUnifiedConductsBoard(T){
@@ -9127,12 +9667,23 @@ function rUnifiedConductsBoard(T){
   </div>`:'' ;
 
  const CAT_DEFS=[
-  {id:'sup',name:'Suporte Vital & Ressuscitação',ico:'ti-first-aid-kit',tagCls:'csec-tag-sup'},
-  {id:'esp',name:'Terapia Específica & Farmacológica',ico:'ti-pill',tagCls:'csec-tag-esp'},
-  {id:'sin',name:'Sintomáticos & Analgesia',ico:'ti-heart-rate-monitor',tagCls:'csec-tag-sin'},
-  {id:'inv',name:'Investigação & Exames Complementares',ico:'ti-microscope',tagCls:'csec-tag-inv'},
-  {id:'dsp',name:'Disposição & Encaminhamentos',ico:'ti-arrow-up-right-circle',tagCls:'csec-tag-dsp'}
+  {id:'sup',name:'1. Suporte Vital & Monitorização',ico:'ti-first-aid-kit',tagCls:'csec-tag-sup'},
+  {id:'esp',name:'2. Terapêutica Específica & Drogas-Alvo',ico:'ti-pill',tagCls:'csec-tag-esp'},
+  {id:'sin',name:'3. Medidas Sintomáticas & Analgesia',ico:'ti-heart-rate-monitor',tagCls:'csec-tag-sin'},
+  {id:'inv',name:'4. Investigação Diagnóstica & Imagem',ico:'ti-microscope',tagCls:'csec-tag-inv'},
+  {id:'dsp',name:'5. Destino & Disposição Clínica',ico:'ti-arrow-up-right-circle',tagCls:'csec-tag-dsp'}
  ];
+
+ // Deduplicação canônica em escopo geral do quadro: registra itens da síndrome-mãe
+ const boardSeenCanonical = new Set();
+ if(T.s){
+  T.s.forEach(sec=>{
+   (sec.it||[]).forEach(it=>{
+    const ck = getCanonicalConductKey(it);
+    if(ck) boardSeenCanonical.add(ck);
+   });
+  });
+ }
 
  const renderedSections=CAT_DEFS.map(cat=>{
   const catId=cat.id;
@@ -9153,18 +9704,16 @@ function rUnifiedConductsBoard(T){
   const totalItemsCount=motherItems.length+subItems.length+diffEntries.reduce((acc,d)=>acc+d.items.length,0);
   if(totalItemsCount===0)return '';
 
-  // Deduplicação canônica: não duplica em filhas itens comuns já presentes na mãe
-  const secSeenCanonical = new Set();
-  motherItems.forEach(it=>{
-   const ck = getCanonicalConductKey(it);
-   if(ck) secSeenCanonical.add(ck);
-  });
-
+  // Filtra itens comuns/redundantes de suporte vital em síndromes filhas e diferenciais
   const filteredSubItems = [];
   subItems.forEach((item, idx)=>{
    const ck = getCanonicalConductKey(item);
-   if(ck && secSeenCanonical.has(ck)) return;
-   if(ck) secSeenCanonical.add(ck);
+   if(catId === 'sup' && (ck || isGenericVitalSupportItem(item))) {
+    if(ck && !boardSeenCanonical.has(ck)) boardSeenCanonical.add(ck);
+    return;
+   }
+   if(ck && boardSeenCanonical.has(ck)) return;
+   if(ck) boardSeenCanonical.add(ck);
    filteredSubItems.push({ item, idx });
   });
 
@@ -9172,8 +9721,12 @@ function rUnifiedConductsBoard(T){
    const fItems = [];
    d.items.forEach((item, idx)=>{
     const ck = getCanonicalConductKey(item);
-    if(ck && secSeenCanonical.has(ck)) return;
-    if(ck) secSeenCanonical.add(ck);
+    if(catId === 'sup' && (ck || isGenericVitalSupportItem(item))) {
+     if(ck && !boardSeenCanonical.has(ck)) boardSeenCanonical.add(ck);
+     return;
+    }
+    if(ck && boardSeenCanonical.has(ck)) return;
+    if(ck) boardSeenCanonical.add(ck);
     fItems.push({ item, idx });
    });
    if(!fItems.length) return null;
@@ -9217,10 +9770,12 @@ function rUnifiedConductsBoard(T){
         const k=sid+'_'+catId+'_'+idx;
         const cl=ccls(k);
         const hl=itemHasVitalHl(item)?' hl':'';
+        const evKey=getEvidenceKeyForItem(item);
+        const evBtn=evKey?`<button type="button" class="evidence-info-btn" onclick="event.stopPropagation();showEvidencePopover(event,'${evKey}')" title="Ver diretriz e evidência clínica" aria-label="Ver evidência"><i class="ti ti-info-circle"></i></button>`:'';
         return `
          <div class="chk ${cl}${hl}" onclick="cyc('${k}')">
           <div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div>
-          <div class="ctx">${item}</div>
+          <div class="ctx">${item}${evBtn}</div>
          </div>`;
        }).join('')}
       </div>`:''}
@@ -9234,10 +9789,12 @@ function rUnifiedConductsBoard(T){
         const k=subId+'_'+catId+'_'+idx;
         const cl=ccls(k);
         const hl=itemHasVitalHl(item)?' hl':'';
+        const evKey=getEvidenceKeyForItem(item);
+        const evBtn=evKey?`<button type="button" class="evidence-info-btn" onclick="event.stopPropagation();showEvidencePopover(event,'${evKey}')" title="Ver diretriz e evidência clínica" aria-label="Ver evidência"><i class="ti ti-info-circle"></i></button>`:'';
         return `
          <div class="chk ${cl}${hl}" onclick="cyc('${k}')">
           <div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div>
-          <div class="ctx"><span style="display:inline-block;padding:1px 5px;background:#fcebeb;color:#991b1b;border-radius:4px;font-size:11px;font-weight:600;margin-right:6px">[${esc(subT.l)}]</span>${item}</div>
+          <div class="ctx"><span style="display:inline-block;padding:1px 5px;background:#fcebeb;color:#991b1b;border-radius:4px;font-size:11px;font-weight:600;margin-right:6px">[${esc(subT.l)}]</span>${item}${evBtn}</div>
          </div>`;
        }).join('')}
       </div>`:''}
@@ -9251,10 +9808,12 @@ function rUnifiedConductsBoard(T){
         const k=d.id+'_'+catId+'_'+idx;
         const cl=ccls(k);
         const hl=itemHasVitalHl(item)?' hl':'';
+        const evKey=getEvidenceKeyForItem(item);
+        const evBtn=evKey?`<button type="button" class="evidence-info-btn" onclick="event.stopPropagation();showEvidencePopover(event,'${evKey}')" title="Ver diretriz e evidência clínica" aria-label="Ver evidência"><i class="ti ti-info-circle"></i></button>`:'';
         return `
          <div class="chk ${cl}${hl}" onclick="cyc('${k}')">
           <div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div>
-          <div class="ctx"><span style="display:inline-block;padding:1px 5px;background:#dcfce7;color:#15803d;border-radius:4px;font-size:11px;font-weight:600;margin-right:6px">[${esc(d.label)}]</span>${item}</div>
+          <div class="ctx"><span style="display:inline-block;padding:1px 5px;background:#dcfce7;color:#15803d;border-radius:4px;font-size:11px;font-weight:600;margin-right:6px">[${esc(d.label)}]</span>${item}${evBtn}</div>
          </div>`;
        }).join('')}
       </div>
@@ -9274,14 +9833,14 @@ function rUnifiedConductsBoard(T){
    <div class="st" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
     <span style="display:flex;align-items:center;gap:7px">
      <i class="ti ti-clipboard-list" style="color:#2563eb" aria-hidden="true"></i>
-     <span><strong>Condutas e Prescrição Médica Integrada — ${esc(T.l)}</strong></span>
+     <span><strong>Order-Set Hospitalar por Camadas — ${esc(T.l)}</strong></span>
     </span>
     <span class="sb sok" style="font-size:11px;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe">
      ${totSel?`${totSel} ite${totSel>1?'ns':'m'} selecionado${totSel>1?'s':''}`:'Seleção Direta de 1 Clique'}
     </span>
    </div>
    <div class="sl" style="margin-top:-2px;margin-bottom:10px;font-size:12px;color:var(--color-text-secondary)">
-    <i class="ti ti-info-circle" aria-hidden="true"></i> Condutas agrupadas por classe clínica, integrando automaticamente a síndrome-mãe, o diagnóstico adotado e os diferenciais investigados.
+    <i class="ti ti-info-circle" aria-hidden="true"></i> Condutas estruturadas nas 5 camadas hospitalares universais (Suporte Vital, DVA, Terapia Específica, Propêutica e Disposição). Ícone <i class="ti ti-info-circle" style="color:#2563eb"></i> exibe diretriz e nível de evidência on-demand.
    </div>
    ${alertsHtml}
    ${renderedSections}
@@ -9819,6 +10378,7 @@ function copyRelCol(){const ta=document.getElementById('relColTxt');if(ta)naviga
 function saveReportFromCol(){const ta=document.getElementById('relColTxt');if(ta)saveReport(ta.value);}
 function render(){
  rs();
+ updateStickyClinicalCockpit();
  const c=document.getElementById('con');
  c.innerHTML=s0()+s1()+s2()+s3()+s4()+s5();
  const rt=document.getElementById('relTxt');
