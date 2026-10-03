@@ -863,7 +863,7 @@ textarea{resize:vertical;min-height:60px}
     </div>
     <div class="decision-drawer-tabs">
       <button class="decision-tab active" id="decTabMetas" onclick="setDecisionTab('metas')">
-        <i class="ti ti-target" aria-hidden="true"></i> <span>Metas<span class="hide-mobile-tab-text"> Fisiológicas</span></span>
+        <i class="ti ti-target" aria-hidden="true"></i> <span>Metas</span>
       </button>
       <button class="decision-tab" id="decTabPerolas" onclick="setDecisionTab('perolas')">
         <i class="ti ti-bulb" aria-hidden="true"></i> <span>Pérolas<span class="hide-mobile-tab-text"> & Conflitos</span></span>
@@ -983,10 +983,12 @@ function resetInactivityTimer(){
  if(typeof setTimeout === 'function') _inactivityTimer = setTimeout(lockForInactivity, INACTIVITY_TIMEOUT_MS);
 }
 
+const INACTIVITY_EVENTS = ['mousemove','keydown','touchstart','scroll','click'];
+
 function startInactivityTimer(){
  stopInactivityTimer();
  _isLockedForInactivity = false;
- ['mousemove','keydown','touchstart','scroll','click'].forEach(evt => {
+ INACTIVITY_EVENTS.forEach(evt => {
   if(typeof window !== 'undefined' && window.addEventListener){
    window.addEventListener(evt, resetInactivityTimer, {passive:true});
   }
@@ -997,6 +999,11 @@ function startInactivityTimer(){
 function stopInactivityTimer(){
  if(typeof clearTimeout === 'function') clearTimeout(_inactivityTimer);
  _inactivityTimer = null;
+ if(typeof window !== 'undefined' && window.removeEventListener){
+  INACTIVITY_EVENTS.forEach(evt => {
+   window.removeEventListener(evt, resetInactivityTimer);
+  });
+ }
 }
 
 function lockForInactivity(){
@@ -2107,8 +2114,15 @@ function deepMergeDefaults(defaults,override){
  if(Array.isArray(defaults))return Array.isArray(override)?override:defaults;
  if(typeof override!=='object'||override===null||Array.isArray(override))return defaults;
  const out={};
- for(const k in defaults)out[k]=deepMergeDefaults(defaults[k],override[k]);
- for(const k in override)if(!(k in defaults))out[k]=override[k];
+ const hasOwn=Object.prototype.hasOwnProperty;
+ for(const k of Object.keys(defaults)){
+  if(k==='__proto__'||k==='constructor'||k==='prototype')continue;
+  out[k]=hasOwn.call(override,k)?deepMergeDefaults(defaults[k],override[k]):defaults[k];
+ }
+ for(const k of Object.keys(override)){
+  if(k==='__proto__'||k==='constructor'||k==='prototype')continue;
+  if(!hasOwn.call(defaults,k))out[k]=override[k];
+ }
  return out;
 }
 const DRAFT_KEY='emergencia_draft_v2';
@@ -5688,10 +5702,10 @@ const CT={
     "id": "dsp",
     "t": "Estratificação de risco e disposição",
     "it": [
-     "Calcular escores de risco na admissão: HEART Score e EDACS",
-     "HEART ≤ 3 + hs-cTn normal em 0h/1h: baixo risco para MACE (< 1%), elegível para alta e seguimento ambulatorial em 72h",
-     "HEART 4–6: risco intermediário, observação monitorizada por 6–12h com troponina seriada",
-     "HEART ≥ 7 ou troponina dinâmica positiva: alto risco, internação em leito monitorizado/UTI e coronariografia"
+     "Calcular escores de risco na admissão (apenas se ausência de supra de ST ou equivalentes de OCA): HEART Score e EDACS",
+     "Dor torácica sem OCA: HEART ≤ 3 + hs-cTn normal em 0h/1h indica baixo risco para MACE (< 1%), elegível para alta e seguimento em 72h",
+     "Dor torácica sem OCA: HEART 4–6 indica risco intermediário, observação monitorizada por 6–12h com troponina seriada",
+     "Dor torácica sem OCA: HEART ≥ 7 ou troponina dinâmica positiva indica alto risco, internação em leito monitorizado/UTI e coronariografia"
     ]
    }
   ]
@@ -6688,13 +6702,29 @@ function dtHda(S){
  if(d.sin.length) out+=`. Sintomas associados referidos: ${d.sin.join(', ').toLowerCase()}`;
  return out;
 }
+function isOcaActive(sState){
+ const st = sState || (typeof S !== 'undefined' ? S : null);
+ if(!st) return false;
+ if(st.subsind === 'sca_oca' || st.sind === 'sca_oca') return true;
+ if(Array.isArray(st.subsinds) && st.subsinds.includes('sca_oca')) return true;
+ if(Array.isArray(st.sindromes) && st.sindromes.includes('sca_oca')) return true;
+ if(st.ecgS?.st?.some(s => s && s.toLowerCase().includes('supra'))) return true;
+ const ocaPatterns = ['de winter', 'wellens', 'sgarbossa', 'smith', 'hiperaguda'];
+ if(st.ecgS?.padroes?.some(p => ocaPatterns.some(k => p && p.toLowerCase().includes(k)))) return true;
+ return false;
+}
+
 function dtAfter(S){
  const d=S.dt;let out='';
  if((d.sin.includes('Parestesias de extremidades / perioral')||d.sin.includes('Sensação de morte iminente'))&&d.ini.includes('repouso'))out+=`<div class="abox aw"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Considerar etiologia isquêmica aguda ou hiperventilação</div>`;
  if(d.irr.includes('Dorso interescapular')||d.irr.includes('Dorso com padrão migratório crânio-caudal')||d.qual.includes('Dilacerante / Rasgante (sugere dissecção)'))out+=`<div class="abox ad"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ALERTA DE DISSECÇÃO AÓRTICA</strong> — Dor dilacerante ou interescapular migratória: CONTRAINDICADA anticoagulação plena/antiagregação até descartar dissecção por AngioTC de aorta torácica total!</div>`;
  out+=`<div style="margin-top:8px"><label>Tempo de início</label><input type="text" value="${esc(S.tempo)}" oninput="S.tempo=this.value" placeholder="Ex: 2 horas, 30 min"></div>`;
- out+=`<div class="scard"><div class="shdr" onclick="tog('hb')"><span style="font-weight:500">Score HEAR</span><span class="sb ${hC()}">${hSc()}/10</span></div><div class="sbd ${isCardOpen('hb',true)?'open':''}" id="hb">${rHear()}<div class="sres"><div class="snum">${hSc()}<span style="font-size:13px;color:var(--color-text-secondary)">/10</span></div><div><span class="sb ${hC()}">${hI(hSc())}</span></div></div></div></div>`;
- out+=`<div class="scard"><div class="shdr" onclick="tog('eb')"><span style="font-weight:500">Score EDACS</span><span class="sb ${eC()}">${eSc()} pts</span></div><div class="sbd ${isCardOpen('eb',true)?'open':''}" id="eb">${rEdacs()}<div class="sres"><div class="snum">${eSc()}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${eI()}</div></div></div></div>`;
+ if(isOcaActive(S)){
+  out+=`<div class="abox ad" style="margin-top:10px"><i class="ti ti-alert-circle" aria-hidden="true"></i> <strong>OCLUSÃO CORONARIANA AGUDA (OCA / STEMI) DETECTADA:</strong> Escores de estratificação ambulatorial / dor torácica indiferenciada (HEART / EDACS) são <u>contraindicados / inaplicáveis</u>. Conduta imediata: Reperfusão de emergência (ICP primária em ≤ 120 min ou fibrinólise imediata se indisponível em 120 min), dupla antiagregação e anticoagulação plena.</div>`;
+ } else {
+  out+=`<div class="scard"><div class="shdr" onclick="tog('hb')"><span style="font-weight:500">Score HEAR</span><span class="sb ${hC()}">${hSc()}/10</span></div><div class="sbd ${isCardOpen('hb',true)?'open':''}" id="hb">${rHear()}<div class="sres"><div class="snum">${hSc()}<span style="font-size:13px;color:var(--color-text-secondary)">/10</span></div><div><span class="sb ${hC()}">${hI(hSc())}</span></div></div></div></div>`;
+  out+=`<div class="scard"><div class="shdr" onclick="tog('eb')"><span style="font-weight:500">Score EDACS</span><span class="sb ${eC()}">${eSc()} pts</span></div><div class="sbd ${isCardOpen('eb',true)?'open':''}" id="eb">${rEdacs()}<div class="sres"><div class="snum">${eSc()}<span style="font-size:13px;color:var(--color-text-secondary)"> pts</span></div><div style="font-size:13px">${eI()}</div></div></div></div>`;
+ }
  return out;
 }
 
@@ -7518,7 +7548,7 @@ function eC(){return eSc()<16?'sok':'sgr';}
 function eI(){const p=eSc(),t0=parseFloat(S.edacs.t0),t2=parseFloat(S.edacs.t2);const d=!isNaN(t0)&&!isNaN(t2)?Math.abs(t2-t0):null;if(p<16&&d!==null&&d<3&&t0<16&&t2<16)return'Baixo risco — candidato a descarte acelerado em 2h';if(p<16)return'EDACS < 16 — aguardar troponina seriada';return'EDACS ≥ 16 — risco não baixo, observação';}
 function vC(k,v){const n=parseFloat(v);if(!v)return'vok';if(k==='fc')return(n<40||n>130)?'vc':(n<60||n>100)?'vw':'vok';if(k==='sat')return n<90?'vc':n<95?'vw':'vok';if(k==='fr')return(n<8||n>30)?'vc':(n<12||n>20)?'vw':'vok';if(k==='gli')return n<60?'vc':n<70||n>200?'vw':'vok';if(k==='pa'&&v&&v.includes('/')){const s=parseFloat(v.split('/')[0]);return isNaN(s)?'vok':s<90?'vc':s>180?'vw':'vok';}return'vok';}
 function vA(){const a=[],fc=parseFloat(S.fc),sat=parseFloat(S.sat),fr=parseFloat(S.fr);if(S.fc&&(fc>120||fc<40))a.push('FC crítica');if(S.sat&&sat<90)a.push('Sat < 90%');if(S.fr&&(fr>30||fr<8))a.push('FR crítica');if(S.pa&&S.pa.includes('/')){const s=parseFloat(S.pa.split('/')[0]);if(!isNaN(s)){if(s<90)a.push('Hipotensão');if(s>180)a.push('HAS grave');}}return a;}
-function vBH(){return[{k:'fc',l:'FC',v:S.fc},{k:'sat',l:'Sat',v:S.sat},{k:'pa',l:'PA',v:S.pa},{k:'fr',l:'FR',v:S.fr},{k:'gli',l:'Glic',v:S.gli}].map(x=>`<div class="vbar ${vC(x.k,x.v)}">${x.l}<br><strong>${x.v||'—'}</strong></div>`).join('');}
+function vBH(){return[{k:'fc',l:'FC',v:S.fc},{k:'sat',l:'Sat',v:S.sat},{k:'pa',l:'PA',v:S.pa},{k:'fr',l:'FR',v:S.fr},{k:'gli',l:'Glic',v:S.gli}].map(x=>`<div class="vbar ${vC(x.k,x.v)}">${esc(x.l)}<br><strong>${esc(x.v||'—')}</strong></div>`).join('');}
 function uvb(){const b=document.getElementById('vbars');if(b)b.innerHTML=vBH();const n2=document.getElementById('news2LiveBox');if(n2)n2.innerHTML=renderNews2LiveCard();const s5n=document.getElementById('news2AlertS5');if(s5n)s5n.innerHTML=renderNews2Step5Alert();}
 function calcNEWS2(S){
  let score=0;const breakdown=[];let singleParamAlert=false;
@@ -8214,7 +8244,7 @@ function s1(){
   </div>
  `;
 }
-function s2(){const va=vA();return`<div id="step-2" class="card"><div class="st"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i> Sinais vitais</div><div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:12px"><div><label>FC</label><input type="number" inputmode="numeric" min="0" max="300" value="${esc(S.fc)}" oninput="S.fc=this.value;uvb()" placeholder="bpm"></div><div><label>SatO2</label><input type="number" inputmode="numeric" min="0" max="100" value="${esc(S.sat)}" oninput="S.sat=this.value;uvb()" placeholder="%"></div><div><label>PA</label><input type="text" inputmode="numeric" pattern="\\d{2,3}/\\d{2,3}" value="${esc(S.pa)}" oninput="S.pa=this.value;uvb()" placeholder="120/80"></div><div><label>FR</label><input type="number" inputmode="numeric" min="0" max="80" value="${esc(S.fr)}" oninput="S.fr=this.value;uvb()" placeholder="irpm"></div><div><label>Temp.</label><input type="number" inputmode="decimal" step="0.1" min="25" max="45" value="${esc(S.temp)}" oninput="S.temp=this.value;uvb()" placeholder="°C"></div><div><label>Glicemia</label><input type="number" inputmode="numeric" min="0" max="1000" value="${esc(S.gli)}" oninput="S.gli=this.value;uvb()" placeholder="mg/dL"></div></div><div class="r2" style="margin-bottom:12px"><div><label>Peso estimado</label><input type="number" inputmode="decimal" step="0.5" min="0" max="300" value="${esc(S.peso)}" oninput="S.peso=this.value" placeholder="kg"></div><div><div class="sl" style="margin-bottom:4px">EVA (dor 0–10)</div><div style="display:flex;gap:3px">${[0,1,2,3,4,5,6,7,8,9,10].map(n=>`<button style="flex:1;padding:5px 0;border-radius:4px;border:.5px solid ${S.eva==n?'#a32d2d':'#d1d5db'};background:${S.eva==n?'#fcebeb':'#fff'};color:${S.eva==n?'#a32d2d':'#374151'};font-size:12px;cursor:pointer" onclick="S.eva=${n};render()">${n}</button>`).join('')}</div></div></div><div class="vbars" id="vbars">${vBH()}</div>${va.length?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> ${va.join(' | ')}</div>`:''}<div id="news2LiveBox" style="margin-top:8px">${renderNews2LiveCard()}</div></div><div class="card"><div class="st"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Antecedentes</div>${tags('HPP:',['HAS','DM2','ICC','AVC','DAC','IRC','DPOC','FA','Neoplasia','Cirrose','HIV','Outras'],S.hpp,"ts(S.hpp,'%V')")}<div class="r2" style="margin-bottom:10px"><div><label>Medicações em uso</label><input type="text" value="${esc(S.muc)}" oninput="S.muc=this.value" placeholder="Ex: Metoprolol, AAS"></div><div><label>Alergias</label><input type="text" value="${esc(S.ale)}" oninput="S.ale=this.value"></div></div>${radio('Tabagismo:',['Não fumante','Ex-fumante','Fumante ativo'],S.tab,"S.tab='%V';render()")}${radio('Etilismo:',['Nega','Eventual','Regular','Abusivo'],S.etil,"S.etil='%V';render()")}<div><label>Drogas ilícitas</label><input type="text" value="${esc(S.drog)}" oninput="S.drog=this.value" placeholder="Nega ou descreva"></div></div><div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;}
+function s2(){const va=vA();return`<div id="step-2" class="card"><div class="st"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i> Sinais vitais</div><div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:12px"><div><label>FC</label><input type="number" inputmode="numeric" min="0" max="300" value="${esc(S.fc)}" oninput="S.fc=this.value;uvb()" placeholder="bpm"></div><div><label>SatO2</label><input type="number" inputmode="numeric" min="0" max="100" value="${esc(S.sat)}" oninput="S.sat=this.value;uvb()" placeholder="%"></div><div><label>PA</label><input type="text" inputmode="numeric" pattern="\\d{2,3}/\\d{2,3}" value="${esc(S.pa)}" oninput="S.pa=this.value.replace(/[^0-9\\/]/g,'');uvb()" placeholder="120/80"></div><div><label>FR</label><input type="number" inputmode="numeric" min="0" max="80" value="${esc(S.fr)}" oninput="S.fr=this.value;uvb()" placeholder="irpm"></div><div><label>Temp.</label><input type="number" inputmode="decimal" step="0.1" min="25" max="45" value="${esc(S.temp)}" oninput="S.temp=this.value;uvb()" placeholder="°C"></div><div><label>Glicemia</label><input type="number" inputmode="numeric" min="0" max="1000" value="${esc(S.gli)}" oninput="S.gli=this.value;uvb()" placeholder="mg/dL"></div></div><div class="r2" style="margin-bottom:12px"><div><label>Peso estimado</label><input type="number" inputmode="decimal" step="0.5" min="0" max="300" value="${esc(S.peso)}" oninput="S.peso=this.value" placeholder="kg"></div><div><div class="sl" style="margin-bottom:4px">EVA (dor 0–10)</div><div style="display:flex;gap:3px">${[0,1,2,3,4,5,6,7,8,9,10].map(n=>`<button style="flex:1;padding:5px 0;border-radius:4px;border:.5px solid ${S.eva==n?'#a32d2d':'#d1d5db'};background:${S.eva==n?'#fcebeb':'#fff'};color:${S.eva==n?'#a32d2d':'#374151'};font-size:12px;cursor:pointer" onclick="S.eva=${n};render()">${n}</button>`).join('')}</div></div></div><div class="vbars" id="vbars">${vBH()}</div>${va.length?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> ${va.join(' | ')}</div>`:''}<div id="news2LiveBox" style="margin-top:8px">${renderNews2LiveCard()}</div></div><div class="card"><div class="st"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Antecedentes</div>${tags('HPP:',['HAS','DM2','ICC','AVC','DAC','IRC','DPOC','FA','Neoplasia','Cirrose','HIV','Outras'],S.hpp,"ts(S.hpp,'%V')")}<div class="r2" style="margin-bottom:10px"><div><label>Medicações em uso</label><input type="text" value="${esc(S.muc)}" oninput="S.muc=this.value" placeholder="Ex: Metoprolol, AAS"></div><div><label>Alergias</label><input type="text" value="${esc(S.ale)}" oninput="S.ale=this.value"></div></div>${radio('Tabagismo:',['Não fumante','Ex-fumante','Fumante ativo'],S.tab,"S.tab='%V';render()")}${radio('Etilismo:',['Nega','Eventual','Regular','Abusivo'],S.etil,"S.etil='%V';render()")}<div><label>Drogas ilícitas</label><input type="text" value="${esc(S.drog)}" oninput="S.drog=this.value" placeholder="Nega ou descreva"></div></div><div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Próximo <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;}
 function abcH(){
  const a=S.abc,g=gcs();
  const aContent=`${radio('Estado:',['Pérvia e Patente','Obstruída'],a.va,"S.abc.va='%V';render()")}${radio('Fonação:',['Preservada','Prejudicada/Ausente'],a.fon,"S.abc.fon='%V';render()")}${radio('Colar cervical:',['Não indicado','Colocado/Mantido'],a.col,"S.abc.col='%V';render()")}${a.va==='Obstruída'?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> VA comprometida — manejo imediato</div>`:''}`;
@@ -9666,13 +9696,21 @@ function rUnifiedConductsBoard(T){
    </ul>
   </div>`:'' ;
 
- const CAT_DEFS=[
-  {id:'sup',name:'1. Suporte Vital & Monitorização',ico:'ti-first-aid-kit',tagCls:'csec-tag-sup'},
-  {id:'esp',name:'2. Terapêutica Específica & Drogas-Alvo',ico:'ti-pill',tagCls:'csec-tag-esp'},
-  {id:'sin',name:'3. Medidas Sintomáticas & Analgesia',ico:'ti-heart-rate-monitor',tagCls:'csec-tag-sin'},
-  {id:'inv',name:'4. Investigação Diagnóstica & Imagem',ico:'ti-microscope',tagCls:'csec-tag-inv'},
-  {id:'dsp',name:'5. Destino & Disposição Clínica',ico:'ti-arrow-up-right-circle',tagCls:'csec-tag-dsp'}
+ const MACRO_DEFS=[
+  {id:'macro_sup',primarySecId:'sup',name:'1. Suporte Imediato & Monitorização',secIds:['sup'],ico:'ti-first-aid-kit',tagCls:'csec-tag-sup'},
+  {id:'macro_med',primarySecId:'esp',name:'2. Prescrição Médica & Tratamento',secIds:['esp','sin'],ico:'ti-pill',tagCls:'csec-tag-esp'},
+  {id:'macro_dsp',primarySecId:'inv',name:'3. Propedêutica Diagnóstica & Destino',secIds:['inv','dsp'],ico:'ti-microscope',tagCls:'csec-tag-inv'}
  ];
+
+ function shouldSuppressMotherItem(item, secId, sid){
+  if(isOcaActive(S)){
+   const l=item.toLowerCase();
+   if(l.includes('heart')||l.includes('edacs')||l.includes('sem oca')||l.includes('alta e seguimento')){
+    return true;
+   }
+  }
+  return false;
+ }
 
  // Deduplicação canônica em escopo geral do quadro: registra itens da síndrome-mãe
  const boardSeenCanonical = new Set();
@@ -9685,89 +9723,104 @@ function rUnifiedConductsBoard(T){
   });
  }
 
- const renderedSections=CAT_DEFS.map(cat=>{
-  const catId=cat.id;
-  const motherSec=T.s?T.s.find(s=>s.id===catId):null;
-  const motherItems=motherSec&&motherSec.it?motherSec.it:[];
-  
-  const subSec=subT&&subT.s?subT.s.find(s=>s.id===catId):null;
-  const subItems=subSec&&subSec.it?subSec.it:[];
-  
-  const diffEntries=diffList.map(d=>{
-   const sec=d.obj.s?d.obj.s.find(s=>s.id===catId):null;
-   if(sec&&sec.it&&sec.it.length){
-    return {id:d.id,label:d.obj.l,sec,items:sec.it};
+ const renderedSections=MACRO_DEFS.map(macro=>{
+  const motherEntries=[];
+  macro.secIds.forEach(secId=>{
+   const sec=T.s?T.s.find(s=>s.id===secId):null;
+   if(sec&&sec.it){
+    sec.it.forEach((item,idx)=>{
+     if(shouldSuppressMotherItem(item,secId,sid)) return;
+     motherEntries.push({item,idx,secId});
+    });
    }
-   return null;
-  }).filter(Boolean);
-
-  const totalItemsCount=motherItems.length+subItems.length+diffEntries.reduce((acc,d)=>acc+d.items.length,0);
-  if(totalItemsCount===0)return '';
-
-  // Filtra itens comuns/redundantes de suporte vital em síndromes filhas e diferenciais
-  const filteredSubItems = [];
-  subItems.forEach((item, idx)=>{
-   const ck = getCanonicalConductKey(item);
-   if(catId === 'sup' && (ck || isGenericVitalSupportItem(item))) {
-    if(ck && !boardSeenCanonical.has(ck)) boardSeenCanonical.add(ck);
-    return;
-   }
-   if(ck && boardSeenCanonical.has(ck)) return;
-   if(ck) boardSeenCanonical.add(ck);
-   filteredSubItems.push({ item, idx });
   });
 
-  const filteredDiffEntries = diffEntries.map(d=>{
-   const fItems = [];
-   d.items.forEach((item, idx)=>{
-    const ck = getCanonicalConductKey(item);
-    if(catId === 'sup' && (ck || isGenericVitalSupportItem(item))) {
-     if(ck && !boardSeenCanonical.has(ck)) boardSeenCanonical.add(ck);
-     return;
+  const subEntries=[];
+  macro.secIds.forEach(secId=>{
+   const sec=subT&&subT.s?subT.s.find(s=>s.id===secId):null;
+   if(sec&&sec.it){
+    sec.it.forEach((item,idx)=>{
+     const ck = getCanonicalConductKey(item);
+     if(secId === 'sup' && (ck || isGenericVitalSupportItem(item))){
+      if(ck && !boardSeenCanonical.has(ck)) boardSeenCanonical.add(ck);
+      return;
+     }
+     if(ck && boardSeenCanonical.has(ck)) return;
+     if(ck) boardSeenCanonical.add(ck);
+     subEntries.push({item,idx,secId});
+    });
+   }
+  });
+
+  const diffEntries=diffList.map(d=>{
+   const fItems=[];
+   macro.secIds.forEach(secId=>{
+    const sec=d.obj.s?d.obj.s.find(s=>s.id===secId):null;
+    if(sec&&sec.it){
+     sec.it.forEach((item,idx)=>{
+      const ck = getCanonicalConductKey(item);
+      if(secId === 'sup' && (ck || isGenericVitalSupportItem(item))){
+       if(ck && !boardSeenCanonical.has(ck)) boardSeenCanonical.add(ck);
+       return;
+      }
+      if(ck && boardSeenCanonical.has(ck)) return;
+      if(ck) boardSeenCanonical.add(ck);
+      fItems.push({item,idx,secId});
+     });
     }
-    if(ck && boardSeenCanonical.has(ck)) return;
-    if(ck) boardSeenCanonical.add(ck);
-    fItems.push({ item, idx });
    });
    if(!fItems.length) return null;
-   return { ...d, fItems };
+   return {id:d.id,label:d.obj.l,fItems};
   }).filter(Boolean);
 
-  let catChecked=0;
-  motherItems.forEach((_,i)=>{ if(S.chk[sid+'_'+catId+'_'+i]) catChecked++; });
-  subItems.forEach((_,i)=>{ if(S.chk[subId+'_'+catId+'_'+i]) catChecked++; });
+  const totalItemsCount=motherEntries.length+subEntries.length+diffEntries.reduce((acc,d)=>acc+d.fItems.length,0);
+  if(totalItemsCount===0)return '';
+
+  let macroChecked=0;
+  motherEntries.forEach(m=>{ if(S.chk[sid+'_'+m.secId+'_'+m.idx]) macroChecked++; });
+  subEntries.forEach(s=>{ if(S.chk[subId+'_'+s.secId+'_'+s.idx]) macroChecked++; });
   diffEntries.forEach(d=>{
-   d.items.forEach((_,i)=>{ if(S.chk[d.id+'_'+catId+'_'+i]) catChecked++; });
+   d.fItems.forEach(df=>{ if(S.chk[d.id+'_'+df.secId+'_'+df.idx]) macroChecked++; });
   });
 
-  const uid='cs_u_'+sid+'_'+catId;
-  const isCollapsedByDefault=(S.ef==='amb'&&catId==='sup'&&catChecked===0);
+  const uid='cs_u_'+sid+'_'+macro.id;
+  const isCollapsedByDefault=(S.ef==='amb'&&macro.id==='macro_sup'&&macroChecked===0);
   const openCls=isCollapsedByDefault?'':' open';
   const badgeHint=isCollapsedByDefault?`<span class="sb" style="font-size:10px;background:#f3f4f6;color:#6b7280;margin-left:4px"><i class="ti ti-chevron-right" aria-hidden="true"></i> recolhido no ambulatorial (clique para abrir)</span>`:'';
 
-  const alertsList=(motherSec&&motherSec.alerts)||[];
-  const secAlertsHtml=alertsList.map(a=>`<div class="abox aw" style="margin-bottom:6px;font-size:12px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${esc(a)}</div>`).join('');
+  const allAlerts=[];
+  macro.secIds.forEach(secId=>{
+   const sec=T.s?T.s.find(s=>s.id===secId):null;
+   if(sec&&sec.alerts){
+    sec.alerts.forEach(a=>{ if(!allAlerts.includes(a)) allAlerts.push(a); });
+   }
+   const sSec=subT&&subT.s?subT.s.find(s=>s.id===secId):null;
+   if(sSec&&sSec.alerts){
+    sSec.alerts.forEach(a=>{ if(!allAlerts.includes(a)) allAlerts.push(a); });
+   }
+  });
+  const secAlertsHtml=allAlerts.map(a=>`<div class="abox aw" style="margin-bottom:6px;font-size:12px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${esc(a)}</div>`).join('');
 
   return `
-   <div class="csec csec-${catId}" style="margin-bottom:12px">
+   <div class="csec csec-${macro.primarySecId}" style="margin-bottom:12px">
     <div class="csh" onclick="tog('${uid}')">
      <span style="display:flex;align-items:center;gap:6px">
-      <span class="csec-tag ${cat.tagCls}">${cat.name}</span>
+      <span class="csec-tag ${macro.tagCls}">${macro.name}</span>
       ${badgeHint}
      </span>
      <div style="display:flex;gap:5px;align-items:center">
-      ${catChecked?`<span class="sb sok" style="font-size:11px">${catChecked} prescrito${catChecked>1?'s':''}</span>`:''}
+      ${macroChecked?`<span class="sb sok" style="font-size:11px">${macroChecked} prescrito${macroChecked>1?'s':''}</span>`:''}
       <i class="ti ti-chevron-down" aria-hidden="true"></i>
      </div>
     </div>
     <div class="csb${openCls}" id="${uid}">
      ${secAlertsHtml}
      
-     ${motherItems.length?`
+     ${motherEntries.length?`
       <div style="margin-bottom:8px">
-       ${(filteredSubItems.length||filteredDiffEntries.length)?`<div style="font-size:11.5px;font-weight:600;color:var(--color-text-secondary);text-transform:uppercase;margin-bottom:4px;letter-spacing:0.5px">Condutas Gerais — ${esc(T.l)}:</div>`:''}
-       ${motherItems.map((item,idx)=>{
-        const k=sid+'_'+catId+'_'+idx;
+       ${(subEntries.length||diffEntries.length)?`<div style="font-size:11.5px;font-weight:600;color:var(--color-text-secondary);text-transform:uppercase;margin-bottom:4px;letter-spacing:0.5px">Condutas Gerais — ${esc(T.l)}:</div>`:''}
+       ${motherEntries.map(({item,idx,secId})=>{
+        const k=sid+'_'+secId+'_'+idx;
         const cl=ccls(k);
         const hl=itemHasVitalHl(item)?' hl':'';
         const evKey=getEvidenceKeyForItem(item);
@@ -9780,13 +9833,13 @@ function rUnifiedConductsBoard(T){
        }).join('')}
       </div>`:''}
 
-     ${filteredSubItems.length?`
+     ${subEntries.length?`
       <div style="margin-top:10px;margin-bottom:8px;padding-top:8px;border-top:1px dashed var(--color-border)">
        <div style="font-size:12px;font-weight:600;color:#991b1b;margin-bottom:6px;display:flex;align-items:center;gap:6px">
         <i class="ti ti-target" aria-hidden="true"></i> Conduta Específica — ${esc(subT.l)}:
        </div>
-       ${filteredSubItems.map(({item,idx})=>{
-        const k=subId+'_'+catId+'_'+idx;
+       ${subEntries.map(({item,idx,secId})=>{
+        const k=subId+'_'+secId+'_'+idx;
         const cl=ccls(k);
         const hl=itemHasVitalHl(item)?' hl':'';
         const evKey=getEvidenceKeyForItem(item);
@@ -9799,13 +9852,13 @@ function rUnifiedConductsBoard(T){
        }).join('')}
       </div>`:''}
 
-     ${filteredDiffEntries.map(d=>`
+     ${diffEntries.map(d=>`
       <div style="margin-top:10px;margin-bottom:8px;padding-top:8px;border-top:1px dashed var(--color-border)">
        <div style="font-size:12px;font-weight:600;color:#047857;margin-bottom:6px;display:flex;align-items:center;gap:6px">
         <i class="ti ti-zoom-check" aria-hidden="true"></i> Conduta Direcionada — ${esc(d.label)}:
        </div>
-       ${d.fItems.map(({item,idx})=>{
-        const k=d.id+'_'+catId+'_'+idx;
+       ${d.fItems.map(({item,idx,secId})=>{
+        const k=d.id+'_'+secId+'_'+idx;
         const cl=ccls(k);
         const hl=itemHasVitalHl(item)?' hl':'';
         const evKey=getEvidenceKeyForItem(item);
@@ -9820,8 +9873,8 @@ function rUnifiedConductsBoard(T){
      `).join('')}
 
      <div style="margin-top:8px">
-      <label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label>
-      <textarea style="min-height:45px;font-size:13px" placeholder="Particularidades de ${cat.name.toLowerCase()}..." oninput="S.nts['${sid}_${catId}']=this.value">${esc(S.nts[sid+'_'+catId]||'')}</textarea>
+      <label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta macro-seção:</label>
+      <textarea style="min-height:45px;font-size:13px" placeholder="Particularidades de ${macro.name.toLowerCase()}..." oninput="S.nts['${sid}_${macro.primarySecId}']=this.value">${esc(S.nts[sid+'_'+macro.primarySecId]||macro.secIds.map(sId=>S.nts[sid+'_'+sId]).filter(Boolean).join(' | '))}</textarea>
      </div>
     </div>
    </div>
@@ -9833,14 +9886,14 @@ function rUnifiedConductsBoard(T){
    <div class="st" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
     <span style="display:flex;align-items:center;gap:7px">
      <i class="ti ti-clipboard-list" style="color:#2563eb" aria-hidden="true"></i>
-     <span><strong>Order-Set Hospitalar por Camadas — ${esc(T.l)}</strong></span>
+     <span><strong>Prescrição & Condutas por Macro-Seções — ${esc(T.l)}</strong></span>
     </span>
     <span class="sb sok" style="font-size:11px;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe">
      ${totSel?`${totSel} ite${totSel>1?'ns':'m'} selecionado${totSel>1?'s':''}`:'Seleção Direta de 1 Clique'}
     </span>
    </div>
    <div class="sl" style="margin-top:-2px;margin-bottom:10px;font-size:12px;color:var(--color-text-secondary)">
-    <i class="ti ti-info-circle" aria-hidden="true"></i> Condutas estruturadas nas 5 camadas hospitalares universais (Suporte Vital, DVA, Terapia Específica, Propêutica e Disposição). Ícone <i class="ti ti-info-circle" style="color:#2563eb"></i> exibe diretriz e nível de evidência on-demand.
+    <i class="ti ti-info-circle" aria-hidden="true"></i> Condutas consolidadas em 3 macro-seções práticas de emergência (Suporte Imediato, Prescrição & Tratamento, Propedêutica & Destino). Ícone <i class="ti ti-info-circle" style="color:#2563eb"></i> exibe diretriz e evidência clínica on-demand.
    </div>
    ${alertsHtml}
    ${renderedSections}
@@ -9928,9 +9981,13 @@ function buildEF(){
 function buildPredictiveScores(){
  const lines=[];
  if(S.queixa==='Dor torácica'){
-  lines.push(`HEAR: ${hSc()}/10 — ${hI(hSc())}`);
-  const trop=S.edacs.t0||S.edacs.t2?' (Troponina 0h: '+(S.edacs.t0||'—')+' | 2h: '+(S.edacs.t2||'—')+')':'';
-  lines.push(`EDACS: ${eSc()} pts — ${eI()}${trop}`);
+  if(isOcaActive(S)){
+   lines.push('Escores HEART / EDACS: Contraindicados / Inaplicáveis na vigência de Oclusão Coronariana Aguda (OCA / STEMI). Indicação de reperfusão imediata (ESC / AHA).');
+  } else {
+   lines.push(`HEAR: ${hSc()}/10 — ${hI(hSc())}`);
+   const trop=S.edacs.t0||S.edacs.t2?' (Troponina 0h: '+(S.edacs.t0||'—')+' | 2h: '+(S.edacs.t2||'—')+')':'';
+   lines.push(`EDACS: ${eSc()} pts — ${eI()}${trop}`);
+  }
  }
  if(S.wellsTep&&S.wellsTep.evaluated){
   lines.push(`Escore de Wells para TEP: ${wellsTepSc().toFixed(1)} pts — ${wellsTepInterp(wellsTepSc())}`);
@@ -10214,6 +10271,12 @@ function buildCondutas(){
 
  deduplicated.forEach(entry=>{
   const sec=entry.secId;
+  if(isOcaActive(S)){
+   const l=entry.item.toLowerCase();
+   if(l.includes('heart')||l.includes('edacs')||l.includes('sem oca')||l.includes('alta e seguimento')){
+    return;
+   }
+  }
   const isDiff=entry.sid!==S.sind&&(T.subExcl?entry.sid!==S.subsind:true);
   let tag='';
   if(isDiff){
