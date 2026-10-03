@@ -2255,7 +2255,7 @@ const SLIST=[
 {id:'int',l:'Intoxicação exógena'},{id:'dlb',l:'Dor lombar aguda'},{id:'emmi',l:'Edema / Dor em MMII'}];
 const STEPS=[{l:'Identificação',i:'ti-user'},{l:'Queixa',i:'ti-stethoscope'},{l:'Dados clínicos',i:'ti-heart-rate-monitor'},{l:'Exame físico',i:'ti-search'},{l:'Impressão / Conduta',i:'ti-clipboard-check'},{l:'Relatório',i:'ti-file-text'}];
 
-const CT={
+const CT = {
  "cho": {
   "l": "Choque indiferenciado",
   "subExcl": [
@@ -2425,9 +2425,8 @@ const CT={
     "t": "Investigação complementar e controle hemostático",
     "it": [
      "Tipagem sanguínea ABO/Rh, teste de compatibilidade cruzada e reserva de sangue de emergência (sangue O negativo imediato se choque exsanguinante)",
-     "Hemograma seriado, plaquetas, coagulograma completo (TP/INR, TTPa, fibrinogênio sérico - manter fibrinogênio > 150–200 mg/dL)",
+     "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa) + Lactato sérico seriado",
      "POCUS FAST / eFAST imediato para pesquisa de líquido livre em abdome, pelve e hemitórax",
-     "Gasometria arterial com lactato e dosagem seriada de hemoglobina/hematócrito",
      "Endoscopia digestiva alta urgente se suspeita de hemorragia digestiva alta ou angiotomografia se hemorragia baixa/traumática"
     ]
    },
@@ -2475,9 +2474,7 @@ const CT={
     "t": "Investigação complementar e estratificação",
     "it": [
      "Derivações direitas (V3R, V4R) e posteriores (V7–V9) no ECG para descarte de IAM de VD associado",
-     "Marcadores de necrose miocárdica: Troponina hs na admissão e seriada, BNP / NT-proBNP",
-     "Gasometria arterial com lactato e cálculo do delta venoarterial de CO₂ (Pv-aCO₂)",
-     "Hemograma, coagulograma, creatinina, ureia e eletrólitos"
+     "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa) + Troponina de alta sensibilidade (0h/1h), Lactato sérico seriado, BNP / NT-proBNP"
     ]
    },
    {
@@ -2523,10 +2520,9 @@ const CT={
     "t": "Investigação complementar no leito",
     "it": [
      "POCUS imediato à beira-leito: janela pericárdica (derrame com colapso diastólico de VD), janela pulmonar (ausência de lung sliding no pneumotórax), coração direito (dilatação de VD / McConnell sign no TEP)",
-     "Gasometria arterial com lactato sérico seriado",
+     "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa) + Troponina de alta sensibilidade (0h/1h), Lactato sérico seriado, BNP / NT-proBNP",
      "Angiotomografia de artérias pulmonares (se paciente estabilizado com vasopressor para confirmar extensão do TEP)",
-     "ECG de 12 derivações: padrão S1Q3T3, inversão de onda T de V1 a V4, desvio de eixo para a direita, alternância elétrica (tamponamento)",
-     "Troponina hs e BNP para estratificação de risco de sobrecarga de ventrículo direito"
+     "ECG de 12 derivações: padrão S1Q3T3, inversão de onda T de V1 a V4, desvio de eixo para a direita, alternância elétrica (tamponamento)"
     ]
    },
    {
@@ -2583,8 +2579,7 @@ const CT={
     "it": [
      "Cálculo do Escore de Glasgow-Blatchford (GBS) na admissão",
      "Tipagem sanguínea ABO/Rh, prova cruzada e reserva prioritária de concentrado de hemácias",
-     "Hemograma completo seriado a cada 4–6h",
-     "Coagulograma completo (TP/INR, TTPa, plaquetas, fibrinogênio), função renal (ureia desproporcional à creatinina sugere digestão de sangue no TGI alto) e eletrólitos"
+     "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa)"
     ]
    },
    {
@@ -2993,8 +2988,7 @@ const CT={
     "id": "inv",
     "t": "Investigação complementar metabólica",
     "it": [
-     "Gasometria arterial com lactato e cálculo do Anion Gap e Delta-Gap",
-     "Painel bioquímico completo: Ureia, Creatinina, Eletrólitos (Na, K, Ca iônico, Mg, Fósforo)",
+     "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa) + Lactato sérico seriado",
      "Amônia sérica (na suspeita de encefalopatia hepática)",
      "Enzimas hepáticas (TGO, TGP), bilirrubinas totais e frações, albumina e INR",
      "EAS / Urocultura e Radiografia de tórax (pesquisa de foco infeccioso descompensador)"
@@ -3285,8 +3279,7 @@ const CT={
      "Punção lombar se TC negativa e suspeita persistente, especialmente > 6h do início",
      "AngioTC cerebral assim que HSA confirmada",
      "Arteriografia digital se AngioTC inconclusiva ou planejamento endovascular",
-     "Hemograma, eletrólitos (incluindo Na — risco de SIADH / cerebral salt wasting), coagulograma, gasometria",
-     "ECG e troponina",
+     "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa) + Troponina de alta sensibilidade (0h/1h)",
      "Doppler transcraniano seriado para monitorar vasoespasmo (dia 3–14)"
     ]
    },
@@ -3642,8 +3635,7 @@ const CT={
      "POCUS abdominal na emergência (pesquisa de pneumoperitônio e líquido em espaço de Morrison)",
      "Rotina de abdome agudo: RX de tórax em cúpulas e RX de abdome em 2 posições",
      "Coleta de 2 pares de hemoculturas de sítios venosos distintos antes do antimicrobiano",
-     "Gasometria venosa ou arterial com dosagem de lactato sérico imediato",
-     "Hemograma completo, coagulograma (TP/INR, TTPa), ureia, creatinina, eletrólitos, amilase e lipase",
+     "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa) + Lactato sérico seriado, Amilase e Lipase",
      "β-hCG sérico ou urinário em mulheres em idade fértil"
     ]
    },
@@ -3731,8 +3723,7 @@ const CT={
     "it": [
      "TC de abdome total com contraste venoso em caráter de urgência",
      "RX de tórax em cúpulas diafragmáticas (ortostase) e decúbito lateral esquerdo (Hjelm-Laurell)",
-     "2 pares de hemoculturas de sítios distintos + Gasometria venosa com lactato sérico",
-     "Hemograma completo, coagulograma (TP/INR, TTPa), função renal e eletrólitos"
+     "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa) + Lactato sérico seriado, 2 pares de hemoculturas"
     ]
    },
    {
@@ -4100,9 +4091,7 @@ const CT={
     "id": "inv",
     "t": "Investigação complementar etiológica",
     "it": [
-     "Eletrólitos séricos urgentes: Potássio (K⁺), Magnésio (Mg²⁺) e Cálcio ionizado (distúrbios eletrolíticos são os principais gatilhos arrítmicos reversíveis)",
-     "Gasometria venosa ou arterial com lactato sérico (pesquisa de acidose e hipoperfusão tecidual)",
-     "Troponina de alta sensibilidade (hs-cTn) na admissão se dor torácica, equivalentes isquêmicos ou arritmias ventriculares",
+     "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa) + Troponina de alta sensibilidade (0h/1h), Lactato sérico seriado",
      "TSH e T4 livre (rastreio de tireotoxicose/hipertireoidismo como causa de FA ou taquicardia sinusal persistente)",
      "POCUS ecocardiográfico à beira-leito: contratilidade ventricular global, fração de ejeção, dimensões do átrio esquerdo e descarte de derrame pericárdico"
     ]
@@ -4387,9 +4376,7 @@ const CT={
     "id": "inv",
     "t": "Investigação complementar toxicológica",
     "it": [
-     "Gasometria arterial com lactato e cálculo do Anion Gap e Osmolar Gap (descarte de acidose tóxica por metanol, etilenoglicol e salicilatos)",
-     "Eletrólitos séricos (K⁺, Na⁺, Mg²⁺, Ca²⁺), função renal (ureia, creatinina) e creatina fosfoquinase (CPK sérica para descarte de rabdomiólise)",
-     "Enzimas hepáticas (AST/TGO, ALT/TGP basais) e coagulograma",
+     "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa) + Lactato sérico seriado, Transaminases e Bilirrubinas",
      "Dosagem sérica quantitativa de Paracetamol: mandatória em qualquer tentativa de autoextermínio com histórico impreciso de medicação",
      "Painel toxicológico urinário qualitativo (confirma classes de drogas de abuso expostas)"
     ]
@@ -5383,8 +5370,7 @@ const CT={
     "it": [
      "POCUS cardiotorácico no leito: quantificar linhas B pulmonares (perfil de congestão), avaliar fração de ejeção de VE, contratilidade do VD e pesquisar valvopatias graves",
      "BNP / NT-proBNP na admissão para confirmação diagnóstica e prognóstico (cut-offs de descarte: BNP < 100 pg/mL, NT-proBNP < 300 pg/mL)",
-     "Troponina ultrassensível para descartar SCA como gatilho do EAP (CHAMPIT)",
-     "Função renal (creatinina, ureia), eletrólitos séricos (sódio, potássio) e gasometria venosa ou arterial com lactato"
+     "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa) + Troponina de alta sensibilidade (0h/1h), Lactato sérico seriado"
     ]
    },
    {
@@ -5691,8 +5677,7 @@ const CT={
     "id": "inv",
     "t": "Investigação laboratorial e imagem",
     "it": [
-     "Troponina de alta sensibilidade (hs-cTn) na admissão (0h) e seriada em 1h (protocolo 0h/1h ESC 2023)",
-     "Hemograma completo, creatinina, ureia, eletrólitos (K, Na, Mg), glicemia, coagulograma (TP/INR, TTPa)",
+     "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa) + Troponina de alta sensibilidade (0h/1h)",
      "Radiografia de tórax PA e perfil no leito (avaliar mediastino alargado, pneumotórax, congestão)",
      "POCUS focado: contratilidade segmentar VE, sobrecarga de VD, derrame pericárdico e raiz da aorta",
      "D-dímero se suspeita de TEP (Wells ≥ 2) ou protocolo ADD-RS de dissecção aórtica"
@@ -5733,7 +5718,7 @@ const CT={
     "it": [
      "Ativar equipe de hemodinâmica imediatamente",
      "Desfibrilador bifásico colado e pronto à beira-leito",
-     "Derivações direitas (V3R/V4R) se IAM inferior e posteriores (V7–V9) se infradesnível de ST em V1–V3"
+     "ECG de 12 derivações em até 10 min [SBC/AHA Classe I] com derivações direitas (V3R, V4R) e posteriores (V7–V9)"
     ]
    },
    {
@@ -5948,8 +5933,7 @@ const CT={
     "id": "inv",
     "t": "Investigação complementar",
     "it": [
-     "Troponina hs seriada (0h/1h) e ECG de 12D se fatores de risco cardiovascular, diabético, idoso ou dor atípica",
-     "Hemograma e função renal se dor persistente ou sinais de alarme (emagrecimento, disfagia, anemia)"
+     "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa) + Troponina de alta sensibilidade (0h/1h)"
     ]
    },
    {
@@ -6090,12 +6074,18 @@ const CT={
    }
   ]
  }
-};;;;;
+};
 
 
 // helpers
 const ESC_MAP={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','`':'&#96;'};
 function esc(s){return s==null?'':String(s).replace(/[&<>"'`]/g,c=>ESC_MAP[c]);}
+
+function joinAnd(arr) {
+  if (!arr || arr.length === 0) return '';
+  if (arr.length === 1) return String(arr[0]);
+  return arr.slice(0, -1).join(', ') + ' e ' + String(arr[arr.length - 1]);
+}
 function joinClinical(parts,opts){
  const o=opts||{};const sep=o.sep||', ';const last=o.last||' e ';
  const f=parts.filter(p=>p&&String(p).trim());
@@ -6244,34 +6234,34 @@ function cefAlarmBadge(){
  const level=n===0?'leve':n<=2?'mod':'grave';
  return gravBadge(level,`Cefaleia com ${n} ${n===1?'sinal':'sinais'} de alarme`);
 }
-function cefHda(S){
- const c=S.cef;
- if(!c.inicio&&!c.loc.length&&!c.qual.length&&!c.modif.length&&!c.precip.length&&!c.assoc.length&&!c.alarm.length)return '';
- let out='';
- if(c.inicio) out+=`. Cefaleia de instalação ${c.inicio.toLowerCase()}`;
- if(c.loc.length||c.qual.length){
-  const l=c.loc.length?`localizada em ${c.loc.join(' e ').toLowerCase()}`:'';
-  const q=c.qual.length?`de caráter ${c.qual.join(' e ').toLowerCase()}`:'';
-  out+=`. Dor ${[l,q].filter(Boolean).join(', ')}`;
- }
- if(c.modif.length||c.precip.length){
-  const m=[];
-  if(c.precip.length) m.push(`desencadeada por ${c.precip.join(', ').toLowerCase()}`);
-  if(c.modif.length) m.push(`fatores de alívio/piora: ${c.modif.join('; ').toLowerCase()}`);
-  out+=`. ${m.join('. ')}`;
- }
- if(c.assoc.length){
-  let s=c.assoc.join(', ').toLowerCase();
-  const d=[];
-  if(c.descr.auraMot)d.push(`aura motora: ${c.descr.auraMot}`);
-  if(c.descr.deficit)d.push(`déficit: ${c.descr.deficit}`);
-  if(c.descr.conv)d.push(`convulsão: ${c.descr.conv}`);
-  if(c.descr.sinc)d.push(`síncope: ${c.descr.sinc}`);
-  if(d.length)s+=` (${d.join('; ')})`;
-  out+=`. Sintomas acompanhantes: ${s}`;
- }
- if(c.alarm.length) out+=`. Rastreio de sinais de alerta (red flags): ${c.alarm.join(', ').toLowerCase()}`;
- return out;
+function cefHda(S) {
+  const c = S.cef;
+  if (!c.inicio && !c.loc.length && !c.qual.length && !c.modif.length && !c.precip.length && !c.assoc.length && !c.alarm.length) return '';
+  let out = 'Paciente refere quadro de cefaleia';
+  if (c.inicio) out += ` com instalação ${c.inicio.toLowerCase()}`;
+  if (c.loc.length || c.qual.length) {
+    const l = c.loc.length ? `localizada em ${joinAnd(c.loc).toLowerCase()}` : '';
+    const q = c.qual.length ? `de caráter ${joinAnd(c.qual).toLowerCase()}` : '';
+    out += `. Descreve a dor como ${[l, q].filter(Boolean).join(', ')}`;
+  }
+  if (c.precip.length || c.modif.length) {
+    const m = [];
+    if (c.precip.length) m.push(`desencadeada por ${joinAnd(c.precip).toLowerCase()}`);
+    if (c.modif.length) m.push(`tendo como fatores modificadores: ${joinAnd(c.modif).toLowerCase()}`);
+    out += `. Relata que a crise é ${joinAnd(m)}`;
+  }
+  if (c.assoc.length) {
+    let s = joinAnd(c.assoc).toLowerCase();
+    const d = [];
+    if (c.descr.auraMot) d.push(`aura motora: ${c.descr.auraMot}`);
+    if (c.descr.deficit) d.push(`déficit: ${c.descr.deficit}`);
+    if (c.descr.conv) d.push(`convulsão: ${c.descr.conv}`);
+    if (c.descr.sinc) d.push(`síncope: ${c.descr.sinc}`);
+    if (d.length) s += ` (${d.join('; ')})`;
+    out += `. Ao interrogatório direcionado, informa sintomas associados como ${s}`;
+  }
+  if (c.alarm.length) out += `. Durante a triagem de red flags, constata-se a presença de ${joinAnd(c.alarm).toLowerCase()}`;
+  return out + '.';
 }
 function cefHpp(S){return S.cef.antec.slice();}
 
@@ -6352,25 +6342,25 @@ const DSP_EF_CIANOSE=['Ausente','Periférica (acrocianose)','Central (lábios/l�
 const DSP_EF_AUS=['MV normal','Estertores crepitantes bilaterais','Estertores unilaterais','Sibilos difusos','Roncos','MV reduzido D','MV reduzido E','Atrito pleural','Tórax silencioso'];
 const DSP_EF_SINAIS_CV=['Turgência jugular','Galope (B3)','Edema MMII com cacifo','Cianose central','Pulso paradoxal','Sopro cardíaco audível'];
 
-function dspHda(S){
- const d=S.dsp;
- if(!d.inicio&&!d.padrao.length&&!d.modif.length&&!d.assocCV.length&&!d.assocResp.length&&!d.assocInf.length&&!d.ctx.length)return '';
- let out='';
- if(d.inicio) out+=`. Quadro de dispneia de instalação ${d.inicio.toLowerCase()}`;
- if(d.padrao.length){
-  const pad=d.padrao.map(p=>{
-   const pl=p.toLowerCase();
-   if(pl.startsWith('ortopneia')||pl.startsWith('dispneia')) return pl;
-   return `em padrão de ${pl}`;
-  });
-  out+=`. Manifesta-se com ${pad.join(', ')}`;
- }
- if(d.modif.length) out+=`. Fatores modificadores e alívio postural: ${d.modif.join(' e ').toLowerCase()}`;
- const assoc=[...d.assocCV,...d.assocResp,...d.assocInf];
- if(assoc.length) out+=`. Ao interrogatório direcionado, relata ${assoc.join(', ').toLowerCase()}`;
- if(d.ctx.length) out+=`. Contexto clínico e antecedentes de relevância: ${d.ctx.join(', ').toLowerCase()}`;
- if(S.wellsTep&&S.wellsTep.evaluated) out+=`. Escore de Wells para TEP calculado em ${wellsTepSc().toFixed(1)} pontos (${wellsTepInterp(wellsTepSc())})`;
- return out;
+function dspHda(S) {
+  const d = S.dsp;
+  if (!d.inicio && !d.padrao.length && !d.modif.length && !d.assocCV.length && !d.assocResp.length && !d.assocInf.length && !d.ctx.length) return '';
+  let out = 'Paciente relata quadro de dispneia';
+  if (d.inicio) out += ` de instalação ${d.inicio.toLowerCase()}`;
+  if (d.padrao.length) {
+    const pad = d.padrao.map(p => {
+      const pl = p.toLowerCase();
+      if (pl.startsWith('ortopneia') || pl.startsWith('dispneia')) return pl;
+      return `com padrão de ${pl}`;
+    });
+    out += `. O sintoma manifesta-se ${joinAnd(pad)}`;
+  }
+  if (d.modif.length) out += `. Refere como fatores modificadores ou posturais de alívio: ${joinAnd(d.modif).toLowerCase()}`;
+  const assoc = [...d.assocCV, ...d.assocResp, ...d.assocInf];
+  if (assoc.length) out += `. Adicionalmente, queixa-se de ${joinAnd(assoc).toLowerCase()}`;
+  if (d.ctx.length) out += `. Destaca-se no contexto clínico o histórico de ${joinAnd(d.ctx).toLowerCase()}`;
+  if (S.wellsTep && S.wellsTep.evaluated) out += `. O escore de Wells para TEP foi calculado em ${wellsTepSc().toFixed(1)} pontos (${wellsTepInterp(wellsTepSc())})`;
+  return out + '.';
 }
 function dspEFText(S){
  if(S.ef!=='crit')return '';
@@ -6516,17 +6506,17 @@ function rCanadian(){
  return rows;
 }
 
-function sincHda(S){
- const s=S.sinc;
- if(!s.prod&&!s.post&&!s.gat.length&&!s.car.length&&!s.rec&&!s.alar.length&&!s.ante.length)return '';
- let out='';
- if(s.post) out+=`. Episódio sincopal ocorrido na postura ${s.post.toLowerCase()}`;
- if(s.prod) out+=`. Pródromos relatados pelo paciente: ${s.prod.toLowerCase()}`;
- if(s.gat.length) out+=`. Fatores desencadeantes: ${s.gat.join(', ').toLowerCase()}`;
- if(s.car.length) out+=`. Características do evento descritas por testemunhas: ${s.car.join(', ').toLowerCase()}`;
- if(s.rec) out+=`. Padrão de recuperação da consciência: ${s.rec.toLowerCase()}`;
- if(s.alar.length) out+=`. Rastreio de sinais de alerta e alto risco cardiovascular: ${s.alar.join(', ').toLowerCase()}`;
- return out;
+function sincHda(S) {
+  const s = S.sinc;
+  if (!s.prod && !s.post && !s.gat.length && !s.car.length && !s.rec && !s.alar.length && !s.ante.length) return '';
+  let out = 'Paciente vítima de episódio sincopal';
+  if (s.post) out += `, ocorrido na postura ${s.post.toLowerCase()}`;
+  if (s.prod) out += `. Refere que o evento foi precedido por pródromos consistentes com ${s.prod.toLowerCase()}`;
+  if (s.gat.length) out += `. Aponta como prováveis gatilhos para o quadro: ${joinAnd(s.gat).toLowerCase()}`;
+  if (s.car.length) out += `. Segundo relatos de testemunhas, o episódio cursou com ${joinAnd(s.car).toLowerCase()}`;
+  if (s.rec) out += `. Apresentou um padrão de recuperação da consciência ${s.rec.toLowerCase()}`;
+  if (s.alar.length) out += `. A triagem de sinais de alarme cardiovasculares revelou: ${joinAnd(s.alar).toLowerCase()}`;
+  return out + '.';
 }
 function sincHpp(S){return S.sinc.ante.slice();}
 function sincEFText(S){
@@ -6591,23 +6581,20 @@ const CV_GRAVE_ALARM=['Status epilepticus (> 5 min ou sem recuperação intercr�
 function cvHasStatus(){const c=S.cv;return CV_STATUS_DUR.includes(c.dur)||c.alarm.includes('Status epilepticus (> 5 min ou sem recuperação intercrítica)');}
 function cvHasGrave(){const c=S.cv;return cvHasStatus()||c.alarm.some(a=>CV_GRAVE_ALARM.includes(a));}
 
-function cvHda(S){
- const c=S.cv;
- if(!c.inicio&&!c.padrao.length&&!c.dur&&!c.pos.length&&!c.evento.length&&!c.alarm.length)return '';
- let out='';
- if(c.inicio){
-  let ini=`Apresenta episódio convulsivo de início ${c.inicio.toLowerCase()}`;
-  if(c.inicio==='Súbito com aura'&&c.descrAura)ini+=` (aura caracterizada como ${c.descrAura.toLowerCase()})`;
-  out+=`. ${ini}`;
- } else {
-  out+=`. Apresenta episódio convulsivo`;
- }
- if(c.padrao.length) out+=`. Padrão motor caracterizado por ${c.padrao.join(', ').toLowerCase()}`;
- if(c.dur) out+=`, com duração estimada de ${c.dur.toLowerCase()}`;
- if(c.evento.length) out+=`. Durante o evento, foram presenciados os seguintes achados: ${c.evento.join(', ').toLowerCase()}`;
- if(c.pos.length) out+=`. No período pós-ictal, apresentou ${c.pos.join(', ').toLowerCase()}`;
- if(c.alarm.length) out+=`. Identificados os seguintes sinais de alarme e gravidade: ${c.alarm.join(', ').toLowerCase()}`;
- return out;
+function cvHda(S) {
+  const c = S.cv;
+  if (!c.inicio && !c.padrao.length && !c.dur && !c.pos.length && !c.evento.length && !c.alarm.length) return '';
+  let out = 'Paciente apresentou episódio convulsivo';
+  if (c.inicio) {
+    out += ` com início ${c.inicio.toLowerCase()}`;
+    if (c.inicio === 'Súbito com aura' && c.descrAura) out += ` (descrevendo a aura como ${c.descrAura.toLowerCase()})`;
+  }
+  if (c.padrao.length) out += `. O evento foi caracterizado por um padrão motor ${joinAnd(c.padrao).toLowerCase()}`;
+  if (c.dur) out += `, com duração estimada de ${c.dur.toLowerCase()}`;
+  if (c.evento.length) out += `. Relatos de terceiros confirmam achados durante o evento, tais como ${joinAnd(c.evento).toLowerCase()}`;
+  if (c.pos.length) out += `. No período pós-ictal, evoluiu com ${joinAnd(c.pos).toLowerCase()}`;
+  if (c.alarm.length) out += `. Destacam-se os seguintes sinais de alarme neurológicos: ${joinAnd(c.alarm).toLowerCase()}`;
+  return out + '.';
 }
 function cvHpp(S){return S.cv.antec.slice();}
 function cvBadge(){
@@ -6685,22 +6672,22 @@ const DT_SEM=['Sim, semelhante a evento coronariano prévio','Não, dor diferent
 const DT_PAL=['Não reproduzida à palpação parietal','Reproduzida pontualmente à palpação parietal (osteomuscular)'];
 const DT_SIN=['Diaforese fria profusa','Dispneia aguda concomitante','Sensação de morte iminente','Síncope / Pré-síncope associada','Náuseas e vômitos','Palpitações taquicárdicas','Parestesias de extremidades / perioral','Febre prévia','Hemoptise franca'];
 
-function dtHda(S){
- const d=S.dt;
- if((!d.loc||!d.loc.length)&&!d.ini&&!d.qual.length&&!d.irr.length&&!d.modif.length&&!d.pal&&!d.sem&&!d.sin.length)return '';
- let out='';
- const car=[];
- if(d.loc&&d.loc.length)car.push(`localização de início/maior intensidade em ${d.loc.join(', ').toLowerCase()}`);
- if(d.ini)car.push(`início ${d.ini.toLowerCase()}`);
- if(d.qual.length)car.push(`caráter ${d.qual.join(', ').toLowerCase()}`);
- if(d.irr.length)car.push(`irradiação para ${d.irr.join(', ').toLowerCase()}`);
- if(car.length) out+=`. Apresenta dor torácica com ${car.join(', ')}`;
- else out+=`. Apresenta quadro de dor torácica`;
- if(d.modif.length) out+=`. Padrão e fatores modificadores: ${d.modif.join('; ').toLowerCase()}`;
- if(d.pal) out+=`. Avaliação parietal: dor ${d.pal.toLowerCase()}`;
- if(d.sem) out+=`. Comparação com episódios anteriores: ${d.sem.toLowerCase()}`;
- if(d.sin.length) out+=`. Sintomas associados referidos: ${d.sin.join(', ').toLowerCase()}`;
- return out;
+function dtHda(S) {
+  const d = S.dt;
+  if ((!d.loc || !d.loc.length) && !d.ini && !d.qual.length && !d.irr.length && !d.modif.length && !d.pal && !d.sem && !d.sin.length) return '';
+  let out = 'Paciente apresenta dor torácica';
+  const car = [];
+  if (d.loc && d.loc.length) car.push(`localizada predominantemente em ${joinAnd(d.loc).toLowerCase()}`);
+  if (d.ini) car.push(`de início ${d.ini.toLowerCase()}`);
+  if (d.qual.length) car.push(`com caráter ${joinAnd(d.qual).toLowerCase()}`);
+  if (d.irr.length) car.push(`com irradiação típica para ${joinAnd(d.irr).toLowerCase()}`);
+  if (car.length) out = `Paciente relata quadro de dor torácica ${joinAnd(car)}`;
+  
+  if (d.modif.length) out += `. Caracteriza os fatores de melhora e piora como: ${joinAnd(d.modif).toLowerCase()}`;
+  if (d.pal) out += `. À palpação parietal, a dor é descrita como ${d.pal.toLowerCase()}`;
+  if (d.sem) out += `. Em comparação com eventos prévios, refere que a dor é ${d.sem.toLowerCase()}`;
+  if (d.sin.length) out += `. Nega outras queixas, exceto por sintomas associados como ${joinAnd(d.sin).toLowerCase()}`;
+  return out + '.';
 }
 function isOcaActive(sState){
  const st = sState || (typeof S !== 'undefined' ? S : null);
@@ -6756,33 +6743,31 @@ const NEU_FOSSA=['Ataxia de marcha / apendicular','Vertigem central aguda','Dipl
 const NEU_MIMICS=['Glicemia capilar normal no ictus (descarta hipoglicemia)','Crise epiléptica associada no início (mimic vs crise sintomática)','Cefaleia súbita intensa precedendo o déficit (sugere HSA / AVCh)','Rebaixamento agudo de consciência associado'];
 const NEU_ANTICOAG=['Nega uso de anticoagulantes','Varfarina / Marevan em uso','DOAC em uso (Apixabana, Rivaroxabana, Dabigatrana)','Uso de heparina nas últimas 24h','AVC isquêmico ou TCE grave < 3 meses','Cirurgia de grande porte < 14 dias','Sangramento ativo gastrointestinal'];
 
-function neuHda(S){
- const n=S.neu;
- if(!n.tipoUvvb&&!n.tempoUvvb&&!n.janela&&!n.motor.length&&!n.lado&&!n.linguagem.length&&!n.fossa.length&&!n.mimics.length&&!n.anticoag.length)return '';
- let out='';
- if(n.tipoUvvb==='UVVB indeterminada / sem testemunhas'){
-  out+=`. Paciente admitido com déficit neurológico focal de início não testemunhado (UVVB indeterminada)`;
- } else if(n.tipoUvvb==='Horário de UVVB exato e testemunhado'){
-  out+=`. Paciente admitido com déficit focal agudo de ictus testemunhado${n.tempoUvvb?' há '+n.tempoUvvb:''}`;
- } else if(n.tipoUvvb==='Wake-up stroke (UVVB antes de dormir)'){
-  out+=`. Paciente com quadro de wake-up stroke (UVVB antes de dormir${n.tempoUvvb?' há '+n.tempoUvvb:''})`;
- } else if(n.tempoUvvb){
-  out+=`. Paciente com déficit neurológico focal agudo com UVVB há ${n.tempoUvvb}`;
- } else {
-  out+=`. Apresenta déficit neurológico focal agudo`;
- }
- if(n.janela) out+=`. Enquadrado em ${n.janela.toLowerCase()}`;
- if(n.lado) out+=`. Topografia clínica compatível com acometimento de ${n.lado.toLowerCase()}`;
- if(n.motor.length) out+=`. Padrão do déficit motor/sensitivo: ${n.motor.join(', ').toLowerCase()}`;
- if(n.linguagem.length) out+=`. Alterações de linguagem e pares cranianos: ${n.linguagem.join(', ').toLowerCase()}`;
- if(n.fossa.length) out+=`. Sinais cerebelares e de fossa posterior: ${n.fossa.join(', ').toLowerCase()}`;
- if(n.mimics.length) out+=`. Avaliação de mimics e potenciais diferenciais: ${n.mimics.join(', ').toLowerCase()}`;
- if(n.anticoag.length) out+=`. Perfil antitrombótico e contraindicações à reperfusão: ${n.anticoag.join(', ').toLowerCase()}`;
- if(S.nihss&&S.nihss.evaluated){
-  const nSc=nihssSc();
-  out+=`. Escore NIHSS quantificado em ${nSc} pontos${nihssBreakdown()} (${nihssInterp(nSc)})`;
- }
- return out;
+function neuHda(S) {
+  const n = S.neu;
+  if (!n.tipoUvvb && !n.tempoUvvb && !n.janela && !n.motor.length && !n.lado && !n.linguagem.length && !n.fossa.length && !n.mimics.length && !n.anticoag.length) return '';
+  let out = 'Paciente é admitido com déficit neurológico focal agudo';
+  if (n.tipoUvvb === 'UVVB indeterminada / sem testemunhas') {
+    out += ` de início não testemunhado (última vez visto bem indeterminada)`;
+  } else if (n.tipoUvvb === 'Horário de UVVB exato e testemunhado') {
+    out += `, com ictus presenciado e horário exato estabelecido${n.tempoUvvb ? ' há ' + n.tempoUvvb : ''}`;
+  } else if (n.tipoUvvb === 'Wake-up stroke (UVVB antes de dormir)') {
+    out = `Paciente com quadro sugestivo de wake-up stroke, tendo ido dormir sem déficits${n.tempoUvvb ? ' há ' + n.tempoUvvb : ''}`;
+  } else if (n.tempoUvvb) {
+    out += `, com última vez visto bem há ${n.tempoUvvb}`;
+  }
+  if (n.janela) out += `. No momento da avaliação, encontra-se em ${n.janela.toLowerCase()}`;
+  if (n.lado) out += `. A topografia dos achados clínicos sugere acometimento do ${n.lado.toLowerCase()}`;
+  if (n.motor.length) out += `. Ao exame direcionado, evidencia-se ${joinAnd(n.motor).toLowerCase()}`;
+  if (n.linguagem.length) out += `. Associadamente, nota-se o comprometimento de linguagem/pares cranianos, manifesto por ${joinAnd(n.linguagem).toLowerCase()}`;
+  if (n.fossa.length) out += `. Há presença de sinais de fossa posterior, incluindo ${joinAnd(n.fossa).toLowerCase()}`;
+  if (n.mimics.length) out += `. A investigação de mimics (diferenciais) evidenciou: ${joinAnd(n.mimics).toLowerCase()}`;
+  if (n.anticoag.length) out += `. Quanto ao risco de sangramento, refere ${joinAnd(n.anticoag).toLowerCase()}`;
+  if (S.nihss && S.nihss.evaluated) {
+    const nSc = nihssSc();
+    out += `. O escore NIHSS na admissão foi de ${nSc} pontos${nihssBreakdown()} (${nihssInterp(nSc)})`;
+  }
+  return out + '.';
 }
 
 function neuAfter(S){
@@ -6823,27 +6808,27 @@ const ABD_FATORES=['Piora à tosse e deambulação (peritonismo parietal)','Pior
 const ABD_ALARME=['Parada de eliminação de gases e fezes > 24h (obstrução)','Vômitos incoercíveis / desidratação','Vômitos biliosos','Vômitos fecaloides / borráceos (obstrução distal)','Febre com calafrios trepidantes (bacteremia)','Icterícia e colúria associadas (obstrução biliar/colangite)','Hematêmese / melena / enterorragia','Distensão abdominal progressiva'];
 const ABD_GIN=['DUM recente e habitual (sem atraso)','Atraso menstrual relatado','Sangramento vaginal anormal concomitante','Uso de método contraceptivo (DIU, ACO, implante)','História de gravidez ectópica prévia','Corrimento vaginal purulento / dor à mobilização de colo (DIP)','Dor anexial unilateral intensa','Beta-hCG de urina solicitado / positivo'];
 
-function abdHda(S){
- const a=S.abdQ;
- if(!a.inicio&&!a.loc.length&&!a.fatores.length&&!a.alarme.length&&!a.gin.length&&!a.dum)return '';
- let out='';
- if(a.inicio) out+=`. Apresenta dor abdominal de início ${a.inicio.toLowerCase()}`;
- else out+=`. Apresenta dor abdominal`;
- if(a.loc.length) out+=`, localizada em ${a.loc.join(', ').toLowerCase()}`;
- if(a.fatores.length) out+=`. Fatores modificadores e posturais: ${a.fatores.join('; ').toLowerCase()}`;
- if(a.alarme.length) out+=`. Sinais de alarme e manifestações associadas: ${a.alarme.join(', ').toLowerCase()}`;
- if(S.sexo==='F'&&(a.gin.length||a.dum)){
-  let g='Anamnese ginecológica direcionada';
-  if(a.dum)g+=` (DUM: ${a.dum})`;
-  if(a.gin.length)g+=`: ${a.gin.join(', ').toLowerCase()}`;
-  out+=`. ${g}`;
- }
- if(S.alvarado&&S.alvarado.evaluated) out+=`. Escore de Alvarado para apendicite: ${alvaradoSc()}/10 pontos (${alvaradoInterp(alvaradoSc())})`;
- if(S.tokyo&&S.tokyo.evaluated){
-  const tSt=tokyoStatus();
-  out+=`. Critérios de Tokyo (TG18/TG20 - Colecistite): ${tSt.text}`;
- }
- return out;
+function abdHda(S) {
+  const a = S.abdQ;
+  if (!a.inicio && !a.loc.length && !a.fatores.length && !a.alarme.length && !a.gin.length && !a.dum) return '';
+  let out = 'Paciente refere quadro de dor abdominal';
+  if (a.inicio) out += ` com padrão de instalação ${a.inicio.toLowerCase()}`;
+  if (a.loc.length) out += `, localizando-se inicialmente em ${joinAnd(a.loc).toLowerCase()}`;
+  out += '.';
+  if (a.fatores.length) out += ` Descreve que o quadro exibe fatores modificadores como ${joinAnd(a.fatores).toLowerCase()}.`;
+  if (a.alarme.length) out += ` Relata ainda o surgimento de sinais de alarme associados, notadamente ${joinAnd(a.alarme).toLowerCase()}.`;
+  if (S.sexo === 'F' && (a.gin.length || a.dum)) {
+    let g = 'Na anamnese ginecológica dirigida';
+    if (a.dum) g += `, informa DUM em ${a.dum}`;
+    if (a.gin.length) g += ` e aponta a presença de ${joinAnd(a.gin).toLowerCase()}`;
+    out += ` ${g}.`;
+  }
+  if (S.alvarado && S.alvarado.evaluated) out += ` O escore de Alvarado calculou-se em ${alvaradoSc()}/10 pontos (${alvaradoInterp(alvaradoSc())}).`;
+  if (S.tokyo && S.tokyo.evaluated) {
+    const tSt = tokyoStatus();
+    out += ` A aplicação dos critérios de Tokyo indica: ${tSt.text}.`;
+  }
+  return out;
 }
 
 function abdAfter(S){
@@ -6885,16 +6870,15 @@ const RNC_CTX=['Trauma cranioencefálico recente (mesmo leve / queda da própria
 const RNC_SINAIS=['Crise convulsiva inicial relatada','Cefaleia súbita e intensa precedendo o coma','Vômitos precedendo o rebaixamento','Rigidez de nuca / sinais meníngeos','Anisocoria pupilar / midríase fixa unilateral','Movimentos anormais / tremores / mioclonias / asterixe','Respiração ruidosa / roncos com queda de língua'];
 const RNC_FUNC=['Totalmente independente prévio (atividades normais da vida diária)','Independente parcial / declínio cognitivo leve prévio','Demência moderada a avançada / restrito ao leito','Sequela neurológica motora prévia de AVC'];
 
-function rncHda(S){
- const r=S.rncQ;
- if(!r.instalacao&&!r.contexto.length&&!r.sinais.length&&!r.funcional)return '';
- let out='';
- if(r.instalacao) out+=`. Apresenta rebaixamento do nível de consciência de instalação ${r.instalacao.toLowerCase()}`;
- else out+=`. Apresenta rebaixamento do nível de consciência`;
- if(r.contexto.length) out+=`. Contexto clínico e possíveis fatores precipitantes identificados: ${r.contexto.join(', ').toLowerCase()}`;
- if(r.sinais.length) out+=`. Sinais associados observados: ${r.sinais.join(', ').toLowerCase()}`;
- if(r.funcional) out+=`. Status funcional basal pré-mórbido: ${r.funcional.toLowerCase()}`;
- return out;
+function rncHda(S) {
+  const r = S.rncQ;
+  if (!r.instalacao && !r.contexto.length && !r.sinais.length && !r.funcional) return '';
+  let out = 'Paciente evolui com rebaixamento do nível de consciência';
+  if (r.instalacao) out += ` de instalação ${r.instalacao.toLowerCase()}`;
+  if (r.contexto.length) out += `. Na investigação de precipitantes, observa-se contexto de ${joinAnd(r.contexto).toLowerCase()}`;
+  if (r.sinais.length) out += `. Ao exame físico e na história, constata-se a presença de ${joinAnd(r.sinais).toLowerCase()}`;
+  if (r.funcional) out += `. Familiares relatam que, previamente, o status funcional do paciente era ${r.funcional.toLowerCase()}`;
+  return out + '.';
 }
 
 function rncAfter(S){
@@ -6928,17 +6912,16 @@ const INT_TEMPO_VIA=['Via oral (ingestão)','Via inalatória','Via cutânea / mu
 const INT_DOSE_CO=['Dose maciça / frascos inteiros relatados','Cartelas vazias encontradas no local do evento','Co-ingestão de etanol (bebida alcoólica)','Co-ingestão de múltiplos psicotrópicos / polifarmácia','Dose terapêutica acidental duplicada'];
 const INT_TOX=['Toxíndrome Anticolinérgica (rubor, midríase, mucosas secas, retenção urinária, delírio)','Toxíndrome Colinérgica (miose, sudorese, broncorreia, fasciculações, bradicardia)','Toxíndrome Opioide (tríade: miose puntiforme, bradipneia/depressão respiratória, coma)','Toxíndrome Simpaticomimética (taquicardia, HAS grave, diaforese, midríase, agitação)','Toxíndrome Sedativo-Hipnótica (sonolência/coma, hipotensão leve, pupilas normais/mióticas)','Toxíndrome Serotoninérgica (hipertermia, clônus, hiper-reflexia, tremor)'];
 
-function intHda(S){
- const it=S.intQ;
- if(!it.circunstancia&&!it.tempoVia.length&&!S.itDrug&&!it.doseCo.length&&!it.toxidromes.length)return '';
- let out='';
- if(it.circunstancia) out+=`. Quadro de suspeita de intoxicação exógena em circunstância de ${it.circunstancia.toLowerCase()}`;
- else out+=`. Quadro de suspeita de intoxicação exógena`;
- if(it.tempoVia.length) out+=`. Via de exposição e intervalo temporal: ${it.tempoVia.join(', ').toLowerCase()}`;
- if(S.itDrug) out+=`. Substâncias e agentes suspeitos: ${S.itDrug}`;
- if(it.doseCo.length) out+=`. Estimativa de dose e coingestões: ${it.doseCo.join(', ').toLowerCase()}`;
- if(it.toxidromes.length) out+=`. Triagem clínica de toxíndromes: ${it.toxidromes.join(', ').toLowerCase()}`;
- return out;
+function intHda(S) {
+  const it = S.intQ;
+  if (!it.circunstancia && !it.tempoVia.length && !S.itDrug && !it.doseCo.length && !it.toxidromes.length) return '';
+  let out = 'Paciente avaliado por suspeita clínica de intoxicação exógena';
+  if (it.circunstancia) out += `, num contexto sugestivo de ${it.circunstancia.toLowerCase()}`;
+  if (it.tempoVia.length) out += `. A exposição ocorreu via ${joinAnd(it.tempoVia).toLowerCase()}`;
+  if (S.itDrug) out += `. Há relato de contato com as seguintes substâncias: ${S.itDrug}`;
+  if (it.doseCo.length) out += `. Destaca-se quanto à dose e coingestões: ${joinAnd(it.doseCo).toLowerCase()}`;
+  if (it.toxidromes.length) out += `. O exame direcionado aponta achados compatíveis com ${joinAnd(it.toxidromes).toLowerCase()}`;
+  return out + '.';
 }
 
 function intAfter(S){
@@ -6973,28 +6956,27 @@ const TRM_PROTECAO=['Cinto de segurança utilizado','Capacete utilizado e afivel
 const TRM_CENA=['Perda de consciência transitória na cena com recuperação','Perda de consciência mantida na cena','Crise convulsiva pós-trauma relatada','Lúcido e orientado na cena (sem perda de consciência)','Necessidade de via aérea avançada / O2 no resgate','Colar cervical e prancha rígida aplicados pelo resgate'];
 const TRM_ATIVAS=['Dor em coluna cervical','Dor torácica ventilatório-dependente','Dor abdominal / pélvica','Déficit motor ou sensitivo em extremidades','Ferimento cortocontuso evidente com sangramento','Escoriações / contusões musculares difusas','Sem queixas álgicas espontâneas no momento'];
 
-function trmHda(S){
- const t=S.trm;
- if(!t.mec&&!t.altaEnergia.length&&!t.protecao.length&&!t.cena.length&&!t.ativas.length)return '';
- let out='';
- if(t.mec) out+=`. Vítima de trauma por ${t.mec.toLowerCase()}`;
- else out+=`. Vítima de trauma`;
- if(t.altaEnergia.length) out+=`. Marcadores de cinemática de alta energia identificados: ${t.altaEnergia.join(', ').toLowerCase()}`;
- if(t.protecao.length) out+=`. Dispositivos de proteção utilizados: ${t.protecao.join(', ').toLowerCase()}`;
- if(t.cena.length) out+=`. Relato da cena e atendimento pré-hospitalar: ${t.cena.join('; ').toLowerCase()}`;
- if(t.ativas.length) out+=`. Queixas ativas referidas na admissão: ${t.ativas.join(', ').toLowerCase()}`;
- if(S.trmRules&&S.trmRules.evaluated){
-  const parts=[];
-  if(S.trmRules.cchrPos)parts.push('Canadian CT Head: Alto Risco (TC de crânio indicada)');
-  else if(S.trmRules.cchrMed)parts.push('Canadian CT Head: Risco Médio (TC recomendada)');
-  else parts.push('Canadian CT Head: Baixo Risco');
-  if(S.trmRules.ccsrHigh||S.trmRules.ccsrLow)parts.push('Canadian C-Spine: Positivo (Imagem cervical indicada)');
-  else parts.push('Canadian C-Spine: Negativo (Liberação sem imagem)');
-  if(S.trmRules.nexusPos)parts.push('NEXUS: Positivo (Imagem cervical indicada)');
-  else parts.push('NEXUS: Baixo risco');
-  out+=`. Regras clínicas validadas em trauma: ${parts.join(' | ')}`;
- }
- return out;
+function trmHda(S) {
+  const t = S.trm;
+  if (!t.mec && !t.altaEnergia.length && !t.protecao.length && !t.cena.length && !t.ativas.length) return '';
+  let out = 'Paciente deu entrada vítima de trauma';
+  if (t.mec) out += ` decorrente de ${t.mec.toLowerCase()}`;
+  if (t.altaEnergia.length) out += `. A análise da cinemática revelou fatores de alta energia, como ${joinAnd(t.altaEnergia).toLowerCase()}`;
+  if (t.protecao.length) out += `. No momento do evento, relata-se uso de equipamentos de proteção como ${joinAnd(t.protecao).toLowerCase()}`;
+  if (t.cena.length) out += `. Durante o resgate pré-hospitalar, observou-se ${joinAnd(t.cena).toLowerCase()}`;
+  if (t.ativas.length) out += `. Na triagem inicial, as queixas ativas incluem ${joinAnd(t.ativas).toLowerCase()}`;
+  if (S.trmRules && S.trmRules.evaluated) {
+    const parts = [];
+    if (S.trmRules.cchrPos) parts.push('Canadian CT Head de alto risco (TC de crânio indicada)');
+    else if (S.trmRules.cchrMed) parts.push('Canadian CT Head de risco médio (TC recomendada)');
+    else parts.push('Canadian CT Head de baixo risco');
+    if (S.trmRules.ccsrHigh || S.trmRules.ccsrLow) parts.push('Canadian C-Spine positivo (imagem cervical indicada)');
+    else parts.push('Canadian C-Spine negativo (liberação sem imagem)');
+    if (S.trmRules.nexusPos) parts.push('critérios NEXUS positivos (imagem indicada)');
+    else parts.push('critérios NEXUS de baixo risco');
+    out += `. A aplicação das regras de decisão clínica no trauma resultou em: ${joinAnd(parts)}`;
+  }
+  return out + '.';
 }
 function trmAfter(S){
  const t=S.trm;let out='';
@@ -7028,17 +7010,16 @@ const AGI_PSIC=['Alucinações auditivas de comando','Alucinações visuais (zoo
 const AGI_ORG=['Febre recente ou sinais infecciosos (tosse, disúria)','Trauma cranioencefálico recente','Abuso agudo de álcool / substâncias psicoativas','Abstinência alcoólica recente (tremores, sudorese, taquicardia)','Glicemia capilar normal descartando hipoglicemia','Sem estigmas evidentes de causa orgânica'];
 const AGI_PSIQ_HPP=['Transtorno afetivo bipolar conhecido','Esquizofrenia / transtorno psicótico conhecido','Transtorno de personalidade','Abandono recente de tratamento psicofarmacológico','Sem antecedentes psiquiátricos conhecidos'];
 
-function agiHda(S){
- const a=S.agi;
- if(!a.evolucao&&!a.padrao.length&&!a.psicoticos.length&&!a.organica.length&&!a.psiqHpp.length)return '';
- let out='';
- if(a.evolucao) out+=`. Apresenta agitação psicomotora de evolução ${a.evolucao.toLowerCase()}`;
- else out+=`. Apresenta quadro de agitação psicomotora`;
- if(a.padrao.length) out+=`. Padrão comportamental: ${a.padrao.join(', ').toLowerCase()}`;
- if(a.psicoticos.length) out+=`. Exame do pensamento e sensopercepção: ${a.psicoticos.join(', ').toLowerCase()}`;
- if(a.organica.length) out+=`. Investigação e rastreio de etiologias orgânicas: ${a.organica.join(', ').toLowerCase()}`;
- if(a.psiqHpp.length) out+=`. Antecedentes psiquiátricos e uso prévio de substâncias: ${a.psiqHpp.join(', ').toLowerCase()}`;
- return out;
+function agiHda(S) {
+  const a = S.agi;
+  if (!a.evolucao && !a.padrao.length && !a.psicoticos.length && !a.organica.length && !a.psiqHpp.length) return '';
+  let out = 'Paciente apresenta quadro de agitação psicomotora';
+  if (a.evolucao) out += ` com padrão de evolução ${a.evolucao.toLowerCase()}`;
+  if (a.padrao.length) out += `. O comportamento é manifestado predominantemente por ${joinAnd(a.padrao).toLowerCase()}`;
+  if (a.psicoticos.length) out += `. O exame do estado mental evidencia sintomas como ${joinAnd(a.psicoticos).toLowerCase()}`;
+  if (a.organica.length) out += `. A triagem para causas orgânicas adjacentes indica ${joinAnd(a.organica).toLowerCase()}`;
+  if (a.psiqHpp.length) out += `. Em relação ao histórico psiquiátrico e uso de substâncias, nota-se ${joinAnd(a.psiqHpp).toLowerCase()}`;
+  return out + '.';
 }
 function agiAfter(S){
  const a=S.agi;let out='';
@@ -7071,21 +7052,20 @@ const TOS_PADRAO=['Predomínio noturno despertando o sono','Piora acentuada ao d
 const TOS_ASSOC=['Febre diária com calafrios','Dor torácica ventilatório-dependente (pleurítica)','Dispneia progressiva associada','Sibilância audível (chiado no peito)','Sudorese noturna profusa','Perda ponderal involuntária recente','Coriza / congestão nasal / odinofagia'];
 const TOS_RISCO=['Tabagismo ativo (fumante)','Ex-tabagista','Uso crônico de IECA (Enalapril / Captopril)','Contato domiciliar recente com tuberculose ativa','Asma / DPOC prévio conhecido','Exposição ocupacional a poeiras / mofo / biomassa'];
 
-function tosHda(S){
- const t=S.tos;
- if(!t.tipo&&!t.duracao&&!t.padrao.length&&!t.assoc.length&&!t.risco.length)return '';
- let out='';
- if(t.tipo) out+=`. Apresenta quadro de tosse ${t.tipo.toLowerCase()}`;
- else out+=`. Apresenta tosse`;
- if(t.duracao) out+=`, de evolução ${t.duracao.toLowerCase()}`;
- if(t.padrao.length) out+=`. Padrão e fatores modificadores: ${t.padrao.join(' e ').toLowerCase()}`;
- if(t.assoc.length) out+=`. Sintomas associados relatados: ${t.assoc.join(', ').toLowerCase()}`;
- if(t.risco.length) out+=`. Contexto epidemiológico e fatores de risco: ${t.risco.join(', ').toLowerCase()}`;
- if(S.psiPort&&S.psiPort.evaluated){
-  const pSc=psiPortSc();
-  out+=`. Escore PSI / PORT (Pneumonia Severity Index): ${pSc} pontos — ${psiPortClass(pSc)}`;
- }
- return out;
+function tosHda(S) {
+  const t = S.tos;
+  if (!t.tipo && !t.duracao && !t.padrao.length && !t.assoc.length && !t.risco.length) return '';
+  let out = 'Paciente refere quadro de tosse';
+  if (t.tipo) out += ` caracterizada como ${t.tipo.toLowerCase()}`;
+  if (t.duracao) out += `, apresentando evolução ${t.duracao.toLowerCase()}`;
+  if (t.padrao.length) out += `. Os episódios seguem um padrão de ${joinAnd(t.padrao).toLowerCase()}`;
+  if (t.assoc.length) out += `. O paciente descreve, associadamente, queixas de ${joinAnd(t.assoc).toLowerCase()}`;
+  if (t.risco.length) out += `. Entre os fatores de risco e exposições relevantes, cita-se ${joinAnd(t.risco).toLowerCase()}`;
+  if (S.psiPort && S.psiPort.evaluated) {
+    const pSc = psiPortSc();
+    out += `. A gravidade da possível pneumonia (Escore PSI / PORT) soma ${pSc} pontos, classificada como ${psiPortClass(pSc)}`;
+  }
+  return out + '.';
 }
 function tosAfter(S){
  const t=S.tos;let out='';
@@ -7120,21 +7100,20 @@ const FEB_FOCO=['Respiratório (tosse, expectoração, dor torácica, coriza)','
 const FEB_ALARME=['Prostração intensa desproporcional','Confusão mental / sonolência nova','Extremidades frias / livedo reticular','Redução importante do volume urinário (oligúria)','Surgimento de petéquias / lesões purpúricas cutâneas','Sem sinais de gravidade / alerta sistêmico no momento'];
 const FEB_RISCO=['Imunossupressão / quimioterapia recente / corticoterapia','Diabetes descompensado','Uso recente de antibióticos nas últimas semanas','Viagem recente para área endêmica de arboviroses / malária','Portador de cateter venoso central ou prótese valvar/ortopédica'];
 
-function febHda(S){
- const f=S.feb;
- if(!f.afericao&&!f.padrao&&!f.foco.length&&!f.alarme.length&&!f.risco.length)return '';
- let out='';
- if(f.afericao) out+=`. Quadro febril caracterizado por ${f.afericao.toLowerCase()}${f.pico?' (pico aferido de '+f.pico+' °C)':''}`;
- else out+=`. Quadro febril`;
- if(f.padrao) out+=`, com padrão ${f.padrao.toLowerCase()}`;
- if(f.foco.length) out+=`. Rastreio inicial de foco infeccioso: ${f.foco.join(', ').toLowerCase()}`;
- if(f.alarme.length) out+=`. Rastreio de sinais de alarme sistêmico e disfunção orgânica: ${f.alarme.join(', ').toLowerCase()}`;
- if(f.risco.length) out+=`. Fatores de risco e antecedentes epidemiológicos: ${f.risco.join(', ').toLowerCase()}`;
- if(S.mascc&&S.mascc.evaluated){
-  const mSc=masccSc();
-  out+=`. Escore MASCC para Neutropenia Febril: ${mSc}/26 pontos (${masccInterp(mSc)})`;
- }
- return out;
+function febHda(S) {
+  const f = S.feb;
+  if (!f.afericao && !f.padrao && !f.foco.length && !f.alarme.length && !f.risco.length) return '';
+  let out = 'Paciente cursa com relato de estado febril';
+  if (f.afericao) out += `, descrito como ${f.afericao.toLowerCase()}${f.pico ? ' (tendo atingido pico de ' + f.pico + ' °C)' : ''}`;
+  if (f.padrao) out += `. A febre tem se mantido num padrão ${f.padrao.toLowerCase()}`;
+  if (f.foco.length) out += `. Na busca por focos infecciosos sintomáticos, foram identificados sintomas de provável origem em sistema ${joinAnd(f.foco).toLowerCase()}`;
+  if (f.alarme.length) out += `. Avaliando-se sinais sistêmicos de gravidade, observou-se ${joinAnd(f.alarme).toLowerCase()}`;
+  if (f.risco.length) out += `. Há histórico médico pertinente relacionado a ${joinAnd(f.risco).toLowerCase()}`;
+  if (S.mascc && S.mascc.evaluated) {
+    const mSc = masccSc();
+    out += `. O escore MASCC para neutropenia febril é de ${mSc}/26 pontos, interpretado como ${masccInterp(mSc)}`;
+  }
+  return out + '.';
 }
 function febAfter(S){
  const f=S.feb;let out='';
@@ -7172,16 +7151,15 @@ const NAU_ASPECTO=['Conteúdo alimentar pós-prandial','Conteúdo bilioso (amare
 const NAU_RELACAO=['Precedidos de náusea intensa e plenitude gástrica','Vômitos súbitos sem náusea prévia ("em jato" — alerta de HIC)','Associados a vertigem rotatória e nistagmo','Precedidos de dor abdominal intensa em cólica','Associados a diarreia líquida profusa'];
 const NAU_DESIDRAT=['Sede intensa e boca seca','Tontura postural ao levantar / lipotimia','Redução expressiva do débito urinário (oligúria)','Boa tolerância hídrica mantida entre os episódios'];
 
-function nauHda(S){
- const n=S.nau;
- if(!n.freq&&!n.aspecto.length&&!n.relacao.length&&!n.desidrat.length)return '';
- let out='';
- if(n.freq) out+=`. Apresenta episódios de náuseas e vômitos de frequência ${n.freq.toLowerCase()}`;
- else out+=`. Apresenta episódios de náuseas e vômitos`;
- if(n.aspecto.length) out+=`. Aspecto do conteúdo emético: ${n.aspecto.join(', ').toLowerCase()}`;
- if(n.relacao.length) out+=`. Fatores correlacionados e padrão de ocorrência: ${n.relacao.join('; ').toLowerCase()}`;
- if(n.desidrat.length) out+=`. Avaliação de hidratação e tolerância oral: ${n.desidrat.join(', ').toLowerCase()}`;
- return out;
+function nauHda(S) {
+  const n = S.nau;
+  if (!n.freq && !n.aspecto.length && !n.relacao.length && !n.desidrat.length) return '';
+  let out = 'Paciente relata quadro de náuseas e vômitos';
+  if (n.freq) out += `, ocorrendo em frequência e intensidade descritas como ${n.freq.toLowerCase()}`;
+  if (n.aspecto.length) out += `. O conteúdo emético tem aspecto predominantemente ${joinAnd(n.aspecto).toLowerCase()}`;
+  if (n.relacao.length) out += `. O sintoma guarda relação íntima com ${joinAnd(n.relacao).toLowerCase()}`;
+  if (n.desidrat.length) out += `. Sinais de depleção de volume ou impacto na aceitação hídrica mostram-se evidentes por ${joinAnd(n.desidrat).toLowerCase()}`;
+  return out + '.';
 }
 function nauAfter(S){
  const n=S.nau;let out='';
@@ -7216,17 +7194,16 @@ const DIA_ASSOC=['Dor abdominal difusa em cólica','Tenesmo retal e urgência ev
 const DIA_EPIDEM=['Ingestão de alimentos suspeitos / refeições fora de casa','Casos semelhantes no domicílio ou comunidade próxima','Uso recente de antibióticos nas últimas 8 semanas (suspeita de C. difficile)','Viagem recente para área com saneamento precário','Doença inflamatória intestinal conhecida'];
 const DIA_VOLEMIA=['Boa aceitação de líquidos por via oral','Sinais clínicos de desidratação (sede, boca seca, astenia intensa)','Oligúria perceptível pelo paciente'];
 
-function diaHda(S){
- const d=S.dia;
- if(!d.aspecto&&!d.duracao&&!d.assoc.length&&!d.epidem.length&&!d.volemia.length)return '';
- let out='';
- if(d.aspecto) out+=`. Apresenta diarreia de aspecto ${d.aspecto.toLowerCase()}`;
- else out+=`. Apresenta quadro diarreico`;
- if(d.duracao) out+=`, de evolução ${d.duracao.toLowerCase()}`;
- if(d.assoc.length) out+=`. Sintomas gastrointestinais e sistêmicos associados: ${d.assoc.join(', ').toLowerCase()}`;
- if(d.epidem.length) out+=`. Investigação de fatores epidemiológicos e exposições: ${d.epidem.join(', ').toLowerCase()}`;
- if(d.volemia.length) out+=`. Avaliação do estado de hidratação e volemia: ${d.volemia.join(', ').toLowerCase()}`;
- return out;
+function diaHda(S) {
+  const d = S.dia;
+  if (!d.aspecto && !d.duracao && !d.assoc.length && !d.epidem.length && !d.volemia.length) return '';
+  let out = 'Paciente queixa-se de episódios de diarreia';
+  if (d.duracao) out += ` com duração ${d.duracao.toLowerCase()}`;
+  if (d.aspecto) out += `. As evacuações apresentam aspecto de ${d.aspecto.toLowerCase()}`;
+  if (d.assoc.length) out += `. Refere manifestações acompanhantes, tais como ${joinAnd(d.assoc).toLowerCase()}`;
+  if (d.epidem.length) out += `. Epidemiologicamente, relata histórico de ${joinAnd(d.epidem).toLowerCase()}`;
+  if (d.volemia.length) out += `. O balanço hídrico e sintomas de desidratação apontam para ${joinAnd(d.volemia).toLowerCase()}`;
+  return out + '.';
 }
 function diaAfter(S){
  const d=S.dia;let out='';
@@ -7260,15 +7237,14 @@ const SAN_SITIO=['Gastrointestinal alto (hematêmese viva / fezes em melena)','G
 const SAN_VOL=['Pequeno volume autolimitado sem tontura','Moderado volume recorrente','Volumoso com repercussão hemodinâmica'];
 const SAN_COAG=['Em uso regular de Varfarina / Marevan','Em uso de DOAC (Rivaroxabana, Apixabana, Dabigatrana)','Em uso de antiagregante (AAS, Clopidogrel)','Cirrose hepática ou coagulopatia conhecida','Trombocitopenia prévia relatada','Nega uso de anticoagulantes ou coagulopatias conhecidas'];
 
-function sanHda(S){
- const s=S.san;
- if(!s.sitio.length&&!s.vol&&!s.coag.length)return '';
- let out='';
- if(s.sitio.length) out+=`. Apresenta sangramento ativo exteriorizado por ${s.sitio.join(', ').toLowerCase()}`;
- else out+=`. Apresenta quadro hemorrágico`;
- if(s.vol) out+=`, de volume estimado ${s.vol.toLowerCase()}`;
- if(s.coag.length) out+=`. Avaliação de coagulopatia e terapia antitrombótica prévia: ${s.coag.join(', ').toLowerCase()}`;
- return out;
+function sanHda(S) {
+  const s = S.san;
+  if (!s.sitio.length && !s.vol && !s.coag.length) return '';
+  let out = 'Paciente com registro de episódio hemorrágico';
+  if (s.sitio.length) out += `, apresentando sangramento ativo com exteriorização via trato ${joinAnd(s.sitio).toLowerCase()}`;
+  if (s.vol) out += `. O volume do sangramento foi estimado como ${s.vol.toLowerCase()}`;
+  if (s.coag.length) out += `. Questionado sobre fatores favorecedores de coagulopatia, indica ${joinAnd(s.coag).toLowerCase()}`;
+  return out + '.';
 }
 function sanAfter(S){
  const s=S.san;let out='';
@@ -7297,15 +7273,14 @@ const LOM_CARAC=['Em cólica paroxística unilateral irradiando para fossa ilía
 const LOM_CAUDA=['Anestesia em sela (perda de sensibilidade perineal/anal)','Perda de controle de esfíncteres (incontinência fecal ou retenção urinária súbita)','Fraqueza motora aguda em membros inferiores (déficit de dorsiflexão / pé caído)','Ausência de déficits neurológicos ou esfincterianos (nega sinais de Cauda Equina)'];
 const LOM_ALARME=['Febre associada com calafrios (suspeita de pielonefrite/espondilodiscite)','Hematúria macroscópica ou disúria concomitante','Histórico de neoplasia prévia conhecida','Uso crônico de corticoide ou imunossupressão','Antecedente de trauma lombar recente'];
 
-function lomHda(S){
- const l=S.lom;
- if(!l.carac.length&&!l.caudaEquina.length&&!l.alarme.length)return '';
- let out='';
- if(l.carac.length) out+=`. Apresenta dor lombar ${l.carac.join('; ').toLowerCase()}`;
- else out+=`. Apresenta quadro de dor lombar`;
- if(l.caudaEquina.length) out+=`. Rastreio específico de sinais de compressão medular / síndrome da cauda equina: ${l.caudaEquina.join(', ').toLowerCase()}`;
- if(l.alarme.length) out+=`. Rastreio de sinais de alerta sistêmicos, infecciosos e neoplásicos: ${l.alarme.join(', ').toLowerCase()}`;
- return out;
+function lomHda(S) {
+  const l = S.lom;
+  if (!l.carac.length && !l.caudaEquina.length && !l.alarme.length) return '';
+  let out = 'Paciente com história de dor lombar agudizada';
+  if (l.carac.length) out += `, descrita especificamente como ${joinAnd(l.carac).toLowerCase()}`;
+  if (l.caudaEquina.length) out += `. Na triagem de sintomas compressivos radiculares, relata-se ${joinAnd(l.caudaEquina).toLowerCase()}`;
+  if (l.alarme.length) out += `. A pesquisa por sinais de alerta (red flags) orgânicos revelou ${joinAnd(l.alarme).toLowerCase()}`;
+  return out + '.';
 }
 function lomAfter(S){
  const l=S.lom;let out='';
@@ -7339,17 +7314,16 @@ const ICT_GRAVIDADE=['Alteração do sono / inversão do ciclo sono-vigília','L
 const ICT_COLANGITE=['Dor intensa em hipocôndrio direito','Febre com calafrios trepidantes (Tríade de Charcot)','Hipotensão ou choque associado (Pêntade de Reynolds)','Ausência de dor biliar ou febre associada'];
 const ICT_TOXICOS=['Ingestão de Paracetamol em dose excessiva','Uso de fitoterápicos / chás emagrecedores / anabolizantes','Uso recente de antibióticos (Amoxicilina-Clavulanato)','Consumo abusivo recente de bebidas alcoólicas','Histórico de cirrose ou hepatite viral B/C'];
 
-function ictQHda(S){
- const i=S.ictQ;
- if(!i.crono&&!i.colestase.length&&!i.gravidade.length&&!i.colangite.length&&!i.toxicos.length)return '';
- let out='';
- if(i.crono) out+=`. Apresenta quadro de icterícia de instalação ${i.crono.toLowerCase()}`;
- else out+=`. Apresenta quadro de icterícia`;
- if(i.colestase.length) out+=`. Sinais de síndrome colestática associada: ${i.colestase.join(', ').toLowerCase()}`;
- if(i.colangite.length) out+=`. Sinais de infecção biliar e colangite: ${i.colangite.join(', ').toLowerCase()}`;
- if(i.gravidade.length) out+=`. Rastreio de disfunção hepática aguda e encefalopatia: ${i.gravidade.join(', ').toLowerCase()}`;
- if(i.toxicos.length) out+=`. Histórico de exposições hepatotóxicas e antecedentes: ${i.toxicos.join(', ').toLowerCase()}`;
- return out;
+function ictQHda(S) {
+  const i = S.ictQ;
+  if (!i.crono && !i.colestase.length && !i.gravidade.length && !i.colangite.length && !i.toxicos.length) return '';
+  let out = 'Paciente apresenta desenvolvimento de icterícia';
+  if (i.crono) out += ` com padrão cronológico de surgimento ${i.crono.toLowerCase()}`;
+  if (i.colestase.length) out += `. Aponta para sinais de estase biliar associados, cursando com ${joinAnd(i.colestase).toLowerCase()}`;
+  if (i.colangite.length) out += `. Investigando possíveis complicações inflamatórias da via biliar, observa-se presença de ${joinAnd(i.colangite).toLowerCase()}`;
+  if (i.gravidade.length) out += `. As manifestações sistêmicas atreladas a uma provável injúria hepática incluem ${joinAnd(i.gravidade).toLowerCase()}`;
+  if (i.toxicos.length) out += `. Informa ainda exposição ou fatores de risco para hepatotoxicidade como ${joinAnd(i.toxicos).toLowerCase()}`;
+  return out + '.';
 }
 function ictQAfter(S){
  const i=S.ictQ;let out='';
@@ -7384,16 +7358,15 @@ const VER_DURACAO=['Crises curtas em segundos desencadeadas por movimentação c
 const VER_REDFLAGS=['Ataxia de tronco severa (incapaz de sentar-se ou deambular sem apoio)','Diplopia aguda','Disartria / fala arrastada','Disfagia aguda','Assimetria facial / paresia de hemiface','Cefaleia occipital súbita intensa','Ausência de déficits neurológicos focais de fossa posterior'];
 const VER_AUDITIVO=['Hipoacusia unilateral súbita associada','Plenitude auricular / zumbido intenso','Náuseas e vômitos repetidos incapacitantes','Sem queixas auditivas'];
 
-function verHda(S){
- const v=S.ver;
- if(!v.tipo&&!v.duracao&&!v.redflags.length&&!v.auditivo.length)return '';
- let out='';
- if(v.tipo) out+=`. Apresenta quadro de tontura caracterizada por ${v.tipo.toLowerCase()}`;
- else out+=`. Apresenta quadro de tontura/vertigem`;
- if(v.duracao) out+=`, de curso temporal ${v.duracao.toLowerCase()}`;
- if(v.redflags.length) out+=`. Rastreio de sinais centrais e de fossa posterior: ${v.redflags.join(', ').toLowerCase()}`;
- if(v.auditivo.length) out+=`. Sintomas auditivos e autonômicos associados: ${v.auditivo.join(', ').toLowerCase()}`;
- return out;
+function verHda(S) {
+  const v = S.ver;
+  if (!v.tipo && !v.duracao && !v.redflags.length && !v.auditivo.length) return '';
+  let out = 'Paciente admitido com queixa de tontura';
+  if (v.tipo) out += `, melhor detalhada como ${v.tipo.toLowerCase()}`;
+  if (v.duracao) out += `. O sintoma tem se apresentado de forma ${v.duracao.toLowerCase()}`;
+  if (v.redflags.length) out += `. Durante a pesquisa por disfunções de tronco encefálico e cerebelo, evidenciou-se ${joinAnd(v.redflags).toLowerCase()}`;
+  if (v.auditivo.length) out += `. Queixa-se paralelamente de repercussões neuro-otológicas, caracterizadas por ${joinAnd(v.auditivo).toLowerCase()}`;
+  return out + '.';
 }
 function verAfter(S){
  const v=S.ver;let out='';
@@ -7424,16 +7397,15 @@ const PAL_INICIO=['Início e término súbitos e paroxísticos ("em liga-desliga
 const PAL_INSTAB=['Síncope franca durante as palpitações','Pré-síncope / lipotimia / tontura intensa','Dor precordial anginosa concomitante','Dispneia aguda com sensação de asfixia','Ausência de sinais de instabilidade hemodinâmica'];
 const PAL_GATILHOS=['Uso excessivo de cafeína / energéticos / estimulantes','Consumo abusivo de álcool nas horas precedentes','Uso de drogas ilícitas (cocaína / anfetaminas)','Histórico de cardiopatia arritmogênica ou cirurgia prévia','Histórico familiar de arritmia grave / morte súbita precoce','Sem fatores desencadeantes identificados'];
 
-function palQHda(S){
- const p=S.palQ;
- if(!p.ritmo&&!p.inicio&&!p.instab.length&&!p.gatilhos.length)return '';
- let out='';
- if(p.ritmo) out+=`. Apresenta palpitações referidas como ${p.ritmo.toLowerCase()}`;
- else out+=`. Apresenta queixa de palpitações`;
- if(p.inicio) out+=`, de início e término ${p.inicio.toLowerCase()}`;
- if(p.instab.length) out+=`. Avaliação direcionada de sinais de instabilidade hemodinâmica: ${p.instab.join(', ').toLowerCase()}`;
- if(p.gatilhos.length) out+=`. Gatilhos adrenérgicos, antecedentes e fatores de risco: ${p.gatilhos.join(', ').toLowerCase()}`;
- return out;
+function palQHda(S) {
+  const p = S.palQ;
+  if (!p.ritmo && !p.inicio && !p.instab.length && !p.gatilhos.length) return '';
+  let out = 'Paciente refere episódios de palpitações';
+  if (p.ritmo) out += `, sentindo os batimentos cardíacos com padrão de ${p.ritmo.toLowerCase()}`;
+  if (p.inicio) out += `. Os ataques costumam ter início e término ${p.inicio.toLowerCase()}`;
+  if (p.instab.length) out += `. O evento foi acompanhado de sinais de instabilidade, a saber: ${joinAnd(p.instab).toLowerCase()}`;
+  if (p.gatilhos.length) out += `. Entre os potenciais gatilhos e histórico desencadeante, inclui-se ${joinAnd(p.gatilhos).toLowerCase()}`;
+  return out + '.';
 }
 function palQAfter(S){
  const p=S.palQ;let out='';
@@ -7464,20 +7436,19 @@ const EDM_FLOGOSE=['Dor e empastamento muscular da panturrilha à palpação pro
 const EDM_WELLS=['Cirurgia de grande porte realizada nas últimas 12 semanas','Imobilização no leito > 3 dias ou viagem aérea recente prolongada','Neoplasia ativa em tratamento nos últimos 6 meses','Histórico pessoal prévio de TVP ou TEP','Uso de terapia de reposição hormonal ou anticoncepcional oral','Sem fatores de risco para tromboembolismo venoso'];
 const EDM_TORACICOS=['Dispneia súbita associada','Dor torácica de caráter pleurítico (ventilatório-dependente)','Tosse com expectoração hemoptoica','Ausência de queixas respiratórias ou torácicas (nega sinais de TEP)'];
 
-function edmHda(S){
- const e=S.edm;
- if(!e.lat&&!e.flogose.length&&!e.wells.length&&!e.toracicos.length)return '';
- let out='';
- if(e.lat) out+=`. Apresenta edema / dor em membros inferiores com padrão ${e.lat.toLowerCase()}`;
- else out+=`. Apresenta edema / dor em membros inferiores`;
- if(e.flogose.length) out+=`. Sinais flogísticos e características ao exame local: ${e.flogose.join(', ').toLowerCase()}`;
- if(e.wells.length) out+=`. Fatores de risco clínicos avaliados: ${e.wells.join(', ').toLowerCase()}`;
- if(e.toracicos.length) out+=`. Rastreio de repercussão torácica e suspeita de TEP: ${e.toracicos.join(', ').toLowerCase()}`;
- if(S.wellsTvp&&S.wellsTvp.evaluated){
-  const wSc=wellsTvpSc();
-  out+=`. Escore de Wells para TVP: ${wSc} pontos (${wellsTvpInterp(wSc)})`;
- }
- return out;
+function edmHda(S) {
+  const e = S.edm;
+  if (!e.lat && !e.flogose.length && !e.wells.length && !e.toracicos.length) return '';
+  let out = 'Paciente procura o serviço por surgimento de edema e dor em membros inferiores';
+  if (e.lat) out += `, apresentando assimetria com acometimento predominantemente ${e.lat.toLowerCase()}`;
+  if (e.flogose.length) out += `. A avaliação local corrobora a presença de sinais sugestivos, como ${joinAnd(e.flogose).toLowerCase()}`;
+  if (e.wells.length) out += `. Ao analisar os fatores predisponentes para tromboembolismo venoso, constatou-se ${joinAnd(e.wells).toLowerCase()}`;
+  if (e.toracicos.length) out += `. O quadro manifesta-se concomitantemente com sintomas respiratórios atípicos, incluindo ${joinAnd(e.toracicos).toLowerCase()}`;
+  if (S.wellsTvp && S.wellsTvp.evaluated) {
+    const wSc = wellsTvpSc();
+    out += `. Escore de Wells para TVP avaliado em ${wSc} pontos, classificado como ${wellsTvpInterp(wSc)}`;
+  }
+  return out + '.';
 }
 function edmAfter(S){
  const e=S.edm;let out='';
@@ -9948,18 +9919,22 @@ function buildHDA(){
  if(['Vaga Zero','Transferência'].includes(S.orig)){
   origText=`proveniente de ${S.orig.toLowerCase()}${S.origInst?' da instituição '+S.origInst:''}${S.origMotivo?' por motivo de '+S.origMotivo:''}`;
  }else{origText=`via ${S.orig}`;}
- let hda=`Paciente admitido(a) ${origText}, com queixa de ${S.queixa}${S.queixa==='Intoxicação exógena'&&S.itDrug?' (substâncias suspeitas: '+S.itDrug+')':''}`;
- if(S.tempo)hda+=`, com início há ${S.tempo}`;
- if(QX_HDA[S.queixa])hda+=QX_HDA[S.queixa](S);
- else if(S.caract.length)hda+=`. ${S.caract.join(', ').toLowerCase()}`;
- hda = hda.replace(/[;,\.\s]+$/, '') + '.';
- return `${_sep()}\nHDA\n${hda}`;
+ let hda=`Paciente admitido(a) ${origText}, apresentando queixa principal de ${S.queixa}${S.queixa==='Intoxicação exógena'&&S.itDrug?' (substâncias suspeitas: '+S.itDrug+')':''}`;
+ if(S.tempo)hda+=`, referindo início dos sintomas há ${S.tempo}`;
+ hda+='.';
+ if(QX_HDA[S.queixa]){
+  hda+=' '+QX_HDA[S.queixa](S).replace(/^\.\s*/,'').trim();
+ }else if(S.caract.length){
+  hda+=` Relata ainda as seguintes características: ${joinAnd(S.caract.map(x=>x.toLowerCase()))}.`;
+ }
+ hda=hda.replace(/\s+/g,' ').replace(/\s+\./g,'.').replace(/\.\.+/g,'.').trim();
+ return `${_sep()}\n# HISTÓRIA DA DOENÇA ATUAL (HDA)\n${hda}`;
 }
 function buildAntecedentes(){
  const extraHpp=QX_HPP[S.queixa]?QX_HPP[S.queixa](S):[];
  const allHpp=[...S.hpp,...extraHpp].map(h=>h==='Neo'?'Neoplasia':h);
- const hab=S.tab||S.etil||S.drog?'\nHábitos: '+[S.tab&&'Tabagismo: '+S.tab,S.etil&&'Etilismo: '+S.etil,S.drog&&'Drogas: '+S.drog].filter(Boolean).join(' | '):'';
- return `${_sep()}\nANTECEDENTES\nHPP: ${allHpp.join(', ')||'Nega'} | MUC: ${S.muc||'Nega'} | Alergias: ${S.ale}${hab}`;
+ const hab=S.tab||S.etil||S.drog?'\n- Hábitos: '+[S.tab&&'Tabagismo: '+S.tab,S.etil&&'Etilismo: '+S.etil,S.drog&&'Drogas: '+S.drog].filter(Boolean).join(' | '):'';
+ return `${_sep()}\n# ANTECEDENTES & HISTÓRICO\n- HPP: ${allHpp.join(', ')||'Nega'}\n- MUC: ${S.muc||'Nega'}\n- Alergias: ${S.ale}${hab}`;
 }
 function buildVitais(){
  const va=vA();
@@ -9967,16 +9942,39 @@ function buildVitais(){
  const n2Str=n2?` | NEWS2: ${n2.score} pts (${n2.nivelLabel})`:'';
  const alerts=va.length?'\n⚠ ALERTAS: '+va.join(' | '):'';
  const sepseWarn=(n2&&(n2.nivel==='alto'||n2.nivel==='medio'))?`\n⚠ ALERTA CLÍNICO (NEWS2 ${n2.score} pts): Cogitar Sepse / Deterioração aguda (SSC 2021)`:'';
- return `${_sep()}\nSINAIS VITAIS\nFC: ${S.fc||'—'} bpm | SatO2: ${S.sat||'—'}% | PA: ${S.pa||'—'} mmHg | FR: ${S.fr||'—'} irpm | Temp: ${S.temp||'—'}°C | Gli: ${S.gli||'—'} mg/dL${S.peso?' | Peso: '+S.peso+' kg':''}${S.eva!==''&&S.eva!==null?' | EVA: '+S.eva+'/10':''}${n2Str}${alerts}${sepseWarn}`;
+ return `${_sep()}\n# SINAIS VITAIS DE ENTRADA\n- FC: ${S.fc||'—'} bpm | SatO2: ${S.sat||'—'}% | PA: ${S.pa||'—'} mmHg | FR: ${S.fr||'—'} irpm | Temp: ${S.temp||'—'}°C | Glicemia: ${S.gli||'—'} mg/dL${S.peso?' | Peso: '+S.peso+' kg':''}${S.eva!==''&&S.eva!==null?' | EVA: '+S.eva+'/10':''}${n2Str}${alerts}${sepseWarn}`;
 }
 function buildEF(){
  const g=gcs();
  let ef='';
- if(S.ef==='amb'){ef=`Geral: ${S.amb.g||'—'} | CV: ${S.amb.cv||'—'} | Resp: ${S.amb.re||'—'} | Abd: ${S.amb.ab||'—'} | Neuro: ${S.amb.ne||'—'} | Pele: ${S.amb.pe||'—'}`;}
- else if(S.ef==='crit'){const a=S.abc;ef=`A: VA ${a.va.toLowerCase()}, fonação ${a.fon.toLowerCase()}. Colar: ${a.col.toLowerCase()}.\nB: Expansibilidade ${a.exp.toLowerCase()}, MV ${a.mv.toLowerCase()}. ${a.esf.join(', ')||'—'}. Ruídos: ${a.rud.join(', ')||'ausentes'}.\nC: TEC ${a.tec}. ${a.aus.join(', ')||'—'}. Pulsos ${a.pul.toLowerCase()}. Abdome: ${a.abd.join(', ')||'—'}.\nD: GCS ${g}/15 (O:${a.ao} V:${a.rv} M:${a.rm}) — ${gcsL(g)}. Pupilas ${a.pup.toLowerCase()}. Déficits: ${a.def.join(', ')||'ausentes'}.\nE: Edema MMII ${a.ede.toLowerCase()}${a.ede==='Presente'?' ('+a.cac.toLowerCase()+')':''}. Pele: ${a.pel.join(', ')||'sem alterações'}.`;}
- if(QX_EF_TEXT[S.queixa]){const extra=QX_EF_TEXT[S.queixa](S);if(extra)ef+=(ef?'\n':'')+extra;}
+ if(S.ef==='amb'){
+  ef=`- Estado Geral: ${S.amb.g||'—'}\n`+
+     `- Aparelho Cardiovascular (ACV): ${S.amb.cv||'—'}\n`+
+     `- Aparelho Respiratório (AR): ${S.amb.re||'—'}\n`+
+     `- Abdome: ${S.amb.ab||'—'}\n`+
+     `- Neurológico: ${S.amb.ne||'—'}\n`+
+     `- Extremidades & Pele: ${S.amb.pe||'—'}`;
+ } else if(S.ef==='crit'){
+  const a=S.abc;
+  const esfStr=a.esf&&a.esf.length?`Sinais de esforço: ${a.esf.join(', ').toLowerCase()}. `:'' ;
+  const ruidosStr=a.rud&&a.rud.length?`Ruídos adventícios: ${a.rud.join(', ').toLowerCase()}`:'Ruídos adventícios ausentes';
+  const ausStr=a.aus&&a.aus.length?a.aus.join(', '):'Bulhas normofonéticas';
+  const defStr=a.def&&a.def.length?`Déficits: ${a.def.join(', ')}`:'Sem déficits focais';
+  const edeStr=a.ede==='Presente'?`Edema MMII: Presente (${a.cac.toLowerCase()}). `: 'Edema MMII: Ausente. ';
+  ef=`- A (Vias Aéreas & Cervical): VA ${a.va.toLowerCase()}, fonação ${a.fon.toLowerCase()}. Colar cervical: ${a.col.toLowerCase()}.\n`+
+     `- B (Respiração & Ventilação): Expansibilidade ${a.exp.toLowerCase()}, MV ${a.mv.toLowerCase()}. ${esfStr}${ruidosStr}.\n`+
+     `- C (Circulação & Perfusão): TEC ${a.tec}. ${ausStr}. Pulsos ${a.pul.toLowerCase()}. Abdome: ${a.abd.join(', ')||'sem alterações'}.\n`+
+     `- D (Disfunção Neurológica): GCS ${g}/15 (O:${a.ao} V:${a.rv} M:${a.rm}) — ${gcsL(g)}. Pupilas ${a.pup.toLowerCase()}. ${defStr}.\n`+
+     `- E (Exposição & Térmico): ${edeStr}Pele: ${a.pel.join(', ')||'sem alterações'}.`;
+ }
+ if(QX_EF_TEXT[S.queixa]){
+  const extra=QX_EF_TEXT[S.queixa](S);
+  if(extra){
+   ef+=(ef?'\n':'')+`- Exame Específico (${S.queixa}): `+extra.replace(/^.*?[:\-\s]+/,'');
+  }
+ }
  const tipo=S.ef==='amb'?'Ambulatorial':S.ef==='crit'?'Crítico ABCDE':'não selecionado';
- return `${_sep()}\nEXAME FÍSICO (${tipo})\n${ef}`;
+ return `${_sep()}\n# EXAME FÍSICO (${tipo})\n${ef}`;
 }
 function buildPredictiveScores(){
  const lines=[];
