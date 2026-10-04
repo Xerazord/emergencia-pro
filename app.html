@@ -401,6 +401,65 @@ textarea{resize:vertical;min-height:60px}
  .desktop-hide-relcard{display:none}
 }
 
+/* ── Tríade de Cópia para o PEP (Barra Direita & Mobile) ── */
+.rel-col-txt-wrap{position:relative;flex:1;min-height:0;display:flex;flex-direction:column}
+.rel-section-copy-overlay{
+ position:absolute;
+ top:8px;
+ right:10px;
+ display:flex;
+ gap:4px;
+ z-index:10;
+ opacity:0.38;
+ transition:opacity .2s ease, box-shadow .2s ease;
+ background:rgba(255,255,255,0.92);
+ backdrop-filter:blur(6px);
+ -webkit-backdrop-filter:blur(6px);
+ padding:3px 6px;
+ border-radius:20px;
+ border:.5px solid rgba(0,0,0,0.12);
+ box-shadow:0 2px 6px rgba(0,0,0,0.06);
+}
+.rel-col-txt-wrap:hover .rel-section-copy-overlay,
+.rel-col-txt-wrap:focus-within .rel-section-copy-overlay,
+.rel-section-copy-overlay:hover{
+ opacity:1;
+ box-shadow:0 3px 10px rgba(0,0,0,0.14);
+}
+.pep-copy-btn{
+ background:transparent;
+ border:none;
+ padding:3px 7px;
+ font-size:11px;
+ font-weight:600;
+ color:#374151;
+ border-radius:12px;
+ cursor:pointer;
+ display:inline-flex;
+ align-items:center;
+ gap:4px;
+ white-space:nowrap;
+ transition:all .15s ease;
+}
+.pep-copy-btn:hover{
+ background:#eff6ff;
+ color:#1d4ed8;
+}
+.pep-copy-btn-all{
+ background:#f0fdf4;
+ color:#15803d;
+}
+.pep-copy-btn-all:hover{
+ background:#dcfce7;
+ color:#166534;
+}
+.s5-pep-copy-bar{
+ display:flex;
+ gap:6px;
+ margin-bottom:8px;
+ flex-wrap:wrap;
+}
+
 /* ── Hierarquia Visual das Condutas (Cores padronizadas) ── */
 .csec-sup{border-left:4px solid #dc2626}
 .csec-inv{border-left:4px solid #16a34a}
@@ -751,7 +810,15 @@ textarea{resize:vertical;min-height:60px}
      <span class="ro" id="relModeResumoBtn" onclick="S.relMode='resumo';render()"><i class="ti ti-list" aria-hidden="true"></i> Resumo</span>
     </div>
    </div>
-   <textarea id="relColTxt" class="rel-col-textarea" spellcheck="false"></textarea>
+   <div class="rel-col-txt-wrap">
+    <div class="rel-section-copy-overlay" title="Copiar seções prontas para colar no PEP">
+     <button type="button" class="pep-copy-btn" onclick="copyPepSection('anamnese')" title="Copiar Anamnese: Identificação + HDA + Antecedentes"><i class="ti ti-clipboard" aria-hidden="true"></i> Anamnese</button>
+     <button type="button" class="pep-copy-btn" onclick="copyPepSection('ef')" title="Copiar Exame Físico: Sinais Vitais + Exame Físico + ECG/POCUS"><i class="ti ti-clipboard" aria-hidden="true"></i> Exame Físico</button>
+     <button type="button" class="pep-copy-btn" onclick="copyPepSection('conduta')" title="Copiar Conduta: Hipótese + Ordens/Prescrição + Pendências"><i class="ti ti-clipboard" aria-hidden="true"></i> Conduta</button>
+     <button type="button" class="pep-copy-btn pep-copy-btn-all" onclick="copyPepSection('tudo')" title="Copiar Prontuário Completo"><i class="ti ti-copy" aria-hidden="true"></i> Tudo</button>
+    </div>
+    <textarea id="relColTxt" class="rel-col-textarea" spellcheck="false"></textarea>
+   </div>
    <div class="rel-col-actions">
     <button class="btng" onclick="copyRelCol()"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
     
@@ -6237,18 +6304,17 @@ function cefAlarmBadge(){
 function cefHda(S) {
   const c = S.cef;
   if (!c.inicio && !c.loc.length && !c.qual.length && !c.modif.length && !c.precip.length && !c.assoc.length && !c.alarm.length) return '';
-  let out = 'Paciente refere quadro de cefaleia';
-  if (c.inicio) out += ` com instalação ${c.inicio.toLowerCase()}`;
-  if (c.loc.length || c.qual.length) {
-    const l = c.loc.length ? `localizada em ${joinAnd(c.loc).toLowerCase()}` : '';
-    const q = c.qual.length ? `de caráter ${joinAnd(c.qual).toLowerCase()}` : '';
-    out += `. Descreve a dor como ${[l, q].filter(Boolean).join(', ')}`;
-  }
+  const car = [];
+  if (c.inicio) car.push(`com instalação ${c.inicio.toLowerCase()}`);
+  if (c.loc.length) car.push(`localizada em ${joinAnd(c.loc).toLowerCase()}`);
+  if (c.qual.length) car.push(`de caráter ${joinAnd(c.qual).toLowerCase()}`);
+
+  let out = car.length ? `caracterizada por cefaleia ${joinAnd(car)}` : 'apresentando cefaleia';
   if (c.precip.length || c.modif.length) {
     const m = [];
     if (c.precip.length) m.push(`desencadeada por ${joinAnd(c.precip).toLowerCase()}`);
-    if (c.modif.length) m.push(`tendo como fatores modificadores: ${joinAnd(c.modif).toLowerCase()}`);
-    out += `. Relata que a crise é ${joinAnd(m)}`;
+    if (c.modif.length) m.push(`com fatores modificadores: ${joinAnd(c.modif).toLowerCase()}`);
+    out += `. Relata crise ${joinAnd(m)}`;
   }
   if (c.assoc.length) {
     let s = joinAnd(c.assoc).toLowerCase();
@@ -6258,10 +6324,22 @@ function cefHda(S) {
     if (c.descr.conv) d.push(`convulsão: ${c.descr.conv}`);
     if (c.descr.sinc) d.push(`síncope: ${c.descr.sinc}`);
     if (d.length) s += ` (${d.join('; ')})`;
-    out += `. Ao interrogatório direcionado, informa sintomas associados como ${s}`;
+    out += `. Ao interrogatório sintomático, relata ${s}`;
   }
-  if (c.alarm.length) out += `. Durante a triagem de red flags, constata-se a presença de ${joinAnd(c.alarm).toLowerCase()}`;
-  return out + '.';
+  if (c.alarm.length) out += `. Sinais de alerta presentes: ${joinAnd(c.alarm).toLowerCase()}`;
+
+  // Negações ativas
+  const unselected = [];
+  const alSet = (c.alarm || []).map(x => x.toLowerCase());
+  const asSet = (c.assoc || []).map(x => x.toLowerCase());
+  if (!alSet.includes('início súbito / pico em segundos ("trovoada" - hsa)')) unselected.push('instalação em trovoada (thunderclap)');
+  if (!asSet.includes('febre') && !alSet.includes('febre associada')) unselected.push('febre');
+  if (!alSet.includes('déficit neurológico focal')) unselected.push('déficits neurológicos focais');
+  if (!asSet.includes('crise convulsiva') && !alSet.includes('crise convulsiva')) unselected.push('crises epilépticas');
+  if (!asSet.includes('síncope')) unselected.push('síncope');
+  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+
+  return out;
 }
 function cefHpp(S){return S.cef.antec.slice();}
 
@@ -6345,22 +6423,33 @@ const DSP_EF_SINAIS_CV=['Turgência jugular','Galope (B3)','Edema MMII com cacif
 function dspHda(S) {
   const d = S.dsp;
   if (!d.inicio && !d.padrao.length && !d.modif.length && !d.assocCV.length && !d.assocResp.length && !d.assocInf.length && !d.ctx.length) return '';
-  let out = 'Paciente relata quadro de dispneia';
-  if (d.inicio) out += ` de instalação ${d.inicio.toLowerCase()}`;
+  const car = [];
+  if (d.inicio) car.push(`de instalação ${d.inicio.toLowerCase()}`);
   if (d.padrao.length) {
     const pad = d.padrao.map(p => {
       const pl = p.toLowerCase();
       if (pl.startsWith('ortopneia') || pl.startsWith('dispneia')) return pl;
-      return `com padrão de ${pl}`;
+      return `padrão de ${pl}`;
     });
-    out += `. O sintoma manifesta-se ${joinAnd(pad)}`;
+    car.push(`com ${joinAnd(pad)}`);
   }
-  if (d.modif.length) out += `. Refere como fatores modificadores ou posturais de alívio: ${joinAnd(d.modif).toLowerCase()}`;
+  let out = car.length ? `caracterizada por dispneia ${joinAnd(car)}` : 'apresentando dispneia';
+  if (d.modif.length) out += `. Refere fatores modificadores ou posturais de alívio: ${joinAnd(d.modif).toLowerCase()}`;
   const assoc = [...d.assocCV, ...d.assocResp, ...d.assocInf];
-  if (assoc.length) out += `. Adicionalmente, queixa-se de ${joinAnd(assoc).toLowerCase()}`;
-  if (d.ctx.length) out += `. Destaca-se no contexto clínico o histórico de ${joinAnd(d.ctx).toLowerCase()}`;
-  if (S.wellsTep && S.wellsTep.evaluated) out += `. O escore de Wells para TEP foi calculado em ${wellsTepSc().toFixed(1)} pontos (${wellsTepInterp(wellsTepSc())})`;
-  return out + '.';
+  if (assoc.length) out += `. Ao interrogatório sintomático, relata ${joinAnd(assoc).toLowerCase()}`;
+  if (d.ctx.length) out += `. Destaca-se histórico relevante de ${joinAnd(d.ctx).toLowerCase()}`;
+
+  // Negações ativas
+  const unselected = [];
+  const cvSet = (d.assocCV || []).map(x => x.toLowerCase());
+  const respSet = (d.assocResp || []).map(x => x.toLowerCase());
+  if (!cvSet.includes('dor torácica anginosa')) unselected.push('dor torácica anginosa típica');
+  if (!cvSet.includes('síncope/pré-síncope')) unselected.push('síncope');
+  if (!respSet.includes('hemoptise')) unselected.push('hemoptise');
+  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+
+  if (S.wellsTep && S.wellsTep.evaluated) out += ` Escore de Wells para TEP: ${wellsTepSc().toFixed(1)} pts (${wellsTepInterp(wellsTepSc())}).`;
+  return out;
 }
 function dspEFText(S){
  if(S.ef!=='crit')return '';
@@ -6509,14 +6598,24 @@ function rCanadian(){
 function sincHda(S) {
   const s = S.sinc;
   if (!s.prod && !s.post && !s.gat.length && !s.car.length && !s.rec && !s.alar.length && !s.ante.length) return '';
-  let out = 'Paciente vítima de episódio sincopal';
-  if (s.post) out += `, ocorrido na postura ${s.post.toLowerCase()}`;
-  if (s.prod) out += `. Refere que o evento foi precedido por pródromos consistentes com ${s.prod.toLowerCase()}`;
-  if (s.gat.length) out += `. Aponta como prováveis gatilhos para o quadro: ${joinAnd(s.gat).toLowerCase()}`;
-  if (s.car.length) out += `. Segundo relatos de testemunhas, o episódio cursou com ${joinAnd(s.car).toLowerCase()}`;
-  if (s.rec) out += `. Apresentou um padrão de recuperação da consciência ${s.rec.toLowerCase()}`;
-  if (s.alar.length) out += `. A triagem de sinais de alarme cardiovasculares revelou: ${joinAnd(s.alar).toLowerCase()}`;
-  return out + '.';
+  let out = 'após episódio sincopal';
+  if (s.post) out += ` ocorrido na postura ${s.post.toLowerCase()}`;
+  if (s.prod) out += `, precedido por pródromos de ${s.prod.toLowerCase()}`;
+  if (s.gat.length) out += `. Gatilhos relatados: ${joinAnd(s.gat).toLowerCase()}`;
+  if (s.car.length) out += `. Segundo testemunhas, o evento cursou com ${joinAnd(s.car).toLowerCase()}`;
+  if (s.rec) out += `, com recuperação ${s.rec.toLowerCase()}`;
+  if (s.alar.length) out += `. Sinais de alarme relatados: ${joinAnd(s.alar).toLowerCase()}`;
+
+  // Negações ativas
+  const unselected = [];
+  const alSet = (s.alar || []).map(x => x.toLowerCase());
+  if (!alSet.some(x => x.includes('dor torácica'))) unselected.push('dor torácica precedente');
+  if (!alSet.some(x => x.includes('palpitações'))) unselected.push('palpitações prévias');
+  if (!alSet.some(x => x.includes('dispneia'))) unselected.push('dispneia aguda');
+  if (!alSet.some(x => x.includes('cefaleia'))) unselected.push('cefaleia súbita intensa');
+  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+
+  return out;
 }
 function sincHpp(S){return S.sinc.ante.slice();}
 function sincEFText(S){
@@ -6584,17 +6683,26 @@ function cvHasGrave(){const c=S.cv;return cvHasStatus()||c.alarm.some(a=>CV_GRAV
 function cvHda(S) {
   const c = S.cv;
   if (!c.inicio && !c.padrao.length && !c.dur && !c.pos.length && !c.evento.length && !c.alarm.length) return '';
-  let out = 'Paciente apresentou episódio convulsivo';
+  let out = 'após episódio convulsivo';
   if (c.inicio) {
     out += ` com início ${c.inicio.toLowerCase()}`;
-    if (c.inicio === 'Súbito com aura' && c.descrAura) out += ` (descrevendo a aura como ${c.descrAura.toLowerCase()})`;
+    if (c.inicio === 'Súbito com aura' && c.descrAura) out += ` (aura descrita como ${c.descrAura.toLowerCase()})`;
   }
-  if (c.padrao.length) out += `. O evento foi caracterizado por um padrão motor ${joinAnd(c.padrao).toLowerCase()}`;
-  if (c.dur) out += `, com duração estimada de ${c.dur.toLowerCase()}`;
-  if (c.evento.length) out += `. Relatos de terceiros confirmam achados durante o evento, tais como ${joinAnd(c.evento).toLowerCase()}`;
-  if (c.pos.length) out += `. No período pós-ictal, evoluiu com ${joinAnd(c.pos).toLowerCase()}`;
-  if (c.alarm.length) out += `. Destacam-se os seguintes sinais de alarme neurológicos: ${joinAnd(c.alarm).toLowerCase()}`;
-  return out + '.';
+  if (c.padrao.length) out += `, caracterizado por padrão motor ${joinAnd(c.padrao).toLowerCase()}`;
+  if (c.dur) out += ` e duração estimada de ${c.dur.toLowerCase()}`;
+  if (c.evento.length) out += `. Achados ictais presenciados: ${joinAnd(c.evento).toLowerCase()}`;
+  if (c.pos.length) out += `. No período pós-ictal, cursou com ${joinAnd(c.pos).toLowerCase()}`;
+  if (c.alarm.length) out += `. Sinais de alerta: ${joinAnd(c.alarm).toLowerCase()}`;
+
+  // Negações ativas
+  const unselected = [];
+  const alSet = (c.alarm || []).map(x => x.toLowerCase());
+  if (!alSet.some(x => x.includes('status'))) unselected.push('crises subentrantes sem recuperação da consciência');
+  if (!alSet.some(x => x.includes('febre'))) unselected.push('febre associada');
+  if (!alSet.some(x => x.includes('tce'))) unselected.push('trauma cranioencefálico prévio ao ictus');
+  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+
+  return out;
 }
 function cvHpp(S){return S.cv.antec.slice();}
 function cvBadge(){
@@ -6675,19 +6783,30 @@ const DT_SIN=['Diaforese fria profusa','Dispneia aguda concomitante','Sensação
 function dtHda(S) {
   const d = S.dt;
   if ((!d.loc || !d.loc.length) && !d.ini && !d.qual.length && !d.irr.length && !d.modif.length && !d.pal && !d.sem && !d.sin.length) return '';
-  let out = 'Paciente apresenta dor torácica';
   const car = [];
   if (d.loc && d.loc.length) car.push(`localizada predominantemente em ${joinAnd(d.loc).toLowerCase()}`);
+  if (d.qual && d.qual.length) car.push(`com caráter ${joinAnd(d.qual).toLowerCase()}`);
   if (d.ini) car.push(`de início ${d.ini.toLowerCase()}`);
-  if (d.qual.length) car.push(`com caráter ${joinAnd(d.qual).toLowerCase()}`);
-  if (d.irr.length) car.push(`com irradiação típica para ${joinAnd(d.irr).toLowerCase()}`);
-  if (car.length) out = `Paciente relata quadro de dor torácica ${joinAnd(car)}`;
+  if (d.irr && d.irr.length) car.push(`com irradiação para ${joinAnd(d.irr).toLowerCase()}`);
   
-  if (d.modif.length) out += `. Caracteriza os fatores de melhora e piora como: ${joinAnd(d.modif).toLowerCase()}`;
-  if (d.pal) out += `. À palpação parietal, a dor é descrita como ${d.pal.toLowerCase()}`;
+  let out = car.length ? `caracterizada por dor torácica ${joinAnd(car)}` : 'apresentando dor torácica';
+  if (d.modif && d.modif.length) out += `. Refere fatores modificadores como: ${joinAnd(d.modif).toLowerCase()}`;
+  if (d.pal) out += `. À palpação parietal, a dor é ${d.pal.toLowerCase()}`;
   if (d.sem) out += `. Em comparação com eventos prévios, refere que a dor é ${d.sem.toLowerCase()}`;
-  if (d.sin.length) out += `. Nega outras queixas, exceto por sintomas associados como ${joinAnd(d.sin).toLowerCase()}`;
-  return out + '.';
+  if (d.sin && d.sin.length) out += `. Ao interrogatório sintomático, relata ${joinAnd(d.sin).toLowerCase()}`;
+
+  // Negações ativas para respaldo médico-legal de Red Flags
+  const unselected = [];
+  const sSet = (d.sin || []).map(x => x.toLowerCase());
+  const iSet = (d.irr || []).map(x => x.toLowerCase());
+  const qSet = (d.qual || []).map(x => x.toLowerCase());
+  if (!iSet.includes('dorso interescapular') && !qSet.includes('dilacerante / rasgante (sugere dissecção)')) unselected.push('dor dilacerante ou interescapular migratória');
+  if (!sSet.includes('dispneia associada')) unselected.push('dispneia súbita');
+  if (!sSet.includes('síncope / pré-síncope')) unselected.push('síncope');
+  if (!sSet.includes('palpitações associadas')) unselected.push('palpitações');
+  if (unselected.length) out += `. Nega sintomas de alarme como ${joinAnd(unselected)}.`;
+
+  return out;
 }
 function isOcaActive(sState){
  const st = sState || (typeof S !== 'undefined' ? S : null);
@@ -6746,28 +6865,37 @@ const NEU_ANTICOAG=['Nega uso de anticoagulantes','Varfarina / Marevan em uso','
 function neuHda(S) {
   const n = S.neu;
   if (!n.tipoUvvb && !n.tempoUvvb && !n.janela && !n.motor.length && !n.lado && !n.linguagem.length && !n.fossa.length && !n.mimics.length && !n.anticoag.length) return '';
-  let out = 'Paciente é admitido com déficit neurológico focal agudo';
+  let out = 'apresentando déficit neurológico focal agudo';
   if (n.tipoUvvb === 'UVVB indeterminada / sem testemunhas') {
     out += ` de início não testemunhado (última vez visto bem indeterminada)`;
   } else if (n.tipoUvvb === 'Horário de UVVB exato e testemunhado') {
     out += `, com ictus presenciado e horário exato estabelecido${n.tempoUvvb ? ' há ' + n.tempoUvvb : ''}`;
   } else if (n.tipoUvvb === 'Wake-up stroke (UVVB antes de dormir)') {
-    out = `Paciente com quadro sugestivo de wake-up stroke, tendo ido dormir sem déficits${n.tempoUvvb ? ' há ' + n.tempoUvvb : ''}`;
+    out = `com quadro sugestivo de wake-up stroke (dormiu assintomático)${n.tempoUvvb ? ' há ' + n.tempoUvvb : ''}`;
   } else if (n.tempoUvvb) {
     out += `, com última vez visto bem há ${n.tempoUvvb}`;
   }
-  if (n.janela) out += `. No momento da avaliação, encontra-se em ${n.janela.toLowerCase()}`;
-  if (n.lado) out += `. A topografia dos achados clínicos sugere acometimento do ${n.lado.toLowerCase()}`;
-  if (n.motor.length) out += `. Ao exame direcionado, evidencia-se ${joinAnd(n.motor).toLowerCase()}`;
-  if (n.linguagem.length) out += `. Associadamente, nota-se o comprometimento de linguagem/pares cranianos, manifesto por ${joinAnd(n.linguagem).toLowerCase()}`;
-  if (n.fossa.length) out += `. Há presença de sinais de fossa posterior, incluindo ${joinAnd(n.fossa).toLowerCase()}`;
-  if (n.mimics.length) out += `. A investigação de mimics (diferenciais) evidenciou: ${joinAnd(n.mimics).toLowerCase()}`;
-  if (n.anticoag.length) out += `. Quanto ao risco de sangramento, refere ${joinAnd(n.anticoag).toLowerCase()}`;
+  if (n.janela) out += `. Encontra-se em ${n.janela.toLowerCase()}`;
+  if (n.lado) out += `. Topografia clínica compatível com acometimento do ${n.lado.toLowerCase()}`;
+  if (n.motor.length) out += `, cursando com ${joinAnd(n.motor).toLowerCase()}`;
+  if (n.linguagem.length) out += ` e ${joinAnd(n.linguagem).toLowerCase()}`;
+  if (n.fossa.length) out += `. Sinais de fossa posterior ou tronco: ${joinAnd(n.fossa).toLowerCase()}`;
+  if (n.mimics.length) out += `. Diferenciais e mimics checados: ${joinAnd(n.mimics).toLowerCase()}`;
+  if (n.anticoag.length) out += `. Status de anticoagulação e risco hemorrágico: ${joinAnd(n.anticoag).toLowerCase()}`;
+
+  // Negações ativas
+  const unselected = [];
+  const mimSet = (n.mimics || []).map(x => x.toLowerCase());
+  if (!mimSet.includes('crise epiléptica associada no início (mimic vs crise sintomática)')) unselected.push('crise convulsiva no ictus');
+  if (!mimSet.includes('cefaleia súbita intensa precedendo o déficit (sugere hsa / avch)')) unselected.push('cefaleia súbita em trovoada');
+  unselected.push('trauma cranioencefálico recente');
+  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+
   if (S.nihss && S.nihss.evaluated) {
     const nSc = nihssSc();
-    out += `. O escore NIHSS na admissão foi de ${nSc} pontos${nihssBreakdown()} (${nihssInterp(nSc)})`;
+    out += ` Escore NIHSS na admissão: ${nSc} pontos${nihssBreakdown()} (${nihssInterp(nSc)}).`;
   }
-  return out + '.';
+  return out;
 }
 
 function neuAfter(S){
@@ -6811,22 +6939,33 @@ const ABD_GIN=['DUM recente e habitual (sem atraso)','Atraso menstrual relatado'
 function abdHda(S) {
   const a = S.abdQ;
   if (!a.inicio && !a.loc.length && !a.fatores.length && !a.alarme.length && !a.gin.length && !a.dum) return '';
-  let out = 'Paciente refere quadro de dor abdominal';
-  if (a.inicio) out += ` com padrão de instalação ${a.inicio.toLowerCase()}`;
-  if (a.loc.length) out += `, localizando-se inicialmente em ${joinAnd(a.loc).toLowerCase()}`;
-  out += '.';
-  if (a.fatores.length) out += ` Descreve que o quadro exibe fatores modificadores como ${joinAnd(a.fatores).toLowerCase()}.`;
-  if (a.alarme.length) out += ` Relata ainda o surgimento de sinais de alarme associados, notadamente ${joinAnd(a.alarme).toLowerCase()}.`;
+  const car = [];
+  if (a.inicio) car.push(`com padrão de instalação ${a.inicio.toLowerCase()}`);
+  if (a.loc.length) car.push(`localizada em ${joinAnd(a.loc).toLowerCase()}`);
+
+  let out = car.length ? `caracterizada por dor abdominal ${joinAnd(car)}` : 'apresentando dor abdominal';
+  if (a.fatores.length) out += `. Refere fatores modificadores como: ${joinAnd(a.fatores).toLowerCase()}`;
+  if (a.alarme.length) out += `. Ao interrogatório sintomático, relata ${joinAnd(a.alarme).toLowerCase()}`;
+
+  // Negações ativas
+  const unselected = [];
+  const alSet = (a.alarme || []).map(x => x.toLowerCase());
+  if (!alSet.some(x => x.includes('febre'))) unselected.push('febre');
+  if (!alSet.some(x => x.includes('vômitos'))) unselected.push('vômitos fecalóides ou incoercíveis');
+  if (!alSet.some(x => x.includes('parada de eliminação') || x.includes('obstrução'))) unselected.push('parada de eliminação de gases ou fezes');
+  if (!alSet.some(x => x.includes('síncope'))) unselected.push('síncope');
+  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+
   if (S.sexo === 'F' && (a.gin.length || a.dum)) {
-    let g = 'Na anamnese ginecológica dirigida';
-    if (a.dum) g += `, informa DUM em ${a.dum}`;
-    if (a.gin.length) g += ` e aponta a presença de ${joinAnd(a.gin).toLowerCase()}`;
-    out += ` ${g}.`;
+    let g = 'Histórico ginecológico';
+    if (a.dum) g += `: DUM em ${a.dum}`;
+    if (a.gin.length) g += ` (${joinAnd(a.gin).toLowerCase()})`;
+    out += `. ${g}.`;
   }
-  if (S.alvarado && S.alvarado.evaluated) out += ` O escore de Alvarado calculou-se em ${alvaradoSc()}/10 pontos (${alvaradoInterp(alvaradoSc())}).`;
+  if (S.alvarado && S.alvarado.evaluated) out += ` Escore de Alvarado: ${alvaradoSc()}/10 pts (${alvaradoInterp(alvaradoSc())}).`;
   if (S.tokyo && S.tokyo.evaluated) {
     const tSt = tokyoStatus();
-    out += ` A aplicação dos critérios de Tokyo indica: ${tSt.text}.`;
+    out += ` Critérios de Tokyo: ${tSt.text}.`;
   }
   return out;
 }
@@ -6873,12 +7012,21 @@ const RNC_FUNC=['Totalmente independente prévio (atividades normais da vida di�
 function rncHda(S) {
   const r = S.rncQ;
   if (!r.instalacao && !r.contexto.length && !r.sinais.length && !r.funcional) return '';
-  let out = 'Paciente evolui com rebaixamento do nível de consciência';
+  let out = 'cursando com rebaixamento do nível de consciência';
   if (r.instalacao) out += ` de instalação ${r.instalacao.toLowerCase()}`;
-  if (r.contexto.length) out += `. Na investigação de precipitantes, observa-se contexto de ${joinAnd(r.contexto).toLowerCase()}`;
-  if (r.sinais.length) out += `. Ao exame físico e na história, constata-se a presença de ${joinAnd(r.sinais).toLowerCase()}`;
-  if (r.funcional) out += `. Familiares relatam que, previamente, o status funcional do paciente era ${r.funcional.toLowerCase()}`;
-  return out + '.';
+  if (r.contexto.length) out += `. Contexto clínico de ${joinAnd(r.contexto).toLowerCase()}`;
+  if (r.sinais.length) out += `. Ao exame e anamnese dirigida, constatam-se ${joinAnd(r.sinais).toLowerCase()}`;
+  if (r.funcional) out += `. Nível funcional prévio relatado: ${r.funcional.toLowerCase()}`;
+
+  // Negações ativas
+  const unselected = [];
+  const sSet = (r.sinais || []).map(x => x.toLowerCase());
+  const cSet = (r.contexto || []).map(x => x.toLowerCase());
+  if (!sSet.some(x => x.includes('crise'))) unselected.push('crises convulsivas presenciadas');
+  if (!cSet.some(x => x.includes('trauma'))) unselected.push('trauma cranioencefálico prévio conhecido');
+  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+
+  return out;
 }
 
 function rncAfter(S){
@@ -6959,24 +7107,24 @@ const TRM_ATIVAS=['Dor em coluna cervical','Dor torácica ventilatório-dependen
 function trmHda(S) {
   const t = S.trm;
   if (!t.mec && !t.altaEnergia.length && !t.protecao.length && !t.cena.length && !t.ativas.length) return '';
-  let out = 'Paciente deu entrada vítima de trauma';
+  let out = 'vítima de trauma';
   if (t.mec) out += ` decorrente de ${t.mec.toLowerCase()}`;
-  if (t.altaEnergia.length) out += `. A análise da cinemática revelou fatores de alta energia, como ${joinAnd(t.altaEnergia).toLowerCase()}`;
-  if (t.protecao.length) out += `. No momento do evento, relata-se uso de equipamentos de proteção como ${joinAnd(t.protecao).toLowerCase()}`;
-  if (t.cena.length) out += `. Durante o resgate pré-hospitalar, observou-se ${joinAnd(t.cena).toLowerCase()}`;
-  if (t.ativas.length) out += `. Na triagem inicial, as queixas ativas incluem ${joinAnd(t.ativas).toLowerCase()}`;
+  if (t.altaEnergia.length) out += `. Cinemática com fatores de alta energia: ${joinAnd(t.altaEnergia).toLowerCase()}`;
+  if (t.protecao.length) out += `. Dispositivos de proteção: ${joinAnd(t.protecao).toLowerCase()}`;
+  if (t.cena.length) out += `. Achados na cena/resgate: ${joinAnd(t.cena).toLowerCase()}`;
+  if (t.ativas.length) out += `. Queixas ativas na admissão: ${joinAnd(t.ativas).toLowerCase()}`;
   if (S.trmRules && S.trmRules.evaluated) {
     const parts = [];
-    if (S.trmRules.cchrPos) parts.push('Canadian CT Head de alto risco (TC de crânio indicada)');
+    if (S.trmRules.cchrPos) parts.push('Canadian CT Head de alto risco (TC crânio indicada)');
     else if (S.trmRules.cchrMed) parts.push('Canadian CT Head de risco médio (TC recomendada)');
     else parts.push('Canadian CT Head de baixo risco');
     if (S.trmRules.ccsrHigh || S.trmRules.ccsrLow) parts.push('Canadian C-Spine positivo (imagem cervical indicada)');
-    else parts.push('Canadian C-Spine negativo (liberação sem imagem)');
-    if (S.trmRules.nexusPos) parts.push('critérios NEXUS positivos (imagem indicada)');
+    else parts.push('Canadian C-Spine negativo');
+    if (S.trmRules.nexusPos) parts.push('critérios NEXUS positivos');
     else parts.push('critérios NEXUS de baixo risco');
-    out += `. A aplicação das regras de decisão clínica no trauma resultou em: ${joinAnd(parts)}`;
+    out += `. Decisão clínica: ${joinAnd(parts)}.`;
   }
-  return out + '.';
+  return out;
 }
 function trmAfter(S){
  const t=S.trm;let out='';
@@ -7013,13 +7161,13 @@ const AGI_PSIQ_HPP=['Transtorno afetivo bipolar conhecido','Esquizofrenia / tran
 function agiHda(S) {
   const a = S.agi;
   if (!a.evolucao && !a.padrao.length && !a.psicoticos.length && !a.organica.length && !a.psiqHpp.length) return '';
-  let out = 'Paciente apresenta quadro de agitação psicomotora';
-  if (a.evolucao) out += ` com padrão de evolução ${a.evolucao.toLowerCase()}`;
-  if (a.padrao.length) out += `. O comportamento é manifestado predominantemente por ${joinAnd(a.padrao).toLowerCase()}`;
-  if (a.psicoticos.length) out += `. O exame do estado mental evidencia sintomas como ${joinAnd(a.psicoticos).toLowerCase()}`;
-  if (a.organica.length) out += `. A triagem para causas orgânicas adjacentes indica ${joinAnd(a.organica).toLowerCase()}`;
-  if (a.psiqHpp.length) out += `. Em relação ao histórico psiquiátrico e uso de substâncias, nota-se ${joinAnd(a.psiqHpp).toLowerCase()}`;
-  return out + '.';
+  let out = 'apresentando quadro de agitação psicomotora';
+  if (a.evolucao) out += ` de evolução ${a.evolucao.toLowerCase()}`;
+  if (a.padrao.length) out += `, manifestada predominantemente por ${joinAnd(a.padrao).toLowerCase()}`;
+  if (a.psicoticos.length) out += `. Alterações do pensamento/sensopercepção: ${joinAnd(a.psicoticos).toLowerCase()}`;
+  if (a.organica.length) out += `. Rastreio de causas orgânicas: ${joinAnd(a.organica).toLowerCase()}`;
+  if (a.psiqHpp.length) out += `. Histórico psiquiátrico prévio: ${joinAnd(a.psiqHpp).toLowerCase()}`;
+  return out;
 }
 function agiAfter(S){
  const a=S.agi;let out='';
@@ -7055,17 +7203,25 @@ const TOS_RISCO=['Tabagismo ativo (fumante)','Ex-tabagista','Uso crônico de IEC
 function tosHda(S) {
   const t = S.tos;
   if (!t.tipo && !t.duracao && !t.padrao.length && !t.assoc.length && !t.risco.length) return '';
-  let out = 'Paciente refere quadro de tosse';
-  if (t.tipo) out += ` caracterizada como ${t.tipo.toLowerCase()}`;
-  if (t.duracao) out += `, apresentando evolução ${t.duracao.toLowerCase()}`;
-  if (t.padrao.length) out += `. Os episódios seguem um padrão de ${joinAnd(t.padrao).toLowerCase()}`;
-  if (t.assoc.length) out += `. O paciente descreve, associadamente, queixas de ${joinAnd(t.assoc).toLowerCase()}`;
-  if (t.risco.length) out += `. Entre os fatores de risco e exposições relevantes, cita-se ${joinAnd(t.risco).toLowerCase()}`;
+  let out = t.tipo ? `com tosse caracterizada como ${t.tipo.toLowerCase()}` : 'com queixa de tosse';
+  if (t.duracao) out += `, com evolução ${t.duracao.toLowerCase()}`;
+  if (t.padrao.length) out += `. Padrão temporal: ${joinAnd(t.padrao).toLowerCase()}`;
+  if (t.assoc.length) out += `. Ao interrogatório direcionado, relata ${joinAnd(t.assoc).toLowerCase()}`;
+  if (t.risco.length) out += `. Fatores de risco relevantes: ${joinAnd(t.risco).toLowerCase()}`;
+  
+  // Negações ativas
+  const unselected = [];
+  const asSet = (t.assoc || []).map(x => x.toLowerCase());
+  if (!asSet.includes('febre diária com calafrios')) unselected.push('febre com calafrios');
+  if (!asSet.includes('dispneia progressiva associada')) unselected.push('dispneia em repouso');
+  if (!t.tipo.toLowerCase().includes('hemoptise')) unselected.push('hemoptise franca');
+  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+
   if (S.psiPort && S.psiPort.evaluated) {
     const pSc = psiPortSc();
-    out += `. A gravidade da possível pneumonia (Escore PSI / PORT) soma ${pSc} pontos, classificada como ${psiPortClass(pSc)}`;
+    out += ` Escore PSI / PORT: ${pSc} pts (${psiPortClass(pSc)}).`;
   }
-  return out + '.';
+  return out;
 }
 function tosAfter(S){
  const t=S.tos;let out='';
@@ -7103,17 +7259,26 @@ const FEB_RISCO=['Imunossupressão / quimioterapia recente / corticoterapia','Di
 function febHda(S) {
   const f = S.feb;
   if (!f.afericao && !f.padrao && !f.foco.length && !f.alarme.length && !f.risco.length) return '';
-  let out = 'Paciente cursa com relato de estado febril';
-  if (f.afericao) out += `, descrito como ${f.afericao.toLowerCase()}${f.pico ? ' (tendo atingido pico de ' + f.pico + ' °C)' : ''}`;
-  if (f.padrao) out += `. A febre tem se mantido num padrão ${f.padrao.toLowerCase()}`;
-  if (f.foco.length) out += `. Na busca por focos infecciosos sintomáticos, foram identificados sintomas de provável origem em sistema ${joinAnd(f.foco).toLowerCase()}`;
-  if (f.alarme.length) out += `. Avaliando-se sinais sistêmicos de gravidade, observou-se ${joinAnd(f.alarme).toLowerCase()}`;
-  if (f.risco.length) out += `. Há histórico médico pertinente relacionado a ${joinAnd(f.risco).toLowerCase()}`;
+  let out = 'com relato de estado febril';
+  if (f.afericao) out += ` (${f.afericao.toLowerCase()}${f.pico ? ', pico de ' + f.pico + ' °C' : ''})`;
+  if (f.padrao) out += `, de padrão ${f.padrao.toLowerCase()}`;
+  if (f.foco.length) out += `. Rastreio de foco infeccioso aponta sintomas em sistema: ${joinAnd(f.foco).toLowerCase()}`;
+  if (f.alarme.length) out += `. Sinais de alarme sistêmico: ${joinAnd(f.alarme).toLowerCase()}`;
+  if (f.risco.length) out += `. Histórico e fatores de risco: ${joinAnd(f.risco).toLowerCase()}`;
+  
+  // Negações ativas
+  const unselected = [];
+  const alSet = (f.alarme || []).map(x => x.toLowerCase());
+  if (!alSet.some(x => x.includes('prostração'))) unselected.push('prostração intensa');
+  if (!alSet.some(x => x.includes('confusão') || x.includes('sonolência'))) unselected.push('rebaixamento de consciência ou confusão aguda');
+  if (!alSet.some(x => x.includes('petéquias') || x.includes('purpúricas'))) unselected.push('lesões purpúricas ou petéquias');
+  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+
   if (S.mascc && S.mascc.evaluated) {
     const mSc = masccSc();
-    out += `. O escore MASCC para neutropenia febril é de ${mSc}/26 pontos, interpretado como ${masccInterp(mSc)}`;
+    out += ` Escore MASCC: ${mSc}/26 pts (${masccInterp(mSc)}).`;
   }
-  return out + '.';
+  return out;
 }
 function febAfter(S){
  const f=S.feb;let out='';
@@ -7154,12 +7319,20 @@ const NAU_DESIDRAT=['Sede intensa e boca seca','Tontura postural ao levantar / l
 function nauHda(S) {
   const n = S.nau;
   if (!n.freq && !n.aspecto.length && !n.relacao.length && !n.desidrat.length) return '';
-  let out = 'Paciente relata quadro de náuseas e vômitos';
-  if (n.freq) out += `, ocorrendo em frequência e intensidade descritas como ${n.freq.toLowerCase()}`;
-  if (n.aspecto.length) out += `. O conteúdo emético tem aspecto predominantemente ${joinAnd(n.aspecto).toLowerCase()}`;
-  if (n.relacao.length) out += `. O sintoma guarda relação íntima com ${joinAnd(n.relacao).toLowerCase()}`;
-  if (n.desidrat.length) out += `. Sinais de depleção de volume ou impacto na aceitação hídrica mostram-se evidentes por ${joinAnd(n.desidrat).toLowerCase()}`;
-  return out + '.';
+  let out = 'caracterizada por náuseas e episódios de vômitos';
+  if (n.freq) out += ` ${n.freq.toLowerCase()}`;
+  if (n.aspecto.length) out += `, com aspecto predominantemente ${joinAnd(n.aspecto).toLowerCase()}`;
+  if (n.relacao.length) out += `. Relação cronológica: ${joinAnd(n.relacao).toLowerCase()}`;
+  if (n.desidrat.length) out += `. Estado de hidratação: ${joinAnd(n.desidrat).toLowerCase()}`;
+  
+  // Negações ativas
+  const unselected = [];
+  const asSet = (n.aspecto || []).map(x => x.toLowerCase());
+  if (!asSet.some(x => x.includes('sangue') || x.includes('hematêmese') || x.includes('borra'))) unselected.push('hematêmese ou borra de café');
+  if (!asSet.some(x => x.includes('fecaloide'))) unselected.push('odor ou aspecto fecaloide');
+  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+
+  return out;
 }
 function nauAfter(S){
  const n=S.nau;let out='';
@@ -7197,13 +7370,24 @@ const DIA_VOLEMIA=['Boa aceitação de líquidos por via oral','Sinais clínicos
 function diaHda(S) {
   const d = S.dia;
   if (!d.aspecto && !d.duracao && !d.assoc.length && !d.epidem.length && !d.volemia.length) return '';
-  let out = 'Paciente queixa-se de episódios de diarreia';
-  if (d.duracao) out += ` com duração ${d.duracao.toLowerCase()}`;
-  if (d.aspecto) out += `. As evacuações apresentam aspecto de ${d.aspecto.toLowerCase()}`;
-  if (d.assoc.length) out += `. Refere manifestações acompanhantes, tais como ${joinAnd(d.assoc).toLowerCase()}`;
-  if (d.epidem.length) out += `. Epidemiologicamente, relata histórico de ${joinAnd(d.epidem).toLowerCase()}`;
-  if (d.volemia.length) out += `. O balanço hídrico e sintomas de desidratação apontam para ${joinAnd(d.volemia).toLowerCase()}`;
-  return out + '.';
+  let out = 'apresentando episódios de diarreia';
+  if (d.duracao) out += ` de evolução ${d.duracao.toLowerCase()}`;
+  if (d.aspecto) out += `, com fezes de aspecto ${d.aspecto.toLowerCase()}`;
+  if (d.assoc.length) out += `. Manifestações acompanhantes: ${joinAnd(d.assoc).toLowerCase()}`;
+  if (d.epidem.length) out += `. Dados epidemiológicos: ${joinAnd(d.epidem).toLowerCase()}`;
+  if (d.volemia.length) out += `. Balanço hídrico: ${joinAnd(d.volemia).toLowerCase()}`;
+
+  // Negações ativas
+  const unselected = [];
+  if (!d.aspecto.toLowerCase().includes('sangue') && !d.aspecto.toLowerCase().includes('disenteria') && !d.aspecto.toLowerCase().includes('melena')) {
+    unselected.push('sangue macroscópico nas fezes (melena ou hematoquezia)');
+  }
+  const asSet = (d.assoc || []).map(x => x.toLowerCase());
+  if (!asSet.includes('febre diária associada com calafrios')) unselected.push('febre alta');
+  if (!asSet.includes('síncope ou pré-síncope ao evacuar')) unselected.push('síncope');
+  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+
+  return out;
 }
 function diaAfter(S){
  const d=S.dia;let out='';
@@ -7240,11 +7424,11 @@ const SAN_COAG=['Em uso regular de Varfarina / Marevan','Em uso de DOAC (Rivarox
 function sanHda(S) {
   const s = S.san;
   if (!s.sitio.length && !s.vol && !s.coag.length) return '';
-  let out = 'Paciente com registro de episódio hemorrágico';
-  if (s.sitio.length) out += `, apresentando sangramento ativo com exteriorização via trato ${joinAnd(s.sitio).toLowerCase()}`;
-  if (s.vol) out += `. O volume do sangramento foi estimado como ${s.vol.toLowerCase()}`;
-  if (s.coag.length) out += `. Questionado sobre fatores favorecedores de coagulopatia, indica ${joinAnd(s.coag).toLowerCase()}`;
-  return out + '.';
+  let out = 'apresentando sangramento ativo';
+  if (s.sitio.length) out += ` com exteriorização em ${joinAnd(s.sitio).toLowerCase()}`;
+  if (s.vol) out += `, de volume estimado como ${s.vol.toLowerCase()}`;
+  if (s.coag.length) out += `. Fatores hemostáticos e anticoagulação: ${joinAnd(s.coag).toLowerCase()}`;
+  return out;
 }
 function sanAfter(S){
  const s=S.san;let out='';
@@ -7276,11 +7460,20 @@ const LOM_ALARME=['Febre associada com calafrios (suspeita de pielonefrite/espon
 function lomHda(S) {
   const l = S.lom;
   if (!l.carac.length && !l.caudaEquina.length && !l.alarme.length) return '';
-  let out = 'Paciente com história de dor lombar agudizada';
-  if (l.carac.length) out += `, descrita especificamente como ${joinAnd(l.carac).toLowerCase()}`;
-  if (l.caudaEquina.length) out += `. Na triagem de sintomas compressivos radiculares, relata-se ${joinAnd(l.caudaEquina).toLowerCase()}`;
-  if (l.alarme.length) out += `. A pesquisa por sinais de alerta (red flags) orgânicos revelou ${joinAnd(l.alarme).toLowerCase()}`;
-  return out + '.';
+  let out = 'caracterizada por dor lombar';
+  if (l.carac.length) out += ` com padrão de ${joinAnd(l.carac).toLowerCase()}`;
+  if (l.caudaEquina.length) out += `. Rastreio de cauda equina: ${joinAnd(l.caudaEquina).toLowerCase()}`;
+  if (l.alarme.length) out += `. Sinais de alerta sistêmicos: ${joinAnd(l.alarme).toLowerCase()}`;
+
+  // Negações ativas
+  const unselected = [];
+  const ceSet = (l.caudaEquina || []).map(x => x.toLowerCase());
+  if (!ceSet.some(x => x.includes('sela'))) unselected.push('anestesia em sela');
+  if (!ceSet.some(x => x.includes('esfíncteres') || x.includes('incontinência') || x.includes('retenção'))) unselected.push('perda de controle esfincteriano');
+  if (!ceSet.some(x => x.includes('fraqueza') || x.includes('pé caído'))) unselected.push('fraqueza motora aguda em membros inferiores');
+  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+
+  return out;
 }
 function lomAfter(S){
  const l=S.lom;let out='';
@@ -7317,13 +7510,22 @@ const ICT_TOXICOS=['Ingestão de Paracetamol em dose excessiva','Uso de fitoter�
 function ictQHda(S) {
   const i = S.ictQ;
   if (!i.crono && !i.colestase.length && !i.gravidade.length && !i.colangite.length && !i.toxicos.length) return '';
-  let out = 'Paciente apresenta desenvolvimento de icterícia';
-  if (i.crono) out += ` com padrão cronológico de surgimento ${i.crono.toLowerCase()}`;
-  if (i.colestase.length) out += `. Aponta para sinais de estase biliar associados, cursando com ${joinAnd(i.colestase).toLowerCase()}`;
-  if (i.colangite.length) out += `. Investigando possíveis complicações inflamatórias da via biliar, observa-se presença de ${joinAnd(i.colangite).toLowerCase()}`;
-  if (i.gravidade.length) out += `. As manifestações sistêmicas atreladas a uma provável injúria hepática incluem ${joinAnd(i.gravidade).toLowerCase()}`;
-  if (i.toxicos.length) out += `. Informa ainda exposição ou fatores de risco para hepatotoxicidade como ${joinAnd(i.toxicos).toLowerCase()}`;
-  return out + '.';
+  let out = 'com quadro de icterícia';
+  if (i.crono) out += ` de surgimento ${i.crono.toLowerCase()}`;
+  if (i.colestase.length) out += `. Sinais de colestase associados: ${joinAnd(i.colestase).toLowerCase()}`;
+  if (i.colangite.length) out += `. Rastreio de colangite: ${joinAnd(i.colangite).toLowerCase()}`;
+  if (i.gravidade.length) out += `. Manifestações de disfunção hepática: ${joinAnd(i.gravidade).toLowerCase()}`;
+  if (i.toxicos.length) out += `. Fatores de risco / hepatotoxinas: ${joinAnd(i.toxicos).toLowerCase()}`;
+
+  // Negações ativas
+  const unselected = [];
+  const colSet = (i.colangite || []).map(x => x.toLowerCase());
+  const grSet = (i.gravidade || []).map(x => x.toLowerCase());
+  if (!colSet.some(x => x.includes('charcot') || x.includes('febre'))) unselected.push('febre com calafrios (Charcot)');
+  if (!grSet.some(x => x.includes('flapping') || x.includes('asterixe') || x.includes('encefalopatia') || x.includes('confusão'))) unselected.push('asterixe ou encefalopatia aparente');
+  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+
+  return out;
 }
 function ictQAfter(S){
  const i=S.ictQ;let out='';
@@ -7361,12 +7563,21 @@ const VER_AUDITIVO=['Hipoacusia unilateral súbita associada','Plenitude auricul
 function verHda(S) {
   const v = S.ver;
   if (!v.tipo && !v.duracao && !v.redflags.length && !v.auditivo.length) return '';
-  let out = 'Paciente admitido com queixa de tontura';
-  if (v.tipo) out += `, melhor detalhada como ${v.tipo.toLowerCase()}`;
-  if (v.duracao) out += `. O sintoma tem se apresentado de forma ${v.duracao.toLowerCase()}`;
-  if (v.redflags.length) out += `. Durante a pesquisa por disfunções de tronco encefálico e cerebelo, evidenciou-se ${joinAnd(v.redflags).toLowerCase()}`;
-  if (v.auditivo.length) out += `. Queixa-se paralelamente de repercussões neuro-otológicas, caracterizadas por ${joinAnd(v.auditivo).toLowerCase()}`;
-  return out + '.';
+  let out = 'com queixa de tontura / vertigem';
+  if (v.tipo) out += ` ${v.tipo.toLowerCase()}`;
+  if (v.duracao) out += `, com temporalidade ${v.duracao.toLowerCase()}`;
+  if (v.redflags.length) out += `. Rastreio de sinais de alarme centrais (tronco/cerebelo): ${joinAnd(v.redflags).toLowerCase()}`;
+  if (v.auditivo.length) out += `. Repercussões neurovegetativas e auditivas: ${joinAnd(v.auditivo).toLowerCase()}`;
+
+  // Negações ativas
+  const unselected = [];
+  const rfSet = (v.redflags || []).map(x => x.toLowerCase());
+  if (!rfSet.some(x => x.includes('ataxia'))) unselected.push('ataxia severa de tronco');
+  if (!rfSet.some(x => x.includes('diplopia'))) unselected.push('diplopia aguda');
+  if (!rfSet.some(x => x.includes('disartria'))) unselected.push('disartria');
+  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+
+  return out;
 }
 function verAfter(S){
  const v=S.ver;let out='';
@@ -7400,12 +7611,21 @@ const PAL_GATILHOS=['Uso excessivo de cafeína / energéticos / estimulantes','C
 function palQHda(S) {
   const p = S.palQ;
   if (!p.ritmo && !p.inicio && !p.instab.length && !p.gatilhos.length) return '';
-  let out = 'Paciente refere episódios de palpitações';
-  if (p.ritmo) out += `, sentindo os batimentos cardíacos com padrão de ${p.ritmo.toLowerCase()}`;
-  if (p.inicio) out += `. Os ataques costumam ter início e término ${p.inicio.toLowerCase()}`;
-  if (p.instab.length) out += `. O evento foi acompanhado de sinais de instabilidade, a saber: ${joinAnd(p.instab).toLowerCase()}`;
-  if (p.gatilhos.length) out += `. Entre os potenciais gatilhos e histórico desencadeante, inclui-se ${joinAnd(p.gatilhos).toLowerCase()}`;
-  return out + '.';
+  let out = 'com queixa de palpitações';
+  if (p.ritmo) out += `, percebidas como ${p.ritmo.toLowerCase()}`;
+  if (p.inicio) out += `, de início e término ${p.inicio.toLowerCase()}`;
+  if (p.instab.length) out += `. Sinais de instabilidade avaliados: ${joinAnd(p.instab).toLowerCase()}`;
+  if (p.gatilhos.length) out += `. Fatores desencadeantes: ${joinAnd(p.gatilhos).toLowerCase()}`;
+
+  // Negações ativas
+  const unselected = [];
+  const inSet = (p.instab || []).map(x => x.toLowerCase());
+  if (!inSet.some(x => x.includes('síncope'))) unselected.push('síncope franca');
+  if (!inSet.some(x => x.includes('dor precordial'))) unselected.push('dor precordial anginosa');
+  if (!inSet.some(x => x.includes('dispneia'))) unselected.push('dispneia aguda');
+  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+
+  return out;
 }
 function palQAfter(S){
  const p=S.palQ;let out='';
@@ -7439,16 +7659,25 @@ const EDM_TORACICOS=['Dispneia súbita associada','Dor torácica de caráter ple
 function edmHda(S) {
   const e = S.edm;
   if (!e.lat && !e.flogose.length && !e.wells.length && !e.toracicos.length) return '';
-  let out = 'Paciente procura o serviço por surgimento de edema e dor em membros inferiores';
-  if (e.lat) out += `, apresentando assimetria com acometimento predominantemente ${e.lat.toLowerCase()}`;
-  if (e.flogose.length) out += `. A avaliação local corrobora a presença de sinais sugestivos, como ${joinAnd(e.flogose).toLowerCase()}`;
-  if (e.wells.length) out += `. Ao analisar os fatores predisponentes para tromboembolismo venoso, constatou-se ${joinAnd(e.wells).toLowerCase()}`;
-  if (e.toracicos.length) out += `. O quadro manifesta-se concomitantemente com sintomas respiratórios atípicos, incluindo ${joinAnd(e.toracicos).toLowerCase()}`;
+  let out = 'com quadro de edema e dor em membros inferiores';
+  if (e.lat) out += `, com acometimento ${e.lat.toLowerCase()}`;
+  if (e.flogose.length) out += `. Achados locais de flogose: ${joinAnd(e.flogose).toLowerCase()}`;
+  if (e.wells.length) out += `. Risco de tromboembolismo venoso: ${joinAnd(e.wells).toLowerCase()}`;
+  if (e.toracicos.length) out += `. Repercussões torácicas: ${joinAnd(e.toracicos).toLowerCase()}`;
+
+  // Negações ativas
+  const unselected = [];
+  const trSet = (e.toracicos || []).map(x => x.toLowerCase());
+  if (!trSet.some(x => x.includes('dispneia'))) unselected.push('dispneia súbita');
+  if (!trSet.some(x => x.includes('dor torácica'))) unselected.push('dor torácica pleurítica');
+  if (!trSet.some(x => x.includes('hemoptoica'))) unselected.push('hemoptise');
+  if (unselected.length) out += `. Nega sintomas de TEP como ${joinAnd(unselected)}.`;
+
   if (S.wellsTvp && S.wellsTvp.evaluated) {
     const wSc = wellsTvpSc();
-    out += `. Escore de Wells para TVP avaliado em ${wSc} pontos, classificado como ${wellsTvpInterp(wSc)}`;
+    out += ` Escore de Wells para TVP: ${wSc} pts (${wellsTvpInterp(wSc)}).`;
   }
-  return out + '.';
+  return out;
 }
 function edmAfter(S){
  const e=S.edm;let out='';
@@ -10064,19 +10293,48 @@ function buildHeader(){
  return `# ADMISSÃO EM SALA DE EMERGÊNCIA\n- Paciente: ${S.nome||'Não informado'} | Sexo: ${S.sexo||'Não informado'} | Idade: ${S.idade} anos\n- Admissão: ${nowStr} | Origem: ${S.orig}${ori}`;
 }
 function buildHDA(){
- let origContext='';
+ const gen = S.sexo === 'F' ? 'Admitida' : S.sexo === 'M' ? 'Admitido' : 'Admitido(a)';
+ let origContext = '';
  if(['Vaga Zero','Transferência'].includes(S.orig)){
-  origContext=`proveniente de ${S.orig.toLowerCase()}${S.origInst?' da instituição '+S.origInst:''}${S.origMotivo?' por motivo de '+S.origMotivo:''}, `;
+  origContext = `proveniente de ${S.orig.toLowerCase()}${S.origInst ? ' da instituição ' + S.origInst : ''}${S.origMotivo ? ' por motivo de ' + S.origMotivo : ''}, `;
  }
- let hda=`Paciente ${origContext}apresentando queixa principal de ${S.queixa}${S.queixa==='Intoxicação exógena'&&S.itDrug?' (substâncias suspeitas: '+S.itDrug+')':''}`;
- if(S.tempo)hda+=`, referindo início dos sintomas há ${S.tempo}`;
- hda+='.';
+ const tempoStr = S.tempo ? ` com início dos sintomas há ${S.tempo}` : '';
+ const drugStr = S.queixa === 'Intoxicação exógena' && S.itDrug ? ` (substâncias suspeitas: ${S.itDrug})` : '';
+
+ let qxContent = '';
  if(QX_HDA[S.queixa]){
-  hda+=' '+QX_HDA[S.queixa](S).replace(/^\.\s*/,'').trim();
- }else if(S.caract.length){
-  hda+=` Relata ainda as seguintes características: ${joinAnd(S.caract.map(x=>x.toLowerCase()))}.`;
+  qxContent = QX_HDA[S.queixa](S).replace(/^\.\s*/, '').trim();
+ } else if(S.caract && S.caract.length){
+  qxContent = `caracterizada por ${joinAnd(S.caract.map(x=>x.toLowerCase()))}.`;
  }
- hda=hda.replace(/\s+/g,' ').replace(/\s+\./g,'.').replace(/\.\.+/g,'.').trim();
+
+ let hda = '';
+ if(qxContent){
+  // Normaliza e remove aberturas repetitivas como "Paciente relata...", "Paciente refere...", etc.
+  const cleanQx = qxContent
+   .replace(/^Paciente\s+(relata|refere|apresenta|informa|é\s+admitido\s+com|deu\s+entrada\s+com|evolui\s+com|avaliado\s+por|queixa-se\s+de|cursa\s+com|vítima\s+de)\s+(quadro\s+de\s+|episódio\s+de\s+|queixa\s+de\s+|relato\s+de\s+estado\s+)?/i, '')
+   .replace(/^(quadro\s+de\s+|episódio\s+de\s+|relato\s+de\s+estado\s+)/i, '')
+   .trim();
+
+  if(/^(caracterizad[ao]|apresentando|com|cursando|manifestand|após|decorrente|segundo|vítima|em\s+avaliação)/i.test(cleanQx)){
+   hda = `${gen} ${origContext}com queixa principal de ${S.queixa}${drugStr}${tempoStr}, ${cleanQx}`;
+  } else if(/^[A-Z]/.test(cleanQx)){
+   hda = `${gen} ${origContext}com queixa principal de ${S.queixa}${drugStr}${tempoStr}. ${cleanQx}`;
+  } else {
+   hda = `${gen} ${origContext}com queixa principal de ${S.queixa}${drugStr}${tempoStr}, caracterizada por ${cleanQx}`;
+  }
+ } else {
+  hda = `${gen} ${origContext}com queixa principal de ${S.queixa}${drugStr}${tempoStr}.`;
+ }
+
+ hda = hda.replace(/\s+/g,' ')
+          .replace(/\s+\./g,'.')
+          .replace(/\s+,/g,',')
+          .replace(/\.\.+/g,'.')
+          .replace(/,\s*\./g,'.')
+          .replace(/,\s*,/g,',')
+          .trim();
+ if(!hda.endsWith('.')) hda += '.';
  return `# HISTÓRIA DA DOENÇA ATUAL (HDA)\n${hda}`;
 }
 function buildAntecedentes(){
@@ -10457,7 +10715,13 @@ function s5(){
  const catOpts = Object.entries(PEND_CAT_LABEL).map(([k,v])=>
   `<option value="${esc(k)}" ${S.condPendCat===k?'selected':''}>${esc(v)}</option>`
  ).join('');
- return `<div id="step-5" class="card"><div class="st"><i class="ti ti-file-text" aria-hidden="true"></i> Relatório de admissão</div>${pSumH()}${QX_BADGE[S.queixa]?QX_BADGE[S.queixa]():''}<div id="news2AlertS5">${renderNews2Step5Alert()}</div><div class="desktop-hide-relcard"><div class="rg" style="margin-bottom:10px"><span class="ro ${S.relMode==='full'?'on':''}" onclick="S.relMode='full';render()"><i class="ti ti-file-text" aria-hidden="true"></i> Completo</span><span class="ro ${S.relMode==='resumo'?'on':''}" onclick="S.relMode='resumo';render()"><i class="ti ti-list" aria-hidden="true"></i> Resumo de plantão</span></div><div class="relbox" id="relTxt"></div></div>
+ return `<div id="step-5" class="card"><div class="st"><i class="ti ti-file-text" aria-hidden="true"></i> Relatório de admissão</div>${pSumH()}${QX_BADGE[S.queixa]?QX_BADGE[S.queixa]():''}<div id="news2AlertS5">${renderNews2Step5Alert()}</div><div class="desktop-hide-relcard">
+<div class="s5-pep-copy-bar">
+ <button type="button" class="xbtn" style="flex:1;min-width:100px;font-size:11.5px;padding:6px 8px;background:#f8fafc;border-color:#cbd5e1" onclick="copyPepSection('anamnese')"><i class="ti ti-clipboard" aria-hidden="true"></i> 1. Anamnese</button>
+ <button type="button" class="xbtn" style="flex:1;min-width:100px;font-size:11.5px;padding:6px 8px;background:#f8fafc;border-color:#cbd5e1" onclick="copyPepSection('ef')"><i class="ti ti-clipboard" aria-hidden="true"></i> 2. Exame Físico</button>
+ <button type="button" class="xbtn" style="flex:1;min-width:100px;font-size:11.5px;padding:6px 8px;background:#f8fafc;border-color:#cbd5e1" onclick="copyPepSection('conduta')"><i class="ti ti-clipboard" aria-hidden="true"></i> 3. Conduta</button>
+</div>
+<div class="rg" style="margin-bottom:10px"><span class="ro ${S.relMode==='full'?'on':''}" onclick="S.relMode='full';render()"><i class="ti ti-file-text" aria-hidden="true"></i> Completo</span><span class="ro ${S.relMode==='resumo'?'on':''}" onclick="S.relMode='resumo';render()"><i class="ti ti-list" aria-hidden="true"></i> Resumo de plantão</span></div><div class="relbox" id="relTxt"></div></div>
 <div style="border-top:.5px solid #e5e7eb;padding-top:12px;margin-top:12px;margin-bottom:12px">
  <div style="font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;font-weight:500">Conduta inicial (vai para o painel de plantão)</div>
  <div class="r2" style="margin-bottom:8px">
@@ -10469,6 +10733,112 @@ function s5(){
  <div class="r2"><div><label>Categoria</label><select onchange="S.condPendCat=this.value">${catOpts}</select></div><div><label>Prazo (min)</label><input type="number" min="1" max="2880" inputmode="numeric" value="${S.condPendPrazoMin||''}" oninput="S.condPendPrazoMin=parseInt(this.value,10)||null" placeholder="opcional"></div></div>
 </div>
 <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btng" onclick="navigator.clipboard.writeText(document.getElementById('relTxt').textContent).then(()=>showToast('Relatório copiado!'))"><i class="ti ti-copy" aria-hidden="true"></i> Copiar Relatório</button><button class="btng btn-clean-patient" onclick="copyAndClearPatient()"><i class="ti ti-copy-check" aria-hidden="true"></i> Copiar e Limpar Paciente</button><button class="btng" style="background:#185fa5" onclick="saveReport(document.getElementById('relTxt').textContent)"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar</button><button class="btns" onclick="showSaved()"><i class="ti ti-history" aria-hidden="true"></i> Ver salvos</button><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Editar</button></div></div>`;
+}
+
+
+// ─── Extração & Cópia Rápida para o PEP (Tríade: Anamnese, EF, Conduta) ───
+function getReportTextForCopy(){
+ const ta = document.getElementById('relColTxt');
+ if(ta && ta.value && ta.value.trim()) return ta.value;
+ const rt = document.getElementById('relTxt');
+ if(rt && rt.textContent && rt.textContent.trim()) return rt.textContent;
+ return S.relMode === 'resumo' ? gResumo() : gRel();
+}
+
+function extractPepSection(txt, sec){
+ if(!txt) return '';
+ if(sec === 'tudo') return txt.trim();
+
+ const lines = txt.split('\n');
+ const sections = {};
+ let currentSec = 'HEADER';
+ let currentContent = [];
+
+ lines.forEach(line => {
+  if(line.startsWith('# ')) {
+   if(currentContent.length) {
+    sections[currentSec] = (sections[currentSec] || []).concat(currentContent);
+   }
+   const title = line.replace(/^#\s+/, '').trim().toUpperCase();
+   if(title.includes('ADMISSÃO')) currentSec = 'ADMISSAO';
+   else if(title.includes('HISTÓRIA DA DOENÇA') || title.includes('HDA')) currentSec = 'HDA';
+   else if(title.includes('ANTECEDENTES')) currentSec = 'ANTECEDENTES';
+   else if(title.includes('SINAIS VITAIS')) currentSec = 'VITAIS';
+   else if(title.includes('EXAME FÍSICO')) currentSec = 'EF';
+   else if(title.includes('SCORES')) currentSec = 'SCORES';
+   else if(title.includes('ELETROCARDIOGRAMA') || title.includes('ECG')) currentSec = 'ECG';
+   else if(title.includes('ULTRASSONOGRAFIA') || title.includes('POCUS')) currentSec = 'POCUS';
+   else if(title.includes('CONDUTA') || title.includes('PLANO')) currentSec = 'CONDUTA';
+   else if(title.includes('PENDÊNCIAS')) currentSec = 'PENDENCIAS';
+   else currentSec = title;
+   currentContent = [line];
+  } else {
+   currentContent.push(line);
+  }
+ });
+ if(currentContent.length) {
+  sections[currentSec] = (sections[currentSec] || []).concat(currentContent);
+ }
+
+ const getSecText = (key) => sections[key] ? sections[key].join('\n').trim() : '';
+
+ if(sec === 'anamnese') {
+  const parts = [
+   getSecText('ADMISSAO') || buildHeader(),
+   getSecText('HDA') || buildHDA(),
+   getSecText('ANTECEDENTES') || buildAntecedentes()
+  ].filter(Boolean);
+  return parts.join('\n\n').trim();
+ }
+
+ if(sec === 'ef') {
+  const parts = [
+   getSecText('VITAIS') || buildVitais(),
+   getSecText('EF') || buildEF(),
+   getSecText('SCORES') || buildPredictiveScores(),
+   getSecText('ECG') || buildEcgText(),
+   getSecText('POCUS') || buildPocText()
+  ].filter(Boolean);
+  return parts.join('\n\n').trim();
+ }
+
+ if(sec === 'conduta') {
+  const parts = [
+   getSecText('CONDUTA') || buildCondutas(),
+   getSecText('PENDENCIAS')
+  ].filter(Boolean);
+  return parts.join('\n\n').trim();
+ }
+
+ return txt.trim();
+}
+
+function copyPepSection(sec){
+ const raw = getReportTextForCopy();
+ const textToCopy = extractPepSection(raw, sec);
+ if(!textToCopy){
+  showToast('Seção vazia.');
+  return;
+ }
+ const labels = {
+  anamnese: '1. Anamnese copiada para o PEP!',
+  ef: '2. Exame Físico copiado para o PEP!',
+  conduta: '3. Conduta copiada para o PEP!',
+  tudo: 'Prontuário completo copiado!'
+ };
+ const toastMsg = labels[sec] || 'Copiado com sucesso!';
+ if(navigator.clipboard && navigator.clipboard.writeText){
+  navigator.clipboard.writeText(textToCopy);
+  showToast(toastMsg);
+ } else {
+  const ta = document.createElement('textarea');
+  ta.value = textToCopy;
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand('copy');
+  document.body.removeChild(ta);
+  showToast(toastMsg);
+ }
 }
 
 function copyPrescricaoOnly(){
