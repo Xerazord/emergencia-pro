@@ -8320,8 +8320,58 @@ function setNormalPhysicalExam(){
 }
 
 function s3(){
- const badge=(S.queixa==='Dispneia'&&QX_BADGE[S.queixa])?QX_BADGE[S.queixa]():'';
- return`${badge}<div id="step-3" class="card"><div class="st" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><span><i class="ti ti-search" aria-hidden="true"></i> Exame físico</span><button type="button" class="xbtn" style="background:#f0fdf4;border-color:#86efac;color:#15803d;font-weight:600;padding:6px 12px;font-size:12px" onclick="setNormalPhysicalExam()" title="Preenche todos os campos com padrão fisiológico normal"><i class="ti ti-circle-check" aria-hidden="true"></i> Exame Físico Sem Alterações Agudas (1 toque)</button></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem"><button class="xbtn ${S.ef==='amb'?'on':''}" onclick="S.ef='amb';render()"><i class="ti ti-walk" aria-hidden="true"></i> Ambulatorial</button><button class="xbtn ${S.ef==='crit'?'on':''}" onclick="S.ef='crit';render()"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Paciente crítico (ABCDE)</button></div></div>${S.ef==='amb'?`<div class="card"><div class="st">Padrão ambulatorial</div>${[['g','Geral'],['cv','AP Cardiovascular'],['re','AP Respiratório'],['ab','Abdome'],['ne','Neurológico'],['pe','Pele e MMII']].map(([k,l])=>{const tpl=(S.sexo==='M'||S.sexo==='F')?EF_TEMPLATES[S.sexo][k]:null;const ph=tpl||l+'...';const sug=tpl?`<button type="button" class="ef-sug-btn" onclick="if(!S.amb['${k}']){S.amb['${k}']=EF_TEMPLATES[S.sexo]['${k}'];render()}" title="Preencher com sugestão para o sexo selecionado">Sugestão</button>`:'';return`<div style="margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><label style="margin:0">${l}</label>${sug}</div><input type="text" value="${esc(S.amb[k])}" oninput="S.amb['${k}']=this.value" placeholder="${esc(ph)}"></div>`}).join('')}</div>`:''}${S.ef==='crit'?`<div class="card"><div class="st">ABCDE — Avaliação primária</div>${abcH()}</div>`:''}${S.ef&&QX_EF[S.queixa]?QX_EF[S.queixa]():''}${S.ef?rECG()+''+rPOCUS():''}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>${S.ef?`<button class="btnp" onclick="nx()">Impressão / Conduta <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}</div>`;}
+ const badge = (S.queixa === 'Dispneia' && QX_BADGE[S.queixa]) ? QX_BADGE[S.queixa]() : '';
+ const curTab = S.s3Tab || 'ef';
+
+ const e = S.ecgS;
+ const hasEcg = !!(e.normal || e.ritmo || e.fcEcg || (e.st && e.st.length) || (e.ondaT && e.ondaT.length) || (e.padroes && e.padroes.length));
+ const p = S.pocS;
+ const hasPoc = !!(p.pulmao || p.coracao || p.abdome || p.mmii || p.outros);
+
+ const ecgBadge = hasEcg ? `<span class="sb sok" style="font-size:10px;padding:2px 6px;margin-left:5px">Preenchido</span>` : '';
+ const pocBadge = hasPoc ? `<span class="sb sok" style="font-size:10px;padding:2px 6px;margin-left:5px">Preenchido</span>` : '';
+
+ const tabBar = `
+  <div class="s3-tabs-bar" style="display:flex;gap:6px;margin-bottom:12px;background:#f3f4f6;padding:4px;border-radius:8px">
+   <button type="button" class="xbtn ${curTab==='ef'?'on':''}" style="flex:1;justify-content:center;font-size:13px;padding:8px" onclick="S.s3Tab='ef';render()">
+    <i class="ti ti-stethoscope" aria-hidden="true"></i> Exame Físico
+   </button>
+   <button type="button" class="xbtn ${curTab==='ecg'?'on':''}" style="flex:1;justify-content:center;font-size:13px;padding:8px" onclick="S.s3Tab='ecg';render()">
+    <i class="ti ti-activity-heartbeat" aria-hidden="true"></i> ECG${ecgBadge}
+   </button>
+   <button type="button" class="xbtn ${curTab==='pocus'?'on':''}" style="flex:1;justify-content:center;font-size:13px;padding:8px" onclick="S.s3Tab='pocus';render()">
+    <i class="ti ti-wave-sine" aria-hidden="true"></i> POCUS${pocBadge}
+   </button>
+  </div>
+ `;
+
+ let mainContent = '';
+ if(curTab === 'ef'){
+  mainContent = `
+   <div id="step-3" class="card">
+    <div class="st" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+     <span><i class="ti ti-search" aria-hidden="true"></i> Exame Físico</span>
+     <button type="button" class="xbtn" style="background:#f0fdf4;border-color:#86efac;color:#15803d;font-weight:600;padding:6px 12px;font-size:12px" onclick="setNormalPhysicalExam()" title="Preenche todos os campos com padrão fisiológico normal">
+      <i class="ti ti-circle-check" aria-hidden="true"></i> Exame Sem Alterações Agudas (1 toque)
+     </button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem">
+     <button class="xbtn ${S.ef==='amb'?'on':''}" onclick="S.ef='amb';render()"><i class="ti ti-walk" aria-hidden="true"></i> Ambulatorial</button>
+     <button class="xbtn ${S.ef==='crit'?'on':''}" onclick="S.ef='crit';render()"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Paciente crítico (ABCDE)</button>
+    </div>
+   </div>
+   ${S.ef==='amb'?`<div class="card"><div class="st">Padrão ambulatorial</div>${[['g','Geral'],['cv','AP Cardiovascular'],['re','AP Respiratório'],['ab','Abdome'],['ne','Neurológico'],['pe','Pele e MMII']].map(([k,l])=>{const tpl=(S.sexo==='M'||S.sexo==='F')?EF_TEMPLATES[S.sexo][k]:null;const ph=tpl||l+'...';const sug=tpl?`<button type="button" class="ef-sug-btn" onclick="if(!S.amb['${k}']){S.amb['${k}']=EF_TEMPLATES[S.sexo]['${k}'];render()}" title="Preencher com sugestão para o sexo selecionado">Sugestão</button>`:'';return`<div style="margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><label style="margin:0">${l}</label>${sug}</div><input type="text" value="${esc(S.amb[k])}" oninput="S.amb['${k}']=this.value" placeholder="${esc(ph)}"></div>`}).join('')}</div>`:''}
+   ${S.ef==='crit'?`<div class="card"><div class="st">ABCDE — Avaliação primária</div>${abcH()}</div>`:''}
+   ${S.ef&&QX_EF[S.queixa]?QX_EF[S.queixa]():''}
+  `;
+ } else if(curTab === 'ecg'){
+  mainContent = rECG();
+ } else if(curTab === 'pocus'){
+  mainContent = rPOCUS();
+ }
+
+ return `${badge}${tabBar}${mainContent}<div class="nav"><button class="btns" onclick="pv()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button><button class="btnp" onclick="nx()">Impressão / Conduta <i class="ti ti-arrow-right" aria-hidden="true"></i></button></div>`;
+}
 
 function rCSec(sid,sec){const items=sec.it||[];const dc=items.filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]).length;const alertsHtml=(sec.alerts||[]).map(a=>`<div class="abox aw" style="margin-bottom:6px;font-size:12px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> ${esc(a)}</div>`).join('');const catNames={sup:'Suporte & Ressuscitação',inv:'Investigação',sin:'Sintomáticos',esp:'Específico',dsp:'Disposição/Alta'};const tagLbl=catNames[sec.id]||'';const tagHtml=tagLbl?`<span class="csec-tag csec-tag-${sec.id}">${tagLbl}</span>`:'';const uid='cs_'+sid+'_'+sec.id;const isCollapsedByDefault=(S.ef==='amb'&&sec.id==='sup'&&dc===0);const openCls=isCollapsedByDefault?'':' open';const badgeHint=isCollapsedByDefault?`<span class="sb" style="font-size:10px;background:#f3f4f6;color:#6b7280;margin-left:4px"><i class="ti ti-chevron-right" aria-hidden="true"></i> recolhido no ambulatorial (clique para abrir)</span>`:'';return`<div class="csec csec-${sec.id}"><div class="csh" onclick="tog('${uid}')"><span style="display:flex;align-items:center;gap:6px">${tagHtml}<span>${sec.t}</span>${badgeHint}</span><div style="display:flex;gap:5px;align-items:center">${dc?`<span class="sb sok" style="font-size:11px">${dc} prescrito${dc>1?'s':''}</span>`:''}<i class="ti ti-chevron-down" aria-hidden="true"></i></div></div><div class="csb${openCls}" id="${uid}">${alertsHtml}${items.map((item,idx)=>{const k=sid+'_'+sec.id+'_'+idx;const cl=ccls(k);const hl=itemHasVitalHl(item)?' hl':'';return`<div class="chk ${cl}${hl}" onclick="cyc('${k}')"><div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div><div class="ctx">${item}</div></div>`;}).join('')}<div style="margin-top:8px"><label style="margin-bottom:3px;display:block;font-size:12px;color:var(--color-text-secondary)">Observações desta seção:</label><textarea style="min-height:45px;font-size:13px" placeholder="Particularidades do caso..." oninput="S.nts['${sid}_${sec.id}']=this.value">${esc(S.nts[sid+'_'+sec.id]||'')}</textarea></div></div></div>`;}
 
@@ -9095,6 +9145,79 @@ function renderDecisionSupportContent(tab){
   }
 
   // Cards Dinâmicos de Pérolas & Pitfalls por Queixa / Síndrome Selecionada
+  // DIRETRIZ BRASILEIRA DE DOR TORÁCICA NA EMERGÊNCIA (SBC / ABRAMEDE 2024/2025)
+  perolasHtml += `
+   <div class="decision-card" style="border-top:3px solid #dc2626;background:linear-gradient(180deg,#ffffff 0%,#fef2f2 100%)">
+    <div class="decision-card-title" style="color:#991b1b;display:flex;align-items:center;justify-content:space-between">
+     <span><i class="ti ti-heart-rate-monitor" style="color:#dc2626" aria-hidden="true"></i> Diretriz Brasileira de Dor Torácica 2024/2025: SCA com e sem Supra, Equivalentes & ECGs de Alto Risco</span>
+     <span class="sb" style="background:#fee2e2;color:#991b1b;font-size:10.5px">SBC / ABRAMEDE 2024/2025</span>
+    </div>
+
+    <!-- 1. SCACSST (IAM com Supra Clássico) -->
+    <div style="margin-top:10px;padding:10px;background:#ffffff;border-radius:6px;border:1px solid #fecaca">
+     <div style="font-weight:700;color:#b91c1c;font-size:13px;margin-bottom:6px">
+      🔴 1. Síndrome Coronariana Aguda COM Supradesnível de ST (SCACSST / IAMCSST)
+     </div>
+     <div style="font-size:12.5px;line-height:1.6;color:#374151">
+      <strong>Critérios Eletrocardiográficos Clássicos (novo supra no ponto J em &ge; 2 derivações contíguas):</strong><br>
+      • <strong>V2–V3:</strong> &ge; 2,5 mm em homens &lt; 40 anos; &ge; 2,0 mm em homens &ge; 40 anos; &ge; 1,5 mm em mulheres de qualquer idade.<br>
+      • <strong>Demais derivações (I, aVL, II, III, aVF, V1, V4–V6):</strong> &ge; 1,0 mm (0,1 mV) em homens e mulheres.<br>
+      • <strong>Derivações posteriores (V7–V9):</strong> &ge; 0,5 mm (0,05 mV).<br>
+      • <strong>Derivações direitas (V3R, V4R):</strong> &ge; 0,5 mm (&ge; 1,0 mm em homens &lt; 30 anos).<br>
+      <strong>Metas de Reperfusão de Emergência:</strong> Porta-ECG &le; 10 min | Porta-Balão (ICP primária) &le; 90 min (ou &le; 120 min se transferido) | Porta-Agulha (Fibrinólise) &le; 10–30 min se ICP indisponível em 120 min.
+     </div>
+    </div>
+
+    <!-- 2. EQUIVALENTES DE SUPRA & ECGS DE ALTO RISCO (OCA) -->
+    <div style="margin-top:10px;padding:10px;background:#ffffff;border-radius:6px;border:1px solid #fed7aa">
+     <div style="font-weight:700;color:#c2410c;font-size:13px;margin-bottom:6px">
+      ⚠️ 2. Equivalentes de Supra de ST & Padrões de Oclusão Coronariana Aguda (OCA) de Alto Risco
+     </div>
+     <div style="font-size:12px;line-height:1.55;color:#374151">
+      <em>Tratar com a MESMA URGÊNCIA de um IAM com supra (indicação de CATE de emergência imediato):</em><br>
+      • <strong>Padrão de De Winter (Oclusão Proximal de ADA):</strong> Infradesnível de ST ascendente no ponto J de 1 a 3 mm em V1–V6 com ondas T altas, simétricas e apiculadas de base larga + supra sutil em aVR (0,5–1 mm).<br>
+      • <strong>Síndrome de Wellens (Estenose Crítica &gt; 85–90% de ADA Proximal):</strong><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;- <em>Tipo A (25%):</em> Ondas T bifásicas (plus-minus) em V2–V3.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;- <em>Tipo B (75%):</em> Ondas T profundamente e simetricamente invertidas (&gt; 2 mm) em V2–V4.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<em>Atenção:</em> Frequentemente sem dor ativa. Contraindicado teste de esforço; indicar CATE urgente.<br>
+      • <strong>Critérios de Smith-Sgarbossa Modificados (IAM com BRE ou Ritmo de Marca-passo):</strong><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;1. Supra de ST concordante &ge; 1 mm com QRS positivo (5 pts).<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;2. Infra de ST concordante &ge; 1 mm em V1, V2 ou V3 (3 pts).<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;3. <em>Regra de Smith (desproporção discordante):</em> Supra de ST discordante desproporcional com razão ST/S &le; -0,25 (&ge; 25% da profundidade da onda S precedente).<br>
+      • <strong>Infradesnível Difuso com Supradesnível em aVR (&plusmn; V1) — Lesão de Tronco (TCE) ou Triarterial Grave:</strong> Infra de ST horizontal &ge; 1 mm em &ge; 6 derivações associado a supra em aVR &ge; 1 mm (com supra aVR &ge; supra V1). Risco iminente de choque cardiogênico.<br>
+      • <strong>Infarto Posterior / Dorsal Isolado (Oclusão de CX ou CD):</strong> Infra de ST horizontal em V1–V3 com ondas R altas e largas (R &gt; S) e ondas T positivas eretas (imagem em espelho). Solicitar V7–V9 (&ge; 0,5 mm confirma).<br>
+      • <strong>Infarto de Ventrículo Direito (IAM de VD):</strong> Supra em V3R e V4R &ge; 0,5–1 mm no IAM inferior. Tríade: hipotensão + turgência jugular + pulmões limpos. <em>Contraindicação estrita a Nitratos, Morfina, Betabloqueadores e Diuréticos</em> (alta dependência de pré-carga); ressuscitar com volume.<br>
+      • <strong>Padrão de Aslanger (IAM Inferior em Multiarterial):</strong> Supra isolado em DIII (sem supra evidente em DII/aVF) + infra em V1–V4 + ST em V1 &gt; V2.<br>
+      • <strong>Onda T Hiperaguda Transmural:</strong> Ondas T gigantes, de base ampla e simétricas, precedendo o supradesnível franco nos primeiros minutos pós-oclusão.<br>
+      • <strong>Padrão Shark-Fin (Barbatana de Tubarão / Lambda):</strong> Fusão em onda monofásica gigante triangular do QRS, ST e onda T. Altíssimo risco de FV e colapso circulatório.
+     </div>
+    </div>
+
+    <!-- 3. SCASSST (Sem Supra Clássico / IAMSSST e Angina Instável) -->
+    <div style="margin-top:10px;padding:10px;background:#ffffff;border-radius:6px;border:1px solid #bfdbfe">
+     <div style="font-weight:700;color:#1d4ed8;font-size:13px;margin-bottom:6px">
+      🔵 3. Síndrome Coronariana Aguda SEM Supradesnível de ST (SCASSST / IAMSSST)
+     </div>
+     <div style="font-size:12px;line-height:1.55;color:#374151">
+      <strong>Alterações no ECG:</strong> Infradesnível horizontal/descendente de ST &ge; 0,5 mm em 2 derivações contíguas; inversão simétrica de onda T &ge; 1 mm. ECG normal em até 30% dos IAMSSST (obrigatório ECG seriado a cada 15–30 min enquanto houver sintomas).<br>
+      <strong>Protocolo de Troponina Ultrassensível (cTn-us) 0h/1h ou 0h/2h:</strong><br>
+      • <em>Rule-out:</em> Níveis basais muito baixos com delta não significativo + HEART &le; 3 pts.<br>
+      • <em>Rule-in:</em> Valor basal inicial &gt; percentil 99 ou delta significativo na 1ª/2ª hora.<br>
+      <strong>Estratificação da Estratégia Invasiva (CATE) segundo a Diretriz 2024/2025:</strong><br>
+      • 🚨 <strong>Estratégia Invasiva Imediata (&lt; 2 horas) — Emergência Absoluta:</strong><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;1. Instabilidade hemodinâmica ou choque cardiogênico.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;2. Dor torácica anginosa refratária ao tratamento medicamentoso otimizado.<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;3. Arritmias ventriculares potencialmente letais (TV sustentada / FV).<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;4. Complicações mecânicas agudas do infarto (CIV, insuficiência mitral aguda por rotura papilar).<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;5. Insuficiência cardíaca aguda com congestão pulmonar grave (Killip III / IV).<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;6. Infradesnível dinâmico e recorrente de ST.<br>
+      • ⚡ <strong>Estratégia Invasiva Precoce (&lt; 24 horas):</strong> Diagnóstico confirmado de IAMSSST pela curva de troponina; alterações dinâmicas de ST/T; Escore GRACE &gt; 140 pontos; PCR ressuscitada sem supra.<br>
+      • 🟢 <strong>Estratégia Seletiva / Isquemia Guiada:</strong> Pacientes de baixo risco (GRACE &le; 109, troponina negativa 0-1h, assintomáticos).
+     </div>
+    </div>
+   </div>
+  `;
+
   if(['Dispneia','Dor torácica'].includes(S.queixa)||S.sind==='sca'||S.sind==='dpoc'){
    perolasHtml += `
     <div class="decision-card" style="border-top:3px solid #0284c7">
