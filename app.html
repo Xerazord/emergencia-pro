@@ -109,6 +109,69 @@ input:focus,select:focus,textarea:focus{border-color:#a32d2d}
 .hdr-btn-shortcut:hover{background:#f1f5f9;color:#1e293b}
 .hdr-btn-reset{background:#f8fafc;border-color:#e2e8f0;color:#64748b}
 .hdr-btn-reset:hover{background:#fee2e2;border-color:#fca5a5;color:#b91c1c}
+
+.hdr-btn-night{background:#0f172a;border-color:#334155;color:#f8fafc;font-weight:500}
+.hdr-btn-night:hover{background:#1e293b;color:#38bdf8;border-color:#475569}
+.hdr-btn-night.active{background:#38bdf8;color:#0f172a;border-color:#0284c7}
+.hdr-btn-night i{color:#f59e0b}
+.zoom-controls{display:inline-flex;align-items:center;background:var(--color-background-secondary);border:.5px solid var(--color-border-secondary);border-radius:4px;overflow:hidden;margin-left:6px}
+.btn-zoom{background:transparent;border:none;padding:2px 7px;font-size:11px;font-weight:600;color:var(--color-text-secondary);cursor:pointer;line-height:1}
+.btn-zoom:hover{background:var(--color-border-secondary);color:var(--color-text-primary)}
+.btn-split{background:var(--color-background-secondary);border:.5px solid var(--color-border-secondary);border-radius:4px;padding:3px 8px;font-size:11px;font-weight:600;color:var(--color-text-secondary);cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin-left:6px}
+.btn-split:hover,.btn-split.active{background:#2563eb;color:#fff;border-color:#1d4ed8}
+@media(min-width:1024px){
+ .two-col-wrap.split-50-50{grid-template-columns:1fr 1fr !important}
+}
+/* Modo Noturno de Alto Contraste para Plantão */
+body.high-contrast-night{
+ --color-background-primary:#090d16;
+ --color-background-secondary:#02050b;
+ --color-text-primary:#f8fafc;
+ --color-text-secondary:#94a3b8;
+ --color-border-primary:#334155;
+ --color-border-secondary:#1e293b;
+ --color-border-tertiary:#0f172a;
+ background-color:#02050b !important;
+ color:#f8fafc !important;
+}
+body.high-contrast-night .card,
+body.high-contrast-night .rel-col-inner,
+body.high-contrast-night .sticky-clinical-cockpit,
+body.high-contrast-night .hdr{
+ background:#0b1120 !important;
+ border-color:#334155 !important;
+ color:#f8fafc !important;
+}
+body.high-contrast-night .rel-col-textarea{
+ background:#020617 !important;
+ color:#f1f5f9 !important;
+ border-color:#334155 !important;
+}
+body.high-contrast-night input,
+body.high-contrast-night select,
+body.high-contrast-night textarea{
+ background:#111827 !important;
+ color:#f8fafc !important;
+ border-color:#475569 !important;
+}
+body.high-contrast-night .rel-section-copy-overlay{
+ background:rgba(15,23,42,0.92) !important;
+ border-color:rgba(255,255,255,0.18) !important;
+}
+body.high-contrast-night .pep-copy-btn{
+ color:#e2e8f0 !important;
+}
+body.high-contrast-night .tg{
+ background:#1e293b !important;
+ border-color:#475569 !important;
+ color:#cbd5e1 !important;
+}
+body.high-contrast-night .tg.on{
+ background:#1d4ed8 !important;
+ color:#ffffff !important;
+ border-color:#3b82f6 !important;
+}
+
 .hdr-btn-logout{background:#fcebeb;border-color:#f09595;color:#a32d2d;font-weight:500}
 .hdr-btn-logout:hover{background:#fad4d4;color:#7f1d1d}
 .mobile-only{display:none !important}
@@ -783,6 +846,10 @@ textarea{resize:vertical;min-height:60px}
    <i class="ti ti-shield-lock" aria-hidden="true"></i>
    <span>Admin</span>
   </button>
+  <button class="hdr-action-btn hdr-btn-night" id="nightModeBtn" onclick="toggleHighContrastNight()" title="Alternar Modo Noturno de Alto Contraste (Plantão)">
+   <i class="ti ti-moon-stars" aria-hidden="true"></i>
+   <span>Noturno</span>
+  </button>
   <button class="hdr-action-btn hdr-btn-shortcut" onclick="showShortcutModal()" title="Atalhos de teclado (Alt + /)">
    <i class="ti ti-keyboard" aria-hidden="true"></i>
    <span>Atalhos</span>
@@ -804,7 +871,15 @@ textarea{resize:vertical;min-height:60px}
  <div class="col-rel">
   <div class="rel-col-inner">
    <div class="rel-col-hdr">
-    <span>Relatório</span>
+    <div style="display:flex;align-items:center;gap:6px">
+     <span>Relatório</span>
+     <div class="zoom-controls">
+      <button type="button" class="btn-zoom" onclick="changeReportZoom(-1)" title="Diminuir fonte">A-</button>
+      <button type="button" class="btn-zoom" onclick="changeReportZoom(0)" title="Fonte padrão">A</button>
+      <button type="button" class="btn-zoom" onclick="changeReportZoom(1)" title="Aumentar fonte">A+</button>
+     </div>
+     <button type="button" class="btn-split" id="splitModeBtn" onclick="toggleSplitMode()" title="Alternar Modo Dividido 50/50"><i class="ti ti-layout-columns" aria-hidden="true"></i> 50/50</button>
+    </div>
     <div class="rg">
      <span class="ro" id="relModeFullBtn" onclick="S.relMode='full';render()"><i class="ti ti-file-text" aria-hidden="true"></i> Completo</span>
      <span class="ro" id="relModeResumoBtn" onclick="S.relMode='resumo';render()"><i class="ti ti-list" aria-hidden="true"></i> Resumo</span>
@@ -2644,7 +2719,7 @@ const CT = {
     "id": "inv",
     "t": "Investigação diagnóstica e estratificação de risco",
     "it": [
-     "Cálculo do Escore de Glasgow-Blatchford (GBS) na admissão",
+     "Cálculo do Escore de Glasgow-Blatchford na admissão",
      "Tipagem sanguínea ABO/Rh, prova cruzada e reserva prioritária de concentrado de hemácias",
      "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa)"
     ]
@@ -2653,7 +2728,7 @@ const CT = {
     "id": "dsp",
     "t": "Disposição",
     "it": [
-     "Alta médica orientada com agendamento de EDA ambulatorial em 24–48h (apenas se GBS 0–1 e estável)",
+     "Alta médica orientada com agendamento de EDA ambulatorial em 24–48h (apenas se Glasgow-Blatchford 0–1 e estável)",
      "Internação prioritária em leito de UTI / Semi-intensiva (se instabilidade, hemotransfusão ou sangramento ativo)"
     ]
    }
@@ -2984,7 +3059,7 @@ const CT = {
     "t": "MOMENTO ZERO: Manejo inicial do coma e proteção de via aérea (NCS)",
     "it": [
      "Posicionamento e aspiração de vias aéreas: decúbito lateral se sem suspeita de trauma cervical; cabeceira a 30° se suspeita de hipertensão intracraniana",
-     "Vigilância de proteção e patência de VA para necessidade de IOT se RNC associada a HIC OU disfagia intensa OU insuficiência respiratória (GCS isolado não indica intubação mandatória em coma não-traumático)",
+     "Vigilância de proteção e patência de VA para necessidade de IOT se RNC associada a HIC OU disfagia intensa OU insuficiência respiratória (Glasgow isolado não indica intubação mandatória em coma não-traumático)",
      "Glicemia capilar IMEDIATA na admissão (< 5 min)",
      "Monitorização contínua: oximetria de pulso (meta SpO₂ ≥ 94%), ECG contínuo, PA não invasiva a cada 5–15 min e temperatura central",
      "Coleta imediata de gasometria arterial e lactato sérico (pesquisar acidose metabólica grave com gap aumentado, hipóxia ou hipercapnia)"
@@ -3133,7 +3208,7 @@ const CT = {
     ],
     "it": [
      "Instalar isolamento de contato e gotículas imediatamente na chegada à sala de emergência",
-     "Proteção de via aérea com intubação orotraqueal se GCS ≤ 8 ou hipoxemia / instabilidade hemodinâmica",
+     "Proteção de via aérea com intubação orotraqueal se Glasgow ≤ 8 ou hipoxemia / instabilidade hemodinâmica",
      "Estabilização hemodinâmica com cristaloides (Ringer Lactato) e norepinefrina se sinais de choque séptico"
     ]
    },
@@ -3156,7 +3231,7 @@ const CT = {
     "t": "Investigação diagnóstica e líquor urgente",
     "it": [
      "Coleta imediata de 2 pares de hemoculturas de sítios distintos ANTES da infusão de antimicrobianos",
-     "Indicações de TC de crânio ANTES da punção lombar: GCS < 12, imunossupressão, déficit focal novo, crise convulsiva recente (< 1 semana), papiledema ou história de lesão do SNC",
+     "Indicações de TC de crânio ANTES da punção lombar: Glasgow < 12, imunossupressão, déficit focal novo, crise convulsiva recente (< 1 semana), papiledema ou história de lesão do SNC",
      "Punção Lombar (PL) urgente (se sem contraindicações): citologia e contagem celular, glicose e proteínas, lactato liquórico, bacterioscopia (Gram), cultura com TSA, látex/antígenos bacterianos e PCR Multiplex (painel viral e bacteriano meningoencefálico)",
      "Glicemia sérica concomitante à punção lombar (para cálculo da relação glicose líquor/sangue; relação < 0,4 é típica de infecção bacteriana ou fúngica)"
     ]
@@ -3227,7 +3302,7 @@ const CT = {
      "Monitor de sinais vitais e EVA na chegada",
      "Documentar escala de dor e resposta à analgesia a cada 30 minutos",
      "Acesso venoso periférico se houver indicação de medicação IV ou exames com contraste",
-     "Avaliação neurológica focada (GCS, pupilas, força, fala, marcha)",
+     "Avaliação neurológica focada (Glasgow, pupilas, força, fala, marcha)",
      "Alocar em ambiente calmo, com pouca luz e sem ruídos, se hipótese de cefaleia migranosa"
     ]
    },
@@ -3265,7 +3340,7 @@ const CT = {
     "it": [
      "Alta médica após melhora da queixa",
      "Observação 4–6h se alarme isolado com TC negativa, melhora parcial ou dúvida diagnóstica",
-     "Internação se GCS alterado, déficit focal, suspeita de HSA / meningite / TVC / dissecção ou dor refratária",
+     "Internação se Glasgow alterado, déficit focal, suspeita de HSA / meningite / TVC / dissecção ou dor refratária",
      "Encaminhamento à neurologia ambulatorial se ≥ 4 crises/mês, cefaleia diária persistente, padrão atípico ou primeira crise > 50 anos",
      "Retorno imediato se cefaleia que piora, febre, déficit novo ou alteração de consciência",
      "Orientar diário de cefaleia, identificação de gatilhos e uso racional de analgésicos"
@@ -3373,7 +3448,7 @@ const CT = {
     "alerts": [
      "Não atrasar antibiótico para coleta de LP — iniciar em < 1h da suspeita",
      "Não retardar antibiótico para realização de TC se houver indicação clínica de LP segura",
-     "Avaliar GCS, sinais focais e papiledema (fundoscopia se disponível)",
+     "Avaliar Glasgow, sinais focais e papiledema (fundoscopia se disponível)",
      "Verificar sinais de sepse / choque: lactato, perfusão, hipotensão, taquicardia",
      "Identificar imunossupressão (HIV, neoplasia, corticoide crônico, transplante) — orienta cobertura ampliada"
     ],
@@ -3400,7 +3475,7 @@ const CT = {
     "id": "inv",
     "t": "Investigação",
     "it": [
-     "TC de crânio antes da LP se: GCS < 11, déficit focal, papiledema, convulsão recente, imunossupressão grave, > 60 anos",
+     "TC de crânio antes da LP se: Glasgow < 11, déficit focal, papiledema, convulsão recente, imunossupressão grave, > 60 anos",
      "Punção lombar com manometria assim que possível",
      "Hemoculturas (2 pares) antes do ATB se sem atraso > 45 min",
      "Hemograma, função renal, hepática, eletrólitos, lactato sérico, gasometria, coagulograma",
@@ -3508,7 +3583,7 @@ const CT = {
      "Posicionamento sentado ou cabeceira elevada a 45–90° (posição de Fowler)",
      "Oximetria contínua com alvo de SpO₂: 94–98% na população geral e 88–92% em pacientes com retenção crônica de CO₂ (DPOC / hipoventilação da obesidade)",
      "Ventilação Não Invasiva (VNI) precoce: CPAP 5–10 cmH₂O ou BiPAP (EPAP 4–6 cmH₂O, IPAP 10–15 cmH₂O) se FR > 25 irpm, uso de musculatura acessória ou SpO₂ < 90% com oxigênio em alto fluxo (reduz intubação em ~50% e mortalidade)",
-     "Intubação Orotraqueal (IOT) em sequência rápida: indicada se exaustão respiratória iminente, rebaixamento de consciência (GCS ≤ 8), instabilidade hemodinâmica refratária ou acidose hipercápnica progressiva apesar da VNI",
+     "Intubação Orotraqueal (IOT) em sequência rápida: indicada se exaustão respiratória iminente, rebaixamento de consciência (Glasgow ≤ 8), instabilidade hemodinâmica refratária ou acidose hipercápnica progressiva apesar da VNI",
      "Monitor cardíaco contínuo de 12 derivações à beira-leito"
     ]
    },
@@ -4421,7 +4496,7 @@ const CT = {
      "NUNCA induzir vômitos (xarope de ipeca é proscrito) e NUNCA realizar lavagem gástrica sem proteção definitiva de via aérea!"
     ],
     "it": [
-     "Vigilância de proteção e patência de VA para necessidade de IOT se associada a hipoventilação/insuficiência respiratória, perda de reflexos protetores ou risco iminente de broncoaspiração (GCS isolado não indica intubação mandatória)",
+     "Vigilância de proteção e patência de VA para necessidade de IOT se associada a hipoventilação/insuficiência respiratória, perda de reflexos protetores ou risco iminente de broncoaspiração (Glasgow isolado não indica intubação mandatória)",
      "Glicemia capilar IMEDIATA na admissão (< 5 min)",
      "Monitorização contínua de sinais vitais com atenção especial à TEMPERATURA CENTRAL (risco de hipertermia letal em simpaticomiméticos/serotoninérgica ou hipotermia em opioides/sedativos)",
      "ECG de 12 derivações precoce: mensurar complexo QRS (alargamento > 100 ms indica bloqueio de canal de sódio) e intervalo QTc (> 500 ms indica risco de Torsades)"
@@ -4985,7 +5060,7 @@ const CT = {
      "Avaliação estrita da presença de Encefalopatia Hepática (EH): asterixe / flapping, confusão mental, sonolência patológica ou agitação psicomotora",
      "Glicemia capilar horária na sala de emergência",
      "Monitorização multiparamétrica de sinais vitais e diurese horária (pesquisar precocemente Síndrome Hepatorrenal e choque vasoplégico)",
-     "Jejum e via aérea protegida: intubação traqueal de sequência rápida precoce se Encefalopatia Hepática grau 3 ou 4 (GCS ≤ 8) para controle de PaCO₂ e prevenção de broncoaspiração"
+     "Jejum e via aérea protegida: intubação traqueal de sequência rápida precoce se Encefalopatia Hepática grau 3 ou 4 (Glasgow ≤ 8) para controle de PaCO₂ e prevenção de broncoaspiração"
     ]
    },
    {
@@ -5460,7 +5535,7 @@ const CT = {
     "it": [
      "Oxigenoterapia em cateter nasal",
      "VNI (BiPAP) com máscara facial: IPAP 12–16 cmH₂O, EPAP 4–6 cmH₂O (titular para pH > 7,35)",
-     "IOT se falha da VNI, rebaixamento de consciência (GCS ≤ 8) ou apneia iminente"
+     "IOT se falha da VNI, rebaixamento de consciência (Glasgow ≤ 8) ou apneia iminente"
     ]
    },
    {
@@ -6305,7 +6380,10 @@ function cefHda(S) {
   const c = S.cef;
   if (!c.inicio && !c.loc.length && !c.qual.length && !c.modif.length && !c.precip.length && !c.assoc.length && !c.alarm.length) return '';
   const car = [];
-  if (c.inicio) car.push(`com instalação ${c.inicio.toLowerCase()}`);
+  if (c.inicio) {
+    const iniStr = c.inicio.toLowerCase().replace(/súbito$/, 'súbita').replace(/progressivo$/, 'progressiva');
+    car.push(`com instalação ${iniStr}`);
+  }
   if (c.loc.length) car.push(`localizada em ${joinAnd(c.loc).toLowerCase()}`);
   if (c.qual.length) car.push(`de caráter ${joinAnd(c.qual).toLowerCase()}`);
 
@@ -6328,7 +6406,7 @@ function cefHda(S) {
   }
   if (c.alarm.length) out += `. Sinais de alerta presentes: ${joinAnd(c.alarm).toLowerCase()}`;
 
-  // Negações ativas
+  // Negações ativas com fusão elegante
   const unselected = [];
   const alSet = (c.alarm || []).map(x => x.toLowerCase());
   const asSet = (c.assoc || []).map(x => x.toLowerCase());
@@ -6337,7 +6415,7 @@ function cefHda(S) {
   if (!alSet.includes('déficit neurológico focal')) unselected.push('déficits neurológicos focais');
   if (!asSet.includes('crise convulsiva') && !alSet.includes('crise convulsiva')) unselected.push('crises epilépticas');
   if (!asSet.includes('síncope')) unselected.push('síncope');
-  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Ao interrogatório direcionado, ausência de sinais de alerta como ${joinAnd(unselected)}.`;
 
   return out;
 }
@@ -6424,7 +6502,10 @@ function dspHda(S) {
   const d = S.dsp;
   if (!d.inicio && !d.padrao.length && !d.modif.length && !d.assocCV.length && !d.assocResp.length && !d.assocInf.length && !d.ctx.length) return '';
   const car = [];
-  if (d.inicio) car.push(`de instalação ${d.inicio.toLowerCase()}`);
+  if (d.inicio) {
+    const iniStr = d.inicio.toLowerCase().replace(/súbito$/, 'súbita').replace(/progressivo$/, 'progressiva');
+    car.push(`de instalação ${iniStr}`);
+  }
   if (d.padrao.length) {
     const pad = d.padrao.map(p => {
       const pl = p.toLowerCase();
@@ -6439,14 +6520,14 @@ function dspHda(S) {
   if (assoc.length) out += `. Ao interrogatório sintomático, relata ${joinAnd(assoc).toLowerCase()}`;
   if (d.ctx.length) out += `. Destaca-se histórico relevante de ${joinAnd(d.ctx).toLowerCase()}`;
 
-  // Negações ativas
+  // Negações ativas com fusão elegante
   const unselected = [];
   const cvSet = (d.assocCV || []).map(x => x.toLowerCase());
   const respSet = (d.assocResp || []).map(x => x.toLowerCase());
   if (!cvSet.includes('dor torácica anginosa')) unselected.push('dor torácica anginosa típica');
   if (!cvSet.includes('síncope/pré-síncope')) unselected.push('síncope');
   if (!respSet.includes('hemoptise')) unselected.push('hemoptise');
-  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Sem queixas associadas de ${joinAnd(unselected)}.`;
 
   if (S.wellsTep && S.wellsTep.evaluated) out += ` Escore de Wells para TEP: ${wellsTepSc().toFixed(1)} pts (${wellsTepInterp(wellsTepSc())}).`;
   return out;
@@ -6613,7 +6694,7 @@ function sincHda(S) {
   if (!alSet.some(x => x.includes('palpitações'))) unselected.push('palpitações prévias');
   if (!alSet.some(x => x.includes('dispneia'))) unselected.push('dispneia aguda');
   if (!alSet.some(x => x.includes('cefaleia'))) unselected.push('cefaleia súbita intensa');
-  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Ao interrogatório direcionado, ausência de ${joinAnd(unselected)}.`;
 
   return out;
 }
@@ -6700,7 +6781,7 @@ function cvHda(S) {
   if (!alSet.some(x => x.includes('status'))) unselected.push('crises subentrantes sem recuperação da consciência');
   if (!alSet.some(x => x.includes('febre'))) unselected.push('febre associada');
   if (!alSet.some(x => x.includes('tce'))) unselected.push('trauma cranioencefálico prévio ao ictus');
-  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Ao interrogatório, negação de ${joinAnd(unselected)}.`;
 
   return out;
 }
@@ -6791,8 +6872,11 @@ function dtHda(S) {
   
   let out = car.length ? `caracterizada por dor torácica ${joinAnd(car)}` : 'apresentando dor torácica';
   if (d.modif && d.modif.length) out += `. Refere fatores modificadores como: ${joinAnd(d.modif).toLowerCase()}`;
-  if (d.pal) out += `. À palpação parietal, a dor é ${d.pal.toLowerCase()}`;
-  if (d.sem) out += `. Em comparação com eventos prévios, refere que a dor é ${d.sem.toLowerCase()}`;
+  if (d.pal) out += `. Dor ${d.pal.toLowerCase()}`;
+  if (d.sem) {
+    const semClean = d.sem.toLowerCase();
+    out += `. Em comparação com eventos prévios, refere quadro de caráter ${semClean}`;
+  }
   if (d.sin && d.sin.length) out += `. Ao interrogatório sintomático, relata ${joinAnd(d.sin).toLowerCase()}`;
 
   // Negações ativas para respaldo médico-legal de Red Flags
@@ -6804,7 +6888,7 @@ function dtHda(S) {
   if (!sSet.includes('dispneia associada')) unselected.push('dispneia súbita');
   if (!sSet.includes('síncope / pré-síncope')) unselected.push('síncope');
   if (!sSet.includes('palpitações associadas')) unselected.push('palpitações');
-  if (unselected.length) out += `. Nega sintomas de alarme como ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Ao interrogatório direcionado, ausência de sintomas de alarme como ${joinAnd(unselected)}.`;
 
   return out;
 }
@@ -6889,7 +6973,7 @@ function neuHda(S) {
   if (!mimSet.includes('crise epiléptica associada no início (mimic vs crise sintomática)')) unselected.push('crise convulsiva no ictus');
   if (!mimSet.includes('cefaleia súbita intensa precedendo o déficit (sugere hsa / avch)')) unselected.push('cefaleia súbita em trovoada');
   unselected.push('trauma cranioencefálico recente');
-  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Ao interrogatório direcionado, ausência de ${joinAnd(unselected)}.`;
 
   if (S.nihss && S.nihss.evaluated) {
     const nSc = nihssSc();
@@ -6954,7 +7038,7 @@ function abdHda(S) {
   if (!alSet.some(x => x.includes('vômitos'))) unselected.push('vômitos fecalóides ou incoercíveis');
   if (!alSet.some(x => x.includes('parada de eliminação') || x.includes('obstrução'))) unselected.push('parada de eliminação de gases ou fezes');
   if (!alSet.some(x => x.includes('síncope'))) unselected.push('síncope');
-  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Ao interrogatório direcionado, ausência de ${joinAnd(unselected)}.`;
 
   if (S.sexo === 'F' && (a.gin.length || a.dum)) {
     let g = 'Histórico ginecológico';
@@ -7024,7 +7108,7 @@ function rncHda(S) {
   const cSet = (r.contexto || []).map(x => x.toLowerCase());
   if (!sSet.some(x => x.includes('crise'))) unselected.push('crises convulsivas presenciadas');
   if (!cSet.some(x => x.includes('trauma'))) unselected.push('trauma cranioencefálico prévio conhecido');
-  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Negação de ${joinAnd(unselected)}.`;
 
   return out;
 }
@@ -7215,7 +7299,7 @@ function tosHda(S) {
   if (!asSet.includes('febre diária com calafrios')) unselected.push('febre com calafrios');
   if (!asSet.includes('dispneia progressiva associada')) unselected.push('dispneia em repouso');
   if (!t.tipo.toLowerCase().includes('hemoptise')) unselected.push('hemoptise franca');
-  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Ao interrogatório direcionado, ausência de ${joinAnd(unselected)}.`;
 
   if (S.psiPort && S.psiPort.evaluated) {
     const pSc = psiPortSc();
@@ -7272,7 +7356,7 @@ function febHda(S) {
   if (!alSet.some(x => x.includes('prostração'))) unselected.push('prostração intensa');
   if (!alSet.some(x => x.includes('confusão') || x.includes('sonolência'))) unselected.push('rebaixamento de consciência ou confusão aguda');
   if (!alSet.some(x => x.includes('petéquias') || x.includes('purpúricas'))) unselected.push('lesões purpúricas ou petéquias');
-  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Ao interrogatório direcionado, ausência de ${joinAnd(unselected)}.`;
 
   if (S.mascc && S.mascc.evaluated) {
     const mSc = masccSc();
@@ -7330,7 +7414,7 @@ function nauHda(S) {
   const asSet = (n.aspecto || []).map(x => x.toLowerCase());
   if (!asSet.some(x => x.includes('sangue') || x.includes('hematêmese') || x.includes('borra'))) unselected.push('hematêmese ou borra de café');
   if (!asSet.some(x => x.includes('fecaloide'))) unselected.push('odor ou aspecto fecaloide');
-  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Sem relato de ${joinAnd(unselected)}.`;
 
   return out;
 }
@@ -7385,7 +7469,7 @@ function diaHda(S) {
   const asSet = (d.assoc || []).map(x => x.toLowerCase());
   if (!asSet.includes('febre diária associada com calafrios')) unselected.push('febre alta');
   if (!asSet.includes('síncope ou pré-síncope ao evacuar')) unselected.push('síncope');
-  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Negação de ${joinAnd(unselected)}.`;
 
   return out;
 }
@@ -7471,7 +7555,7 @@ function lomHda(S) {
   if (!ceSet.some(x => x.includes('sela'))) unselected.push('anestesia em sela');
   if (!ceSet.some(x => x.includes('esfíncteres') || x.includes('incontinência') || x.includes('retenção'))) unselected.push('perda de controle esfincteriano');
   if (!ceSet.some(x => x.includes('fraqueza') || x.includes('pé caído'))) unselected.push('fraqueza motora aguda em membros inferiores');
-  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Ao rastreio neurológico direcionado, ausência de ${joinAnd(unselected)}.`;
 
   return out;
 }
@@ -7523,7 +7607,7 @@ function ictQHda(S) {
   const grSet = (i.gravidade || []).map(x => x.toLowerCase());
   if (!colSet.some(x => x.includes('charcot') || x.includes('febre'))) unselected.push('febre com calafrios (Charcot)');
   if (!grSet.some(x => x.includes('flapping') || x.includes('asterixe') || x.includes('encefalopatia') || x.includes('confusão'))) unselected.push('asterixe ou encefalopatia aparente');
-  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Ao interrogatório, ausência de ${joinAnd(unselected)}.`;
 
   return out;
 }
@@ -7575,7 +7659,7 @@ function verHda(S) {
   if (!rfSet.some(x => x.includes('ataxia'))) unselected.push('ataxia severa de tronco');
   if (!rfSet.some(x => x.includes('diplopia'))) unselected.push('diplopia aguda');
   if (!rfSet.some(x => x.includes('disartria'))) unselected.push('disartria');
-  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Ao rastreio de alarme, ausência de ${joinAnd(unselected)}.`;
 
   return out;
 }
@@ -7623,7 +7707,7 @@ function palQHda(S) {
   if (!inSet.some(x => x.includes('síncope'))) unselected.push('síncope franca');
   if (!inSet.some(x => x.includes('dor precordial'))) unselected.push('dor precordial anginosa');
   if (!inSet.some(x => x.includes('dispneia'))) unselected.push('dispneia aguda');
-  if (unselected.length) out += `. Nega ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Negação de sintomas de instabilidade como ${joinAnd(unselected)}.`;
 
   return out;
 }
@@ -7671,7 +7755,7 @@ function edmHda(S) {
   if (!trSet.some(x => x.includes('dispneia'))) unselected.push('dispneia súbita');
   if (!trSet.some(x => x.includes('dor torácica'))) unselected.push('dor torácica pleurítica');
   if (!trSet.some(x => x.includes('hemoptoica'))) unselected.push('hemoptise');
-  if (unselected.length) out += `. Nega sintomas de TEP como ${joinAnd(unselected)}.`;
+  if (unselected.length) out += `. Ao interrogatório direcionado, ausência de sintomas de TEP como ${joinAnd(unselected)}.`;
 
   if (S.wellsTvp && S.wellsTvp.evaluated) {
     const wSc = wellsTvpSc();
@@ -7793,7 +7877,7 @@ function calcNEWS2(S){
  let g=(typeof gcs==='function')?gcs():15;
  if(S.ef==='crit'&&g<15){
   score+=3;singleParamAlert=true;
-  breakdown.push({k:'Consciência',v:`GCS ${g}`,p:3});
+  breakdown.push({k:'Consciência',v:`Glasgow ${g}`,p:3});
  }
  if(!breakdown.length)return null;
 
@@ -8448,9 +8532,9 @@ function abcH(){
  const aContent=`${radio('Estado:',['Pérvia e Patente','Obstruída'],a.va,"S.abc.va='%V';render()")}${radio('Fonação:',['Preservada','Prejudicada/Ausente'],a.fon,"S.abc.fon='%V';render()")}${radio('Colar cervical:',['Não indicado','Colocado/Mantido'],a.col,"S.abc.col='%V';render()")}${a.va==='Obstruída'?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> VA comprometida — manejo imediato</div>`:''}`;
  const bContent=`${radio('Expansibilidade:',['Simétrica','Assimétrica'],a.exp,"S.abc.exp='%V';render()")}${radio('MV:',['Presente e Simétrico','Reduzido','Abolido'],a.mv,"S.abc.mv='%V';render()")}${tags('Ruídos:',['Crépitos','Sibilos','Roncos','Atrito pleural'],a.rud,"ts(S.abc.rud,'%V')")}${tags('Esforço:',['Taquipneia','Dispneia','Uso musc. acessória','Respiração paradoxal'],a.esf,"ts(S.abc.esf,'%V')")}`;
  const cContent=`${radio('TEC:',['< 3s','> 3s','> 5s','Em flush'],a.tec,"S.abc.tec='%V';render()")}${tags('Ausculta:',['Regular','Irregular','Reduzida','Sopro','Bulhas hipofonéticas'],a.aus,"ts(S.abc.aus,'%V')")}${radio('Pulsos:',['Simétricos','Assimétricos','Filiformes','Ausentes'],a.pul,"S.abc.pul='%V';render()")}${tags('Abdome:',['Flácido','Dor à palpação','Defesa','Descompressão dolorosa','Distendido','Ruídos abolidos'],a.abd,"ts(S.abc.abd,'%V')")}${(a.tec==='> 5s'||a.pul==='Filiformes'||a.pul==='Ausentes')?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> Sinais de choque — ressuscitação imediata</div>`:''}`;
- const dContent=`<div class="gcsg"><div class="gcsc"><label>Ab. Ocular</label><select onchange="S.abc.ao=+this.value;render()"><option value="4" ${a.ao==4?'selected':''}>4-Espontânea</option><option value="3" ${a.ao==3?'selected':''}>3-Comando</option><option value="2" ${a.ao==2?'selected':''}>2-Dor</option><option value="1" ${a.ao==1?'selected':''}>1-Ausente</option></select></div><div class="gcsc"><label>R. Verbal</label><select onchange="S.abc.rv=+this.value;render()"><option value="5" ${a.rv==5?'selected':''}>5-Orientado</option><option value="4" ${a.rv==4?'selected':''}>4-Confuso</option><option value="3" ${a.rv==3?'selected':''}>3-Palavras</option><option value="2" ${a.rv==2?'selected':''}>2-Sons</option><option value="1" ${a.rv==1?'selected':''}>1-Ausente</option></select></div><div class="gcsc"><label>R. Motora</label><select onchange="S.abc.rm=+this.value;render()"><option value="6" ${a.rm==6?'selected':''}>6-Obedece</option><option value="5" ${a.rm==5?'selected':''}>5-Localiza</option><option value="4" ${a.rm==4?'selected':''}>4-Flex.N</option><option value="3" ${a.rm==3?'selected':''}>3-Flex.A</option><option value="2" ${a.rm==2?'selected':''}>2-Extensão</option><option value="1" ${a.rm==1?'selected':''}>1-Ausente</option></select></div></div><div class="gcst"><small style="color:var(--color-text-secondary)">Glasgow Coma Scale</small><div class="big">${g}/15</div><div style="margin-top:3px"><span class="sb ${gcsC(g)}">${gcsL(g)}</span></div></div>${g<=8?`<div class="abox aw"><i class="ti ti-alert-circle" aria-hidden="true"></i> GCS ≤ 8 — Vigilância de patência de VA (avaliar IOT se associada a HIC, disfagia grave ou insuficiência respiratória)</div>`:''}${radio('Pupilas:',['Isocóricas e Reativas','Anisocóricas','Midriáticas','Mióticas','Não reagentes'],a.pup,"S.abc.pup='%V';render()")}${tags('Déficits:',['Hemiparesia','Hemihipoestesia','PF central','Disartria','Afasia','Ataxia'],a.def,"ts(S.abc.def,'%V')")}${qxEFInCritical()}`;
+ const dContent=`<div class="gcsg"><div class="gcsc"><label>Ab. Ocular</label><select onchange="S.abc.ao=+this.value;render()"><option value="4" ${a.ao==4?'selected':''}>4-Espontânea</option><option value="3" ${a.ao==3?'selected':''}>3-Comando</option><option value="2" ${a.ao==2?'selected':''}>2-Dor</option><option value="1" ${a.ao==1?'selected':''}>1-Ausente</option></select></div><div class="gcsc"><label>R. Verbal</label><select onchange="S.abc.rv=+this.value;render()"><option value="5" ${a.rv==5?'selected':''}>5-Orientado</option><option value="4" ${a.rv==4?'selected':''}>4-Confuso</option><option value="3" ${a.rv==3?'selected':''}>3-Palavras</option><option value="2" ${a.rv==2?'selected':''}>2-Sons</option><option value="1" ${a.rv==1?'selected':''}>1-Ausente</option></select></div><div class="gcsc"><label>R. Motora</label><select onchange="S.abc.rm=+this.value;render()"><option value="6" ${a.rm==6?'selected':''}>6-Obedece</option><option value="5" ${a.rm==5?'selected':''}>5-Localiza</option><option value="4" ${a.rm==4?'selected':''}>4-Flex.N</option><option value="3" ${a.rm==3?'selected':''}>3-Flex.A</option><option value="2" ${a.rm==2?'selected':''}>2-Extensão</option><option value="1" ${a.rm==1?'selected':''}>1-Ausente</option></select></div></div><div class="gcst"><small style="color:var(--color-text-secondary)">Glasgow Coma Scale</small><div class="big">${g}/15</div><div style="margin-top:3px"><span class="sb ${gcsC(g)}">${gcsL(g)}</span></div></div>${g<=8?`<div class="abox aw"><i class="ti ti-alert-circle" aria-hidden="true"></i> Glasgow ≤ 8 — Vigilância de patência de VA (avaliar IOT se associada a HIC, disfagia grave ou insuficiência respiratória)</div>`:''}${radio('Pupilas:',['Isocóricas e Reativas','Anisocóricas','Midriáticas','Mióticas','Não reagentes'],a.pup,"S.abc.pup='%V';render()")}${tags('Déficits:',['Hemiparesia','Hemihipoestesia','PF central','Disartria','Afasia','Ataxia'],a.def,"ts(S.abc.def,'%V')")}${qxEFInCritical()}`;
  const eContent=`${radio('Edema MMII:',['Ausente','Presente'],a.ede,"S.abc.ede='%V';render()")}${a.ede==='Presente'?radio('Cacifo:',['Com cacifo','Sem cacifo'],a.cac,"S.abc.cac='%V';render()"):''}${tags('Pele:',['Palidez','Frialdade','Icterícia','Cianose','Lesões','Petéquias','Equimoses'],a.pel,"ts(S.abc.pel,'%V')")}`;
- return abcBlock('a','A — Via aérea',aContent)+abcBlock('b','B — Respiração',bContent)+abcBlock('c','C — Circulação',cContent)+abcBlock('d',`D — Neurológico (GCS: ${g}/15)`,dContent)+abcBlock('e','E — Exposição',eContent);
+ return abcBlock('a','A — Via aérea',aContent)+abcBlock('b','B — Respiração',bContent)+abcBlock('c','C — Circulação',cContent)+abcBlock('d',`D — Neurológico (Glasgow: ${g}/15)`,dContent)+abcBlock('e','E — Exposição',eContent);
 }
 function buildEcgText(){
  const e=S.ecgS;
@@ -8818,7 +8902,7 @@ function suggestSindFromABC(){
  const pasMatch=S.pa&&S.pa.includes('/')?parseFloat(S.pa.split('/')[0]):NaN;
  const sat=parseFloat(S.sat);
  if(a.va==='Obstruída')return {id:null,l:'Via aérea obstruída',hint:'Manejo imediato de via aérea antes de qualquer outra conduta'};
- if(g<=8)return {id:'rnc',l:'Rebaixamento de consciência',hint:`GCS ${g}/15 — considerar IOT e proteção de via aérea`};
+ if(g<=8)return {id:'rnc',l:'Rebaixamento de consciência',hint:`Glasgow ${g}/15 — considerar IOT e proteção de via aérea`};
  if(a.tec==='> 5s'||a.pul==='Filiformes'||a.pul==='Ausentes'||(pasMatch&&pasMatch<90)||va.includes('Hipotensão'))return {id:'cho',l:'Choque',hint:'Sinais clínicos de hipoperfusão — ressuscitação volêmica + identificar etiologia (séptico/hipovolêmico/cardiogênico/obstrutivo)'};
  if(a.def&&a.def.length&&g<15)return {id:'neu',l:'Síndrome neurovascular (AVC/AIT)',hint:'Déficit focal + alteração de consciência — TC crânio em < 25 min'};
  if(sat&&sat<90&&a.rud&&a.rud.includes('Crépitos'))return {id:'dsp',l:'Dispneia',hint:'Hipoxemia + creptações — EAP/pneumonia/SDRA são prioridades'};
@@ -9005,7 +9089,7 @@ function cleanPrescriptionItem(txt){
  s=s.replace(/\[diretriz:[^\]]+\]/gi,'');
  s=s.replace(/\[classe\s+[i|v|x]+[^\]]*\]/gi,'');
  s=s.replace(/\[[^\]]*(?:classe|nível|nivel|diretriz|sbc|aha|esc|ssc|guideline)[^\]]*\]/gi,'');
- s=s.replace(/\(GCS isolado não indica intubação mandatória em coma não-traumático\)/gi,'');
+ s=s.replace(/\(Glasgow isolado não indica intubação mandatória em coma não-traumático\)/gi,'');
  s=s.replace(/\(tendência de queda indica melhora da perfusão; não constitui meta isolada para volume ou vasopressor\)/gi,'');
  s=s.replace(/\(evitar nitratos se suspeita de IAM de VD com instabilidade ou uso de inibidores de PDE-5\)/gi,'');
  s=s.replace(/\s{2,}/g,' ').trim();
@@ -10341,26 +10425,28 @@ function buildAntecedentes(){
  const extraHpp=QX_HPP[S.queixa]?QX_HPP[S.queixa](S):[];
  const allHpp=[...S.hpp,...extraHpp].map(h=>h==='Neo'?'Neoplasia':h);
  const hab=S.tab||S.etil||S.drog?'\n- Hábitos: '+[S.tab&&'Tabagismo: '+S.tab,S.etil&&'Etilismo: '+S.etil,S.drog&&'Drogas: '+S.drog].filter(Boolean).join(' | '):'';
- return `# ANTECEDENTES & HISTÓRICO\n- HPP: ${allHpp.join(', ')||'Nega'}\n- MUC: ${S.muc||'Nega'}\n- Alergias: ${S.ale}${hab}`;
+ const hppStr = allHpp.length ? allHpp.join(', ') : 'Sem comorbidades prévias relatadas';
+ const mucStr = S.muc && S.muc.trim() ? S.muc.trim() : 'Sem uso contínuo de medicações';
+ const aleStr = S.ale && S.ale.trim() ? S.ale.trim() : 'Sem alergias medicamentosas conhecidas';
+ return `# ANTECEDENTES & HISTÓRICO\n- HPP: ${hppStr}\n- MUC: ${mucStr}\n- Alergias: ${aleStr}${hab}`;
 }
 function buildVitais(){
  const va=vA();
  const n2=calcNEWS2(S);
  const n2Str=n2?` | NEWS2: ${n2.score} pts (${n2.nivelLabel})`:'';
  const alerts=va.length?'\n⚠ ALERTAS: '+va.join(' | '):'';
- const sepseWarn=(n2&&(n2.nivel==='alto'||n2.nivel==='medio'))?`\n⚠ ALERTA CLÍNICO (NEWS2 ${n2.score} pts): Cogitar Sepse / Deterioração aguda (SSC 2021)`:'';
- return `# SINAIS VITAIS DE ENTRADA\n- FC: ${S.fc||'—'} bpm | SatO2: ${S.sat||'—'}% | PA: ${S.pa||'—'} mmHg | FR: ${S.fr||'—'} irpm | Temp: ${S.temp||'—'}°C | Glicemia: ${S.gli||'—'} mg/dL${S.peso?' | Peso: '+S.peso+' kg':''}${S.eva!==''&&S.eva!==null?' | EVA: '+S.eva+'/10':''}${n2Str}${alerts}${sepseWarn}`;
+ return `# SINAIS VITAIS DE ENTRADA\n- FC: ${S.fc||'—'} bpm | SatO2: ${S.sat||'—'}% | PA: ${S.pa||'—'} mmHg | FR: ${S.fr||'—'} irpm | Temp: ${S.temp||'—'}°C | Glicemia: ${S.gli||'—'} mg/dL${S.peso?' | Peso: '+S.peso+' kg':''}${S.eva!==''&&S.eva!==null?' | EVA: '+S.eva+'/10':''}${n2Str}${alerts}`;
 }
 function buildEF(){
  const g=gcs();
  let ef='';
  if(S.ef==='amb'){
-  ef=`- Estado Geral: ${S.amb.g||'—'}\n`+
-     `- Aparelho Cardiovascular (ACV): ${S.amb.cv||'—'}\n`+
-     `- Aparelho Respiratório (AR): ${S.amb.re||'—'}\n`+
+  ef=`- Geral: ${S.amb.g||'—'}\n`+
+     `- Cardiovascular: ${S.amb.cv||'—'}\n`+
+     `- Respiratório: ${S.amb.re||'—'}\n`+
      `- Abdome: ${S.amb.ab||'—'}\n`+
      `- Neurológico: ${S.amb.ne||'—'}\n`+
-     `- Extremidades & Pele: ${S.amb.pe||'—'}`;
+     `- Extremidades e Pele: ${S.amb.pe||'—'}`;
  } else if(S.ef==='crit'){
   const a=S.abc;
   const esfStr=a.esf&&a.esf.length?`Sinais de esforço: ${a.esf.join(', ').toLowerCase()}. `:'' ;
@@ -10368,11 +10454,11 @@ function buildEF(){
   const ausStr=a.aus&&a.aus.length?a.aus.join(', '):'Bulhas normofonéticas';
   const defStr=a.def&&a.def.length?`Déficits: ${a.def.join(', ')}`:'Sem déficits focais';
   const edeStr=a.ede==='Presente'?`Edema MMII: Presente (${a.cac.toLowerCase()}). `: 'Edema MMII: Ausente. ';
-  ef=`- A (Vias Aéreas & Cervical): VA ${a.va.toLowerCase()}, fonação ${a.fon.toLowerCase()}. Colar cervical: ${a.col.toLowerCase()}.\n`+
-     `- B (Respiração & Ventilação): Expansibilidade ${a.exp.toLowerCase()}, MV ${a.mv.toLowerCase()}. ${esfStr}${ruidosStr}.\n`+
-     `- C (Circulação & Perfusão): TEC ${a.tec}. ${ausStr}. Pulsos ${a.pul.toLowerCase()}. Abdome: ${a.abd.join(', ')||'sem alterações'}.\n`+
-     `- D (Disfunção Neurológica): GCS ${g}/15 (O:${a.ao} V:${a.rv} M:${a.rm}) — ${gcsL(g)}. Pupilas ${a.pup.toLowerCase()}. ${defStr}.\n`+
-     `- E (Exposição & Térmico): ${edeStr}Pele: ${a.pel.join(', ')||'sem alterações'}.`;
+  ef=`- A: ${a.va}, fonação ${a.fon.toLowerCase()}. Colar cervical: ${a.col.toLowerCase()}.\n`+
+     `- B: Expansibilidade ${a.exp.toLowerCase()}, MV ${a.mv.toLowerCase()}. ${esfStr}${ruidosStr}.\n`+
+     `- C: TEC ${a.tec}. ${ausStr}. Pulsos ${a.pul.toLowerCase()}. Abdome: ${a.abd.join(', ')||'sem alterações'}.\n`+
+     `- D: Glasgow ${g}/15 (O:${a.ao} V:${a.rv} M:${a.rm}) — ${gcsL(g)}. Pupilas ${a.pup.toLowerCase()}. ${defStr}.\n`+
+     `- E: ${edeStr}Pele: ${a.pel.join(', ')||'sem alterações'}.`;
  }
  if(QX_EF_TEXT[S.queixa]){
   const extra=QX_EF_TEXT[S.queixa](S);
@@ -10582,7 +10668,7 @@ function buildCondutas(){
  // Deduplicação inteligente agressiva de itens idênticos ou redundantes
  const seenCanonical=new Set();
  const seenExact=new Set();
- const deduplicated=[];
+ let deduplicated=[];
  
  for(const c of collected){
   const cKey=getCanonicalConductKey(c.item);
@@ -10606,6 +10692,54 @@ function buildCondutas(){
     ...c,
     item:cleanItem
    });
+  }
+ }
+
+ // Fusão agressiva de exames laboratoriais afins
+ const labOrders = [];
+ const nonLabOrders = [];
+ deduplicated.forEach(c => {
+  const l = c.item.toLowerCase();
+  const isLab = l.includes('hemograma') || l.includes('troponina') || l.includes('coagulograma') || 
+                l.includes('ureia') || l.includes('creatinina') || l.includes('eletrólitos') ||
+                l.includes('sódio') || l.includes('potássio') || l.includes('gasometria') ||
+                l.includes('d-dímero') || l.includes('lactato sérico') || l.includes('transaminases') ||
+                l.includes('bilirrubinas') || l.includes('amilase') || l.includes('lipase') ||
+                l.includes('exames laboratoriais de urgência');
+  if (isLab) {
+   labOrders.push(c);
+  } else {
+   nonLabOrders.push(c);
+  }
+ });
+
+ if (labOrders.length >= 2) {
+  // Consolidar em uma única ordem abrangente de urgência
+  const allTests = new Set();
+  labOrders.forEach(c => {
+   const l = c.item.toLowerCase();
+   if (l.includes('hemograma')) allTests.add('Hemograma completo');
+   if (l.includes('coagulograma')) allTests.add('Coagulograma (TP/INR, TTPA)');
+   if (l.includes('ureia') || l.includes('creatinina') || l.includes('função renal')) allTests.add('Função renal (Ureia e Creatinina)');
+   if (l.includes('eletrólitos') || l.includes('sódio') || l.includes('potássio')) allTests.add('Eletrólitos (Sódio e Potássio)');
+   if (l.includes('troponina')) allTests.add('Troponina ultrassensível seriada');
+   if (l.includes('gasometria') || l.includes('lactato')) allTests.add('Gasometria venosa imediata com dosagem de lactato');
+   if (l.includes('d-dímero') || l.includes('ddímero')) allTests.add('D-Dímero quantitativo');
+   if (l.includes('transaminases') || l.includes('tgo') || l.includes('bilirrubinas')) allTests.add('Perfil hepático (Transaminases e Bilirrubinas)');
+   if (l.includes('amilase') || l.includes('lipase')) allTests.add('Amilase e Lipase séricas');
+  });
+
+  // Se o conjunto extraído cobriu os exames, sintetiza uma ordem única
+  if (allTests.size >= 2) {
+   const fusedItem = {
+    sid: labOrders[0].sid,
+    sindLabel: labOrders[0].sindLabel,
+    secId: 'lab',
+    secTitle: 'Exames Laboratoriais',
+    item: `Exames laboratoriais de urgência: ${Array.from(allTests).join(', ')}`,
+    note: ''
+   };
+   deduplicated = [...nonLabOrders, fusedItem];
   }
  }
 
@@ -10950,6 +11084,78 @@ window.addEventListener('keydown', (e)=>{
 });
 
 initAuth();
+
+
+// ─── Controles de Ergonomia e Layout (Zoom, Split-Screen & Modo Noturno) ───
+let _reportZoom = parseInt(localStorage.getItem('rel_zoom') || '0', 10);
+let _splitMode = localStorage.getItem('rel_split_mode') === 'true';
+let _nightMode = localStorage.getItem('plantao_night_mode') === 'true';
+
+function applyReportZoom(){
+ const ta = document.getElementById('relColTxt');
+ const ta5 = document.getElementById('relTxt');
+ const sizes = { '-1': '11.5px', '0': '13px', '1': '15px', '2': '17px' };
+ const sz = sizes[_reportZoom] || '13px';
+ if(ta) ta.style.fontSize = sz;
+ if(ta5) ta5.style.fontSize = sz;
+}
+
+function changeReportZoom(delta){
+ if(delta === 0) _reportZoom = 0;
+ else {
+  _reportZoom = Math.max(-1, Math.min(2, _reportZoom + delta));
+ }
+ localStorage.setItem('rel_zoom', String(_reportZoom));
+ applyReportZoom();
+ if(typeof showToast === 'function'){
+  showToast(`Fonte do relatório: ${_reportZoom === 0 ? 'Padrão (13px)' : _reportZoom > 0 ? 'Ampliada A+ (' + (_reportZoom === 1 ? '15px' : '17px') + ')' : 'Reduzida A- (11.5px)'}`);
+ }
+}
+
+function applySplitMode(){
+ const wrap = document.querySelector('.two-col-wrap');
+ const btn = document.getElementById('splitModeBtn');
+ if(wrap){
+  wrap.classList.toggle('split-50-50', _splitMode);
+ }
+ if(btn){
+  btn.classList.toggle('active', _splitMode);
+ }
+}
+
+function toggleSplitMode(){
+ _splitMode = !_splitMode;
+ localStorage.setItem('rel_split_mode', String(_splitMode));
+ applySplitMode();
+ if(typeof showToast === 'function'){
+  showToast(_splitMode ? 'Modo Dividido 50/50 ativado' : 'Layout padrão restaurado');
+ }
+}
+
+function applyHighContrastNight(){
+ document.body.classList.toggle('high-contrast-night', _nightMode);
+ const btn = document.getElementById('nightModeBtn');
+ if(btn) btn.classList.toggle('active', _nightMode);
+}
+
+function toggleHighContrastNight(){
+ _nightMode = !_nightMode;
+ localStorage.setItem('plantao_night_mode', String(_nightMode));
+ applyHighContrastNight();
+ if(typeof showToast === 'function'){
+  showToast(_nightMode ? 'Modo Noturno de Alto Contraste ativado' : 'Modo Noturno desativado');
+ }
+}
+
+// Inicialização automática ao carregar
+if(typeof window !== 'undefined'){
+ window.addEventListener('DOMContentLoaded', () => {
+  applyReportZoom();
+  applySplitMode();
+  applyHighContrastNight();
+ });
+}
+
 </script>
 </body>
 </html>
