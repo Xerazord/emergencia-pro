@@ -2227,7 +2227,7 @@ const S={step:0,nome:'',idade:30,sexo:'',orig:'Demanda Espontânea',origInst:'',
  abcOpen:{a:true},
  relMode:'full',
  syndromeGridCollapsed:false,
- condStatus:'em_conduta',condReavalMin:null,condPendDesc:'',condPendCat:'outros',condPendPrazoMin:null,cardOpen:{}};
+ condStatus:'em_conduta',condReavalMin:null,condPendDesc:'',condPendCat:'outros',condPendPrazoMin:null,cardOpen:{},customExams:[]};
 
 // Snapshot do estado inicial para resetCase()
 const INITIAL_S=JSON.parse(JSON.stringify(S));
@@ -2498,7 +2498,10 @@ const CT = {
     "id": "sup",
     "t": "Suporte e metas de ressuscitação (Surviving Sepsis / ESICM)",
     "it": [
-     "Ressuscitação volêmica: Ringer Lactato 30 mL/kg nas primeiras 3h apenas se houver sinais de responsividade a fluidos (suspender se congestão ou dilatação de VD)"
+     "Abertura de protocolo sepse, coleta de laboratoriais e 2 pares de hemocultura",
+     "Se choque séptico, início de ATB < 1h da admissão, se sepse suspeita, início em até 3h, após descartar diferenciais",
+     "Se hipotensão, expansão volêmica possível com até 30ml/kg de cristaloide balanceado",
+     "Caso PAD < 40 ou refratariedade a bolus de cristaloide, início precoce de vasopressor em acesso periférico"
     ]
    },
    {
@@ -3157,10 +3160,7 @@ const CT = {
      "Hiperventilação profunda (PaCO₂ < 30 mmHg) causa vasoconstrição cerebral grave e isquemia cerebral difusa — utilizar apenas PaCO₂ 30–35 mmHg por curto período (< 30 min) como ponte de resgate para cirurgia/osmoterápico!"
     ],
     "it": [
-     "Posicionamento no leito: Cabeceira elevada a 30° e estritamente centrada (alinhamento neutro sem rotação ou flexão cervical para evitar compressão jugular retrógrada)",
-     "Sedação e analgesia profundas (Propofol 20–50 mcg/kg/min + Fentanil 1–2 mcg/kg/h) para acoplar à ventilação, abolir tosse e evitar picos súbitos de PIC",
-     "Otimização ventilatória: Manter normocapnia estrita (PaCO₂ 35–38 mmHg) e oxigenação adequada (PaO₂ 80–120 mmHg; SpO₂ 94–98%)",
-     "Controle de PAM com vasopressor (Norepinefrina) se necessário para manter PPC ≥ 60–70 mmHg"
+     "Medidas de tratamento para HIC: Cabeceira elevada a 30; PAM alvo de 65 ou mais; pCO2 alvo entre 35-45; meta de glicemia 140-180; alvo de saturação 94% ou mais; evitar e tratar agressivamente a febre; controle rigoroso de dor e agitação para evitar elevações da PIC e dano neurológico secundário"
     ]
    },
    {
@@ -3172,8 +3172,7 @@ const CT = {
     "it": [
      "Salina Hipertônica 3% 150 a 250 mL IV em bólus rápido (10–15 min)",
      "Manitol 20% 0,5 a 1,0 g/kg IV em infusão rápida (15–20 min) como alternativa osmolar (evitar se PAS < 90 mmHg ou hipotensão franca; monitorar osmolaridade sérica < 320 mOsm/L)",
-     "Anticonvulsivante profilático: Levetiracetam 20–30 mg/kg IV (máx 3.000 mg) ou Fenitoína 20 mg/kg IV para prevenir crises epilépticas que elevam dramaticamente a PIC",
-     "Controle rigoroso de temperatura: Normotermia estrita (alvo 36–37°C); tratar ativamente qualquer pico febril (temperatura > 37,5°C aumenta exponencialmente o consumo metabólico de O₂ e a PIC)"
+     "Anticonvulsivante profilático: Levetiracetam 20–30 mg/kg IV (máx 3.000 mg) ou Fenitoína 20 mg/kg IV para prevenir crises epilépticas que elevam dramaticamente a PIC"
     ]
    },
    {
@@ -3640,11 +3639,10 @@ const CT = {
     "id": "sup",
     "t": "Rastreio de sepse e bundle da 1ª hora (Surviving Sepsis Campaign)",
     "it": [
-     "Rastreio de sepse à beira-leito com escore NEWS2 ou SOFA (aumento ≥ 2 pontos em relação ao basal na presença de infecção confirmada ou suspeita define Sepse)",
-     "Triagem de sinais de hipoperfusão tecidual: Tempo de Enchimento Capilar (TEC > 3s), oligúria (< 0,5 mL/kg/h) ou confusão mental aguda",
-     "Acesso venoso periférico calibroso imediato e monitorização multiparamétrica de sinais vitais",
-     "Lactato sérico na admissão (meta: clearance > 20% em 2h se valor inicial > 2,0 mmol/L)",
-     "Ressuscitação volêmica criteriosa com Ringer Lactato (alíquotas de 250–500 mL com avaliação dinâmica de responsividade; evitar sobrecarga em pacientes cardiopatas ou renais)"
+     "Abertura de protocolo sepse, coleta de laboratoriais e 2 pares de hemocultura",
+     "Se choque séptico, início de ATB < 1h da admissão, se sepse suspeita, início em até 3h, após descartar diferenciais",
+     "Se hipotensão, expansão volêmica possível com até 30ml/kg de cristaloide balanceado",
+     "Caso PAD < 40 ou refratariedade a bolus de cristaloide, início precoce de vasopressor em acesso periférico"
     ]
    },
    {
@@ -9035,7 +9033,7 @@ function getCanonicalConductKey(txt){
   return 'sonda_vesical';
  }
  // Repouso
- if(t.includes('repouso no leito')||t.includes('repouso absoluto')||t.includes('cabeceira')){
+ if((t.includes('repouso no leito')||t.includes('repouso absoluto')||t.includes('cabeceira')) && !t.includes('medidas de tratamento para hic') && !t.includes('neuroproteção') && !t.includes('pic')){
   return 'repouso';
  }
  // Gasometria + Lactato
@@ -9055,7 +9053,7 @@ function getCanonicalConductKey(txt){
   return 'dipirona';
  }
  // POCUS
- if(t.includes('pocus')||t.includes('ultrassom point-of-care')||t.includes('ultrassonografia beira-leito')||t.includes('focus cardíaco')||t.includes('ultrassom focado')){
+ if((t.includes('pocus')||t.includes('ultrassom point-of-care')||t.includes('ultrassonografia beira-leito')||t.includes('focus cardíaco')||t.includes('ultrassom focado')) && !t.includes('bainha do nervo') && !t.includes('dno') && !t.includes('pulmonar') && !t.includes('blue') && !t.includes('fast') && !t.includes('efast')){
   return 'pocus';
  }
  // Lab de Triagem
@@ -10083,12 +10081,167 @@ function closeEvidencePopover(){
  if(pop) pop.style.display = 'none';
 }
 
-function isGenericVitalSupportItem(txt){
- if(!txt) return false;
- const t = txt.toLowerCase();
- return t.includes('monitorização') || t.includes('acesso venoso') || t.includes('oxigenoterapia') ||
-        t.includes('glicemia capilar') || t.includes('momento zero') || t.includes('gasometria') ||
-        t.includes('jejum') || t.includes('repouso');
+const EXAM_QUICK_CHIPS = [
+ 'Hemograma', 'Ureia e Creatinina', 'Eletrólitos (Na/K)', 'Coagulograma', 'Troponina hs', 
+ 'D-Dímero', 'Gasometria com lactato', 'Urina 1', 'Hemoculturas (2 pares)', 'PCR', 
+ 'Radiografia de tórax', 'TC de crânio', 'AngioTC', 'POCUS beira-leito'
+];
+
+function addCustomExam(name){
+ if(!name||!name.trim()) return;
+ const trimmed = name.trim();
+ if(!S.customExams) S.customExams = [];
+ if(!S.customExams.some(x => x.toLowerCase() === trimmed.toLowerCase())){
+  S.customExams.push(trimmed);
+  autoSave();
+  render();
+  const ta = document.getElementById('relColTxt');
+  if(ta) ta.value = gRel();
+  if(typeof showToast === 'function') showToast(`Exame adicionado: ${trimmed}`);
+ }
+}
+
+function removeCustomExam(name){
+ if(!S.customExams) return;
+ S.customExams = S.customExams.filter(x => x.toLowerCase() !== name.toLowerCase());
+ autoSave();
+ render();
+ const ta = document.getElementById('relColTxt');
+ if(ta) ta.value = gRel();
+ if(typeof showToast === 'function') showToast(`Exame removido: ${name}`);
+}
+
+function toggleCustomExamChip(name){
+ if(!S.customExams) S.customExams = [];
+ const exists = S.customExams.some(x => x.toLowerCase() === name.toLowerCase());
+ if(exists){
+  removeCustomExam(name);
+ } else {
+  addCustomExam(name);
+ }
+}
+
+function cleanExamItemName(raw){
+ let item = (raw || '').trim().replace(/^-\s*/, '').replace(/^\[.*?\]\s*/, '');
+ const l = item.toLowerCase();
+ 
+ if(l.includes('painel laboratorial') || l.includes('lab_triagem') || l.includes('laboratório de triagem') || (l.includes('hemograma') && (l.includes('creatinina') || l.includes('ureia') || l.includes('plaquetas') || l.includes('eletrólitos')))){
+  return 'Hemograma completo, Função renal (Ureia e Creatinina), Eletrólitos (Sódio e Potássio), Coagulograma, Troponina ultrassensível seriada';
+ }
+ if(l.includes('tc de crânio imediata') || l.includes('tc de crânio sem contraste') || l.includes('tomografia de crânio')){
+  return 'TC de Crânio sem contraste imediata';
+ }
+ if(l.includes('angiotomografia arterial e venosa de crânio') || (l.includes('angiotc') && l.includes('crânio'))){
+  return 'Angiotomografia de crânio (AngioTC)';
+ }
+ if(l.includes('bainha do nervo óptico') || l.includes('dno')){
+  return 'POCUS da bainha do nervo óptico (DNO)';
+ }
+ if(l.includes('pocus focado') || (l.includes('pocus') && l.includes('contratilidade'))){
+  return 'POCUS focado à beira-leito';
+ }
+ if(l.includes('pocus pulmonar') || l.includes('protocolo blue')){
+  return 'POCUS pulmonar (Protocolo BLUE)';
+ }
+ if(l.includes('fast') || l.includes('efast')){
+  return 'POCUS eFAST à beira-leito';
+ }
+ if(l.includes('radiografia de tórax') || l.includes('rx de tórax') || l.includes('raio-x de tórax')){
+  return 'Radiografia de tórax no leito';
+ }
+ if(l.includes('d-dímero') || l.includes('ddímero')){
+  return 'D-Dímero quantitativo';
+ }
+ if(l.includes('2 pares de hemoculturas') || l.includes('hemoculturas de sítios')){
+  return '2 pares de hemoculturas pareadas';
+ }
+ if(l.includes('culturas de sítios suspeitos') || l.includes('culturas direcionadas')){
+  return 'Culturas de sítios suspeitos com antibiograma';
+ }
+ if(l.includes('urina tipo 1') || l.includes('sedimento urinário') || l.includes('eas')){
+  return 'Urina tipo 1 (sedimento urinário)';
+ }
+ if(l.includes('gasometria com dosagem de lactato') || l.includes('gasometria venosa imediata') || l.includes('lactato sérico na admissão')){
+  return 'Gasometria venosa imediata com dosagem de lactato';
+ }
+ if(l.includes('eletrólitos com sódio sérico') || l.includes('sódio sérico e osmolaridade')){
+  return 'Eletrólitos com sódio sérico e osmolaridade sérica';
+ }
+ if(l.includes('ecg de 12 derivações') || l.includes('eletrocardiograma de 12 derivações') || l.includes('eletrocardiograma seriado')){
+  return 'Eletrocardiograma de 12 derivações';
+ }
+ if(l.includes('ecocardiograma transtorácico')){
+  return 'Ecocardiograma transtorácico';
+ }
+ if(l.includes('peptídeos natriuréticos') || l.includes('bnp')){
+  return 'Peptídeos natriuréticos (BNP / NT-proBNP)';
+ }
+ if(l.includes('função renal urgente')){
+  return 'Função renal urgente (Ureia e Creatinina)';
+ }
+ if(l.includes('troponina') && l.includes('0h/1h')){
+  return 'Troponina ultrassensível seriada (0h/1h)';
+ }
+
+ let clean = item;
+ if(clean.includes(':')){
+  const parts = clean.split(':');
+  if(parts[0].toLowerCase().includes('laborat') || parts[0].toLowerCase().includes('painel') || parts[0].toLowerCase().includes('exames')){
+   clean = parts.slice(1).join(':').trim();
+  } else if(parts[0].length < 40){
+   clean = parts[0];
+  }
+ }
+ clean = clean.replace(/\([^\)]{16,}\)/g, '').trim();
+ clean = clean.replace(/\s+/g, ' ');
+ return clean;
+}
+
+function isExamOrder(entry){
+ const l = (entry.item || '').toLowerCase();
+ if(l.includes('abertura de protocolo') || l.includes('início de atb') || l.includes('expansão volêmica') || l.includes('vasopressor') || l.includes('medidas de tratamento')) return false;
+ if(entry.secId === 'inv' || entry.secId === 'lab') return true;
+ if(l.startsWith('painel laboratorial') || l.startsWith('exames laboratoriais') || l.startsWith('laboratório de triagem')) return true;
+ if(l.startsWith('tc ') || l.startsWith('angiotomografia') || l.startsWith('radiografia') || l.startsWith('raio-x') || l.startsWith('rx ')) return true;
+ if(l.startsWith('pocus ') || l.startsWith('ecg de 12') || l.startsWith('eletrocardiograma de 12') || l.startsWith('ecocardiograma')) return true;
+ if(l.startsWith('coleta de 2 pares') || l.startsWith('coleta de culturas') || l.startsWith('urina tipo 1')) return true;
+ return false;
+}
+
+function rExamUnificationCard(){
+ const quickChips = EXAM_QUICK_CHIPS.map(chip => {
+  const active = (S.customExams || []).some(x => x.toLowerCase() === chip.toLowerCase());
+  return `<button type="button" class="xbtn ${active ? 'on' : ''}" style="font-size:11px;padding:3px 8px;border-radius:12px" onclick="toggleCustomExamChip('${chip}')">${active ? '✓ ' : '+ '}${chip}</button>`;
+ }).join('');
+
+ const addedTags = (S.customExams && S.customExams.length) ? `
+  <div style="margin-top:8px;padding-top:6px;border-top:1px dashed var(--color-border);display:flex;flex-wrap:wrap;gap:5px;align-items:center">
+   <span style="font-size:11px;color:var(--color-text-secondary);font-weight:600">Exames incluídos:</span>
+   ${S.customExams.map(ex => `
+    <span class="sb" style="font-size:11px;background:#e0f2fe;color:#0369a1;display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:12px">
+     ${esc(ex)} <i class="ti ti-x" style="cursor:pointer;margin-left:2px" onclick="removeCustomExam('${esc(ex)}')" title="Remover exame"></i>
+    </span>
+   `).join('')}
+  </div>` : '';
+
+ return `
+  <div class="exam-unification-card" style="margin-bottom:12px;background:var(--color-bg-secondary,#f8fafc);border:1px solid var(--color-border,#e2e8f0);border-radius:8px;padding:10px 12px">
+   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:4px">
+    <span style="font-size:12px;font-weight:600;color:var(--color-text-primary,#1e293b);display:flex;align-items:center;gap:6px">
+     <i class="ti ti-test-pipe" style="color:#2563eb" aria-hidden="true"></i> Adicionar Exames à Solicitação Inicial:
+    </span>
+    <span style="font-size:11px;color:var(--color-text-secondary,#64748b)">Fundidos em linha única na conduta</span>
+   </div>
+   <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px">
+    ${quickChips}
+   </div>
+   <div style="display:flex;gap:6px;align-items:center">
+    <input type="text" id="customExamInput" placeholder="Outro exame (ex: Líquor, Urina 1, PCR, Lipase)..." style="font-size:12px;padding:5px 8px;flex:1;border-radius:6px;border:1px solid var(--color-border,#cbd5e1)" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomExam(this.value);this.value='';}">
+    <button type="button" class="btnp" style="padding:5px 12px;font-size:12px" onclick="const inp=document.getElementById('customExamInput');if(inp){addCustomExam(inp.value);inp.value='';}">+ Adicionar</button>
+   </div>
+   ${addedTags}
+  </div>
+ `;
 }
 
 function rUnifiedConductsBoard(T){
@@ -10245,6 +10398,7 @@ function rUnifiedConductsBoard(T){
     </div>
     <div class="csb${openCls}" id="${uid}">
      ${secAlertsHtml}
+     ${macro.id === 'macro_dsp' ? rExamUnificationCard() : ''}
      
      ${motherEntries.length?`
       <div style="margin-bottom:8px">
@@ -10695,52 +10849,57 @@ function buildCondutas(){
   }
  }
 
- // Fusão agressiva de exames laboratoriais afins
- const labOrders = [];
- const nonLabOrders = [];
+ // Fusão inteligente e unificação de exames diagnósticos e complementares
+ const examOrders = [];
+ const nonExamOrders = [];
  deduplicated.forEach(c => {
-  const l = c.item.toLowerCase();
-  const isLab = l.includes('hemograma') || l.includes('troponina') || l.includes('coagulograma') || 
-                l.includes('ureia') || l.includes('creatinina') || l.includes('eletrólitos') ||
-                l.includes('sódio') || l.includes('potássio') || l.includes('gasometria') ||
-                l.includes('d-dímero') || l.includes('lactato sérico') || l.includes('transaminases') ||
-                l.includes('bilirrubinas') || l.includes('amilase') || l.includes('lipase') ||
-                l.includes('exames laboratoriais de urgência');
-  if (isLab) {
-   labOrders.push(c);
+  if (isExamOrder(c)) {
+   examOrders.push(c);
   } else {
-   nonLabOrders.push(c);
+   nonExamOrders.push(c);
   }
  });
 
- if (labOrders.length >= 2) {
-  // Consolidar em uma única ordem abrangente de urgência
-  const allTests = new Set();
-  labOrders.forEach(c => {
-   const l = c.item.toLowerCase();
-   if (l.includes('hemograma')) allTests.add('Hemograma completo');
-   if (l.includes('coagulograma')) allTests.add('Coagulograma (TP/INR, TTPA)');
-   if (l.includes('ureia') || l.includes('creatinina') || l.includes('função renal')) allTests.add('Função renal (Ureia e Creatinina)');
-   if (l.includes('eletrólitos') || l.includes('sódio') || l.includes('potássio')) allTests.add('Eletrólitos (Sódio e Potássio)');
-   if (l.includes('troponina')) allTests.add('Troponina ultrassensível seriada');
-   if (l.includes('gasometria') || l.includes('lactato')) allTests.add('Gasometria venosa imediata com dosagem de lactato');
-   if (l.includes('d-dímero') || l.includes('ddímero')) allTests.add('D-Dímero quantitativo');
-   if (l.includes('transaminases') || l.includes('tgo') || l.includes('bilirrubinas')) allTests.add('Perfil hepático (Transaminases e Bilirrubinas)');
-   if (l.includes('amilase') || l.includes('lipase')) allTests.add('Amilase e Lipase séricas');
-  });
-
-  // Se o conjunto extraído cobriu os exames, sintetiza uma ordem única
-  if (allTests.size >= 2) {
-   const fusedItem = {
-    sid: labOrders[0].sid,
-    sindLabel: labOrders[0].sindLabel,
-    secId: 'lab',
-    secTitle: 'Exames Laboratoriais',
-    item: `Exames laboratoriais de urgência: ${Array.from(allTests).join(', ')}`,
-    note: ''
-   };
-   deduplicated = [...nonLabOrders, fusedItem];
+ const seenExamNames = new Set();
+ const cleanedExamList = [];
+ examOrders.forEach(c => {
+  const name = cleanExamItemName(c.item);
+  if (name && !seenExamNames.has(name.toLowerCase())) {
+   seenExamNames.add(name.toLowerCase());
+   cleanedExamList.push(name);
   }
+ });
+
+ (S.customExams || []).forEach(name => {
+  const trimmed = (name || '').trim();
+  if (trimmed && !seenExamNames.has(trimmed.toLowerCase())) {
+   seenExamNames.add(trimmed.toLowerCase());
+   cleanedExamList.push(trimmed);
+  }
+ });
+
+ if (cleanedExamList.length > 0) {
+  const hasImagingOrMethods = cleanedExamList.some(name => {
+   const l = name.toLowerCase();
+   return l.includes('tc ') || l.includes('tomografia') || l.includes('angio') || 
+          l.includes('radiografia') || l.includes('rx') || l.includes('pocus') || 
+          l.includes('cultura') || l.includes('urina') || l.includes('ecg') || 
+          l.includes('eletrocardiograma') || l.includes('ecocardiograma') || 
+          l.includes('líquor') || l.includes('usg');
+  }) || (S.customExams && S.customExams.length > 0);
+
+  const titlePrefix = hasImagingOrMethods ? 'Solicitação de exames de urgência: ' : 'Exames laboratoriais de urgência: ';
+  const fusedItem = {
+   sid: examOrders[0] ? examOrders[0].sid : S.sind,
+   sindLabel: examOrders[0] ? examOrders[0].sindLabel : '',
+   secId: 'inv',
+   secTitle: 'Exames Complementares',
+   item: `${titlePrefix}${cleanedExamList.join(', ')}`,
+   note: ''
+  };
+  deduplicated = [...nonExamOrders, fusedItem];
+ } else {
+  deduplicated = nonExamOrders;
  }
 
 const filteredItems=[];
