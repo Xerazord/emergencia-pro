@@ -9063,6 +9063,14 @@ function getCanonicalConductKey(txt){
  return null;
 }
 
+function isGenericVitalSupportItem(item){
+ if(!item)return false;
+ const t=item.toLowerCase();
+ // Preserva expressamente bundles de suporte especializado e diretrizes de ressuscitação
+ if(t.includes('medidas de tratamento para hic') || t.includes('neuroproteção') || t.includes('pic') || t.includes('sepse') || t.includes('vasopressor') || t.includes('trombólise') || t.includes('vni') || t.includes('cpap') || t.includes('descompressão') || t.includes('dreno') || t.includes('hemodinâmica')) return false;
+ return t.includes('monitorização') || t.includes('oximetria') || t.includes('acesso venoso') || t.includes('oxigenoterapia') || t.includes('cabeceira') || t.includes('repouso no leito') || t.includes('cardioscopia') || t.includes('telemetria');
+}
+
 const CANONICAL_PRESCRIPTION_ORDERS={
  ecg: 'Eletrocardiograma (ECG) de 12 derivações na admissão e seriado se recorrência ou instabilidade',
  monitor: 'Monitorização multiparamétrica contínua (cardioscopia contínua, SpO2, PNI)',
