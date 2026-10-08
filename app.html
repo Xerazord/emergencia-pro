@@ -2525,6 +2525,8 @@ const CT = {
     "id": "inv",
     "t": "Investigação etiológica e exames complementares",
     "it": [
+     "Painel Laboratorial da Sepse: Hemograma completo com plaquetas, Coagulograma (TP/INR, TTPa), Ureia, Creatinina, Eletrólitos, Glicemia e Gasometria com dosagem de lactato",
+     "Coleta de 2 pares de hemoculturas pareadas de sítios periféricos distintos antes do início do antimicrobiano",
      "Coleta de culturas de sítios suspeitos: urocultura com antibiograma, cultura de secreção traqueal/escarro, cultura de líquor ou feridas",
      "Radiografia de tórax no leito e/ou TC contrastada direcionada ao foco suspeito (abdome, pelve, tórax, SNC)"
     ]
@@ -3182,7 +3184,8 @@ const CT = {
      "TC de Crânio imediata sem contraste (< 15–20 min): avaliar desvio de linha média (> 5 mm é critério cirúrgico), apagamento de cisternas da base, efeito de massa e hematomas",
      "Angiotomografia arterial e venosa de crânio (AngioTC) para avaliar etiologia vascular (malformações, aneurismas rotos, trombose venosa de seio dural)",
      "POCUS da Bainha do Nervo Óptico (DNO): mensurar diâmetro retrobulbar a 3 mm da retina (valor > 5,8–6,0 mm possui alta sensibilidade para PIC > 20 mmHg)",
-     "Eletrólitos com sódio sérico e osmolaridade sérica de 2/2h a 4/4h durante terapia hiperosmolar"
+     "Eletrólitos com sódio sérico e osmolaridade sérica de 2/2h a 4/4h durante terapia hiperosmolar",
+     "Laboratório de urgência: Gasometria com lactato e pCO2, Glicemia, Hemograma completo e Coagulograma (TP/INR, TTPa)"
     ]
    },
    {
@@ -3229,7 +3232,8 @@ const CT = {
     "id": "inv",
     "t": "Investigação diagnóstica e líquor urgente",
     "it": [
-     "Coleta imediata de 2 pares de hemoculturas de sítios distintos ANTES da infusão de antimicrobianos",
+     "Coleta imediata de 2 pares de hemoculturas pareadas de sítios distintos ANTES da infusão de antimicrobianos",
+     "Laboratório de urgência: Hemograma completo com plaquetas, Coagulograma (TP/INR, TTPa), Ureia, Creatinina, Eletrólitos e Gasometria com dosagem de lactato",
      "Indicações de TC de crânio ANTES da punção lombar: Glasgow < 12, imunossupressão, déficit focal novo, crise convulsiva recente (< 1 semana), papiledema ou história de lesão do SNC",
      "Punção Lombar (PL) urgente (se sem contraindicações): citologia e contagem celular, glicose e proteínas, lactato liquórico, bacterioscopia (Gram), cultura com TSA, látex/antígenos bacterianos e PCR Multiplex (painel viral e bacteriano meningoencefálico)",
      "Glicemia sérica concomitante à punção lombar (para cálculo da relação glicose líquor/sangue; relação < 0,4 é típica de infecção bacteriana ou fúngica)"
@@ -3498,11 +3502,29 @@ const CT = {
  },
  "cef_tvc": {
   "l": "Trombose venosa cerebral",
-  "s": []
+  "s": [
+   {
+    "id": "inv",
+    "t": "Diagnóstico por neuroimagem e laboratório",
+    "it": [
+     "AngioTC venosa ou Angio-RM venosa de crânio: padrão-ouro para defeito de enchimento dos seios durais",
+     "TC de crânio sem contraste imediata: rastreio de infarto venoso hemorrágico ou edema cerebral",
+     "Coagulograma completo (TP/INR, TTPa), D-dímero sérico e hemograma completo"
+    ]
+   }
+  ]
  },
  "cef_dac": {
   "l": "Dissecção de artéria cervical",
-  "s": []
+  "s": [
+   {
+    "id": "inv",
+    "t": "Diagnóstico vascular",
+    "it": [
+     "Angiotomografia arterial cervical e de crânio (AngioTC) ou Angio-RM: método de escolha para visualização de hematoma intramural e flap intimal"
+    ]
+   }
+  ]
  },
  "cef_avch": {
   "l": "AVC hemorrágico",
@@ -3514,11 +3536,29 @@ const CT = {
  },
  "cef_hii": {
   "l": "Hipertensão intracraniana idiopática",
-  "s": []
+  "s": [
+   {
+    "id": "inv",
+    "t": "Investigação diagnóstica",
+    "it": [
+     "Ressonância Magnética de Crânio com Angio-RM venosa (excluir lesão expansiva e TVC)",
+     "Punção Lombar diagnóstica com manometria de pressão de abertura (pressão > 25 cmH2O)",
+     "Fundoscopia / POCUS da bainha do nervo óptico para avaliação de papiledema"
+    ]
+   }
+  ]
  },
  "cef_tce": {
   "l": "Cefaleia pós-TCE",
-  "s": []
+  "s": [
+   {
+    "id": "inv",
+    "t": "Neuroimagem de emergência",
+    "it": [
+     "TC de crânio sem contraste imediata: descartar hematoma subdural, epidural, contusão hemorrágica e fratura de crânio conforme critérios de Ottawa/New Orleans"
+    ]
+   }
+  ]
  },
  "cef_sin": {
   "l": "Rinossinusite aguda",
@@ -3674,7 +3714,7 @@ const CT = {
      "Culturas direcionadas ao foco clínico suspeito: urocultura com antibiograma, cultura de escarro/secreção traqueal, cultura de líquido sinovial ou líquor",
      "Urina tipo 1 (sedimento urinário) e pesquisa de antígenos urinários para Legionella e Pneumococo se pneumonia grave",
      "Radiografia de tórax no leito e/ou Tomografia Computadorizada do segmento corpóreo suspeito (tórax, abdome, pelve ou crânio)",
-     "Laboratório: hemograma completo, plaquetas, PCR, procalcitonina, gasometria com lactato, coagulograma, ureia, creatinina e eletrólitos"
+     "Laboratório de urgência: Hemograma completo com plaquetas, Coagulograma (TP/INR, TTPa), Ureia, Creatinina, Eletrólitos, Glicemia e Gasometria com dosagem de lactato"
     ]
    },
    {
@@ -3817,7 +3857,7 @@ const CT = {
     "it": [
      "USG de abdome superior (vias biliares e vesícula)",
      "TC de abdome e pelve com contraste venoso (urgência)",
-     "Hemograma completo, PCR sérica, função renal e eletrólitos"
+     "Hemograma completo com contagem de plaquetas, Função renal (Ureia e Creatinina), Eletrólitos, Coagulograma e Lactato sérico"
     ]
    },
    {
@@ -3905,7 +3945,8 @@ const CT = {
     "t": "Investigação diagnóstica",
     "it": [
      "TC de abdome e pelve com contraste IV: método padrão-ouro para localizar o ponto de transição e avaliar sofrimento de alça",
-     "RX simples de abdome (rotina de abdome agudo: deitado, em pé e cúpulas): níveis hidroaéreos em degraus, empilhamento de moedas, ausência de ar no reto"
+     "RX simples de abdome (rotina de abdome agudo: deitado, em pé e cúpulas): níveis hidroaéreos em degraus, empilhamento de moedas, ausência de ar no reto",
+     "Laboratório de emergência: Hemograma completo, Ureia, Creatinina, Eletrólitos (Sódio, Potássio, Cloreto) e Gasometria com dosagem de lactato"
     ]
    }
   ]
@@ -3939,9 +3980,9 @@ const CT = {
     "id": "inv",
     "t": "Laboratório e imagem",
     "it": [
-     "Gasometria arterial: acidose metabólica com anion gap elevado e hiperlactatemia progressiva",
-     "D-dímero sérico elevado (> 95% de sensibilidade)",
-     "AngioTC arterial e venosa abdominal"
+     "AngioTC arterial e venosa abdominal em caráter de urgência",
+     "Gasometria com dosagem de lactato e anion gap (pesquisa precoce de acidose lática e isquemia intestinal)",
+     "Laboratório de emergência: Hemograma completo com contagem de plaquetas, Coagulograma (TP/INR, TTPa), Ureia, Creatinina, Eletrólitos e D-dímero sérico"
     ]
    }
   ]
@@ -4690,6 +4731,15 @@ const CT = {
      "Manutenção: infusão contínua de 150 mEq de Bicarbonato em 850 mL de SG 5% a 150–200 mL/h, com dosagem seriada de gasometria e potássio sérico (repor K⁺ se hipocalemia induzida pela alcalose)",
      "Arritmias ventriculares refratárias: Lidocaína 1,0 a 1,5 mg/kg IV em bólus (antiarrítmico de escolha)"
     ]
+   },
+   {
+    "id": "inv",
+    "t": "Investigação complementar",
+    "it": [
+     "Eletrocardiograma seriado de 12 derivações: avaliar duração do QRS (> 100 ms) e amplitude da onda R em aVR (> 3 mm)",
+     "Gasometria com dosagem de lactato e monitorização estrita de pH (alvo 7,45 a 7,55 sob bicarbonato)",
+     "Painel metabólico: Eletrólitos (Sódio, Potássio), Glicemia e Função renal"
+    ]
    }
   ]
  },
@@ -4748,6 +4798,15 @@ const CT = {
      "TERAPIA DE INSULINA EM ALTAS DOSES COM EUGLICEMIA (HIET): Insulina Regular 1 UI/kg IV em bólus + Glicose 50% 50 mL IV, seguido de infusão contínua de Insulina Regular a 1 UI/kg/h (titulando até 2–10 UI/kg/h) com SG 10% ou SG 50% contínuo para manter glicemia 150–250 mg/dL e monitorização horária de Potássio sérico (manter K⁺ 2,5–3,5 mEq/L sem reposição excessiva)",
      "EMULSÃO LIPÍDICA A 20% (Intralipid): bólus de 1,5 mL/kg IV em 2–3 min seguido de infusão a 0,25 mL/kg/min por 30–60 min se choque refratário ou PCR iminente",
      "Norepinefrina e Epinefrina em doses tituladas para manter PAM ≥ 65 mmHg"
+    ]
+   },
+   {
+    "id": "inv",
+    "t": "Investigação complementar",
+    "it": [
+     "Eletrocardiograma seriado de 12 derivações (monitorização de ritmo, intervalos PR e QTc)",
+     "Glicemia capilar e sérica seriada de 1/1h a 2/2h (rastreio de hiperglicemia por BCC ou hipoglicemia por BB)",
+     "Eletrólitos séricos (Potássio, Cálcio ionizado, Magnésio), Função renal e Gasometria com lactato"
     ]
    }
   ]
@@ -4836,7 +4895,7 @@ const CT = {
     "it": [
      "Ressonância Magnética (RM) de coluna lombossacra de emergência: exame padrão-ouro indicado imediatamente se suspeita de Cauda Equina, déficit neurológico focal progressivo ou infecção espinhal",
      "Tomografia Computadorizada (TC) de coluna ou abdome: indicada se RM contraindicada ou para avaliar trauma ósseo / cólica renal / aneurisma aórtico",
-     "Laboratório na suspeita de alarme: hemograma completo, PCR sérica, VHS, função renal e sedimento urinário"
+     "Laboratório na suspeita de alarme: Hemograma completo, Função renal (Ureia e Creatinina) e Urina tipo 1 (sedimento urinário)"
     ]
    },
    {
@@ -5080,11 +5139,12 @@ const CT = {
     "id": "inv",
     "t": "Investigação complementar etiológica",
     "it": [
-     "Perfil hepático e colestático completo: Bilirrubinas total e frações, TGO/AST, TGP/ALT (níveis > 1.000 UI/L sugerem hepatite viral, isquêmica ou tóxica/paracetamol), FA, GGT e Albumina",
+     "Perfil hepático e colestático completo: Bilirrubinas total e frações, TGO/AST, TGP/ALT, FA, GGT e Albumina sérica",
+     "Laboratório de urgência: Hemograma completo com plaquetas, Glicemia imediata, Função renal (Ureia e Creatinina), Eletrólitos e Gasometria com dosagem de lactato",
      "Coagulograma urgente: TP/INR, TTPa, Fibrinogênio e dosagem de Fator V sérico",
      "Amônia sérica venosa ou arterial (nível > 150–200 mcmol/L prediz risco iminente de herniação cerebral)",
-     "Painel viral agudo: Anti-HAV IgM, HBsAg, Anti-HBc IgM, Anti-HCV, Anti-HEV IgM, sorologia para Herpes Simplex, Citomegalovírus e Epstein-Barr",
-     "USG de abdome com Doppler de vasos hepáticos no leito: avaliar desobstrução de via biliar intra e extra-hepática, perviedade da veia porta e veias supra-hepáticas (descartar Síndrome de Budd-Chiari)"
+     "Painel viral agudo: Anti-HAV IgM, HBsAg, Anti-HBc IgM, Anti-HCV, Anti-HEV IgM",
+     "USG de abdome com Doppler de vasos hepáticos no leito: avaliar desobstrução de via biliar e perviedade vascular"
     ]
    },
    {
@@ -5122,6 +5182,16 @@ const CT = {
     ]
    },
    {
+    "id": "inv",
+    "t": "Investigação diagnóstica e prognóstica",
+    "it": [
+     "Perfil hepático completo e coagulograma urgente (TP/INR, Fator V sérico)",
+     "Gasometria com dosagem de lactato, Glicemia seriada de 2/2h e Eletrólitos com Sódio e Potássio",
+     "Amônia sérica (avaliar risco de edema cerebral difuso)",
+     "Painel toxicológico urinário e dosagem sérica de Paracetamol"
+    ]
+   },
+   {
     "id": "dsp",
     "t": "Disposição",
     "it": [
@@ -5147,6 +5217,16 @@ const CT = {
     "it": [
      "Piperacilina-Tazobactam 4,5 g IV 6/6h OU Ceftriaxona 2 g IV + Metronidazol 500 mg IV",
      "Descompressão biliar urgente por CPRE ou drenagem percutânea trans-hepática em < 12–24h"
+    ]
+   },
+   {
+    "id": "inv",
+    "t": "Investigação complementar",
+    "it": [
+     "2 pares de hemoculturas pareadas de sítios periféricos distintos antes do antimicrobiano",
+     "Painel hepático e canalicular: Bilirrubinas total e frações, TGO/TGP, FA e GGT",
+     "Laboratório de urgência: Hemograma completo com plaquetas, Coagulograma, Ureia, Creatinina, Eletrólitos e Gasometria com lactato",
+     "USG de abdome superior e vias biliares no leito (ou TC de abdome com contraste se estabilizado)"
     ]
    },
    {
@@ -5176,6 +5256,15 @@ const CT = {
      "Lactulose 20–30 mL VO/SNG + Rifaximina 550 mg VO 12/12h se encefalopatia",
      "Ceftriaxona 2 g IV se suspeita de PBE (PMN no líquido ascítico ≥ 250/mm³)",
      "Albumina 20% 1,5 g/kg no D1 e 1,0 g/kg no D3 se PBE confirmada (previne síndrome hepatorrenal)"
+    ]
+   },
+   {
+    "id": "inv",
+    "t": "Investigação diagnóstica e rastreio de descompensação",
+    "it": [
+     "Hemograma com plaquetas, Coagulograma (TP/INR, TTPa), Função renal (Creatinina e Ureia), Eletrólitos (Sódio sérico e urinário) e Albumina",
+     "Gasometria com dosagem de lactato (pesquisa de choque séptico/vasoplégico oculto)",
+     "Paracentese diagnóstica imediata (GASA, citologia total e diferencial, bacterioscopia e cultura em frasco de hemocultura)"
     ]
    },
    {
@@ -5357,7 +5446,7 @@ const CT = {
     "t": "Investigação complementar",
     "it": [
      "Angiotomografia arterial de membros inferiores se paciente estável e sem retardo para o bloco cirúrgico",
-     "Gasometria com lactato e CPK sérica (pesquisa precoce de rabdomiólise e síndrome de reperfusão / hipercalemia)"
+     "Laboratório de emergência: Hemograma completo, coagulograma (TP/INR, TTPa), ureia, creatinina, potássio sérico, CPK sérica e gasometria com dosagem de lactato"
     ]
    },
    {
@@ -5432,6 +5521,14 @@ const CT = {
      "Casos moderados a graves com indicação de antibioticoterapia parenteral hospitalar: Cefazolina 1 a 2 g IV 8/8h OU Oxacilina 2 g IV 4/4h (adicionar Vancomicina 15–20 mg/kg se fatores de risco para MRSA)",
      "Elevação do membro afetado acima do nível do coração durante o repouso para favorecer a drenagem venolinfática",
      "Tratamento tópico de portas de entrada fúngicas interdigitais (cetoconazol ou miconazol tópico)"
+    ]
+   },
+   {
+    "id": "inv",
+    "t": "Investigação complementar",
+    "it": [
+     "Laboratório de avaliação: Hemograma completo, Glicemia capilar e sérica, Ureia e Creatinina",
+     "2 pares de hemoculturas pareadas se sinais de toxemia sistêmica, febre alta (> 38°C) ou imunossupressão"
     ]
    },
    {
@@ -5550,7 +5647,10 @@ const CT = {
     "id": "inv",
     "t": "Investigação",
     "it": [
-     "Gasometria arterial"
+     "Gasometria arterial com dosagem de lactato (avaliar pH, PaCO2 e retenção aguda de CO2)",
+     "Laboratório de urgência: Hemograma completo, Ureia, Creatinina e Eletrólitos (Sódio e Potássio — vigiar hipocalemia induzida por beta-2)",
+     "Radiografia de tórax no leito para descartar pneumotórax, pneumonia e congestão",
+     "Eletrocardiograma de 12 derivações (pesquisar sobrecarga de câmaras direitas e arritmias)"
     ]
    },
    {
@@ -5592,10 +5692,10 @@ const CT = {
     "id": "inv",
     "t": "Investigação",
     "it": [
-     "SatO2 contínua + PEFR antes e após broncodilatador",
-     "Gasometria arterial se SatO2 < 92% após broncodilatação inicial",
-     "RX tórax somente se suspeita de complicação: pneumotórax, pneumonia, corpo estranho",
-     "hipocalemia por salbutamol em altas doses; repor se < 3,5 mEq/L"
+     "Gasometria arterial com dosagem de lactato se SatO2 < 92% após broncodilatação inicial ou sinais de exaustão",
+     "Eletrólitos com Potássio sérico (vigiar hipocalemia por altas doses de salbutamol) e glicemia",
+     "Hemograma completo",
+     "Radiografia de tórax no leito se suspeita de complicação (pneumotórax, pneumomediastino ou infecção pulmonar)"
     ]
    },
    {
@@ -5637,11 +5737,11 @@ const CT = {
     "id": "inv",
     "t": "Investigação",
     "it": [
-     "Tratamento ambulatorial com antibioticoterapia oral (se CURB-65 0–1 e sem critérios de gravidade)",
-     "Hemoculturas (2 pares) antes do ATB",
-     "Antígeno urinário de Legionella e S. pneumoniae se grave",
-     "PCR/painel respiratório multiplex se disponível",
-     "Gasometria, hemograma, PCR, procalcitonina, função renal e hepática"
+     "Radiografia de tórax no leito PA e perfil (ou TC de tórax se dúvida diagnóstica ou complicação)",
+     "Coleta de 2 pares de hemoculturas pareadas antes do início do antimicrobiano",
+     "Antígeno urinário para Legionella e Streptococcus pneumoniae se pneumonia grave",
+     "Painel molecular respiratório (RT-PCR viral multiplex) se disponível",
+     "Laboratório de urgência: Hemograma completo, Ureia (estratificação CURB-65), Creatinina, Eletrólitos, Glicemia, Gasometria com dosagem de lactato e Função hepática"
     ]
    },
    {
@@ -5880,7 +5980,7 @@ const CT = {
     "id": "inv",
     "t": "Investigação complementar",
     "it": [
-     "Função renal urgente para contraste iodado na hemodinâmica"
+     "Painel Laboratorial de Urgência: Troponina ultrassensível, Função renal (ureia e creatinina) para contraste iodado, Eletrólitos (sódio, potássio, magnésio), Hemograma completo, Coagulograma (TP/INR, TTPa) e Glicemia"
     ]
    },
    {
@@ -5925,7 +6025,8 @@ const CT = {
     "id": "inv",
     "t": "Investigação complementar",
     "it": [
-     "Protocolo 0h/1h ESC: estratificação por curva dinâmica de troponina (descarte se 0h baixa e delta 1h < 3 ng/L; confirmação se delta 1h significativo)",
+     "Protocolo 0h/1h ESC: estratificação por curva dinâmica de troponina ultrassensível seriada",
+     "Painel Laboratorial de Urgência: Hemograma completo, Função renal (ureia e creatinina), Eletrólitos (sódio, potássio, magnésio), Glicemia e Coagulograma (TP/INR, TTPa)",
      "Ecocardiograma transtorácico em < 24h para avaliação de FEVE e valvopatias"
     ]
    },
@@ -5963,7 +6064,9 @@ const CT = {
     "id": "inv",
     "t": "Investigação etiológica",
     "it": [
-     "D-dímero se probabilidade clínica de TEP (Wells ≥ 2)"
+     "Radiografia de tórax no leito para rastreio de pneumopatias e derrame pleural",
+     "Eletrocardiograma de 12 derivações para exclusão de alterações isquêmicas ou de repolarização",
+     "D-dímero quantitativo se probabilidade clínica intermediária/alta de TEP (Wells ≥ 2)"
     ]
    },
    {
@@ -5998,7 +6101,10 @@ const CT = {
    {
     "id": "inv",
     "t": "Investigação",
-    "it": []
+    "it": [
+     "Eletrocardiograma de 12 derivações para documentar ausência de isquemia aguda",
+     "Troponina ultrassensível (0h) para cálculo e validação de escores de descarte rápido (HEART / EDACS)"
+    ]
    },
    {
     "id": "dsp",
@@ -6111,11 +6217,13 @@ const CT = {
    },
    {
     "id": "inv",
-    "t": "Diagnóstico",
+    "t": "Diagnóstico e laboratório de urgência",
     "it": [
-     "AngioTC tórax + abdome com contraste",
-     "D-dímero negativo + ADD-RS ≤ 1 → exclusão razoável em baixo risco; D-dímero positivo ou ADD-RS ≥ 2 → AngioTC obrigatória",
-     "Ecocardiograma transtorácico: derrame pericárdico, insuficiência aórtica, retalho intimal proximal"
+     "Angiotomografia de aorta (tórax, abdome e pelve com contraste)",
+     "Tipagem sanguínea com Prova Cruzada e reserva de concentrado de hemácias (mínimo 4 unidades)",
+     "Painel Laboratorial de Urgência: Hemograma completo, Coagulograma (TP/INR, TTPa), Função renal (ureia e creatinina), Eletrólitos, Gasometria venosa com lactato sérico e Troponina ultrassensível",
+     "D-dímero quantitativo (se ADD-RS ≤ 1 e suspeita intermediária)",
+     "Ecocardiograma transtorácico à beira-leito (rastreio de tamponamento, insuficiência aórtica e retalho intimal)"
     ]
    },
    {
@@ -6156,7 +6264,10 @@ const CT = {
     "id": "inv",
     "t": "Investigação",
     "it": [
-     "Ecocardiograma seriado se derrame moderado",
+     "Marcadores inflamatórios e de lesão miocárdica: Proteína C-Reativa (PCR) sérica quantitativa, VHS, Troponina ultrassensível seriada e Hemograma completo",
+     "Eletrocardiograma de 12 derivações seriado para acompanhamento dos estágios evolutivos",
+     "Radiografia de tórax no leito para avaliação de silhueta cardíaca e acometimento pleuropulmonar",
+     "Ecocardiograma transtorácico à beira-leito para avaliação de derrame pericárdico e sinais de tamponamento",
      "Investigação etiológica conforme contexto: TST/IGRA (TB), FAN (autoimune), HIV, painel viral, função tireoidiana"
     ]
    },
@@ -9037,7 +9148,7 @@ function getCanonicalConductKey(txt){
   return 'repouso';
  }
  // Gasometria + Lactato
- if((t.includes('gasometria')&&t.includes('lactato'))||t.includes('lactato sérico')||t.includes('lactato basal')){
+ if(((t.includes('gasometria')&&t.includes('lactato'))||t.includes('lactato sérico')||t.includes('lactato basal')) && !t.includes('hemograma') && !t.includes('painel') && !t.includes('laborat') && !t.includes('eletrólitos') && !t.includes('creatinina') && !t.includes('ureia') && !t.includes('coagulograma') && !t.includes('troponina') && !t.includes('ast') && !t.includes('alt') && !t.includes('tgo') && !t.includes('tgp') && !t.includes('plaquetas') && !t.includes('amilase') && !t.includes('lipase') && !t.includes('bilirrubin')){
   return 'gaso_lactato';
  }
  // Dieta Zero / Jejum
@@ -9057,7 +9168,7 @@ function getCanonicalConductKey(txt){
   return 'pocus';
  }
  // Lab de Triagem
- if(t.includes('hemograma, ureia, creatinina, eletrólitos')||t.includes('hemograma, eletrólitos, função renal')||t.includes('hemograma completo, ureia, creatinina')||(t.includes('hemograma')&&(t.includes('creatinina')||t.includes('cr'))&&(t.includes('ureia')||t.includes('ur')))){
+ if((t.includes('hemograma, ureia, creatinina, eletrólitos')||t.includes('hemograma, eletrólitos, função renal')||t.includes('hemograma completo, ureia, creatinina')||(t.includes('hemograma')&&(t.includes('creatinina')||t.includes('cr'))&&(t.includes('ureia')||t.includes('ur')))) && !t.includes('troponina') && !t.includes('coagulograma') && !t.includes('gasometria') && !t.includes('lactato') && !t.includes('amilase') && !t.includes('lipase') && !t.includes('ast') && !t.includes('alt') && !t.includes('tgo') && !t.includes('tgp') && !t.includes('bilirrubin')){
   return 'lab_triagem';
  }
  return null;
@@ -10091,7 +10202,7 @@ function closeEvidencePopover(){
 
 const EXAM_QUICK_CHIPS = [
  'Hemograma', 'Ureia e Creatinina', 'Eletrólitos (Na/K)', 'Coagulograma', 'Troponina hs', 
- 'D-Dímero', 'Gasometria com lactato', 'Urina 1', 'Hemoculturas (2 pares)', 'PCR', 
+ 'D-Dímero', 'Gasometria com lactato', 'Urina 1', 'Hemoculturas (2 pares)', 'Glicemia', 
  'Radiografia de tórax', 'TC de crânio', 'AngioTC', 'POCUS beira-leito'
 ];
 
@@ -10133,9 +10244,6 @@ function cleanExamItemName(raw){
  let item = (raw || '').trim().replace(/^-\s*/, '').replace(/^\[.*?\]\s*/, '');
  const l = item.toLowerCase();
  
- if(l.includes('painel laboratorial') || l.includes('lab_triagem') || l.includes('laboratório de triagem') || (l.includes('hemograma') && (l.includes('creatinina') || l.includes('ureia') || l.includes('plaquetas') || l.includes('eletrólitos')))){
-  return 'Hemograma completo, Função renal (Ureia e Creatinina), Eletrólitos (Sódio e Potássio), Coagulograma, Troponina ultrassensível seriada';
- }
  if(l.includes('tc de crânio imediata') || l.includes('tc de crânio sem contraste') || l.includes('tomografia de crânio')){
   return 'TC de Crânio sem contraste imediata';
  }
@@ -10160,47 +10268,47 @@ function cleanExamItemName(raw){
  if(l.includes('d-dímero') || l.includes('ddímero')){
   return 'D-Dímero quantitativo';
  }
- if(l.includes('2 pares de hemoculturas') || l.includes('hemoculturas de sítios')){
+ if(l.includes('2 pares de hemoculturas') || l.includes('hemoculturas de sítios') || l.includes('hemoculturas pareadas')){
   return '2 pares de hemoculturas pareadas';
  }
  if(l.includes('culturas de sítios suspeitos') || l.includes('culturas direcionadas')){
   return 'Culturas de sítios suspeitos com antibiograma';
  }
- if(l.includes('urina tipo 1') || l.includes('sedimento urinário') || l.includes('eas')){
+ if((l.includes('urina tipo 1') || l.includes('sedimento urinário') || l.includes('eas')) && !l.includes('hemograma') && !l.includes('função renal') && !l.includes('ureia') && !l.includes('creatinina')){
   return 'Urina tipo 1 (sedimento urinário)';
  }
- if(l.includes('gasometria com dosagem de lactato') || l.includes('gasometria venosa imediata') || l.includes('lactato sérico na admissão')){
-  return 'Gasometria venosa imediata com dosagem de lactato';
+ if((l.includes('gasometria com dosagem de lactato') || l.includes('gasometria venosa imediata') || l.includes('lactato sérico na admissão') || l.includes('gasometria')) && !l.includes('hemograma') && !l.includes('ureia') && !l.includes('creatinina') && !l.includes('eletrólitos') && !l.includes('coagulograma') && !l.includes('ast') && !l.includes('alt')){
+  return 'Gasometria com dosagem de lactato';
  }
  if(l.includes('eletrólitos com sódio sérico') || l.includes('sódio sérico e osmolaridade')){
   return 'Eletrólitos com sódio sérico e osmolaridade sérica';
  }
- if(l.includes('ecg de 12 derivações') || l.includes('eletrocardiograma de 12 derivações') || l.includes('eletrocardiograma seriado')){
+ if((l.includes('ecg de 12 derivações') || l.includes('eletrocardiograma de 12 derivações') || l.includes('eletrocardiograma seriado')) && !l.includes('hemograma')){
   return 'Eletrocardiograma de 12 derivações';
  }
- if(l.includes('ecocardiograma transtorácico')){
+ if(l.includes('ecocardiograma transtorácico') && !l.includes('hemograma')){
   return 'Ecocardiograma transtorácico';
  }
  if(l.includes('peptídeos natriuréticos') || l.includes('bnp')){
   return 'Peptídeos natriuréticos (BNP / NT-proBNP)';
  }
- if(l.includes('função renal urgente')){
+ if(l.includes('função renal urgente') && !l.includes('hemograma')){
   return 'Função renal urgente (Ureia e Creatinina)';
  }
- if(l.includes('troponina') && l.includes('0h/1h')){
+ if(l.includes('troponina') && (l.includes('0h/1h') || l.includes('ultrassensível') || l.includes('alta sensibilidade')) && !l.includes('hemograma') && !l.includes('eletrólitos')){
   return 'Troponina ultrassensível seriada (0h/1h)';
  }
 
  let clean = item;
  if(clean.includes(':')){
   const parts = clean.split(':');
-  if(parts[0].toLowerCase().includes('laborat') || parts[0].toLowerCase().includes('painel') || parts[0].toLowerCase().includes('exames')){
+  if(parts[0].length < 65 && (parts[0].toLowerCase().includes('laborat') || parts[0].toLowerCase().includes('painel') || parts[0].toLowerCase().includes('exames') || parts[0].toLowerCase().includes('rotina') || parts[0].toLowerCase().includes('marcadores'))){
    clean = parts.slice(1).join(':').trim();
   } else if(parts[0].length < 40){
    clean = parts[0];
   }
  }
- clean = clean.replace(/\([^\)]{16,}\)/g, '').trim();
+ clean = clean.replace(/\([^\)]{25,}\)/g, '').trim();
  clean = clean.replace(/\s+/g, ' ');
  return clean;
 }
@@ -10244,7 +10352,7 @@ function rExamUnificationCard(){
     ${quickChips}
    </div>
    <div style="display:flex;gap:6px;align-items:center">
-    <input type="text" id="customExamInput" placeholder="Outro exame (ex: Líquor, Urina 1, PCR, Lipase)..." style="font-size:12px;padding:5px 8px;flex:1;border-radius:6px;border:1px solid var(--color-border,#cbd5e1)" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomExam(this.value);this.value='';}">
+    <input type="text" id="customExamInput" placeholder="Outro exame (ex: Líquor, Urina 1, Lipase, D-Dímero)..." style="font-size:12px;padding:5px 8px;flex:1;border-radius:6px;border:1px solid var(--color-border,#cbd5e1)" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomExam(this.value);this.value='';}">
     <button type="button" class="btnp" style="padding:5px 12px;font-size:12px" onclick="const inp=document.getElementById('customExamInput');if(inp){addCustomExam(inp.value);inp.value='';}">+ Adicionar</button>
    </div>
    ${addedTags}
@@ -10872,8 +10980,18 @@ function buildCondutas(){
  const cleanedExamList = [];
  examOrders.forEach(c => {
   const name = cleanExamItemName(c.item);
-  if (name && !seenExamNames.has(name.toLowerCase())) {
-   seenExamNames.add(name.toLowerCase());
+  if(!name) return;
+  const nL = name.toLowerCase();
+  const subsetIdx = cleanedExamList.findIndex(existing => nL.includes(existing.toLowerCase()) && existing.length > 10);
+  if (subsetIdx !== -1) {
+   seenExamNames.delete(cleanedExamList[subsetIdx].toLowerCase());
+   seenExamNames.add(nL);
+   cleanedExamList[subsetIdx] = name;
+   return;
+  }
+  const alreadyCovered = cleanedExamList.some(existing => existing.toLowerCase().includes(nL) && nL.length > 10);
+  if (!alreadyCovered && !seenExamNames.has(nL)) {
+   seenExamNames.add(nL);
    cleanedExamList.push(name);
   }
  });
