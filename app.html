@@ -114,33 +114,251 @@ input:focus,select:focus,textarea:focus{border-color:#a32d2d}
 .hdr-btn-night:hover{background:#1e293b;color:#38bdf8;border-color:#475569}
 .hdr-btn-night.active{background:#38bdf8;color:#0f172a;border-color:#0284c7}
 .hdr-btn-night i{color:#f59e0b}
-.zoom-controls{display:inline-flex;align-items:center;background:var(--color-background-secondary);border:.5px solid var(--color-border-secondary);border-radius:4px;overflow:hidden;margin-left:6px}
-.btn-zoom{background:transparent;border:none;padding:2px 7px;font-size:11px;font-weight:600;color:var(--color-text-secondary);cursor:pointer;line-height:1}
-.btn-zoom:hover{background:var(--color-border-secondary);color:var(--color-text-primary)}
 .btn-split{background:var(--color-background-secondary);border:.5px solid var(--color-border-secondary);border-radius:4px;padding:3px 8px;font-size:11px;font-weight:600;color:var(--color-text-secondary);cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin-left:6px}
 .btn-split:hover,.btn-split.active{background:#2563eb;color:#fff;border-color:#1d4ed8}
 @media(min-width:1024px){
  .two-col-wrap.split-50-50{grid-template-columns:1fr 1fr !important}
 }
-/* Modo Noturno de Alto Contraste para Plantão */
+
+/* ─── Módulo 6: Live Diff e Feedback Reativo na Coluna de Relatório ─── */
+.rel-col-txt-wrap{position:relative;transition:box-shadow .25s ease,border-color .25s ease}
+.rel-col-txt-wrap.live-diff-highlight{
+ box-shadow:0 0 0 2px #10b981, 0 4px 12px rgba(16,185,129,0.18) !important;
+ border-color:#10b981 !important;
+}
+.rel-col-textarea{
+ font-size:13px !important;
+ line-height:1.55;
+ transition:background-color .3s ease;
+}
+.rel-col-textarea.live-diff-highlight{
+ background-color:rgba(16,185,129,0.06) !important;
+}
+
+/* ─── Painel Expansível de Apoio à Decisão no Cockpit (Sem Backdrop / 100% Interativo) ─── */
+.cockpit-decision-panel{
+ background:var(--color-background-primary,#ffffff);
+ border:1px solid var(--color-border-secondary,#cbd5e1);
+ border-radius:12px;
+ margin-bottom:14px;
+ box-shadow:0 4px 20px rgba(0,0,0,0.08);
+ overflow:hidden;
+ transition:all .25s ease-in-out;
+}
+.cockpit-decision-hdr{
+ background:linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+ color:#ffffff;
+ padding:10px 14px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:10px;
+}
+.cockpit-decision-title{
+ font-weight:700;
+ font-size:13.5px;
+ display:flex;
+ align-items:center;
+ gap:8px;
+ letter-spacing:-0.2px;
+}
+.cockpit-decision-controls{
+ display:flex;
+ align-items:center;
+ gap:8px;
+}
+.cockpit-close-btn{
+ background:rgba(255,255,255,0.12);
+ border:1px solid rgba(255,255,255,0.2);
+ color:#ffffff;
+ border-radius:6px;
+ padding:4px 9px;
+ font-size:11.5px;
+ font-weight:600;
+ cursor:pointer;
+ display:inline-flex;
+ align-items:center;
+ gap:4px;
+ transition:background .15s ease;
+}
+.cockpit-close-btn:hover{
+ background:rgba(255,255,255,0.22);
+}
+.cockpit-decision-body{
+ padding:12px 14px;
+ max-height:480px;
+ overflow-y:auto;
+}
+.cockpit-search-bar{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ margin-bottom:10px;
+ position:relative;
+}
+.cockpit-search-input{
+ width:100%;
+ padding:7px 30px 7px 11px;
+ font-size:12.5px;
+ border:1px solid var(--color-border-secondary,#cbd5e1);
+ border-radius:8px;
+ background:var(--color-background-primary,#ffffff);
+ color:var(--color-text-primary,#111827);
+ outline:none;
+ box-sizing:border-box;
+}
+.cockpit-search-input:focus{
+ border-color:#2563eb;
+ box-shadow:0 0 0 2px rgba(37,99,235,0.15);
+}
+.cockpit-search-clear{
+ position:absolute;
+ right:10px;
+ top:50%;
+ transform:translateY(-50%);
+ border:none;
+ background:none;
+ font-size:16px;
+ color:#94a3b8;
+ cursor:pointer;
+ line-height:1;
+}
+.cockpit-chips-scroll{
+ display:flex;
+ gap:6px;
+ overflow-x:auto;
+ padding-bottom:8px;
+ margin-bottom:12px;
+ -webkit-overflow-scrolling:touch;
+}
+.cockpit-chip{
+ flex-shrink:0;
+ padding:4px 10px;
+ font-size:11.5px;
+ font-weight:600;
+ border-radius:20px;
+ border:1px solid var(--color-border-tertiary,#e2e8f0);
+ background:var(--color-background-secondary,#f8fafc);
+ color:var(--color-text-secondary,#475569);
+ cursor:pointer;
+ display:inline-flex;
+ align-items:center;
+ gap:5px;
+ transition:all .15s ease;
+}
+.cockpit-chip:hover{
+ border-color:#94a3b8;
+ color:var(--color-text-primary,#0f172a);
+}
+.cockpit-chip.active{
+ background:#0f172a;
+ color:#ffffff;
+ border-color:#0f172a;
+ box-shadow:0 1px 4px rgba(0,0,0,0.15);
+}
+.cockpit-pinned-alert{
+ background:#eff6ff;
+ border-left:4px solid #2563eb;
+ border-radius:6px;
+ padding:8px 12px;
+ margin-bottom:12px;
+ font-size:12px;
+ color:#1e40af;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+}
+
+/* Banner de Prevenção / Pitfall integrado no texto do Crunch Time */
+.cockpit-pitfall-banner{
+ background:#fffbeb;
+ border:1.5px dashed #f59e0b;
+ border-radius:8px;
+ padding:10px 12px;
+ margin:10px 0;
+ font-size:12.5px;
+ line-height:1.55;
+ color:#92400e;
+}
+.cockpit-pitfall-title{
+ font-weight:700;
+ font-size:12.5px;
+ color:#b45309;
+ display:flex;
+ align-items:center;
+ gap:6px;
+ margin-bottom:5px;
+}
+.cockpit-empty-slot{
+ padding:8px 12px;
+ background:var(--color-background-secondary,#f8fafc);
+ border-radius:6px;
+ border:1px dashed var(--color-border-tertiary,#e2e8f0);
+ font-size:12px;
+ color:var(--color-text-secondary,#64748b);
+ margin:6px 0;
+}
+
+/* ─── Modo Noturno Tático (OLED Black / Slate) para Plantão ─── */
 body.high-contrast-night{
- --color-background-primary:#090d16;
- --color-background-secondary:#02050b;
+ --color-background-primary:#0b0f17;
+ --color-background-secondary:#05070b;
  --color-text-primary:#f8fafc;
  --color-text-secondary:#94a3b8;
  --color-border-primary:#334155;
- --color-border-secondary:#1e293b;
- --color-border-tertiary:#0f172a;
- background-color:#02050b !important;
+ --color-border-secondary:#1f2937;
+ --color-border-tertiary:#111827;
+ background-color:#05070b !important;
  color:#f8fafc !important;
 }
 body.high-contrast-night .card,
 body.high-contrast-night .rel-col-inner,
 body.high-contrast-night .sticky-clinical-cockpit,
+body.high-contrast-night .cockpit-decision-panel,
 body.high-contrast-night .hdr{
- background:#0b1120 !important;
- border-color:#334155 !important;
+ background:#0f172a !important;
+ border-color:#1f2937 !important;
  color:#f8fafc !important;
+}
+body.high-contrast-night .cockpit-decision-hdr{
+ background:linear-gradient(135deg, #020617 0%, #0f172a 100%) !important;
+ border-bottom:1px solid #1f2937;
+}
+body.high-contrast-night .cockpit-search-input{
+ background:#090d16 !important;
+ color:#f8fafc !important;
+ border-color:#334155 !important;
+}
+body.high-contrast-night .cockpit-chip{
+ background:#1e293b !important;
+ border-color:#334155 !important;
+ color:#cbd5e1 !important;
+}
+body.high-contrast-night .cockpit-chip.active{
+ background:#38bdf8 !important;
+ color:#090d16 !important;
+ border-color:#0284c7 !important;
+ font-weight:700;
+}
+body.high-contrast-night .cockpit-pinned-alert{
+ background:#172554 !important;
+ border-color:#3b82f6 !important;
+ color:#93c5fd !important;
+}
+body.high-contrast-night .cockpit-pitfall-banner{
+ background:#451a03 !important;
+ border-color:#f59e0b !important;
+ color:#fde68a !important;
+}
+body.high-contrast-night .cockpit-empty-slot{
+ background:#111827 !important;
+ border-color:#1f2937 !important;
+ color:#64748b !important;
+}
+body.high-contrast-night .decision-card{
+ background:#131b26 !important;
+ border-color:#1f2937 !important;
+ color:#e2e8f0 !important;
 }
 body.high-contrast-night .rel-col-textarea{
  background:#020617 !important;
@@ -825,7 +1043,7 @@ textarea{resize:vertical;min-height:60px}
   </button>
  </div>
  <div class="hdr-actions">
-  <button class="hdr-action-btn hdr-btn-decision" onclick="toggleDecisionDrawer()" title="Apoio à Decisão & Metas Fisiológicas (Alt + D)">
+  <button class="hdr-action-btn hdr-btn-decision" onclick="toggleCockpitDecisionPanel()" title="Apoio à Decisão Beira-leito (Alt + D)">
    <i class="ti ti-bolt" aria-hidden="true"></i>
    <span>Apoio à Decisão</span>
    <span class="badge-n" id="hdrConflictCount" style="display:none;background:#dc2626;color:#fff;margin-left:3px">0</span>
@@ -865,6 +1083,7 @@ textarea{resize:vertical;min-height:60px}
  </div>
 </div>
 <div class="sticky-clinical-cockpit" id="stickyClinicalCockpit"></div>
+<div class="cockpit-decision-panel" id="cockpitDecisionPanel" style="display:none"></div>
 <div class="steps" id="sBar"></div>
 <div class="two-col-wrap">
  <div class="col-main" id="con"></div>
@@ -873,11 +1092,6 @@ textarea{resize:vertical;min-height:60px}
    <div class="rel-col-hdr">
     <div style="display:flex;align-items:center;gap:6px">
      <span>Relatório</span>
-     <div class="zoom-controls">
-      <button type="button" class="btn-zoom" onclick="changeReportZoom(-1)" title="Diminuir fonte">A-</button>
-      <button type="button" class="btn-zoom" onclick="changeReportZoom(0)" title="Fonte padrão">A</button>
-      <button type="button" class="btn-zoom" onclick="changeReportZoom(1)" title="Aumentar fonte">A+</button>
-     </div>
      <button type="button" class="btn-split" id="splitModeBtn" onclick="toggleSplitMode()" title="Alternar Modo Dividido 50/50"><i class="ti ti-layout-columns" aria-hidden="true"></i> 50/50</button>
     </div>
     <div class="rg">
@@ -977,53 +1191,12 @@ textarea{resize:vertical;min-height:60px}
 </div>
 
 <!-- Floating Button para Apoio à Decisão no Mobile -->
-<button class="fab-report-btn fab-decision-btn" id="fabDecisionBtn" onclick="toggleDecisionDrawer()" aria-label="Apoio à Decisão e Metas Fisiológicas" title="Apoio à Decisão & Metas (Alt + D)">
+<!-- Floating Button para Apoio à Decisão no Mobile -->
+<button class="fab-report-btn fab-decision-btn" id="fabDecisionBtn" onclick="toggleCockpitDecisionPanel()" aria-label="Apoio à Decisão Beira-leito" title="Apoio à Decisão & Metas (Alt + D)">
   <i class="ti ti-bolt" aria-hidden="true"></i>
-  <span>Metas & Decisão</span>
+  <span>Apoio Beira-Leito</span>
   <span class="badge-n" id="fabDecisionConflictCount" style="display:none;background:#dc2626;color:#fff;margin-left:3px;font-size:10px">0</span>
 </button>
-
-<!-- Bottom-Sheet Retrátil de Apoio à Decisão & Metas Fisiológicas -->
-<div class="decision-drawer-overlay" id="decisionDrawerOverlay" style="display:none" onclick="if(event.target===this)closeDecisionDrawer()">
-  <div class="decision-drawer" id="decisionDrawer">
-    <div class="decision-sheet-handle-wrap" onclick="closeDecisionDrawer()">
-      <div class="decision-sheet-handle"></div>
-    </div>
-    <div class="decision-drawer-hdr">
-      <div style="display:flex;align-items:center;gap:10px">
-        <div class="decision-hdr-icon">
-          <i class="ti ti-bolt" aria-hidden="true"></i>
-        </div>
-        <div>
-          <div class="decision-hdr-title">Apoio à Decisão & Metas</div>
-          <div class="decision-hdr-sub">Alvos hemodinâmicos, segurança e doses beira-leito</div>
-        </div>
-      </div>
-      <button class="decision-sheet-close" onclick="closeDecisionDrawer()" aria-label="Fechar Apoio à Decisão">
-        <i class="ti ti-x" aria-hidden="true"></i>
-      </button>
-    </div>
-    <div class="decision-drawer-tabs">
-      <button class="decision-tab active" id="decTabMetas" onclick="setDecisionTab('metas')">
-        <i class="ti ti-target" aria-hidden="true"></i> <span>Metas</span>
-      </button>
-      <button class="decision-tab" id="decTabPerolas" onclick="setDecisionTab('perolas')">
-        <i class="ti ti-bulb" aria-hidden="true"></i> <span>Pérolas<span class="hide-mobile-tab-text"> & Conflitos</span></span>
-        <span class="badge-n" id="decConflictCount" style="display:none;background:#dc2626;color:#fff;margin-left:4px">0</span>
-      </button>
-      <button class="decision-tab" id="decTabDoses" onclick="setDecisionTab('doses')">
-        <i class="ti ti-bolt" aria-hidden="true"></i> <span>Doses<span class="hide-mobile-tab-text"> & PCR</span></span>
-      </button>
-    </div>
-    <div class="decision-search-box" style="padding:8px 16px;border-bottom:1px solid var(--color-border-tertiary)">
-      <div style="position:relative">
-        <input type="text" id="decisionSearchInput" placeholder="🔍 Buscar metas, doses, antídotos ou pérolas..." oninput="onDecisionSearch(this.value)" style="width:100%;padding:6px 28px 6px 10px;font-size:12px;border:1px solid var(--color-border-secondary,#cbd5e1);border-radius:6px;background:var(--color-background-primary,#ffffff);color:var(--color-text-primary,#111827);box-sizing:border-box">
-        <button id="decisionSearchClearBtn" onclick="clearDecisionSearch()" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);border:none;background:none;font-size:16px;color:#9ca3af;cursor:pointer;line-height:1">×</button>
-      </div>
-    </div>
-    <div class="decision-drawer-body" id="decisionDrawerBody"></div>
-  </div>
-</div>
 
 <!-- Modal de Ajuda de Atalhos de Teclado -->
 <div class="modal-bg" id="shortcutModal" style="display:none" onclick="if(event.target===this)closeShortcutModal()">
@@ -8099,8 +8272,8 @@ function updateStickyClinicalCockpit(){
    <div class="cockpit-badges">
      ${statusBadge}
      ${allergyBadge}
-     <button class="hdr-action-btn hdr-btn-decision" onclick="toggleDecisionDrawer()" style="padding:3px 8px;font-size:11px" title="Abrir Apoio à Decisão">
-       <i class="ti ti-brain"></i> <span>Metas / Apoio</span>
+     <button class="hdr-action-btn hdr-btn-decision" onclick="toggleCockpitDecisionPanel()" style="padding:3px 8px;font-size:11px" title="Abrir Apoio à Decisão Beira-leito (Alt + D)">
+       <i class="ti ti-bolt"></i> <span>Apoio Beira-Leito</span>
      </button>
    </div>
  `;
@@ -9213,647 +9386,540 @@ function cleanPrescriptionItem(txt){
  return s;
 }
 
-let _activeDecisionTab = 'metas';
+let _isCockpitPanelOpen = false;
+let _selectedCockpitSyndromeId = null;
+let _cockpitSearchQuery = '';
 
-function openDecisionDrawer(tab = 'metas'){
- _activeDecisionTab = tab;
- const overlay = document.getElementById('decisionDrawerOverlay');
- if(overlay) overlay.style.display = 'flex';
- setDecisionTab(tab);
-}
-
-function closeDecisionDrawer(){
- const overlay = document.getElementById('decisionDrawerOverlay');
- if(overlay) overlay.style.display = 'none';
-}
-
-function toggleDecisionDrawer(){
- const overlay = document.getElementById('decisionDrawerOverlay');
- if(overlay && overlay.style.display === 'flex') closeDecisionDrawer();
- else openDecisionDrawer(_activeDecisionTab || 'metas');
-}
-
-function setDecisionTab(tab){
- if(tab === 'conflitos') tab = 'perolas';
- _activeDecisionTab = tab;
- ['metas','perolas','doses'].forEach(t=>{
-  const btn = document.getElementById('decTab' + t.charAt(0).toUpperCase() + t.slice(1));
-  if(btn) btn.classList.toggle('active', t === tab);
- });
- renderDecisionSupportContent(tab);
-}
-
-function updateDecisionConflictBadge(){
- const alerts = getConflictAlerts(S);
- const count = alerts.length;
- ['decConflictCount', 'hdrConflictCount', 'fabDecisionConflictCount'].forEach(id => {
-  const el = document.getElementById(id);
-  if(el){
-   if(count > 0){
-    el.textContent = count;
-    el.style.display = 'inline-flex';
-   } else {
-    el.style.display = 'none';
-   }
+// ─── APOIO À DECISÃO BEIRA-LEITO (10 GRANDES SÍNDROMES / CRUNCH TIME & PITFALLS) ───
+const DECISION_SYNDROMES = [
+  {
+    id: 'dtx',
+    title: 'Dor torácica',
+    icon: 'ti-heart-rate-monitor',
+    subsindromes: ['Síndrome Coronariana Aguda (SCA)', 'Dissecção Aguda de Aorta', 'Equivalentes de Oclusão (OCA)'],
+    acoes: [
+      'Porta-ECG ≤ 10 min com interpretação médica imediata',
+      'Monitorização contínua + acesso venoso periférico calibroso + SpO₂',
+      'Na suspeita de Dissecção Aguda de Aorta: controle estrito e imediato de FC antes de qualquer vasodilatador'
+    ],
+    metas: [
+      'SCA: Reperfusão imediata (Porta-Balão ≤ 90 min ou Porta-Agulha ≤ 30 min se ICP indisponível)',
+      'Dissecção Aguda de Aorta: FC < 60 bpm e PAS 100–120 mmHg nos primeiros 20 minutos',
+      'SpO₂ alvo 90–96% (evitar hiperóxia > 96% de rotina: risco de vasoconstrição coronariana)'
+    ],
+    pitfalls: [
+      'NUNCA iniciar vasodilatador puro em dissecção de aorta sem betabloqueio prévio (aumento do estresse de cisalhamento dP/dt e risco de progressão da falsa luz)',
+      'Evitar nitratos se PAS < 100 mmHg ou uso de inibidores da PDE-5 nas últimas 24–48 horas',
+      'AINEs aumentam risco de rotura miocárdica em vigência de SCA; evitar rotineiramente'
+    ],
+    doses: [
+      'AAS 200–300 mg mastigado na admissão (antiagregação inicial)',
+      'Ticagrelor 180 mg VO ou Clopidogrel 300–600 mg VO conforme protocolo da instituição',
+      'Metoprolol 5 mg IV em bólus a cada 5 min (em dissecção de aorta) se FC > 60 bpm e ausência de sinais de choque/bloqueio'
+    ]
+  },
+  {
+    id: 'dsp',
+    title: 'Dispneia',
+    icon: 'ti-lungs',
+    subsindromes: ['Edema Agudo de Pulmão (EAP)', 'Crise Asmática / DPOC Exacerbado', 'Tromboembolismo Pulmonar (TEP)'],
+    acoes: [
+      'Avaliação imediata do padrão respiratório, esforço e estabilidade da via aérea (A-B)',
+      'Ventilação Não-Invasiva (VNI - CPAP ou BiPAP) precoce no EAP e na exacerbação grave de DPOC hipercápnica',
+      'POCUS beira-leito pulmonar direcionado (protocolo BLUE: linhas B, deslizamento pleural, consolidação) e ecocardiograma focado'
+    ],
+    metas: [
+      'DPOC / Retentor crônico: SpO₂ alvo 88–92% (evitar abolição do drive respiratório por hiperóxia)',
+      'EAP / Asma / TEP: SpO₂ alvo 92–96%',
+      'EAP Hipertensivo: redução de 20–25% da PAM na 1ª hora para alívio imediato da pós-carga'
+    ],
+    pitfalls: [
+      'Hiperóxia descontrolada em retentores crônicos induz perda de vasoconstrição hipóxica e narcose por CO₂',
+      'Atrasar VNI em insuficiência respiratória com acidose respiratória moderada (pH 7,25–7,35)',
+      'Regra PERC para TEP só é clinicamente segura se probabilidade pré-teste for baixa'
+    ],
+    doses: [
+      'Salbutamol spray 4–8 jatos com espaçador ou 10–20 gotas em nebulização a cada 20 min',
+      'Ipratrópio 20–40 gotas em nebulização associado ao beta-2-agonista na crise',
+      'Nitroglicerina IV 10–200 mcg/min em BIC titulada no EAP hipertensivo (PAS > 110 mmHg)'
+    ]
+  },
+  {
+    id: 'abd',
+    title: 'Dor abdominal',
+    icon: 'ti-shield',
+    subsindromes: ['Abdome Agudo Inflamatório', 'Abdome Agudo Obstrutivo', 'Abdome Agudo Perfurativo', 'Isquemia Mesentérica'],
+    acoes: [
+      'Exame abdominal imediato com busca ativa de sinais de peritonite (defesa involuntária, descompressão brusca)',
+      'Jejum / Dieta zero imediata e acesso venoso periférico calibroso',
+      'Beta-hCG obrigatório em qualquer mulher em idade fértil (12 a 55 anos) para exclusão de prenhez ectópica rota'
+    ],
+    metas: [
+      'Ressuscitação volêmica precoce com cristaloide guiada por perfusão e débito urinário ≥ 0,5 mL/kg/h',
+      'Porta-antibiótico ≤ 1 hora se suspeita de peritonite ou sepse abdominal',
+      'Alívio efetivo da dor com analgesia multimodal sem retardar conduta cirúrgica'
+    ],
+    pitfalls: [
+      'Analgesia precoce NÃO mascara o exame físico nem atrasa o diagnóstico cirúrgico; aliviar a dor é conduta humanizada obrigatória',
+      'Dor abdominal intensa desproporcional ao exame físico em idosos ou vasculopatas exige investigação de isquemia mesentérica',
+      'Omitir teste de gravidez em mulher jovem com queixa abdominal'
+    ],
+    doses: [
+      'Dipirona 1 g IV diluída em 100 mL SF 0,9% correr em 15–20 min',
+      'Morfina 2–4 mg IV em alíquotas lentas para dor moderada a severa',
+      'Ceftriaxona 1–2 g IV + Metronidazol 500 mg IV se suspeita de infecção intra-abdominal bacteriana'
+    ]
+  },
+  {
+    id: 'trauma',
+    title: 'Trauma',
+    icon: 'ti-first-aid-kit',
+    subsindromes: ['Politrauma com Choque Hemorrágico', 'Traumatismo Cranioencefálico (TCE) Grave'],
+    acoes: [
+      'Sistematização do protocolo X-ABCDE com controle prioritário e agressivo de sangramento exanguinante externo',
+      'Imobilização cervical com colar e prancha sob critérios indicados',
+      'POCUS e-FAST beira-leito imediato para rastreio de líquido livre peritoneal, pericárdico e pleural'
+    ],
+    metas: [
+      'Ressuscitação hemostática proporcional (1:1:1 de CH, PFC e plaquetas) se choque hemorrágico grave',
+      'Ácido Tranexâmico administrado nas primeiras 3 horas do trauma com sangramento significativo ou choque',
+      'TCE Grave: PAS ≥ 100–110 mmHg, PPC 60–70 mmHg e normocapnia (PaCO₂ 35–40 mmHg)'
+    ],
+    pitfalls: [
+      'Episódio único de hipotensão (PAS < 90 mmHg) ou hipóxia em TCE duplica a mortalidade',
+      'Sobrecarga maciça de cristaloides no choque hemorrágico agrava coagulopatia dilucional e hipotermia',
+      'Ácido tranexâmico administrado após 3 horas do trauma perde benefício e pode aumentar morbidade'
+    ],
+    doses: [
+      'Ácido Tranexâmico 1 g IV em 10 min na admissão, seguido de 1 g IV infundido em 8 horas',
+      'Ativação de Protocolo de Transfusão Maciça (PTM) com sangue total ou proporção balanceada 1:1:1'
+    ]
+  },
+  {
+    id: 'neu',
+    title: 'Déficit neurológico focal',
+    icon: 'ti-brain',
+    subsindromes: ['AVC Isquêmico (AVCI)', 'AVC Hemorrágico (AVCH)', 'Ataque Isquêmico Transitório (AIT)'],
+    acoes: [
+      'Glicemia capilar imediata na chegada (regra de ouro mandatória: descartar hipoglicemia)',
+      'Determinar horário exato do início dos sintomas ou último momento visto bem (last known well)',
+      'TC de crânio sem contraste em regime de urgência absoluta (porta-TC ≤ 20 min) + aplicação da escala NIHSS'
+    ],
+    metas: [
+      'AVCI elegível à trombólise: PA < 185/110 mmHg antes da infusão e < 180/105 mmHg nas primeiras 24h',
+      'AVCI não candidato à reperfusão: hipertensão permissiva (tratar apenas se PA > 220/120 mmHg; queda máx. 15% em 24h)',
+      'AVCH agudo: controle precoce da PAS com alvo < 140 mmHg com anti-hipertensivo titulável'
+    ],
+    pitfalls: [
+      'Queda abrupta e agressiva da PA no AVCI sem reperfusão prejudica perfusão da penumbra isquêmica',
+      'Atrasar trombólise aguardando exames laboratoriais (exceto se uso de anticoagulantes ou suspeita de plaquetopenia)',
+      'Administrar AAS ou anticoagulante antes da TC descartar evento hemorrágico'
+    ],
+    doses: [
+      'Alteplase (rt-PA) 0,9 mg/kg (máx 90 mg; 10% bólus em 1 min e restante em 60 min) ou Tenecteplase 0,25 mg/kg bólus único',
+      'Nitroprussiato de Sódio ou Labetalol para titulação rápida de PA se PAS > 185 ou PAD > 110 mmHg pré-lise'
+    ]
+  },
+  {
+    id: 'sepse',
+    title: 'Sepse e choque séptico',
+    icon: 'ti-virus',
+    subsindromes: ['Sepse — Protocolo da 1ª Hora (Golden Hour)', 'Choque Séptico / Vasopressores Precoces'],
+    acoes: [
+      'Coleta de 2 pares de hemoculturas de sítios distintos antes de iniciar antimicrobiano (sem atrasar início)',
+      'Dosagem imediata de lactato sérico na admissão (repetir em 2–4 horas se inicial alterado)',
+      'Expansão volêmica inicial com cristaloide balanceado (30 mL/kg se hipotensão ou lactato ≥ 4 mmol/L)'
+    ],
+    metas: [
+      'Início de antimicrobiano parenteral de amplo espectro em ≤ 1 hora da identificação',
+      'Pressão Arterial Média (PAM) alvo ≥ 65 mmHg',
+      'Clareamento de lactato sérico > 20% em 2–4 horas e tempo de enchimento capilar (TEC) ≤ 3 segundos'
+    ],
+    pitfalls: [
+      'Atrasar antibiótico para aguardar resultados de exames de imagem ou vaga de internação',
+      'Insistir em infusão excessiva de cristaloides se hipotensão mantida (iniciar vasopressor precocemente)',
+      'Grandes volumes de SF 0,9% induzem acidose metabólica hiperclorêmica; preferir cristaloide balanceado'
+    ],
+    doses: [
+      'Noradrenalina: iniciar a 0,05–0,1 mcg/kg/min IV em BIC titulada para PAM ≥ 65 mmHg',
+      'Cristaloide balanceado (Ringer Lactato ou similar) em alíquotas de 500 mL avaliando responsividade volêmica'
+    ]
+  },
+  {
+    id: 'vert',
+    title: 'Vertigem',
+    icon: 'ti-rotate-clockwise',
+    subsindromes: ['Síndrome Vestibular Aguda Contínua', 'Diferenciação Periférica vs Central (AVC Fossa Posterior)', 'VPPB'],
+    acoes: [
+      'Diferenciar vertigem aguda contínua espontânea com nistagmo da vertigem episódica posicional',
+      'Aplicar o exame HINTS (Head Impulse, Nystagmus, Test of Skew) SOMENTE se nistagmo espontâneo ativo presente',
+      'Pesquisa direcionada de sinais de tronco/cerebelo (dismetria, ataxia de marcha, disdiadococinesia)'
+    ],
+    metas: [
+      'Identificação rápida de sinais centrais (HINTS central tem sensibilidade superior à RNM nas primeiras 24–48h)',
+      'Exclusão de isquemia de circulação posterior / cerebelar em idosos e vasculopatas'
+    ],
+    pitfalls: [
+      'Aplicar o teste HINTS em paciente sem nistagmo ativo (perda total da acurácia diagnóstica)',
+      'Assumir etiologia periférica exclusivamente pela presença de náuseas intensas ou vômitos',
+      'TC de crânio inicial normal NÃO descarta AVC isquêmico de fossa posterior nas primeiras 24 horas'
+    ],
+    doses: [
+      'Dimenidrinato 50 mg IV ou Ondansetrona 8 mg IV para alívio sintomático de êmese e náusea',
+      'Manobra de Epley direcionada quando confirmado diagnóstico de VPPB de canal semicircular posterior'
+    ]
+  },
+  {
+    id: 'rnc',
+    title: 'Rebaixamento do nível de consciência',
+    icon: 'ti-mood-empty',
+    subsindromes: ['Abordagem MOVE e Patência de Via Aérea', 'Encefalopatia Metabólica / Hipoglicemia', 'Toxíndromes'],
+    acoes: [
+      'Glicemia capilar imediata na admissão (regra mandatória em qualquer alteração de consciência)',
+      'Avaliação da permeabilidade de via aérea, drive respiratório e oximetria de pulso (A-B)',
+      'Exame pupilar (tamanho, simetria e fotorreatividade) e busca de sinais de trauma cranioencefálico'
+    ],
+    metas: [
+      'Glicemia capilar corrigida para ≥ 70–100 mg/dL imediatamente',
+      'Patência de via aérea e ventilação alveolar preservadas',
+      'Identificação e reversão de causas metabólicas e toxicológicas reversíveis'
+    ],
+    pitfalls: [
+      'Glasgow ≤ 8 isolado não é indicação mandatória cega de IOT se a causa for reversível de imediato (ex: hipoglicemia, pós-ictal breve)',
+      'Não administrar glicose hipertônica sem tiamina prévia em desnutridos ou etilistas crônicos (risco de Wernicke)',
+      'Hipotermia grave e hipercapnia grave mimetizam morte encefálica ou coma profundo'
+    ],
+    doses: [
+      'Glicose 50% 40–80 mL IV em bólus se hipoglicemia < 70 mg/dL',
+      'Naloxona 0,04 a 0,4 mg IV a cada 2–3 min se suspeita de overdose por opioides (alvo: drive respiratório)',
+      'Tiamina 100–500 mg IV antes ou concomitante à glicose se suspeita de desnutrição/etilismo crônico'
+    ]
+  },
+  {
+    id: 'ict',
+    title: 'Icterícia',
+    icon: 'ti-droplet',
+    subsindromes: ['Insuficiência Hepática Aguda (IHA)', 'Colangite Aguda Obstrutiva', 'Cirrose Descompensada'],
+    acoes: [
+      'Avaliar presença de encefalopatia hepática e coagulopatia aguda (TAP/INR e plaquetas)',
+      'Buscar febre e dor em HCD (Tríade de Charcot / Pêntade de Reynolds para colangite aguda)',
+      'Ultrassonografia beira-leito (POCUS) para avaliar dilatação de vias biliares intra/extra-hepáticas e ascite'
+    ],
+    metas: [
+      'Glicemia > 100 mg/dL mantida (vigilância horária na IHA por comprometimento da gliconeogênese)',
+      'Sódio sérico estrito 140–145 mEq/L na IHA (hiponatremia agrava o edema cerebral e hipertensão intracraniana)',
+      'Colangite Aguda: descompressão biliar urgente (CPRE ou drenagem percutânea) se sepse'
+    ],
+    pitfalls: [
+      'Atrasar antibiótico e drenagem biliar em colangite aguda com sepse ou choque',
+      'Administrar benzodiazepínicos ou sedativos em suspeita de encefalopatia hepática',
+      'Ignorar hipoglicemia inadvertida em hepatite fulminante'
+    ],
+    doses: [
+      'N-acetilcisteína (NAC) precoce se suspeita de intoxicação por paracetamol ou hepatite aguda fulminante',
+      'Ceftriaxona 1–2 g IV + Metronidazol 500 mg IV na colangite aguda infecciosa',
+      'Lactulose 20–30 mL VO/SNG titulada se encefalopatia hepática no cirrótico'
+    ]
+  },
+  {
+    id: 'hdg',
+    title: 'Hemorragia digestiva',
+    icon: 'ti-droplets',
+    subsindromes: ['HDA Varicosa (Hipertensão Portal)', 'HDA Não-Varicosa (Úlcera Péptica)', 'Hemorragia Digestiva Baixa'],
+    acoes: [
+      'Dois acessos venosos periféricos calibrosos imediatos (16G ou 18G) e monitorização contínua',
+      'Tipagem sanguínea imediata e reserva precoce de concentrado de hemácias',
+      'Estratificação precoce de gravidade (Glasgow-Blatchford) e preparo para endoscopia'
+    ],
+    metas: [
+      'Ressuscitação volêmica permissiva: PAM alvo de aproximadamente 65 mmHg (evitar elevação excessiva da pressão portal)',
+      'Gatilho transfusional restritivo: concentrado de hemácias se Hb < 7,0 g/dL (alvo 7–8 g/dL), exceto coronariopatia aguda ativa',
+      'Endoscopia Digestiva Alta (EDA): nas primeiras 12–24h após estabilização hemodinâmica inicial'
+    ],
+    pitfalls: [
+      'Hiper-ressuscitação com cristaloides aumenta a pressão na veia porta e precipita ressangramento de varizes',
+      'Transfusão liberal (alvo Hb > 9–10 g/dL) comprovadamente aumenta a mortalidade em sangramento gastrointestinal agudo',
+      'Omitir antibiótico profilático em hemorragia digestiva no paciente cirrótico'
+    ],
+    doses: [
+      'Terlipressina 2 mg IV em bólus (ou Octreotide 50 mcg bólus + 50 mcg/h BIC) na suspeita de sangramento varicoso',
+      'Omeprazol 80 mg IV em bólus seguido de infusão contínua 8 mg/h ou 40 mg IV 12/12h',
+      'Ceftriaxona 1 g IV/dia para profilaxia antibiótica em cirróticos com hemorragia digestiva alta'
+    ]
   }
- });
+];
+
+function detectActiveSyndromeId(){
+  const q = (S.queixa || '').toLowerCase();
+  const s = (S.sind || '').toLowerCase();
+  const sub = (S.subsind || '').toLowerCase();
+
+  if (q.includes('torác') || q.includes('torac') || s === 'dtx' || s === 'sca' || sub.includes('sca')) return 'dtx';
+  if (q.includes('dispne') || q.includes('falta de ar') || s === 'dsp' || s === 'tep' || s === 'dpoc') return 'dsp';
+  if (q.includes('abdom') || s === 'abd') return 'abd';
+  if (q.includes('trauma') || s === 'trauma') return 'trauma';
+  if (q.includes('focal') || q.includes('avc') || q.includes('fraqueza') || s === 'neu' || sub.includes('avc')) return 'neu';
+  if (q.includes('sepse') || q.includes('febre') || s === 'sepse' || s === 'cho') return 'sepse';
+  if (q.includes('vertig') || q.includes('tontur') || s === 'vert') return 'vert';
+  if (q.includes('rebaixa') || q.includes('consci') || q.includes('coma') || s === 'rnc') return 'rnc';
+  if (q.includes('icter') || s === 'ict') return 'ict';
+  if (q.includes('hemorrag') || q.includes('melena') || q.includes('hematêm') || s === 'hdg' || s === 'hda') return 'hdg';
+  return 'dtx';
 }
 
-let _decisionSearchQuery = '';
-
-function onDecisionSearch(q){
- _decisionSearchQuery = (q || '').trim().toLowerCase();
- const clearBtn = document.getElementById('decisionSearchClearBtn');
- if(clearBtn) clearBtn.style.display = _decisionSearchQuery ? 'block' : 'none';
- renderDecisionSupportContent(_activeDecisionTab);
+function openCockpitDecisionPanel(targetSyndromeId){
+  _isCockpitPanelOpen = true;
+  if(targetSyndromeId) _selectedCockpitSyndromeId = targetSyndromeId;
+  else if(!_selectedCockpitSyndromeId) _selectedCockpitSyndromeId = detectActiveSyndromeId();
+  const panel = document.getElementById('cockpitDecisionPanel');
+  if(panel){
+    panel.style.display = 'block';
+    renderCockpitDecisionPanel();
+    panel.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+  }
+  const btn = document.querySelector('.hdr-btn-decision');
+  if(btn) btn.classList.add('active');
 }
 
-function clearDecisionSearch(){
- const input = document.getElementById('decisionSearchInput');
- if(input) input.value = '';
- _decisionSearchQuery = '';
- const clearBtn = document.getElementById('decisionSearchClearBtn');
- if(clearBtn) clearBtn.style.display = 'none';
- renderDecisionSupportContent(_activeDecisionTab);
+function closeCockpitDecisionPanel(){
+  _isCockpitPanelOpen = false;
+  const panel = document.getElementById('cockpitDecisionPanel');
+  if(panel) panel.style.display = 'none';
+  const btn = document.querySelector('.hdr-btn-decision');
+  if(btn) btn.classList.remove('active');
 }
 
-function copySriDoses(w){
- const kDose = (w * 1.5).toFixed(0);
- const rDose = (w * 1.2).toFixed(0);
- const fDose = (w * 2.0).toFixed(0);
- const txt = `[Prescrição SRI — Peso ${w} kg]\n- Quetamina ${kDose} mg (${(kDose/50).toFixed(1)} mL) IV em bólus\n- Rocurônio ${rDose} mg (${(rDose/10).toFixed(1)} mL) IV em bólus\n- Fentanil ${fDose} mcg (${(fDose/50).toFixed(1)} mL) IV em bólus pré-procedimento`;
- if(!S.imp) S.imp = txt; else S.imp += '\n\n' + txt;
- navigator.clipboard.writeText(txt).then(()=>{
-  showToast(`Doses de SRI para ${w} kg copiadas e adicionadas à conduta!`);
-  render();
- });
+function toggleCockpitDecisionPanel(){
+  if(_isCockpitPanelOpen) closeCockpitDecisionPanel();
+  else openCockpitDecisionPanel();
 }
 
-function copyNoraDose(w){
- const mlh = ((0.1 * w * 60) / 64).toFixed(1);
- const txt = `[DVA — Noradrenalina 64 mcg/mL]\n- Noradrenalina 4 ampolas (16 mg) em 234 mL SG 5% IV em BIC contínua.\n- Iniciar vazão a ${mlh} mL/h (dose inicial 0,1 mcg/kg/min para ${w} kg).\n- Titular a cada 2–5 min para alvo de PAM >= 65 mmHg e TEC <= 3s.`;
- if(!S.imp) S.imp = txt; else S.imp += '\n\n' + txt;
- navigator.clipboard.writeText(txt).then(()=>{
-  showToast(`Prescrição de Noradrenalina para ${w} kg copiada e adicionada!`);
-  render();
- });
+function selectCockpitSyndrome(id){
+  _selectedCockpitSyndromeId = id;
+  renderCockpitDecisionPanel();
 }
 
-function renderDecisionSupportContent(tab){
- const body = document.getElementById('decisionDrawerBody');
- if(!body) return;
- if(tab === 'conflitos') tab = 'perolas';
- const sid = S.sind;
- const sub = S.subsind;
+function onCockpitSearch(val){
+  _cockpitSearchQuery = (val || '').trim();
+  const clearBtn = document.getElementById('cockpitSearchClearBtn');
+  if(clearBtn) clearBtn.style.display = _cockpitSearchQuery ? 'block' : 'none';
+  renderCockpitDecisionPanel();
+}
 
- if(tab === 'metas'){
-  if(!sid){
-   body.innerHTML = `
-    <div style="text-align:center;padding:48px 16px;color:var(--color-text-secondary)">
-     <i class="ti ti-target" style="font-size:42px;color:#9ca3af;display:block;margin-bottom:12px" aria-hidden="true"></i>
-     <strong style="display:block;font-size:15px;color:var(--color-text-primary);margin-bottom:6px">Nenhuma Síndrome Selecionada</strong>
-     <p style="font-size:13px;line-height:1.5;margin:0">Selecione uma síndrome clínica no <strong>Passo 4 (Conduta & Síndromes)</strong> para visualizar as metas hemodinâmicas e fisiológicas direcionadas para este paciente.</p>
-    </div>
-   `;
-   return;
+function clearCockpitSearch(){
+  _cockpitSearchQuery = '';
+  const input = document.getElementById('cockpitSearchInput');
+  if(input) input.value = '';
+  const clearBtn = document.getElementById('cockpitSearchClearBtn');
+  if(clearBtn) clearBtn.style.display = 'none';
+  renderCockpitDecisionPanel();
+}
+
+function renderCockpitDecisionPanel(){
+  const panel = document.getElementById('cockpitDecisionPanel');
+  if(!panel) return;
+
+  const activeDetectedId = detectActiveSyndromeId();
+  const activeSyndromeObj = DECISION_SYNDROMES.find(x => x.id === activeDetectedId) || DECISION_SYNDROMES[0];
+  const curSyndromeId = _selectedCockpitSyndromeId || activeDetectedId;
+  const selectedSyndromeObj = DECISION_SYNDROMES.find(x => x.id === curSyndromeId) || DECISION_SYNDROMES[0];
+
+  const searchQ = (_cockpitSearchQuery || '').trim().toLowerCase();
+
+  let filteredSyndromes = DECISION_SYNDROMES;
+  if(searchQ){
+    filteredSyndromes = DECISION_SYNDROMES.filter(s => {
+      const matchTitle = s.title.toLowerCase().includes(searchQ);
+      const matchSub = s.subsindromes.some(sub => sub.toLowerCase().includes(searchQ));
+      const matchMetas = s.metas.some(m => m.toLowerCase().includes(searchQ));
+      const matchAcoes = s.acoes.some(a => a.toLowerCase().includes(searchQ));
+      const matchPitfalls = s.pitfalls.some(p => p.toLowerCase().includes(searchQ));
+      const matchDoses = s.doses.some(d => d.toLowerCase().includes(searchQ));
+      return matchTitle || matchSub || matchMetas || matchAcoes || matchPitfalls || matchDoses;
+    });
   }
 
-  let metasHtml = `
-   <div class="decision-card">
-    <div class="decision-card-title">
-     <i class="ti ti-gauge" style="color:#2563eb" aria-hidden="true"></i>
-     Metas Hemodinâmicas & Perfusão Imediatas
+  const conflictAlerts = (typeof getConflictAlerts === 'function') ? getConflictAlerts(S) : [];
+  let conflictAlertsHtml = '';
+  if(conflictAlerts.length){
+    conflictAlertsHtml = `
+      <div style="background:#fef2f2;border:1.5px solid #dc2626;border-radius:8px;padding:9px 12px;margin-bottom:12px">
+        <div style="font-weight:700;color:#991b1b;font-size:12.5px;display:flex;align-items:center;gap:6px">
+          <i class="ti ti-shield-alert" style="color:#dc2626;font-size:16px"></i>
+          Conflitos Farmacológicos Detectados no Paciente (${conflictAlerts.length})
+        </div>
+        ${conflictAlerts.map(a => `
+          <div style="margin-top:4px;font-size:11.5px;color:#7f1d1d;line-height:1.4">
+            <strong>${esc(a.title)}:</strong> ${esc(a.text)}
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  panel.innerHTML = `
+    <div class="cockpit-decision-hdr">
+      <div class="cockpit-decision-title">
+        <i class="ti ti-bolt" style="color:#38bdf8"></i>
+        <span>Apoio à Decisão Beira-Leito — Crunch Time & Pitfalls</span>
+      </div>
+      <div class="cockpit-decision-controls">
+        <span style="font-size:11px;opacity:0.8;margin-right:4px">100% Interativo</span>
+        <button type="button" class="cockpit-close-btn" onclick="closeCockpitDecisionPanel()" title="Fechar painel de apoio">
+          <i class="ti ti-x"></i> Fechar
+        </button>
+      </div>
     </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet"></span>
-     <div><strong>Pressão Arterial Média (PAM):</strong> Alvo &ge; 65 mmHg (ou 70–75 mmHg em hipertensos crônicos para preservar taxa de filtração renal).</div>
+    <div class="cockpit-decision-body">
+      ${conflictAlertsHtml}
+
+      <!-- Pinned Active Case Syndrome -->
+      <div class="cockpit-pinned-alert">
+        <div style="display:flex;align-items:center;gap:8px">
+          <i class="ti ti-pin" style="font-size:15px"></i>
+          <div>
+            <strong>Síndrome Ativa no Caso:</strong> ${esc(activeSyndromeObj.title)}
+            <span style="font-size:11px;opacity:0.85;margin-left:6px">(${esc(activeSyndromeObj.subsindromes.join(', '))})</span>
+          </div>
+        </div>
+        ${activeSyndromeObj.id !== curSyndromeId ? `
+          <button type="button" class="btns" style="padding:2px 8px;font-size:11px;background:#2563eb;color:#fff;border:none;border-radius:4px;cursor:pointer" onclick="selectCockpitSyndrome('${activeSyndromeObj.id}')">
+            Ver Ativa
+          </button>
+        ` : ''}
+      </div>
+
+      <!-- Search Bar -->
+      <div class="cockpit-search-bar">
+        <input type="text" class="cockpit-search-input" id="cockpitSearchInput" placeholder="🔍 Buscar nas 10 síndromes (ações, metas, subssíndromes, pitfalls, doses)..." oninput="onCockpitSearch(this.value)" value="${esc(_cockpitSearchQuery)}">
+        <button type="button" class="cockpit-search-clear" id="cockpitSearchClearBtn" onclick="clearCockpitSearch()" style="${_cockpitSearchQuery ? '' : 'display:none'}">&times;</button>
+      </div>
+
+      <!-- Chips horizontal scroll -->
+      <div class="cockpit-chips-scroll">
+        ${DECISION_SYNDROMES.map(synd => `
+          <button type="button" class="cockpit-chip ${synd.id === curSyndromeId ? 'active' : ''}" onclick="selectCockpitSyndrome('${synd.id}')">
+            <i class="ti ${synd.icon || 'ti-notes'}"></i>
+            <span>${esc(synd.title)}</span>
+          </button>
+        `).join('')}
+      </div>
+
+      <!-- Main Syndromes Presentation -->
+      <div class="cockpit-syndromes-container">
+        ${searchQ ? renderCockpitSearchResults(filteredSyndromes, searchQ) : renderCockpitSingleSyndrome(selectedSyndromeObj)}
+      </div>
+
+      <!-- Real-time weight calculators (SRI & Nora) at footer -->
+      <div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--color-border-tertiary,#e2e8f0)">
+        <details style="font-size:12px;color:var(--color-text-secondary,#475569)">
+          <summary style="cursor:pointer;font-weight:600;color:var(--color-brand,#1e40af);user-select:none">
+            <i class="ti ti-calculator"></i> Calculadora Rápida por Peso (SRI & Noradrenalina)
+          </summary>
+          <div style="margin-top:10px">
+            ${renderCockpitCalculators()}
+          </div>
+        </details>
+      </div>
     </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet"></span>
-     <div><strong>Perfusão Periférica (TEC):</strong> Tempo de Enchimento Capilar &le; 3 segundos (parâmetro dinâmico superior de microcirculação).</div>
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet"></span>
-     <div><strong>Débito Urinário:</strong> &ge; 0,5 mL/kg/h em cateter vesical após estabilização inicial.</div>
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet"></span>
-     <div><strong>Cinética do Lactato Sérico:</strong> Dosar na admissão e repetir em 2–4 horas. Meta: clareamento &gt; 20% em 2–4h (reflete recuperação de perfusão tecidual).</div>
-    </div>
-   </div>
   `;
+}
 
-  if(sid === 'dtx' || sub === 'sca_oca' || sub === 'sca_noca'){
-   metasHtml += `
-    <div class="decision-card" style="border-top:3px solid #dc2626">
-     <div class="decision-card-title" style="color:#b91c1c">
-      <i class="ti ti-heart-rate-monitor" style="color:#dc2626" aria-hidden="true"></i>
-      Metas Clínicas — Síndrome Coronariana Aguda (SCA)
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#dc2626"></span>
-      <div><strong>Alvo de O₂:</strong> SpO₂ 90–96%. Evitar hiperóxia de rotina (&gt; 96%): vasoconstrição reflexa da microvasculatura coronariana.</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#dc2626"></span>
-      <div><strong>Frequência Cardíaca:</strong> 60–80 bpm se estável e sem insuficiência cardíaca descompensada.</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#dc2626"></span>
-      <div><strong>Tempo Porta-Balão (ICP primária):</strong> &lt; 90 min (&lt; 120 min se transferência inter-hospitalar).</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#dc2626"></span>
-      <div><strong>Tempo Porta-Agulha (trombólise):</strong> &lt; 30 min da admissão quando ICP &gt; 120 min.</div>
-     </div>
-    </div>
-   `;
-  } else if(sid === 'neu' || sub === 'avc_isq' || sub === 'avc_hem' || sid === 'rnc'){
-   metasHtml += `
-    <div class="decision-card" style="border-top:3px solid #7c3aed">
-     <div class="decision-card-title" style="color:#6d28d9">
-      <i class="ti ti-brain" style="color:#7c3aed" aria-hidden="true"></i>
-      Metas de Neuroproteção Aguda (AVC / RNC / TCE)
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#7c3aed"></span>
-      <div><strong>PA no AVCI Candidato à Trombólise:</strong> Manter PA &lt; 185/110 mmHg pré-lise e &lt; 180/105 mmHg nas primeiras 24h.</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#7c3aed"></span>
-      <div><strong>PA no AVCI Não Candidato à Reperfusão:</strong> Hipertensão permissiva (tratar se PA &gt; 220/120 mmHg; queda máx. 15% em 24h).</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#7c3aed"></span>
-      <div><strong>Pressão de Perfusão Cerebral (PPC):</strong> Alvo 60–70 mmHg em TCE grave / HIC (PPC = PAM &minus; PIC).</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#7c3aed"></span>
-      <div><strong>Controle Térmico Estrito:</strong> Normotermia (&lt; 37,5°C). Febrícula agrava isquemia e lesão secundária.</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#7c3aed"></span>
-      <div><strong>Ventilação & PaCO₂:</strong> Normocapnia estrita (PaCO₂ 35–40 mmHg). Não hiperventilar profilaticamente.</div>
-     </div>
-    </div>
-   `;
-  } else if(sid === 'cho'){
-   metasHtml += `
-    <div class="decision-card" style="border-top:3px solid #d97706">
-     <div class="decision-card-title" style="color:#b45309">
-      <i class="ti ti-activity" style="color:#d97706" aria-hidden="true"></i>
-      Metas no Choque & Ressuscitação
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#d97706"></span>
-      <div><strong>Golden Hour no Choque Séptico:</strong> Hemoculturas e antibiótico parenteral iniciado em &le; 1 hora.</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#d97706"></span>
-      <div><strong>Estratégia Transfusional Restritiva:</strong> Gatilho em Hb &lt; 7,0 g/dL (alvo 7–8 g/dL), exceto coronariopatia aguda instável.</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#d97706"></span>
-      <div><strong>Vasopressor Precoce:</strong> Noradrenalina se hipotensão grave/refratária a alíquotas iniciais de cristaloide.</div>
-     </div>
-    </div>
-   `;
-  } else if(sid === 'dsp' || sid === 'tep'){
-   metasHtml += `
-    <div class="decision-card" style="border-top:3px solid #0284c7">
-     <div class="decision-card-title" style="color:#0369a1">
-      <i class="ti ti-lungs" style="color:#0284c7" aria-hidden="true"></i>
-      Metas na Síndrome Dispneica & Insuficiência Respiratória
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#0284c7"></span>
-      <div><strong>SpO₂ em DPOC / Retentor Crônico:</strong> Alvo 88–92% (evitar hiperóxia que induz perda de vasoconstrição hipóxica e narcose por CO₂).</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#0284c7"></span>
-      <div><strong>SpO₂ em EAP / TEP / Pneumonia:</strong> Alvo 92–96% sob oxigenoterapia titulada.</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#0284c7"></span>
-      <div><strong>EAP Hipertensivo:</strong> Redução rápida de 20–25% da PAM na 1ª hora com Nitroglicerina IV para redução de pós-carga.</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#0284c7"></span>
-      <div><strong>Ventilação Mecânica Protetora:</strong> Volume corrente 6 mL/kg de peso predito, Pressão de Platô &le; 30 cmH₂O e Driving Pressure &le; 15 cmH₂O.</div>
-     </div>
-    </div>
-   `;
-  } else if(sid === 'con'){
-   metasHtml += `
-    <div class="decision-card" style="border-top:3px solid #8b5cf6">
-     <div class="decision-card-title" style="color:#6d28d9">
-      <i class="ti ti-bolt" style="color:#8b5cf6" aria-hidden="true"></i>
-      Metas no Status Epiléptico & Crises
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#8b5cf6"></span>
-      <div><strong>Tempo t1 (5 min):</strong> Benzodiazepínico IV precoce (Diazepam 10 mg IV ou Midazolam 10 mg IM/IV).</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#8b5cf6"></span>
-      <div><strong>Tempo t2 (20–30 min):</strong> Anticonvulsivante de 2ª linha em dose plena (Levetiracetam 60 mg/kg ou Fenitoína 20 mg/kg).</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#8b5cf6"></span>
-      <div><strong>Glicemia & Temperatura:</strong> Corrigir hipoglicemia imediata (> 70 mg/dL) e evitar hipertermia.</div>
-     </div>
-    </div>
-   `;
-  } else if(sid === 'pal' || sid === 'sinc'){
-   metasHtml += `
-    <div class="decision-card" style="border-top:3px solid #f59e0b">
-     <div class="decision-card-title" style="color:#b45309">
-      <i class="ti ti-heartbeat" style="color:#f59e0b" aria-hidden="true"></i>
-      Metas nas Arritmias & Síncope
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#f59e0b"></span>
-      <div><strong>Critérios de Instabilidade (Cardioversão Elétrica):</strong> Hipotensão/choque, dor anginosa aguda, dispneia com congestão pulmonar, rebaixamento de consciência.</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#f59e0b"></span>
-      <div><strong>Eletrólitos Alvo:</strong> Potássio &ge; 4,0 mEq/L e Magnésio &ge; 2,0 mg/dL para prevenção de refratariedade arrítmica.</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#f59e0b"></span>
-      <div><strong>QTc de Segurança:</strong> &lt; 500 ms antes de infundir fármacos bloqueadores de canais de potássio.</div>
-     </div>
-    </div>
-   `;
-  } else if(sid === 'hdg'){
-   metasHtml += `
-    <div class="decision-card" style="border-top:3px solid #e11d48">
-     <div class="decision-card-title" style="color:#be123c">
-      <i class="ti ti-droplet" style="color:#e11d48" aria-hidden="true"></i>
-      Metas na Hemorragia Digestiva Alta (HDA)
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#e11d48"></span>
-      <div><strong>Ressuscitação Permissiva:</strong> PAM alvo de 65 mmHg (evitar sobrecarga volêmica que desestabiliza coágulo e agrava sangramento varicoso).</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#e11d48"></span>
-      <div><strong>Gatilho Transfusional Restritivo:</strong> Concentrado de hemácias se Hb &lt; 7,0 g/dL (alvo 7–8 g/dL).</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#e11d48"></span>
-      <div><strong>Tempo para EDA:</strong> &lt; 12h se suspeita de sangramento varicoso instável; &lt; 24h em sangramento não varicoso após estabilização inicial.</div>
-     </div>
-    </div>
-   `;
-  } else if(sid === 'ict'){
-   metasHtml += `
-    <div class="decision-card" style="border-top:3px solid #ca8a04">
-     <div class="decision-card-title" style="color:#a16207">
-      <i class="ti ti-virus" style="color:#ca8a04" aria-hidden="true"></i>
-      Metas na Insuficiência Hepática Aguda & Colangite
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#ca8a04"></span>
-      <div><strong>Glicemia Mínima:</strong> Manter &gt; 100 mg/dL com vigilância horária (perda da gliconeogênese).</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#ca8a04"></span>
-      <div><strong>Sódio Sérico Estrito:</strong> 140–145 mEq/L (hiponatremia agrava rapidamente o edema cerebral e risco de herniação).</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#ca8a04"></span>
-      <div><strong>Colangite Aguda:</strong> Descompressão biliar urgente (CPRE ou drenagem) se Tríade de Charcot ou sepse biliar.</div>
-     </div>
-    </div>
-   `;
-  } else if(sid === 'abd'){
-   metasHtml += `
-    <div class="decision-card" style="border-top:3px solid #16a34a">
-     <div class="decision-card-title" style="color:#15803d">
-      <i class="ti ti-shield" style="color:#16a34a" aria-hidden="true"></i>
-      Metas na Síndrome Abdominal Aguda
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#16a34a"></span>
-      <div><strong>Ressuscitação com Cristaloide Balanceado:</strong> Guiada por débito urinário &ge; 0,5 mL/kg/h e perfusão periférica.</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#16a34a"></span>
-      <div><strong>Tempo Porta-Antibiótico na Peritonite:</strong> Iniciar em &le; 1 hora da suspeita clínica.</div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#16a34a"></span>
-      <div><strong>Analgesia Multimodal:</strong> Controle da dor sem atrasar avaliação do cirurgião geral.</div>
-     </div>
-    </div>
-   `;
-  }
-
-  body.innerHTML = metasHtml;
-  return;
- }
-
- if(tab === 'perolas'){
-  const alerts = getConflictAlerts(S);
-  let perolasHtml = '';
-
-  if(alerts.length){
-   perolasHtml += `
-    <div class="decision-card" style="border-left:4px solid #dc2626;background:#fef2f2">
-     <div class="decision-card-title" style="color:#991b1b">
-      <i class="ti ti-alert-triangle" style="font-size:18px;color:#dc2626" aria-hidden="true"></i>
-      Conflitos Farmacológicos Ativos Detectados (${alerts.length})
-     </div>
-     ${alerts.map(a => `
-      <div style="margin-top:6px;padding-top:6px;border-top:1px dashed #fca5a5;font-size:12.5px;line-height:1.55;color:#374151">
-       <strong style="color:#991b1b">${esc(a.title)}:</strong> ${esc(a.text)}
+function renderCockpitSingleSyndrome(s){
+  return `
+    <div class="cockpit-syndrome-card" style="background:var(--color-background-primary,#ffffff);border:1px solid var(--color-border-secondary,#cbd5e1);border-radius:10px;padding:12px 14px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--color-border-tertiary,#e2e8f0);padding-bottom:8px;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="background:#eff6ff;color:#2563eb;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px">
+            <i class="ti ${s.icon || 'ti-heart-rate-monitor'}"></i>
+          </div>
+          <div>
+            <h4 style="margin:0;font-size:14px;color:var(--color-text-primary,#0f172a);font-weight:700">${esc(s.title)}</h4>
+            <div style="font-size:11px;color:var(--color-text-secondary,#64748b);margin-top:2px">${esc(s.subsindromes.join(' • '))}</div>
+          </div>
+        </div>
+        <span class="sb" style="font-size:10.5px;background:#f1f5f9;color:#475569;border:1px solid #e2e8f0">Crunch Time Beira-Leito</span>
       </div>
-     `).join('')}
-    </div>
-   `;
-  }
 
-  // Cards Dinâmicos de Pérolas & Pitfalls por Queixa / Síndrome Selecionada
-  // DIRETRIZ BRASILEIRA DE DOR TORÁCICA NA EMERGÊNCIA (SBC / ABRAMEDE 2024/2025)
-  perolasHtml += `
-   <div class="decision-card" style="border-top:3px solid #dc2626;background:linear-gradient(180deg,#ffffff 0%,#fef2f2 100%)">
-    <div class="decision-card-title" style="color:#991b1b;display:flex;align-items:center;justify-content:space-between">
-     <span><i class="ti ti-heart-rate-monitor" style="color:#dc2626" aria-hidden="true"></i> Diretriz Brasileira de Dor Torácica 2024/2025: SCA com e sem Supra, Equivalentes & ECGs de Alto Risco</span>
-     <span class="sb" style="background:#fee2e2;color:#991b1b;font-size:10.5px">SBC / ABRAMEDE 2024/2025</span>
-    </div>
+      <!-- 1. Ações Críticas Imediatas (< 30s) -->
+      <div style="margin-bottom:10px">
+        <div style="font-size:12px;font-weight:700;color:#b91c1c;margin-bottom:4px;display:flex;align-items:center;gap:5px">
+          <i class="ti ti-bolt"></i> Ações Críticas Imediatas (&lt; 30s / Primeiros 5 min):
+        </div>
+        ${s.acoes && s.acoes.length > 0 ? `
+          <ul style="margin:0;padding-left:18px;font-size:12px;line-height:1.55;color:var(--color-text-primary,#1e293b)">
+            ${s.acoes.map(a => `<li>${esc(a)}</li>`).join('')}
+          </ul>
+        ` : `
+          <div class="cockpit-empty-slot"><em>(Aguardando inserção de texto do especialista)</em></div>
+        `}
+      </div>
 
-    <!-- 1. SCACSST (IAM com Supra Clássico) -->
-    <div style="margin-top:10px;padding:10px;background:#ffffff;border-radius:6px;border:1px solid #fecaca">
-     <div style="font-weight:700;color:#b91c1c;font-size:13px;margin-bottom:6px">
-      🔴 1. Síndrome Coronariana Aguda COM Supradesnível de ST (SCACSST / IAMCSST)
-     </div>
-     <div style="font-size:12.5px;line-height:1.6;color:#374151">
-      <strong>Critérios Eletrocardiográficos Clássicos (novo supra no ponto J em &ge; 2 derivações contíguas):</strong><br>
-      • <strong>V2–V3:</strong> &ge; 2,5 mm em homens &lt; 40 anos; &ge; 2,0 mm em homens &ge; 40 anos; &ge; 1,5 mm em mulheres de qualquer idade.<br>
-      • <strong>Demais derivações (I, aVL, II, III, aVF, V1, V4–V6):</strong> &ge; 1,0 mm (0,1 mV) em homens e mulheres.<br>
-      • <strong>Derivações posteriores (V7–V9):</strong> &ge; 0,5 mm (0,05 mV).<br>
-      • <strong>Derivações direitas (V3R, V4R):</strong> &ge; 0,5 mm (&ge; 1,0 mm em homens &lt; 30 anos).<br>
-      <strong>Metas de Reperfusão de Emergência:</strong> Porta-ECG &le; 10 min | Porta-Balão (ICP primária) &le; 90 min (ou &le; 120 min se transferido) | Porta-Agulha (Fibrinólise) &le; 10–30 min se ICP indisponível em 120 min.
-     </div>
-    </div>
+      <!-- 2. Metas Fisiológicas & Hemodinâmicas -->
+      <div style="margin-bottom:10px">
+        <div style="font-size:12px;font-weight:700;color:#2563eb;margin-bottom:4px;display:flex;align-items:center;gap:5px">
+          <i class="ti ti-target"></i> Metas Hemodinâmicas & Fisiológicas Imediatas:
+        </div>
+        ${s.metas && s.metas.length > 0 ? `
+          <ul style="margin:0;padding-left:18px;font-size:12px;line-height:1.55;color:var(--color-text-primary,#1e293b)">
+            ${s.metas.map(m => `<li>${esc(m)}</li>`).join('')}
+          </ul>
+        ` : `
+          <div class="cockpit-empty-slot"><em>(Aguardando inserção de texto do especialista)</em></div>
+        `}
+      </div>
 
-    <!-- 2. EQUIVALENTES DE SUPRA & ECGS DE ALTO RISCO (OCA) -->
-    <div style="margin-top:10px;padding:10px;background:#ffffff;border-radius:6px;border:1px solid #fed7aa">
-     <div style="font-weight:700;color:#c2410c;font-size:13px;margin-bottom:6px">
-      ⚠️ 2. Equivalentes de Supra de ST & Padrões de Oclusão Coronariana Aguda (OCA) de Alto Risco
-     </div>
-     <div style="font-size:12px;line-height:1.55;color:#374151">
-      <em>Tratar com a MESMA URGÊNCIA de um IAM com supra (indicação de CATE de emergência imediato):</em><br>
-      • <strong>Padrão de De Winter (Oclusão Proximal de ADA):</strong> Infradesnível de ST ascendente no ponto J de 1 a 3 mm em V1–V6 com ondas T altas, simétricas e apiculadas de base larga + supra sutil em aVR (0,5–1 mm).<br>
-      • <strong>Síndrome de Wellens (Estenose Crítica &gt; 85–90% de ADA Proximal):</strong><br>
-      &nbsp;&nbsp;&nbsp;&nbsp;- <em>Tipo A (25%):</em> Ondas T bifásicas (plus-minus) em V2–V3.<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;- <em>Tipo B (75%):</em> Ondas T profundamente e simetricamente invertidas (&gt; 2 mm) em V2–V4.<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;<em>Atenção:</em> Frequentemente sem dor ativa. Contraindicado teste de esforço; indicar CATE urgente.<br>
-      • <strong>Critérios de Smith-Sgarbossa Modificados (IAM com BRE ou Ritmo de Marca-passo):</strong><br>
-      &nbsp;&nbsp;&nbsp;&nbsp;1. Supra de ST concordante &ge; 1 mm com QRS positivo (5 pts).<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;2. Infra de ST concordante &ge; 1 mm em V1, V2 ou V3 (3 pts).<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;3. <em>Regra de Smith (desproporção discordante):</em> Supra de ST discordante desproporcional com razão ST/S &le; -0,25 (&ge; 25% da profundidade da onda S precedente).<br>
-      • <strong>Infradesnível Difuso com Supradesnível em aVR (&plusmn; V1) — Lesão de Tronco (TCE) ou Triarterial Grave:</strong> Infra de ST horizontal &ge; 1 mm em &ge; 6 derivações associado a supra em aVR &ge; 1 mm (com supra aVR &ge; supra V1). Risco iminente de choque cardiogênico.<br>
-      • <strong>Infarto Posterior / Dorsal Isolado (Oclusão de CX ou CD):</strong> Infra de ST horizontal em V1–V3 com ondas R altas e largas (R &gt; S) e ondas T positivas eretas (imagem em espelho). Solicitar V7–V9 (&ge; 0,5 mm confirma).<br>
-      • <strong>Infarto de Ventrículo Direito (IAM de VD):</strong> Supra em V3R e V4R &ge; 0,5–1 mm no IAM inferior. Tríade: hipotensão + turgência jugular + pulmões limpos. <em>Contraindicação estrita a Nitratos, Morfina, Betabloqueadores e Diuréticos</em> (alta dependência de pré-carga); ressuscitar com volume.<br>
-      • <strong>Padrão de Aslanger (IAM Inferior em Multiarterial):</strong> Supra isolado em DIII (sem supra evidente em DII/aVF) + infra em V1–V4 + ST em V1 &gt; V2.<br>
-      • <strong>Onda T Hiperaguda Transmural:</strong> Ondas T gigantes, de base ampla e simétricas, precedendo o supradesnível franco nos primeiros minutos pós-oclusão.<br>
-      • <strong>Padrão Shark-Fin (Barbatana de Tubarão / Lambda):</strong> Fusão em onda monofásica gigante triangular do QRS, ST e onda T. Altíssimo risco de FV e colapso circulatório.
-     </div>
-    </div>
+      <!-- 3. Banner de Prevenção / Pitfalls Integrado -->
+      <div style="margin-bottom:10px">
+        ${s.pitfalls && s.pitfalls.length > 0 ? `
+          <div class="cockpit-pitfall-banner">
+            <div class="cockpit-pitfall-title">
+              <i class="ti ti-alert-triangle"></i> Atenção / Armadilhas / O que NÃO fazer:
+            </div>
+            <ul style="margin:0;padding-left:18px;font-size:12px;line-height:1.55;color:#92400e">
+              ${s.pitfalls.map(p => `<li>${esc(p)}</li>`).join('')}
+            </ul>
+          </div>
+        ` : `
+          <div class="cockpit-empty-slot" style="background:#fffbeb;border-color:#fde68a;color:#b45309">
+            <i class="ti ti-alert-triangle" style="margin-right:4px"></i>
+            <em>(Aguardando inserção de texto do especialista — Armadilhas / O que NÃO fazer)</em>
+          </div>
+        `}
+      </div>
 
-    <!-- 3. SCASSST (Sem Supra Clássico / IAMSSST e Angina Instável) -->
-    <div style="margin-top:10px;padding:10px;background:#ffffff;border-radius:6px;border:1px solid #bfdbfe">
-     <div style="font-weight:700;color:#1d4ed8;font-size:13px;margin-bottom:6px">
-      🔵 3. Síndrome Coronariana Aguda SEM Supradesnível de ST (SCASSST / IAMSSST)
-     </div>
-     <div style="font-size:12px;line-height:1.55;color:#374151">
-      <strong>Alterações no ECG:</strong> Infradesnível horizontal/descendente de ST &ge; 0,5 mm em 2 derivações contíguas; inversão simétrica de onda T &ge; 1 mm. ECG normal em até 30% dos IAMSSST (obrigatório ECG seriado a cada 15–30 min enquanto houver sintomas).<br>
-      <strong>Protocolo de Troponina Ultrassensível (cTn-us) 0h/1h ou 0h/2h:</strong><br>
-      • <em>Rule-out:</em> Níveis basais muito baixos com delta não significativo + HEART &le; 3 pts.<br>
-      • <em>Rule-in:</em> Valor basal inicial &gt; percentil 99 ou delta significativo na 1ª/2ª hora.<br>
-      <strong>Estratificação da Estratégia Invasiva (CATE) segundo a Diretriz 2024/2025:</strong><br>
-      • 🚨 <strong>Estratégia Invasiva Imediata (&lt; 2 horas) — Emergência Absoluta:</strong><br>
-      &nbsp;&nbsp;&nbsp;&nbsp;1. Instabilidade hemodinâmica ou choque cardiogênico.<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;2. Dor torácica anginosa refratária ao tratamento medicamentoso otimizado.<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;3. Arritmias ventriculares potencialmente letais (TV sustentada / FV).<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;4. Complicações mecânicas agudas do infarto (CIV, insuficiência mitral aguda por rotura papilar).<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;5. Insuficiência cardíaca aguda com congestão pulmonar grave (Killip III / IV).<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;6. Infradesnível dinâmico e recorrente de ST.<br>
-      • ⚡ <strong>Estratégia Invasiva Precoce (&lt; 24 horas):</strong> Diagnóstico confirmado de IAMSSST pela curva de troponina; alterações dinâmicas de ST/T; Escore GRACE &gt; 140 pontos; PCR ressuscitada sem supra.<br>
-      • 🟢 <strong>Estratégia Seletiva / Isquemia Guiada:</strong> Pacientes de baixo risco (GRACE &le; 109, troponina negativa 0-1h, assintomáticos).
-     </div>
+      <!-- 4. Doses de Ataque e Diluições Rápidas -->
+      <div>
+        <div style="font-size:12px;font-weight:700;color:#059669;margin-bottom:4px;display:flex;align-items:center;gap:5px">
+          <i class="ti ti-pill"></i> Doses de Ataque & Diluições de Emergência:
+        </div>
+        ${s.doses && s.doses.length > 0 ? `
+          <ul style="margin:0;padding-left:18px;font-size:12px;line-height:1.55;color:var(--color-text-primary,#1e293b)">
+            ${s.doses.map(d => `<li>${esc(d)}</li>`).join('')}
+          </ul>
+        ` : `
+          <div class="cockpit-empty-slot"><em>(Aguardando inserção de texto do especialista)</em></div>
+        `}
+      </div>
     </div>
-   </div>
   `;
+}
 
-  if(['Dispneia','Dor torácica'].includes(S.queixa)||S.sind==='sca'||S.sind==='dpoc'){
-   perolasHtml += `
-    <div class="decision-card" style="border-top:3px solid #0284c7">
-     <div class="decision-card-title" style="color:#0369a1">
-      <i class="ti ti-lungs" style="color:#0284c7" aria-hidden="true"></i>
-      Descarte e Investigação de TEP — Regra PERC & Algoritmo YEARS
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#0284c7"></span>
-      <div>
-       <strong>Regra PERC (Pulmonary Embolism Rule-out Criteria):</strong><br>
-       Aplicável <em>somente</em> se baixa probabilidade clínica de TEP (Gestalt ou Wells &lt; 2). Se todos os 8 critérios forem preenchidos negativamente, TEP está clinicamente descartado <strong>sem necessidade de dosar D-Dímero</strong> (&lt; 1,4% de falso negativo):<br>
-       • Idade &lt; 50 anos<br>
-       • FC &lt; 100 bpm<br>
-       • SatO₂ &ge; 95% em ar ambiente<br>
-       • Sem edema unilateral de membro inferior<br>
-       • Sem hemoptise<br>
-       • Sem cirurgia ou trauma recente (&lt; 4 semanas)<br>
-       • Sem história prévia de TVP / TEP<br>
-       • Sem uso de estrogênio oral (ACO / TRH)
+function renderCockpitSearchResults(list, q){
+  if(list.length === 0){
+    return `
+      <div style="text-align:center;padding:32px 14px;color:var(--color-text-secondary,#64748b)">
+        <i class="ti ti-search-off" style="font-size:32px;color:#94a3b8;display:block;margin-bottom:8px"></i>
+        <strong style="color:var(--color-text-primary,#0f172a)">Nenhuma síndrome encontrada para "${esc(q)}"</strong>
+        <p style="font-size:12px;margin:4px 0 10px 0">Tente buscar por termos como "aorta", "hints", "choque", "sepse" ou limpe a busca.</p>
+        <button type="button" class="btns" style="padding:4px 10px;font-size:11.5px" onclick="clearCockpitSearch()">Limpar filtro</button>
       </div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#0284c7"></span>
-      <div>
-       <strong>Algoritmo YEARS (Ajuste Dinâmico de D-Dímero):</strong><br>
-       Avalia 3 critérios: (1) Sinais clínicos de TVP, (2) Hemoptise, (3) TEP como diagnóstico mais provável.<br>
-       • <strong>0 itens YEARS:</strong> TEP descartado se D-Dímero &lt; 1.000 ng/mL.<br>
-       • <strong>&ge; 1 item YEARS:</strong> TEP descartado se D-Dímero &lt; 500 ng/mL.<br>
-       • Se D-Dímero acima do ponto de corte: indicar AngioTC de artérias pulmonares.
-      </div>
-     </div>
-    </div>
-   `;
+    `;
   }
+  return list.map(s => renderCockpitSingleSyndrome(s)).join('');
+}
 
-  if(S.queixa === 'Cefaleia'){
-   perolasHtml += `
-    <div class="decision-card" style="border-top:3px solid #dc2626">
-     <div class="decision-card-title" style="color:#b91c1c">
-      <i class="ti ti-brain" style="color:#dc2626" aria-hidden="true"></i>
-      Cefaleia Secundária de Risco — Mnemônico SNOOP10 & Regra de Ottawa para HSA
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#dc2626"></span>
-      <div>
-       <strong>Red Flags Mnemônico SNOOP10 (Investigar Causa Secundária):</strong><br>
-       • <strong>S (Systemic):</strong> Febre, perda de peso inexplicada, neoplasia prévia, HIV / imunossupressão.<br>
-       • <strong>N (Neurologic):</strong> Déficit neurológico focal novo, confusão mental, sonolência, convulsão.<br>
-       • <strong>O (Onset):</strong> Início súbito / trovoada (Thunderclap — pico em &lt; 1 minuto).<br>
-       • <strong>O (Older):</strong> Início de nova cefaleia após os 50 anos de idade.<br>
-       • <strong>P (Pattern change):</strong> Mudança radical de padrão evolutivo prévio habitual.<br>
-       • <strong>P (Postural):</strong> Piora ortostática (hipotensão liquórica) ou piora em decúbito (HIC).<br>
-       • <strong>P (Precipitated):</strong> Desencadeada por manobras de Valsalva, tosse, esforço físico ou coito.<br>
-       • <strong>P (Pulsatile tinnitus):</strong> Zumbido pulsátil síncrono com batimento.<br>
-       • <strong>P (Papilledema):</strong> Presença de papiledema ao exame de fundo de olho.<br>
-       • <strong>P (Pregnancy / Puerperium):</strong> Cefaleia em gestante ou puérpera.<br>
-       • <strong>P (Painful eye):</strong> Olho vermelho doloroso com manifestações autonômicas.<br>
-       • <strong>P (Post-trauma):</strong> Instalação pós-TCE recente.<br>
-       • <strong>P (Pathology of immune system):</strong> Suspeita de arterite de células gigantes / vasculites.
-      </div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#dc2626"></span>
-      <div>
-       <strong>Regra de Ottawa para Hemorragia Subaracnóidea (HSA):</strong><br>
-       Aplicável a pacientes alertas &ge; 15 anos com cefaleia aguda não-traumática com pico &lt; 1 hora. TC de crânio urgente se <strong>&ge; 1 critério presente</strong>:<br>
-       1. Idade &ge; 40 anos<br>
-       2. Dor ou rigidez cervical relatada<br>
-       3. Perda de consciência presenciada no início<br>
-       4. Início em trovoada (dor atinge pico máximo instantaneamente)<br>
-       5. Início durante esforço físico ou coito<br>
-       6. Flexão cervical dolorosa ou limitada ao exame físico
-      </div>
-     </div>
-    </div>
-   `;
-  }
-
-  if(S.queixa === 'Dor lombar'){
-   perolasHtml += `
-    <div class="decision-card" style="border-top:3px solid #ea580c">
-     <div class="decision-card-title" style="color:#c2410c">
-      <i class="ti ti-bone" style="color:#ea580c" aria-hidden="true"></i>
-      Red Flags da Coluna Lombar — Triagem de Emergências Cirúrgicas & Clínicas
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#ea580c"></span>
-      <div>
-       <strong>Síndrome da Cauda Equina (Emergência Cirúrgica - RM urgente &lt; 24h):</strong><br>
-       • Anestesia em sela (perda de sensibilidade perineal, perianal e nádegas)<br>
-       • Retenção urinária aguda com bexigoma ou incontinência por transbordamento<br>
-       • Incontinência fecal ou perda súbita de tônus anal ao toque retal<br>
-       • Fraqueza motora aguda / progressiva bilateral em membros inferiores (déficit L4-S1 / pé caído)
-      </div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#ea580c"></span>
-      <div>
-       <strong>Infecção Espinhal (Espondilodiscite / Abscesso Epidural):</strong> Febre, calafrios, imunossupressão, uso de drogas IV, procedimentos invasivos recentes ou foco infeccioso à distância.
-      </div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#ea580c"></span>
-      <div>
-       <strong>Malignidade / Metástase Óssea:</strong> Histórico prévio de neoplasia (mama, próstata, pulmão, rim, tireoide, mieloma), perda ponderal, dor noturna contínua que não melhora com repouso, idade &gt; 50 anos.
-      </div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#ea580c"></span>
-      <div>
-       <strong>Vascular (Aneurisma de Aorta Abdominal - AAA / Dissecção):</strong> Dor aguda em dorso/flanco em idoso hipertenso, massa pulsátil abdominal, choque/hipotensão ou síncope associada.
-      </div>
-     </div>
-    </div>
-   `;
-  }
-
-  if(S.queixa === 'Icterícia'){
-   perolasHtml += `
-    <div class="decision-card" style="border-top:3px solid #16a34a">
-     <div class="decision-card-title" style="color:#15803d">
-      <i class="ti ti-calculator" style="color:#16a34a" aria-hidden="true"></i>
-      Escores Hepatológicos — Child-Pugh & MELD (com Inserção no Prontuário)
-     </div>
-     <div style="margin-top:8px">
-      ${rChildPughMeldDecision()}
-     </div>
-    </div>
-   `;
-  }
-
-  if(S.queixa === 'Palpitações'||S.sind==='taqui'){
-   perolasHtml += `
-    <div class="decision-card" style="border-top:3px solid #dc2626">
-     <div class="decision-card-title" style="color:#b91c1c">
-      <i class="ti ti-bolt" style="color:#dc2626" aria-hidden="true"></i>
-      Critérios de Instabilidade Hemodinâmica em Taquiarritmias (ACLS / SBC)
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#dc2626"></span>
-      <div>
-       <strong>Os 5 Sinais Clássicos de Instabilidade Causada pela Taquicardia (FC habitualmente &gt; 150 bpm):</strong><br>
-       1. <strong>Hipotensão arterial ou Choque circulatório:</strong> PAS &lt; 90 mmHg, PAM &lt; 65 mmHg, extremidades frias, livedo, TEC &gt; 3 segundos.<br>
-       2. <strong>Rebaixamento agudo da consciência:</strong> Sonolência, torpor, confusão mental ou síncope por hipoperfusão encefálica.<br>
-       3. <strong>Dor precordial anginosa aguda:</strong> Desconforto isquêmico agudo miocárdico por aumento de consumo de O₂.<br>
-       4. <strong>Edema agudo de pulmão / Congestão pulmonar:</strong> Estertores crepitantes difusos, dispneia intensa, hipoxemia.<br>
-       5. <strong>Sinais clínicos de insuficiência cardíaca aguda de início recente.</strong>
-      </div>
-     </div>
-     <div class="decision-meta-item">
-      <span class="decision-meta-bullet" style="background:#dc2626"></span>
-      <div>
-       <strong>Conduta Imediata Obrigatória:</strong> Presença de <strong>qualquer</strong> sinal de instabilidade &rarr; indicação prioritária de <strong>Cardioversão Elétrica Sincronizada imediata</strong> com sedação venosa rápida (ex: Etomidato 0,2–0,3 mg/kg IV ou Midazolam 3–5 mg IV + Fentanil 50 mcg IV) e suporte de via aérea.<br>
-       <em>(Certificar-se de acionar o modo SYNC no cardioversor antes do disparo).</em>
-      </div>
-     </div>
-    </div>
-   `;
-  }
-
-  perolasHtml += `
-   <div class="decision-card">
-    <div class="decision-card-title">
-     <i class="ti ti-bulb" style="color:#d97706" aria-hidden="true"></i>
-     Pérolas Clínicas & Armadilhas Beira-Leito
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet"></span>
-     <div><strong>Coma Não-Traumático x Intubação:</strong> Glasgow &le; 8 isolado NÃO é indicação mandatória cega de IOT se a via aérea estiver pérvia e protegida (ex: pós-ictal transitório, hipoglicemia revertida, sedação sob vigilância).</div>
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet"></span>
-     <div><strong>AINEs em Síndromes Isquêmicas:</strong> AINEs aumentam risco de rotura miocárdica e mortalidade precoce em vigência de SCA. Evitar rotineiramente.</div>
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet"></span>
-     <div><strong>Nitrato SL / IV:</strong> Proibido se uso de Sildenafila nas últimas 24h ou Tadalafila nas últimas 48h, e em suspeita de IAM de VD com instabilidade (dependência crítica de pré-carga).</div>
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet"></span>
-     <div><strong>Analgesia no Abdome Agudo:</strong> O uso precoce de analgésicos (Dipirona, opioides titulados) NÃO mascara peritonite nem atrasa conduta cirúrgica; é boa prática humanizada.</div>
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet"></span>
-     <div><strong>Simpaticomiméticos (Cocaína):</strong> A droga de 1ª linha para controle hiperadrenérgico são Benzodiazepínicos IV. Evitar betabloqueadores puros (risco de vasoespasmo coronariano e hipertensão paradoxal).</div>
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet"></span>
-     <div><strong>Mulheres em Idade Fértil (Dor Abdominal):</strong> Teste de gravidez (Beta-hCG) é obrigatório entre 12 e 55 anos para descartar prenhez ectópica rota.</div>
-    </div>
-   </div>
-
-   <div class="decision-card" style="border:1px dashed #cbd5e1;background:var(--color-background-primary)">
-    <div style="font-size:12px;color:var(--color-text-secondary);display:flex;align-items:center;gap:6px">
-     <i class="ti ti-info-circle" style="color:#64748b" aria-hidden="true"></i>
-     <span><strong>Pendências em desenvolvimento:</strong> "O que estamos procurando" em cada síndrome e checklists direcionados (ex.: protocolo HINTS e algoritmo STANDING para vertigem).</span>
-    </div>
-   </div>
-  `;
-
-  body.innerHTML = perolasHtml;
-  return;
- }
-
- if(tab === 'doses'){
+function renderCockpitCalculators(){
   const currentWeight = (parseFloat(S.peso) > 0) ? parseFloat(S.peso) : 70;
   const isDefaultWeight = !parseFloat(S.peso);
   const sriK1 = (currentWeight * 1.5).toFixed(0);
@@ -9866,203 +9932,87 @@ function renderDecisionSupportContent(tab){
   const sriE = (currentWeight * 0.3).toFixed(1);
   const sriS = (currentWeight * 1.5).toFixed(0);
 
-  body.innerHTML = `
-   <div class="decision-card" style="border-top:3px solid #2563eb;background:#f8fafc">
-    <div class="decision-card-title" style="color:#1d4ed8;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
-     <span><i class="ti ti-calculator" style="color:#2563eb" aria-hidden="true"></i> Calculadora por Peso em Tempo Real</span>
-     <span class="sb" style="font-size:11px;background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe">
-      ${isDefaultWeight ? 'Peso Padrão: 70 kg' : 'Peso do Paciente: ' + currentWeight + ' kg'}
-     </span>
-    </div>
-    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px">
-     Doses calculadas em tempo real com base no peso informado no Passo 1:
-    </div>
-
-    <!-- Bloco SRI -->
-    <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:8px;padding:10px;margin-bottom:10px">
-     <div style="font-size:12.5px;font-weight:700;color:#0f172a;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px">
-      <span><i class="ti ti-stretcher" style="color:#2563eb"></i> Sequência Rápida de Intubação (SRI) — ${currentWeight} kg</span>
-      <button class="btng" style="padding:3px 8px;font-size:11px;background:#2563eb" onclick="copySriDoses(${currentWeight})">
-       <i class="ti ti-copy" aria-hidden="true"></i> Copiar / Inserir na Conduta
-      </button>
-     </div>
-     <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11.5px">
-      <div style="background:#f1f5f9;padding:5px 7px;border-radius:6px">
-       <strong>Quetamina (1,5–2 mg/kg):</strong><br>
-       <span style="font-weight:700;color:#1e3a8a">${sriK1} a ${sriK2} mg</span>
-       <span style="color:#64748b;font-size:10.5px"> (${(sriK1/50).toFixed(1)} a ${(sriK2/50).toFixed(1)} mL sol 50mg/mL)</span>
+  return `
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <strong style="color:#1e3a8a">Doses por Peso: ${currentWeight} kg ${isDefaultWeight ? '(padrão)' : ''}</strong>
+        <span style="font-size:11px;color:#64748b">Calculado em tempo real</span>
       </div>
-      <div style="background:#f1f5f9;padding:5px 7px;border-radius:6px">
-       <strong>Rocurônio (1,2 mg/kg):</strong><br>
-       <span style="font-weight:700;color:#1e3a8a">${sriR} mg</span>
-       <span style="color:#64748b;font-size:10.5px"> (${(sriR/10).toFixed(1)} mL amp 10mg/mL)</span>
+      <div style="font-size:12px;font-weight:700;color:#0f172a;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between">
+        <span>Sequência Rápida de Intubação (SRI)</span>
+        <button type="button" class="btng" style="padding:2px 7px;font-size:10.5px;background:#2563eb" onclick="copySriDoses(${currentWeight})">
+          <i class="ti ti-copy"></i> Copiar para Conduta
+        </button>
       </div>
-      <div style="background:#f1f5f9;padding:5px 7px;border-radius:6px">
-       <strong>Fentanil (2–3 mcg/kg):</strong><br>
-       <span style="font-weight:700;color:#1e3a8a">${sriF1} a ${sriF2} mcg</span>
-       <span style="color:#64748b;font-size:10.5px"> (${(sriF1/50).toFixed(1)} a ${(sriF2/50).toFixed(1)} mL amp 50mcg/mL)</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px;margin-bottom:10px">
+        <div style="background:#fff;padding:4px 6px;border-radius:4px;border:1px solid #e2e8f0">Quetamina (1,5–2 mg/kg): <strong>${sriK1} a ${sriK2} mg</strong></div>
+        <div style="background:#fff;padding:4px 6px;border-radius:4px;border:1px solid #e2e8f0">Rocurônio (1,2 mg/kg): <strong>${sriR} mg</strong></div>
+        <div style="background:#fff;padding:4px 6px;border-radius:4px;border:1px solid #e2e8f0">Fentanil (2–3 mcg/kg): <strong>${sriF1} a ${sriF2} mcg</strong></div>
+        <div style="background:#fff;padding:4px 6px;border-radius:4px;border:1px solid #e2e8f0">Etomidato (0,3 mg/kg): <strong>${sriE} mg</strong></div>
       </div>
-      <div style="background:#f1f5f9;padding:5px 7px;border-radius:6px">
-       <strong>Midazolam (0,2–0,3 mg/kg):</strong><br>
-       <span style="font-weight:700;color:#1e3a8a">${sriM1} a ${sriM2} mg</span>
-       <span style="color:#64748b;font-size:10.5px"> (${(sriM1/5).toFixed(1)} a ${(sriM2/5).toFixed(1)} mL amp 5mg/mL)</span>
+      <div style="font-size:12px;font-weight:700;color:#0f172a;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between">
+        <span>Noradrenalina (Solução 64 mcg/mL: 4 amp em 234 mL SG5%)</span>
+        <button type="button" class="btng" style="padding:2px 7px;font-size:10.5px;background:#dc2626" onclick="copyNoraDose(${currentWeight})">
+          <i class="ti ti-copy"></i> Copiar para Conduta
+        </button>
       </div>
-      <div style="background:#f1f5f9;padding:5px 7px;border-radius:6px">
-       <strong>Etomidato (0,3 mg/kg):</strong><br>
-       <span style="font-weight:700;color:#1e3a8a">${sriE} mg</span>
-       <span style="color:#64748b;font-size:10.5px"> (${(sriE/2).toFixed(1)} mL amp 2mg/mL)</span>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;font-size:10.5px;text-align:center">
+        ${[0.05, 0.1, 0.2, 0.5, 1.0].map(rate => {
+          const mlh = ((rate * currentWeight * 60) / 64).toFixed(1);
+          return `<div style="background:#fff;padding:3px;border-radius:4px;border:1px solid #fecaca"><strong>${rate}</strong><br><span style="color:#dc2626;font-weight:700">${mlh} mL/h</span></div>`;
+        }).join('')}
       </div>
-      <div style="background:#f1f5f9;padding:5px 7px;border-radius:6px">
-       <strong>Succinilcolina (1,5 mg/kg):</strong><br>
-       <span style="font-weight:700;color:#1e3a8a">${sriS} mg</span>
-       <span style="color:#64748b;font-size:10.5px"> (frasco 100 mg reconstituído)</span>
-      </div>
-     </div>
     </div>
-
-    <!-- Bloco Noradrenalina -->
-    <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:8px;padding:10px">
-     <div style="font-size:12.5px;font-weight:700;color:#0f172a;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px">
-      <span><i class="ti ti-activity" style="color:#dc2626"></i> Noradrenalina (Solução 64 mcg/mL) — ${currentWeight} kg</span>
-      <button class="btng" style="padding:3px 8px;font-size:11px;background:#dc2626" onclick="copyNoraDose(${currentWeight})">
-       <i class="ti ti-copy" aria-hidden="true"></i> Copiar / Inserir na Conduta
-      </button>
-     </div>
-     <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:6px">
-      Solução: 4 ampolas (16 mg) em 234 mL SG 5% (conc: 64 mcg/mL). Vazão (mL/h) = (Dose × Peso × 60) ÷ 64.
-     </div>
-     <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:5px;text-align:center;font-size:11px">
-      ${[0.05, 0.1, 0.2, 0.5, 1.0].map(rate => {
-        const mlh = ((rate * currentWeight * 60) / 64).toFixed(1);
-        return `
-         <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:3px">
-          <strong style="color:#991b1b">${rate} mcg/kg/min</strong><br>
-          <span style="font-size:12px;font-weight:700;color:#dc2626">${mlh} mL/h</span>
-         </div>
-        `;
-      }).join('')}
-     </div>
-    </div>
-   </div>
-
-   <div class="decision-card" style="border-top:3px solid #dc2626">
-    <div class="decision-card-title" style="color:#b91c1c">
-     <i class="ti ti-activity" style="color:#dc2626" aria-hidden="true"></i>
-     Drogas Vasoativas — Diluições & Titulações Práticas
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet" style="background:#dc2626"></span>
-     <div>
-      <strong>Adrenalina Contínua (Solução Prática de Infusão):</strong><br>
-      • <strong>Diluição:</strong> 6 mg (6 ampolas de 1 mg/mL) em 100 mL de SF 0,9% (ou SG 5%).<br>
-      • <strong>Concentração:</strong> 60 mcg/mL.<br>
-      • <strong>Regra de Ouro Beira-Leito:</strong> <span style="color:#b91c1c;font-weight:600">1 mL/h na BIC = 1 mcg/min</span>.<br>
-      • <strong>Titulação:</strong> Iniciar em 1 a 2 mL/h (1 a 2 mcg/min) e titular a cada 2–3 min conforme PAM e perfusão (faixa usual: 1 a 20 mcg/min).
-     </div>
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet" style="background:#dc2626"></span>
-     <div>
-      <strong>Noradrenalina:</strong><br>
-      • Diluição: 4 ampolas (16 mg) em 234 mL SG 5% (conc: 64 mcg/mL).<br>
-      • Dose: 0,05 a 2 mcg/kg/min (titular para PAM &ge; 65 mmHg).
-     </div>
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet" style="background:#dc2626"></span>
-     <div>
-      <strong>Dobutamina:</strong><br>
-      • Diluição: 1 ampola (250 mg) em 230 mL SG 5% (conc: 1.000 mcg/mL).<br>
-      • Dose: 2,5 a 20 mcg/kg/min (inotrópico no choque cardiogênico / disfunção miocárdica).
-     </div>
-    </div>
-   </div>
-
-   <div class="decision-card" style="border-top:3px solid #059669">
-    <div class="decision-card-title" style="color:#047857">
-     <i class="ti ti-shield-check" style="color:#059669" aria-hidden="true"></i>
-     Antídotos & Reversão Específica na Emergência
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet" style="background:#059669"></span>
-     <div>
-      <strong>Naloxona (Intoxicação por Opioides):</strong><br>
-      • Dose: 0,04 a 0,4 mg IV a cada 2–3 min.<br>
-      • <strong>Alvo terapêutico:</strong> Recuperação da FR (&gt; 12 irpm) e proteção do drive ventilatório; <em>NÃO objetivar despertar completo</em> para evitar abstinência aguda severa.
-     </div>
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet" style="background:#059669"></span>
-     <div>
-      <strong>Bicarbonato de Sódio 8,4% (Bloqueadores de Canais de Na+ / Tricíclicos):</strong><br>
-      • Indicação: QRS &gt; 100 ms, arritmias ventriculares ou hipotensão por tricíclicos.<br>
-      • Dose: 1 a 2 mEq/kg (1 a 2 mL/kg) em bólus IV rápido. Alvo: estreitamento do QRS e pH sérico 7,50–7,55.
-     </div>
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet" style="background:#059669"></span>
-     <div>
-      <strong>Emulsão Lipídica 20% (LAST — Intoxicação por Anestésicos Locais):</strong><br>
-      • Bólus inicial: 1,5 mL/kg IV em 1 minuto.<br>
-      • Infusão contínua: 0,25 mL/kg/min.<br>
-      • Se colapso mantido: repetir bólus (máx 3 doses) e elevar infusão para 0,5 mL/kg/min (dose máxima acumulada: 10–12 mL/kg em 30 min).
-     </div>
-    </div>
-   </div>
-
-   <div class="decision-card" style="border-top:3px solid #7c3aed">
-    <div class="decision-card-title" style="color:#6d28d9">
-     <i class="ti ti-heartbeat" style="color:#7c3aed" aria-hidden="true"></i>
-     Causas Reversíveis de PCR — Abordagem Fisiológica Craniocaudal (A-B-C-D-E)
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet" style="background:#7c3aed"></span>
-     <div><strong>A — Via Aérea:</strong> Hipóxia hipoxêmica imediata, obstrução de via aérea alta por corpo estranho, secreções copiosas, sangue ou angioedema/laringoespasmo.</div>
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet" style="background:#7c3aed"></span>
-     <div><strong>B — Ventilação:</strong> Hipóxia alveolar, Insuficiência Respiratória Aguda (IRpA) grave isolada, Pneumotórax hipertensivo (descompressão torácica imediata), AutoPEEP severo com hiperinsuflação dinâmica e restrição venosa em asma/DPOC.</div>
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet" style="background:#7c3aed"></span>
-     <div><strong>C — Cardiovascular:</strong> Tromboembolismo Pulmonar (TEP maciço), Tamponamento cardíaco, Infarto Agudo do Miocárdio (SCA extensa), Efeitos hemodinâmicos da PEEP excessiva (queda crítica do retorno venoso), Arritmias ventriculares primárias ou distúrbios de condução que degeneram (WPW pré-excitado, BAVT, canalopatias), Choque circulatório de todos os tipos (preponderantemente hipovolêmico-hemorrágico como causa reversível imediata por reposição).</div>
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet" style="background:#7c3aed"></span>
-     <div><strong>D — Catástrofes Neurológicas:</strong> Eventos encefálicos graves cursando com PCR súbita (AVCs muito extensos, Hemorragia Subaracnóidea maciça - HSA, epilepsia refratária/status convulso prolongado), Hipoglicemia grave despercebida.</div>
-    </div>
-    <div class="decision-meta-item">
-     <span class="decision-meta-bullet" style="background:#7c3aed"></span>
-     <div><strong>E — Causas Externas e Metabólicas:</strong> Hipercalemia grave (estabilizar membrana com Gluconato de Cálcio), Acidose metabólica severa, Intoxicações exógenas, Hipotermia acidental profunda.</div>
-    </div>
-   </div>
   `;
- }
-
- if(_decisionSearchQuery && body){
-  const cards = body.querySelectorAll('.decision-card');
-  let matchCount = 0;
-  cards.forEach(card => {
-   const txt = (card.textContent || '').toLowerCase();
-   if(txt.includes(_decisionSearchQuery)){
-    card.style.display = 'block';
-    matchCount++;
-   } else {
-    card.style.display = 'none';
-   }
-  });
-  if(matchCount === 0 && cards.length > 0){
-   body.innerHTML = `
-    <div style="text-align:center;padding:36px 16px;color:var(--color-text-secondary)">
-     <i class="ti ti-search-off" style="font-size:36px;color:#9ca3af;display:block;margin-bottom:8px" aria-hidden="true"></i>
-     <strong style="color:var(--color-text-primary)">Nenhum resultado para "${esc(_decisionSearchQuery)}"</strong>
-     <p style="font-size:12px;margin:6px 0 12px 0">Nenhum item nesta aba coincide com a sua busca.</p>
-     <button class="btns" style="padding:4px 12px;font-size:12px" onclick="clearDecisionSearch()">Limpar filtro</button>
-    </div>
-   `;
-  }
- }
 }
+
+function updateDecisionConflictBadge(){
+  const alerts = (typeof getConflictAlerts === 'function') ? getConflictAlerts(S) : [];
+  const count = alerts.length;
+  ['decConflictCount', 'hdrConflictCount', 'fabDecisionConflictCount'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el){
+      if(count > 0){
+        el.textContent = count;
+        el.style.display = 'inline-flex';
+      } else {
+        el.style.display = 'none';
+      }
+    }
+  });
+}
+
+function copySriDoses(w){
+  const kDose = (w * 1.5).toFixed(0);
+  const rDose = (w * 1.2).toFixed(0);
+  const fDose = (w * 2.0).toFixed(0);
+  const txt = `[Prescrição SRI — Peso ${w} kg]\n- Quetamina ${kDose} mg (${(kDose/50).toFixed(1)} mL) IV em bólus\n- Rocurônio ${rDose} mg (${(rDose/10).toFixed(1)} mL) IV em bólus\n- Fentanil ${fDose} mcg (${(fDose/50).toFixed(1)} mL) IV em bólus pré-procedimento`;
+  if(!S.imp) S.imp = txt; else S.imp += '\n\n' + txt;
+  navigator.clipboard.writeText(txt).then(()=>{
+    showToast(`Doses de SRI para ${w} kg copiadas e adicionadas à conduta!`);
+    render();
+  });
+}
+
+function copyNoraDose(w){
+  const mlh = ((0.1 * w * 60) / 64).toFixed(1);
+  const txt = `[DVA — Noradrenalina 64 mcg/mL]\n- Noradrenalina 4 ampolas (16 mg) em 234 mL SG 5% IV em BIC contínua.\n- Iniciar vazão a ${mlh} mL/h (dose inicial 0,1 mcg/kg/min para ${w} kg).\n- Titular a cada 2–5 min para alvo de PAM >= 65 mmHg e TEC <= 3s.`;
+  if(!S.imp) S.imp = txt; else S.imp += '\n\n' + txt;
+  navigator.clipboard.writeText(txt).then(()=>{
+    showToast(`Prescrição de Noradrenalina para ${w} kg copiada e adicionada!`);
+    render();
+  });
+}
+
+// Aliases para compatibilidade legada
+let _activeDecisionTab = 'metas';
+function openDecisionDrawer(tab){ openCockpitDecisionPanel(); }
+function closeDecisionDrawer(){ closeCockpitDecisionPanel(); }
+function toggleDecisionDrawer(){ toggleCockpitDecisionPanel(); }
+function setDecisionTab(tab){ openCockpitDecisionPanel(); }
+function onDecisionSearch(q){ onCockpitSearch(q); }
+function clearDecisionSearch(){ clearCockpitSearch(); }
+function renderDecisionSupportContent(tab){ renderCockpitDecisionPanel(); }
 
 const EVIDENCE_REGISTRY = {
  ecg_precoce: {
@@ -11280,7 +11230,33 @@ function copyPrescricaoOnly(){
  }
 }
 
-function updateRelCol(){const ta=document.getElementById('relColTxt');if(!ta)return;ta.value=S.relMode==='resumo'?gResumo():gRel();const fb=document.getElementById('relModeFullBtn');const rb=document.getElementById('relModeResumoBtn');if(fb)fb.classList.toggle('on',S.relMode!=='resumo');if(rb)rb.classList.toggle('on',S.relMode==='resumo');}
+let _lastRelValue = '';
+function triggerReportLiveDiff(){
+ const wrap = document.querySelector('.rel-col-txt-wrap');
+ const ta = document.getElementById('relColTxt');
+ if(!wrap) return;
+ wrap.classList.add('live-diff-highlight');
+ if(ta) ta.classList.add('live-diff-highlight');
+ setTimeout(()=>{
+  wrap.classList.remove('live-diff-highlight');
+  if(ta) ta.classList.remove('live-diff-highlight');
+ }, 1200);
+}
+
+function updateRelCol(){
+ const ta=document.getElementById('relColTxt');
+ if(!ta)return;
+ const newVal = S.relMode==='resumo'?gResumo():gRel();
+ if(_lastRelValue && _lastRelValue !== newVal){
+  triggerReportLiveDiff();
+ }
+ _lastRelValue = newVal;
+ ta.value = newVal;
+ const fb=document.getElementById('relModeFullBtn');
+ const rb=document.getElementById('relModeResumoBtn');
+ if(fb)fb.classList.toggle('on',S.relMode!=='resumo');
+ if(rb)rb.classList.toggle('on',S.relMode==='resumo');
+}
 function copyRelCol(){const ta=document.getElementById('relColTxt');if(ta)navigator.clipboard.writeText(ta.value).then(()=>showToast('Copiado!'));}
 function saveReportFromCol(){const ta=document.getElementById('relColTxt');if(ta)saveReport(ta.value);}
 function render(){
@@ -11293,7 +11269,7 @@ function render(){
  if(typeof autoSave==='function')autoSave();
  updateRelCol();
  updateDecisionConflictBadge();
- if(document.getElementById('decisionDrawerOverlay')?.style.display==='flex')renderDecisionSupportContent(_activeDecisionTab);
+ if(_isCockpitPanelOpen)renderCockpitDecisionPanel();
  if(document.getElementById('fabDrawerOverlay')?.style.display==='flex')updateFabDrawerText();
  if(_pendingScroll){const el=document.getElementById(_pendingScroll);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});_pendingScroll=null;}
 }
@@ -11302,10 +11278,11 @@ function render(){
 window.addEventListener('keydown', (e)=>{
  const isInput = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName);
 
- // Escape fecha qualquer modal aberto
+ // Escape fecha qualquer modal ou painel aberto
  if (e.key === 'Escape') {
   closeShortcutModal();
   closeFabDrawer();
+  closeCockpitDecisionPanel();
   closeDecisionDrawer();
   const ma = document.getElementById('modalArea'); if (ma) ma.innerHTML = '';
   const sm = document.getElementById('shiftModal'); if (sm && sm.style.display === 'flex') closeShiftModal();
@@ -11344,7 +11321,7 @@ window.addEventListener('keydown', (e)=>{
   }
   if (e.key === 'd' || e.key === 'D') {
    e.preventDefault();
-   toggleDecisionDrawer();
+   toggleCockpitDecisionPanel();
    return;
   }
   if (e.key === 's' || e.key === 'S') {
@@ -11371,31 +11348,9 @@ window.addEventListener('keydown', (e)=>{
 initAuth();
 
 
-// ─── Controles de Ergonomia e Layout (Zoom, Split-Screen & Modo Noturno) ───
-let _reportZoom = parseInt(localStorage.getItem('rel_zoom') || '0', 10);
+// ─── Controles de Ergonomia e Layout (Split-Screen & Modo Noturno) ───
 let _splitMode = localStorage.getItem('rel_split_mode') === 'true';
 let _nightMode = localStorage.getItem('plantao_night_mode') === 'true';
-
-function applyReportZoom(){
- const ta = document.getElementById('relColTxt');
- const ta5 = document.getElementById('relTxt');
- const sizes = { '-1': '11.5px', '0': '13px', '1': '15px', '2': '17px' };
- const sz = sizes[_reportZoom] || '13px';
- if(ta) ta.style.fontSize = sz;
- if(ta5) ta5.style.fontSize = sz;
-}
-
-function changeReportZoom(delta){
- if(delta === 0) _reportZoom = 0;
- else {
-  _reportZoom = Math.max(-1, Math.min(2, _reportZoom + delta));
- }
- localStorage.setItem('rel_zoom', String(_reportZoom));
- applyReportZoom();
- if(typeof showToast === 'function'){
-  showToast(`Fonte do relatório: ${_reportZoom === 0 ? 'Padrão (13px)' : _reportZoom > 0 ? 'Ampliada A+ (' + (_reportZoom === 1 ? '15px' : '17px') + ')' : 'Reduzida A- (11.5px)'}`);
- }
-}
 
 function applySplitMode(){
  const wrap = document.querySelector('.two-col-wrap');
@@ -11435,7 +11390,6 @@ function toggleHighContrastNight(){
 // Inicialização automática ao carregar
 if(typeof window !== 'undefined'){
  window.addEventListener('DOMContentLoaded', () => {
-  applyReportZoom();
   applySplitMode();
   applyHighContrastNight();
  });
