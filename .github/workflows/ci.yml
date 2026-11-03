@@ -1,0 +1,39 @@
+name: CI & Golden Master Regression Suite
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    name: Build & Validate Parity
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Validate Standalone Build (< 100ms)
+        run: npm run build
+
+      - name: Execute Golden Master Clinical Parity Tests (12 Scenarios)
+        run: npm test
+
+      - name: Execute Laboratory & Subsyndrome Decision Checks
+        run: npm run test:labs
+
+      - name: Check for Uncommitted Build Artifacts
+        run: |
+          git status --porcelain
+          test -z "$(git status --porcelain)" || (echo "Error: Uncommitted changes detected after build" && exit 1)

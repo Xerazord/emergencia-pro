@@ -1,0 +1,20 @@
+function chAge(){const a=S.idade;return a<45?0:a<65?1:2;}
+function hSc(){let t=chAge();const h=S.hear;if(h.h!==null)t+=+h.h;if(h.e!==null)t+=+h.e;if(h.r!==null)t+=+h.r;if(h.t!==null)t+=+h.t;return t;}
+function hC(){const n=hSc();return n<=3?'sok':n<=6?'smod':'sgr';}
+function hI(n){if(n<=3)return'Baixo risco — alta precoce considerável';if(n<=6)return'Risco intermediário — observação e reteste';return'Alto risco — hospitalização e estratégia invasiva';}
+function eAP(){const a=S.idade,m=S.edacs.sx==='M';if(m){if(a<45)return 2;if(a<=50)return 4;if(a<=55)return 6;if(a<=60)return 8;if(a<=65)return 10;if(a<=70)return 12;if(a<=75)return 14;if(a<=80)return 16;if(a<=85)return 18;return 20;}else{if(a<45)return 0;if(a<=50)return 3;if(a<=55)return 5;if(a<=60)return 7;if(a<=65)return 9;if(a<=70)return 11;if(a<=75)return 13;if(a<=80)return 15;if(a<=85)return 17;return 19;}}
+function eSc(){const e=S.edacs;let p=eAP();if(e.cad)p+=4;if(e.dia)p+=3;if(e.rad)p+=5;if(e.ins)p-=4;if(e.pal)p-=6;return p;}
+function eC(){return eSc()<16?'sok':'sgr';}
+function eI(){const p=eSc(),t0=parseFloat(S.edacs.t0),t2=parseFloat(S.edacs.t2);const d=!isNaN(t0)&&!isNaN(t2)?Math.abs(t2-t0):null;if(p<16&&d!==null&&d<3&&t0<16&&t2<16)return'Baixo risco — candidato a descarte acelerado em 2h';if(p<16)return'EDACS < 16 — aguardar troponina seriada';return'EDACS ≥ 16 — risco não baixo, observação';}
+
+function updateEdacsDisplay(){
+ const autoBadge=document.getElementById('edacsPointsBadge');
+ if(autoBadge){
+  const ap=eAP();
+  autoBadge.textContent=`${ap} pts`;
+ }
+ autoSave();
+}
+
+function rHear(){const H=S.hear;const aL=S.idade<45?'< 45a (0)':S.idade<65?'45–64a (1)':'≥ 65a (2)';const it=[{k:'h',l:'H — História',d:'Alt. suspeita=2 / Moderada=1 / Leve=0',o:[['0','Leve'],['1','Moderada'],['2','Alt. suspeita']]},{k:'e',l:'E — ECG',d:'Normal=0 / Inespecífico=1 / Isquemia nova=2',o:[['0','Normal'],['1','Inespec.'],['2','Isquemia']]},{k:'r',l:'R — Fatores de risco',d:'Sem FR=0 / 1–2=1 / ≥3 ou DAC=2',o:[['0','Sem FR'],['1','1–2 FR'],['2','≥3 FR']]},{k:'t',l:'T — Troponina',d:'≤ limite=0 / 1–3×=1 / >3×=2',o:[['0','Normal'],['1','1–3×'],['2','>3×']]}];return`<div class="srow"><div style="flex:1"><div class="slbl">A — Idade</div><div class="sdsc">Auto calculado</div></div><div class="sopts"><span class="sopt auto">${aL}</span></div></div>`+it.map(x=>`<div class="srow"><div style="flex:1"><div class="slbl">${x.l}</div><div class="sdsc">${x.d}</div></div><div class="sopts">${x.o.map(([v,lb])=>`<span class="sopt ${H[x.k]==v?'on':''}" onclick="S.hear['${x.k}']='${v}';render()">${lb} (${v})</span>`).join('')}</div></div>`).join('');}
+function rEdacs(){const e=S.edacs,ap=eAP();return`<div class="srow"><div style="flex:1"><div class="slbl">Idade / Sexo</div><div class="sdsc">Auto calculado (${S.idade} anos)</div></div><div style="display:flex;align-items:center;gap:6px"><span class="sopt auto" id="edacsPointsBadge">${ap} pts</span><div style="display:flex;gap:5px">${[['M','Masc'],['F','Fem']].map(([v,l])=>`<span class="sopt ${e.sx===v?'on':''}" onclick="S.edacs.sx='${v}';render()">${l}</span>`).join('')}</div></div></div>`+[{k:'cad',l:'DAC conhecida',d:'+4'},{k:'dia',l:'Diaforese',d:'+3'},{k:'rad',l:'Irradiação braço/ombro',d:'+5'},{k:'ins',l:'Piora à inspiração',d:'−4'},{k:'pal',l:'Reproduzida à palpação',d:'−6'}].map(x=>`<div class="srow"><div style="flex:1"><div class="slbl">${x.l}</div><div class="sdsc">${x.d} pts</div></div><div class="sopts">${[['true','Sim'],['false','Não']].map(([v,lb])=>`<span class="sopt ${String(e[x.k])===v?'on':''}" onclick="S.edacs['${x.k}']=${v};render()">${lb}</span>`).join('')}</div></div>`).join('')+`<div class="srow"><div style="flex:1"><div class="slbl">Troponina 0h / 2h</div></div><div style="display:flex;gap:5px"><input type="number" inputmode="decimal" step="0.1" min="0" value="${esc(e.t0)}" oninput="S.edacs.t0=this.value;updateEdacsDisplay()" style="width:62px" placeholder="0h"><input type="number" inputmode="decimal" step="0.1" min="0" value="${esc(e.t2)}" oninput="S.edacs.t2=this.value;updateEdacsDisplay()" style="width:62px" placeholder="2h"></div></div>`;}

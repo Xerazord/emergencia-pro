@@ -1,0 +1,264 @@
+/* ==========================================================================
+   UI Components & Clinical Controls — Emergência Pro
+   ========================================================================== */
+
+/* Cartões e Títulos */
+.card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+.st {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.st::before {
+  content: '';
+  width: 3.5px;
+  height: 14px;
+  border-radius: 2px;
+  background: #a32d2d;
+  flex-shrink: 0;
+}
+.st i { font-size: 16px; color: #a32d2d; }
+.sl { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 4px; }
+
+/* Grids e Formas */
+.r2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.r5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 8px; }
+label { display: block; font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+
+/* Botões do Sistema */
+.btnp { padding: 9px 18px; background: #a32d2d; color: #fff; border: none; border-radius: var(--border-radius-md); font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: inherit; transition: background 0.15s; }
+.btnp:hover { background: #791f1f; }
+.btns { padding: 9px 16px; background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); color: var(--color-text-primary); border-radius: var(--border-radius-md); font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: inherit; transition: all 0.15s; }
+.btns:hover { background: var(--color-background-secondary); }
+.btng { padding: 9px 16px; background: #15803d; color: #fff; border: none; border-radius: var(--border-radius-md); font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: inherit; transition: background 0.15s; }
+.btng:hover { background: #166534; }
+.xbtn { padding: 9px 11px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-primary); font-size: 13px; cursor: pointer; text-align: left; color: var(--color-text-primary); line-height: 1.4; transition: all 0.15s; }
+.xbtn:hover { background: var(--color-background-secondary); border-color: var(--color-border-secondary); }
+.xbtn.on { background: #fee2e2; border-color: #f87171; color: #991b1b; font-weight: 600; }
+
+.btn-clean-patient { background: #dc2626 !important; color: #fff !important; border: none !important; font-weight: 600; }
+.btn-clean-patient:hover { background: #b91c1c !important; }
+
+/* Drums de Idade */
+.age-drums { display: flex; align-items: center; gap: 5px; }
+.drum { display: flex; flex-direction: column; align-items: center; background: var(--color-background-secondary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); overflow: hidden; width: 40px; }
+.drum-btn { width: 100%; padding: 3px 0; border: none; background: none; cursor: pointer; color: var(--color-text-secondary); display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.drum-btn:hover { background: var(--color-border-tertiary); }
+.drum-dig { font-size: 22px; font-weight: 500; padding: 4px 0; text-align: center; line-height: 1; color: var(--color-text-primary); }
+.drum-unit { font-size: 12px; color: var(--color-text-secondary); margin-left: 2px; }
+
+/* Seletor de Queixas (qgrid) */
+.qgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+.qcat { margin-bottom: 12px; }
+.qcat:last-child { margin-bottom: 0; }
+.qcat-lbl { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--color-text-secondary); margin-bottom: 6px; padding-left: 2px; }
+.qcat-critica .qcat-lbl { color: #a32d2d; }
+.qcat-externa .qcat-lbl { color: #a26b1f; }
+.qcat-cardio .qcat-lbl { color: #dc2626; }
+.qcat-cardio .qbtn { border-color: #fecaca; background: #fff5f5; }
+.qcat-cardio .qbtn:hover { background: #fee2e2; border-color: #ef4444; color: #991b1b; font-weight: 500; }
+.qcat-resp .qcat-lbl { color: #0284c7; }
+.qcat-resp .qbtn { border-color: #bae6fd; background: #f0f9ff; }
+.qcat-resp .qbtn:hover { background: #e0f2fe; border-color: #0ea5e9; color: #0369a1; font-weight: 500; }
+.qcat-neuro .qcat-lbl { color: #7c3aed; }
+.qcat-neuro .qbtn { border-color: #ddd6fe; background: #f5f3ff; }
+.qcat-neuro .qbtn:hover { background: #ede9fe; border-color: #8b5cf6; color: #6d28d9; font-weight: 500; }
+.qcat-digest .qcat-lbl { color: #059669; }
+.qcat-digest .qbtn { border-color: #a7f3d0; background: #f0fdf4; }
+.qcat-digest .qbtn:hover { background: #dcfce7; border-color: #10b981; color: #047857; font-weight: 500; }
+.qcat-geral .qcat-lbl { color: #d97706; }
+.qcat-geral .qbtn { border-color: #fde68a; background: #fffbeb; }
+.qcat-geral .qbtn:hover { background: #fef3c7; border-color: #f59e0b; color: #b45309; font-weight: 500; }
+.qcat-trauma .qcat-lbl { color: #ea580c; }
+.qcat-trauma .qbtn { border-color: #fed7aa; background: #fff7ed; }
+.qbtn { padding: 9px 12px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); font-size: 13px; cursor: pointer; text-align: left; color: var(--color-text-primary); transition: all 0.15s; }
+.qbtn.on { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; font-weight: 600; }
+
+/* Tags, Radio Group & Pílulas */
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { padding: 5px 10px; border-radius: 16px; border: 0.5px solid var(--color-border-secondary); font-size: 12px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); transition: all 0.15s; user-select: none; }
+.tag:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
+.tag.on { background: #e0f2fe; border-color: #38bdf8; color: #0369a1; font-weight: 600; }
+.rg { display: flex; flex-wrap: wrap; gap: 6px; }
+.ro { padding: 5px 11px; border-radius: 16px; border: 0.5px solid var(--color-border-secondary); font-size: 12px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); transition: all 0.15s; user-select: none; }
+.ro:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
+.ro.on { background: #fee2e2; border-color: #f87171; color: #991b1b; font-weight: 600; }
+
+/* Acordeões e ABCDE */
+.abcs { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); margin-bottom: 7px; overflow: hidden; }
+.abch { padding: 9px 13px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: var(--color-background-secondary); font-size: 14px; font-weight: 500; }
+.abcb { padding: 12px; border-top: 0.5px solid var(--color-border-tertiary); display: none; }
+.abcb.open { display: block; }
+.abcde-badge { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 5px; background: #7c3aed; color: #fff; font-weight: 700; font-size: 11px; margin-right: 6px; flex-shrink: 0; }
+
+/* Vitals & Scores */
+.sgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 10px; }
+.srow { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 0.5px solid var(--color-border-tertiary); gap: 10px; }
+.slbl { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+.sdsc { font-size: 11px; color: var(--color-text-secondary); }
+.sopts { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+.sopt { padding: 3px 9px; border-radius: 20px; border: 0.5px solid var(--color-border-tertiary); font-size: 12px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-primary); }
+.sopt.on { background: #e6f1fb; border-color: #378add; color: #185fa5; font-weight: 500; }
+.sopt.auto { background: #eaf3de; border-color: #639922; color: #3b6d11; font-weight: 500; cursor: default; }
+
+/* Cockpit Clínico & Apoio Beira-Leito */
+.sticky-clinical-cockpit {
+  position: sticky;
+  top: 0;
+  z-index: 85;
+  background: var(--color-background-primary, #ffffff);
+  border: 1px solid var(--color-border-tertiary, #e5e7eb);
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.cockpit-info { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; font-weight: 600; color: var(--color-text-primary, #111827); }
+.cockpit-meta { color: var(--color-text-secondary, #4b5563); font-size: 12px; font-weight: 500; }
+.cockpit-badges { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.cockpit-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+.cockpit-badge.badge-stable { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+.cockpit-badge.badge-unstable { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; animation: cockpitPulseRed 2s infinite ease-in-out; }
+.cockpit-badge.badge-allergy { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+
+.cockpit-decision-panel {
+  background: var(--color-background-primary, #ffffff);
+  border: 1px solid var(--color-border-secondary, #cbd5e1);
+  border-radius: 12px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  overflow: hidden;
+  transition: all 0.25s ease-in-out;
+}
+.cockpit-decision-hdr {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  color: #ffffff;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.cockpit-decision-title { font-weight: 700; font-size: 13.5px; display: flex; align-items: center; gap: 8px; letter-spacing: -0.2px; }
+.cockpit-decision-controls { display: flex; align-items: center; gap: 8px; }
+.cockpit-close-btn { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #ffffff; border-radius: 6px; padding: 4px 9px; font-size: 11.5px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: background 0.15s ease; }
+.cockpit-close-btn:hover { background: rgba(255,255,255,0.22); }
+.cockpit-decision-body { padding: 12px 14px; max-height: 480px; overflow-y: auto; }
+.cockpit-search-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; position: relative; }
+.cockpit-search-input { width: 100%; padding: 7px 30px 7px 11px; font-size: 12.5px; border: 1px solid var(--color-border-secondary, #cbd5e1); border-radius: 8px; background: var(--color-background-primary, #ffffff); color: var(--color-text-primary, #111827); outline: none; box-sizing: border-box; }
+.cockpit-search-input:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.15); }
+.cockpit-search-clear { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: none; background: none; font-size: 16px; color: #94a3b8; cursor: pointer; line-height: 1; }
+.cockpit-chips-scroll { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; -webkit-overflow-scrolling: touch; }
+.cockpit-chip { flex-shrink: 0; padding: 4px 10px; font-size: 11.5px; font-weight: 600; border-radius: 20px; border: 1px solid var(--color-border-tertiary, #e2e8f0); background: var(--color-background-secondary, #f8fafc); color: var(--color-text-secondary, #475569); cursor: pointer; display: inline-flex; align-items: center; gap: 5px; transition: all 0.15s ease; }
+.cockpit-chip:hover { border-color: #94a3b8; color: var(--color-text-primary, #0f172a); }
+.cockpit-chip.active { background: #0f172a; color: #ffffff; border-color: #0f172a; box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+.cockpit-pinned-alert { background: #eff6ff; border-left: 4px solid #2563eb; border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; font-size: 12px; color: #1e40af; display: flex; align-items: center; justify-content: space-between; }
+.cockpit-pitfall-banner { background: #fffbeb; border: 1.5px dashed #f59e0b; border-radius: 8px; padding: 10px 12px; margin: 10px 0; font-size: 12.5px; line-height: 1.55; color: #92400e; }
+.cockpit-pitfall-title { font-weight: 700; font-size: 12.5px; color: #b45309; display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+.cockpit-empty-slot { padding: 8px 12px; background: var(--color-background-secondary, #f8fafc); border-radius: 6px; border: 1px dashed var(--color-border-tertiary, #e2e8f0); font-size: 12px; color: var(--color-text-secondary, #64748b); margin: 6px 0; }
+
+.decision-card { border: 1px solid var(--color-border-secondary); border-radius: 14px; background: #ffffff; padding: 14px; display: flex; flex-direction: column; gap: 9px; box-shadow: 0 2px 8px rgba(15,23,42,0.03); transition: transform 0.15s, box-shadow 0.15s; }
+.decision-card-title { font-size: 13.5px; font-weight: 700; color: var(--color-text-primary); display: flex; align-items: center; gap: 8px; }
+.decision-meta-item { display: flex; align-items: flex-start; gap: 9px; font-size: 12.5px; line-height: 1.55; color: #334155; }
+.decision-meta-bullet { width: 6px; height: 6px; border-radius: 50%; background: #d97706; margin-top: 7px; flex-shrink: 0; }
+.formula-callout { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 8px 10px; margin: 6px 0; color: #9a3412; font-size: 12px; }
+
+/* Condutas: Seções e Tags */
+.csec { border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); margin-bottom: 8px; background: var(--color-background-primary); overflow: hidden; }
+.csh { padding: 10px 14px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: var(--color-background-primary); font-size: 13.5px; font-weight: 600; color: var(--color-text-primary); }
+.csb { padding: 10px 14px; border-top: 0.5px solid var(--color-border-tertiary); display: none; background: var(--color-background-primary); }
+.csb.open { display: block; }
+.chk { display: flex; align-items: center; gap: 10px; padding: 7px 9px; border-radius: var(--border-radius-md); cursor: pointer; font-size: 13px; line-height: 1.45; margin-bottom: 3px; transition: background 0.12s; }
+.chk:hover { background: var(--color-background-secondary); }
+.chk.on { background: #f0fdf4; color: #166534; font-weight: 500; }
+.chk.rec { background: #fef2f2; color: #991b1b; text-decoration: line-through; }
+.cico { width: 18px; height: 18px; border-radius: 4px; border: 1px solid var(--color-border-secondary); display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
+.chk.on .cico { background: #16a34a; border-color: #16a34a; color: #fff; }
+.chk.rec .cico { background: #dc2626; border-color: #dc2626; color: #fff; }
+
+.csec-sup { border-left: 4px solid #dc2626; }
+.csec-inv { border-left: 4px solid #16a34a; }
+.csec-sin { border-left: 4px solid #0284c7; }
+.csec-esp { border-left: 4px solid #9f1239; }
+.csec-dsp { border-left: 4px solid #64748b; }
+
+.csec-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; padding: 2px 7px; border-radius: 10px; display: inline-block; }
+.csec-tag-sup { background: #fee2e2; color: #b91c1c; border: 0.5px solid #fca5a5; }
+.csec-tag-inv { background: #dcfce7; color: #15803d; border: 0.5px solid #86efac; }
+.csec-tag-sin { background: #e0f2fe; color: #0369a1; border: 0.5px solid #7dd3fc; }
+.csec-tag-esp { background: #ffe4e6; color: #9f1239; border: 0.5px solid #fda4af; }
+.csec-tag-dsp { background: #f1f5f9; color: #475569; border: 0.5px solid #cbd5e1; }
+
+/* NEWS2 */
+.news2-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; margin-top: 10px; }
+.news2-badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.news2-badge-baixo { background: #eaf3de; color: #2e7d32; border: 0.5px solid #a5d6a7; }
+.news2-badge-medio { background: #fff8e1; color: #b45309; border: 0.5px solid #fde68a; }
+.news2-badge-alto { background: #fee2e2; color: #b91c1c; border: 0.5px solid #fca5a5; }
+
+/* PEP Copy Bar & Botoes */
+.s5-pep-copy-bar { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+.pep-copy-btn {
+  background: transparent;
+  border: none;
+  padding: 3px 7px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #374151;
+  border-radius: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.pep-copy-btn:hover { background: #eff6ff; color: #1d4ed8; }
+.pep-copy-btn-all { background: #f0fdf4; color: #15803d; }
+.pep-copy-btn-all:hover { background: #dcfce7; color: #166534; }
+.rel-section-copy-overlay {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  display: flex;
+  gap: 4px;
+  z-index: 10;
+  opacity: 0.38;
+  transition: opacity 0.2s ease, box-shadow 0.2s ease;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 3px 6px;
+  border-radius: 20px;
+  border: 0.5px solid rgba(0,0,0,0.12);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.rel-col-txt-wrap:hover .rel-section-copy-overlay,
+.rel-col-txt-wrap:focus-within .rel-section-copy-overlay,
+.rel-section-copy-overlay:hover {
+  opacity: 1;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.14);
+}
+
+.kbd { display: inline-block; padding: 2px 6px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; line-height: 1.4; color: #1f2937; background-color: #f3f4f6; border: 1px solid #d1d5db; border-radius: 4px; box-shadow: inset 0 -1px 0 #cbd5e1; }

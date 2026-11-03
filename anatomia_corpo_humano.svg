@@ -1,0 +1,1069 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" width="100%" height="100%" id="clinicalBodyNavigator">
+  <title>Atlas Anatômico Topográfico e Navegador Clínico — Corpo Humano Pardo Canônico</title>
+  <desc>Morfologia humana realista baseada em proporções de 8 cabeças (Norma Frontalis). Corpo pardo dourado (Fitzpatrick IV) com camadas interativas de pele e órgãos nobres internos.</desc>
+
+  <defs>
+
+    <!-- Fundo de Cockpit Médico Noturno -->
+    <radialGradient id="cockpitDarkBg" cx="50%" cy="42%" r="68%">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="55%" stop-color="#090E1A"/>
+      <stop offset="100%" stop-color="#03060C"/>
+    </radialGradient>
+
+    <!-- Pele Parda com Subtom Dourado/Amarelado (Fitzpatrick IV — Base Principal) -->
+    <linearGradient id="skinGoldenPardo" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6E3E1C"/>
+      <stop offset="14%" stop-color="#8B5228"/>
+      <stop offset="32%" stop-color="#CA925E"/>
+      <stop offset="50%" stop-color="#DCAB78"/>
+      <stop offset="68%" stop-color="#CA925E"/>
+      <stop offset="86%" stop-color="#8B5228"/>
+      <stop offset="100%" stop-color="#6E3E1C"/>
+    </linearGradient>
+
+    <!-- Volume Esférico da Cabeça e Crânio -->
+    <radialGradient id="skinGoldenPardoHead" cx="50%" cy="36%" r="62%">
+      <stop offset="0%" stop-color="#F0C89C"/>
+      <stop offset="30%" stop-color="#DCAB78"/>
+      <stop offset="65%" stop-color="#CA925E"/>
+      <stop offset="88%" stop-color="#8B5228"/>
+      <stop offset="100%" stop-color="#6E3E1C"/>
+    </radialGradient>
+
+    <!-- Volume Cilíndrico do Tronco (Tórax e Abdome) -->
+    <linearGradient id="skinGoldenPardoTorso" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4A260F"/>
+      <stop offset="12%" stop-color="#8B5228"/>
+      <stop offset="35%" stop-color="#CA925E"/>
+      <stop offset="50%" stop-color="#DCAB78"/>
+      <stop offset="65%" stop-color="#CA925E"/>
+      <stop offset="88%" stop-color="#8B5228"/>
+      <stop offset="100%" stop-color="#4A260F"/>
+    </linearGradient>
+
+    <!-- Volume das Coxas e Pernas -->
+    <linearGradient id="skinGoldenLeg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8B5228"/>
+      <stop offset="25%" stop-color="#CA925E"/>
+      <stop offset="50%" stop-color="#DCAB78"/>
+      <stop offset="75%" stop-color="#CA925E"/>
+      <stop offset="100%" stop-color="#8B5228"/>
+    </linearGradient>
+
+    <!-- Gradientes de Órgãos Nobres Internos (Modo Hover / Transparência) -->
+    <radialGradient id="brainGrad" cx="50%" cy="38%" r="60%">
+      <stop offset="0%" stop-color="#FCE7F3"/>
+      <stop offset="50%" stop-color="#F472B6"/>
+      <stop offset="85%" stop-color="#DB2777"/>
+      <stop offset="100%" stop-color="#831843"/>
+    </radialGradient>
+
+    <radialGradient id="heartGrad" cx="42%" cy="36%" r="62%">
+      <stop offset="0%" stop-color="#FCA5A5"/>
+      <stop offset="35%" stop-color="#EF4444"/>
+      <stop offset="75%" stop-color="#B91C1C"/>
+      <stop offset="100%" stop-color="#450A0A"/>
+    </radialGradient>
+
+    <radialGradient id="lungGrad" cx="55%" cy="38%" r="65%">
+      <stop offset="0%" stop-color="#F9A8D4"/>
+      <stop offset="45%" stop-color="#EC4899"/>
+      <stop offset="80%" stop-color="#BE185D"/>
+      <stop offset="100%" stop-color="#700732"/>
+    </radialGradient>
+
+    <radialGradient id="liverGrad" cx="35%" cy="32%" r="65%">
+      <stop offset="0%" stop-color="#D97706"/>
+      <stop offset="55%" stop-color="#92400E"/>
+      <stop offset="100%" stop-color="#451A03"/>
+    </radialGradient>
+
+    <radialGradient id="stomachGrad" cx="45%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#FDBA74"/>
+      <stop offset="55%" stop-color="#EA580C"/>
+      <stop offset="100%" stop-color="#7C2D12"/>
+    </radialGradient>
+
+    <radialGradient id="kidneyGrad" cx="45%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#EF4444"/>
+      <stop offset="65%" stop-color="#991B1B"/>
+      <stop offset="100%" stop-color="#450A0A"/>
+    </radialGradient>
+
+    <linearGradient id="boneGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#B8A995"/>
+      <stop offset="35%" stop-color="#EBE3D5"/>
+      <stop offset="65%" stop-color="#F8F5EE"/>
+      <stop offset="100%" stop-color="#B8A995"/>
+    </linearGradient>
+
+    <filter id="cardGlowShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.88"/>
+    </filter>
+
+  </defs>
+
+  <style>
+    text {
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .bg-grid {
+      stroke: #1E293B;
+      stroke-width: 0.8;
+      opacity: 0.35;
+    }
+
+    .segment-group {
+      cursor: pointer;
+    }
+
+    .skin-layer {
+      fill-opacity: 1.0;
+      stroke: #8B5228;
+      stroke-width: 1.8;
+      transition: fill-opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                  stroke 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                  stroke-width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                  filter 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .muscle-relief {
+      transition: opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+
+    .internal-organs {
+      pointer-events: none;
+    }
+
+    .hover-card {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.26s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateY(6px);
+    }
+
+    .segment-group:hover .skin-layer {
+      fill-opacity: 0.16 !important;
+      stroke: #38BDF8 !important;
+      stroke-width: 2.8 !important;
+      filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.8)) !important;
+    }
+
+    .segment-group:hover .muscle-relief {
+      opacity: 0.25 !important;
+    }
+
+    .segment-group:hover .hover-card {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      transform: translateY(0) !important;
+    }
+
+    .path-btn {
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .path-btn rect {
+      fill: #1E293B;
+      stroke: #334155;
+      stroke-width: 1.2;
+      transition: fill 0.16s ease, stroke 0.16s ease;
+    }
+    .path-btn text {
+      fill: #F8FAFC;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .path-btn:hover rect {
+      fill: #0284C7;
+      stroke: #38BDF8;
+    }
+    .path-btn:hover text {
+      fill: #FFFFFF;
+      font-weight: 700;
+    }
+
+    .card-title {
+      fill: #F8FAFC;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 13.5px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+    }
+    .card-subtitle {
+      fill: #94A3B8;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 10.5px;
+    }
+  </style>
+
+  <!-- Fundo do Cockpit Noturno -->
+  <rect width="1200" height="1500" fill="url(#cockpitDarkBg)"/>
+  <g class="bg-grid">
+    <line x1="60" y1="50" x2="60" y2="1450"/>
+    <line x1="120" y1="50" x2="120" y2="1450"/>
+    <line x1="180" y1="50" x2="180" y2="1450"/>
+    <line x1="240" y1="50" x2="240" y2="1450"/>
+    <line x1="300" y1="50" x2="300" y2="1450"/>
+    <line x1="360" y1="50" x2="360" y2="1450"/>
+    <line x1="420" y1="50" x2="420" y2="1450"/>
+    <line x1="480" y1="50" x2="480" y2="1450"/>
+    <line x1="540" y1="50" x2="540" y2="1450"/>
+    <line x1="600" y1="50" x2="600" y2="1450"/>
+    <line x1="660" y1="50" x2="660" y2="1450"/>
+    <line x1="720" y1="50" x2="720" y2="1450"/>
+    <line x1="780" y1="50" x2="780" y2="1450"/>
+    <line x1="840" y1="50" x2="840" y2="1450"/>
+    <line x1="900" y1="50" x2="900" y2="1450"/>
+    <line x1="960" y1="50" x2="960" y2="1450"/>
+    <line x1="1020" y1="50" x2="1020" y2="1450"/>
+    <line x1="1080" y1="50" x2="1080" y2="1450"/>
+    <line x1="1140" y1="50" x2="1140" y2="1450"/>
+    <line x1="40" y1="60" x2="1160" y2="60"/>
+    <line x1="40" y1="120" x2="1160" y2="120"/>
+    <line x1="40" y1="180" x2="1160" y2="180"/>
+    <line x1="40" y1="240" x2="1160" y2="240"/>
+    <line x1="40" y1="300" x2="1160" y2="300"/>
+    <line x1="40" y1="360" x2="1160" y2="360"/>
+    <line x1="40" y1="420" x2="1160" y2="420"/>
+    <line x1="40" y1="480" x2="1160" y2="480"/>
+    <line x1="40" y1="540" x2="1160" y2="540"/>
+    <line x1="40" y1="600" x2="1160" y2="600"/>
+    <line x1="40" y1="660" x2="1160" y2="660"/>
+    <line x1="40" y1="720" x2="1160" y2="720"/>
+    <line x1="40" y1="780" x2="1160" y2="780"/>
+    <line x1="40" y1="840" x2="1160" y2="840"/>
+    <line x1="40" y1="900" x2="1160" y2="900"/>
+    <line x1="40" y1="960" x2="1160" y2="960"/>
+    <line x1="40" y1="1020" x2="1160" y2="1020"/>
+    <line x1="40" y1="1080" x2="1160" y2="1080"/>
+    <line x1="40" y1="1140" x2="1160" y2="1140"/>
+    <line x1="40" y1="1200" x2="1160" y2="1200"/>
+    <line x1="40" y1="1260" x2="1160" y2="1260"/>
+    <line x1="40" y1="1320" x2="1160" y2="1320"/>
+    <line x1="40" y1="1380" x2="1160" y2="1380"/>
+    <line x1="40" y1="1440" x2="1160" y2="1440"/>
+  </g>
+  <line x1="600" y1="50" x2="600" y2="1440" stroke="#334155" stroke-dasharray="6,4" stroke-width="1.2" opacity="0.6"/>
+
+  <!-- TÍTULO SUPERIOR -->
+  <g transform="translate(600, 38)" text-anchor="middle">
+    <text fill="#F8FAFC" font-family="'Inter', system-ui, sans-serif" font-size="18" font-weight="800" letter-spacing="1.6">MENU TOPOGRÁFICO DE PATOLOGIAS CLÍNICAS</text>
+    <text y="20" fill="#38BDF8" font-family="'Inter', system-ui, sans-serif" font-size="11.5" font-weight="500">Passe o cursor sobre os segmentos corpóreos para ativar a transparência e acessar os protocolos de emergência</text>
+  </g>
+
+
+  <!-- ========================================================================= -->
+  <!-- SEGMENTO: CABEÇA & CRÂNIO -->
+  <!-- ========================================================================= -->
+  <g id="seg-head" class="segment-group" data-segment="cabeca">
+    <!-- Camada de Órgãos Nobres Internos (Revelada no Hover) -->
+    <g class="internal-organs">
+
+          <!-- Encéfalo Tridimensional -->
+          <path d="M 562,118 C 558,84 578,68 600,68 C 622,68 642,84 638,118 C 636,138 624,150 600,154 C 576,150 564,138 562,118 Z"
+                fill="url(#brainGrad)" stroke="#9D174D" stroke-width="1.5"/>
+          <path d="M 574,98 Q 588,90 600,100 Q 612,90 626,98" fill="none" stroke="#F472B6" stroke-width="1.8"/>
+          <path d="M 570,116 Q 590,108 600,120 Q 610,108 630,116" fill="none" stroke="#F472B6" stroke-width="1.8"/>
+          <!-- Polígono de Willis e Artérias Cerebrais -->
+          <circle cx="600" cy="144" r="5" fill="none" stroke="#EF4444" stroke-width="2"/>
+          <path d="M 595,144 L 582,130 M 605,144 L 618,130 M 600,139 L 600,124" stroke="#EF4444" stroke-width="1.8" stroke-linecap="round"/>
+        
+    </g>
+
+    <!-- Camada de Pele Humana Parda Canônica (Opaca por padrão) -->
+    <path class="skin-layer" fill="url(#skinGoldenPardoHead)" d="M 600,58 C 566,58 544,72 536,94 C 532,106 535,118 538,130 C 534,140 532,152 536,164 C 540,176 548,192 558,205 C 568,215 580,222 589,223 C 595,224 605,224 611,223 C 620,222 632,215 642,205 C 652,192 660,176 664,164 C 668,152 666,140 662,130 C 665,118 668,106 664,94 C 656,72 634,58 600,58 Z"/>
+
+    <!-- Relevos Musculares, Ósseos e Faciais Realistas -->
+    <g class="muscle-relief">
+
+    <!-- Orelhas Anatômicas (Posicionadas entre arco superciliar e base nasal) -->
+    <!-- Orelha Esquerda (Viewer Left) -->
+    <path d="M 538,126 C 526,124 521,138 524,152 C 527,162 534,168 540,166" 
+          fill="url(#skinGoldenPardoHead)" stroke="#8B5228" stroke-width="1.6"/>
+    <path d="M 534,134 C 527,136 526,148 532,154" 
+          fill="none" stroke="#4A260F" stroke-width="1.2" opacity="0.6"/>
+    <!-- Orelha Direita (Viewer Right) -->
+    <path d="M 662,126 C 674,124 679,138 676,152 C 673,162 666,168 660,166" 
+          fill="url(#skinGoldenPardoHead)" stroke="#8B5228" stroke-width="1.6"/>
+    <path d="M 666,134 C 673,136 674,148 668,154" 
+          fill="none" stroke="#4A260F" stroke-width="1.2" opacity="0.6"/>
+
+    <!-- Relevo da Fronte e Sobrancelhas (Arcos Superciliares) -->
+    <path d="M 554,120 C 564,115 578,115 588,121" 
+          fill="none" stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M 612,121 C 622,115 636,115 646,120" 
+          fill="none" stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- Glabela e Depressão Frontonasal -->
+    <path d="M 595,123 Q 600,121 605,123" 
+          fill="none" stroke="#6E3E1C" stroke-width="1.2" opacity="0.5"/>
+
+    <!-- Olhos Proporcionais em Posição Neutra (Fendas Palpebrais e Íris) -->
+    <!-- Olho Esquerdo -->
+    <path d="M 589,134 C 582,128 568,128 560,134 C 568,139 582,139 589,134 Z" 
+          fill="#FAF5EE" stroke="#4A260F" stroke-width="1.4"/>
+    <circle cx="575" cy="133.5" r="3.4" fill="#3D2314"/>
+    <circle cx="575" cy="133.5" r="1.4" fill="#110905"/>
+    <circle cx="574" cy="132.5" r="0.7" fill="#FFFFFF"/>
+    <path d="M 558,133 C 566,125 584,125 591,133" 
+          fill="none" stroke="#8B5228" stroke-width="1.1" opacity="0.7"/>
+
+    <!-- Olho Direito -->
+    <path d="M 611,134 C 618,128 632,128 640,134 C 632,139 618,139 611,134 Z" 
+          fill="#FAF5EE" stroke="#4A260F" stroke-width="1.4"/>
+    <circle cx="625" cy="133.5" r="3.4" fill="#3D2314"/>
+    <circle cx="625" cy="133.5" r="1.4" fill="#110905"/>
+    <circle cx="624" cy="132.5" r="0.7" fill="#FFFFFF"/>
+    <path d="M 642,133 C 634,125 616,125 609,133" 
+          fill="none" stroke="#8B5228" stroke-width="1.1" opacity="0.7"/>
+
+    <!-- Nariz Humano Realista (Ponte, Dorso, Ápice, Asas e Narinas) -->
+    <path d="M 596,128 L 596,154 C 590,157 588,164 593,166 C 597,168 599,168 600,168" 
+          fill="none" stroke="#8B5228" stroke-width="1.3"/>
+    <path d="M 604,128 L 604,154 C 610,157 612,164 607,166 C 603,168 601,168 600,168" 
+          fill="none" stroke="#8B5228" stroke-width="1.3"/>
+    <!-- Narinas e Columela -->
+    <ellipse cx="595.5" cy="165.5" rx="1.6" ry="1.0" fill="#4A260F"/>
+    <ellipse cx="604.5" cy="165.5" rx="1.6" ry="1.0" fill="#4A260F"/>
+    <!-- Iluminação Dorsal do Nariz -->
+    <line x1="600" y1="130" x2="600" y2="162" stroke="#F0C89C" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/>
+
+    <!-- Filtro Labial e Lábios com Arco do Cupido -->
+    <path d="M 597,168 L 597,176 M 603,168 L 603,176" 
+          stroke="#8B5228" stroke-width="1.0" opacity="0.5"/>
+    <!-- Lábio Superior -->
+    <path d="M 582,179 C 589,177 595,175 600,177 C 605,175 611,177 618,179 C 612,183 604,182 600,181 C 596,182 588,183 582,179 Z" 
+          fill="#A45838" stroke="#4A260F" stroke-width="1.2"/>
+    <!-- Lábio Inferior -->
+    <path d="M 584,180 C 590,181.5 596,182 600,182 C 604,182 610,181.5 616,180 C 613,190 587,190 584,180 Z" 
+          fill="#B66542" stroke="#4A260F" stroke-width="1.2"/>
+    <ellipse cx="600" cy="184.5" rx="5" ry="1.8" fill="#F0C89C" opacity="0.4"/>
+
+    <!-- Sulco Mentolabial e Queixo Pronunciado (Mento) -->
+    <path d="M 589,196 Q 600,198 611,196" 
+          fill="none" stroke="#8B5228" stroke-width="1.4" opacity="0.6"/>
+    <!-- Coxim Adiposo do Mento -->
+    <path d="M 586,206 C 592,214 608,214 614,206" 
+          fill="none" stroke="#F0C89C" stroke-width="2.2" opacity="0.45"/>
+    <path d="M 580,208 C 590,218 610,218 620,208" 
+          fill="none" stroke="#8B5228" stroke-width="1.2" opacity="0.5"/>
+
+    </g>
+
+    <!-- Menu Flutuante com Links Diretos para Protocolos de Emergência -->
+    <!-- Card Flutuante de Patologias: CABEÇA &amp; CRÂNIO -->
+    <g class="hover-card">
+      <path d="M 662,115 L 685,100" stroke="#38BDF8" stroke-width="1.6" stroke-dasharray="4,3"/>
+      <circle cx="662" cy="115" r="4.5" fill="#38BDF8" stroke="#0C4A6E" stroke-width="1.5"/>
+      <g transform="translate(685, 60)" filter="url(#cardGlowShadow)">
+        <rect width="276" height="124" rx="9" fill="#0B132B" stroke="#0284C7" stroke-width="1.8"/>
+        <rect x="0" width="5" height="124" rx="2.5" fill="#38BDF8"/>
+        <text x="16" y="24" class="card-title">CABEÇA &amp; CRÂNIO</text>
+        <text x="16" y="39" class="card-subtitle">Emergências Neurológicas &amp; Neurocirúrgicas</text>
+        <a href="#patologia-ave" class="path-btn" transform="translate(16, 48)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">AVC Isquêmico / AVE</text>
+        </a>
+        <a href="#patologia-hsa" class="path-btn" transform="translate(142, 48)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">HSA / Aneurisma Roto</text>
+        </a>
+        <a href="#patologia-tce" class="path-btn" transform="translate(16, 80)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">TCE &amp; Hipertensão PIC</text>
+        </a>
+        <a href="#patologia-cefaleia" class="path-btn" transform="translate(142, 80)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Cefaleia com Red Flags</text>
+        </a>
+      </g>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SEGMENTO: PESCOÇO & CERVICAL -->
+  <!-- ========================================================================= -->
+  <g id="seg-neck" class="segment-group" data-segment="pescoco">
+    <!-- Camada de Órgãos Nobres Internos (Revelada no Hover) -->
+    <g class="internal-organs">
+
+          <!-- Coluna Cervical C3-C7 -->
+          <g fill="url(#boneGrad)" stroke="#78716C" stroke-width="0.8">
+            <rect x="588" y="210" width="24" height="6" rx="2"/>
+            <rect x="587" y="218" width="26" height="6" rx="2"/>
+            <rect x="586" y="226" width="28" height="7" rx="2"/>
+            <rect x="585" y="235" width="30" height="7" rx="2"/>
+            <rect x="584" y="244" width="32" height="8" rx="2"/>
+          </g>
+          <!-- Laringe e Anéis Traqueais -->
+          <path d="M 592,212 L 600,218 L 608,212 L 607,226 L 593,226 Z" fill="#93C5FD" stroke="#3B82F6" stroke-width="1.2"/>
+          <rect x="594" y="228" width="12" height="30" fill="#60A5FA" opacity="0.6" stroke="#2563EB" stroke-width="1"/>
+          <!-- Feixes Carotídeos / Jugulares -->
+          <path d="M 580,208 L 576,262" stroke="#EF4444" stroke-width="3.6" stroke-linecap="round"/>
+          <path d="M 572,208 L 566,262" stroke="#3B82F6" stroke-width="4.2" stroke-linecap="round"/>
+          <path d="M 620,208 L 624,262" stroke="#EF4444" stroke-width="3.6" stroke-linecap="round"/>
+          <path d="M 628,208 L 634,262" stroke="#3B82F6" stroke-width="4.2" stroke-linecap="round"/>
+        
+    </g>
+
+    <!-- Camada de Pele Humana Parda Canônica (Opaca por padrão) -->
+    <path class="skin-layer" fill="url(#skinGoldenPardo)" d="M 558,205 C 555,220 550,238 542,258 L 588,266 L 600,268 L 612,266 L 658,258 C 650,238 645,220 642,205 C 624,218 576,218 558,205 Z"/>
+
+    <!-- Relevos Musculares, Ósseos e Faciais Realistas -->
+    <g class="muscle-relief">
+
+    <!-- Cartilagem Tireóidea (Pomo de Adão / Proeminência Laríngea) -->
+    <path d="M 593,232 L 600,236 L 607,232 L 606,242 L 594,242 Z" 
+          fill="#B47B49" stroke="#8B5228" stroke-width="1.2"/>
+    <circle cx="600" cy="235" r="1.5" fill="#F0C89C" opacity="0.7"/>
+
+    <!-- Músculos Esternocleidomastoideos (SCM) Convergindo em V para o Manúbrio -->
+    <!-- SCM Esquerdo (Feixe Esternal e Clavicular) -->
+    <path d="M 555,210 C 566,226 578,246 592,265" 
+          fill="none" stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M 558,212 C 568,228 580,248 594,264" 
+          fill="none" stroke="#F0C89C" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/>
+    <path d="M 562,224 C 566,236 572,248 578,263" 
+          fill="none" stroke="#8B5228" stroke-width="1.4" opacity="0.5"/>
+
+    <!-- SCM Direito (Feixe Esternal e Clavicular) -->
+    <path d="M 645,210 C 634,226 622,246 608,265" 
+          fill="none" stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M 642,212 C 632,228 620,248 606,264" 
+          fill="none" stroke="#F0C89C" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/>
+    <path d="M 638,224 C 634,236 628,248 622,263" 
+          fill="none" stroke="#8B5228" stroke-width="1.4" opacity="0.5"/>
+
+    <!-- Fossa Supraesternal (Fossa Jugularis) no Manúbrio Esternal -->
+    <path d="M 590,264 C 595,269 605,269 610,264" 
+          fill="none" stroke="#4A260F" stroke-width="2.0"/>
+
+    <!-- Relevo do Trapézio Descendente -->
+    <path d="M 554,218 C 546,232 532,248 515,256" 
+          fill="none" stroke="#8B5228" stroke-width="1.3" opacity="0.5"/>
+    <path d="M 646,218 C 654,232 668,248 685,256" 
+          fill="none" stroke="#8B5228" stroke-width="1.3" opacity="0.5"/>
+
+    </g>
+
+    <!-- Menu Flutuante com Links Diretos para Protocolos de Emergência -->
+    <!-- Card Flutuante de Patologias: PESCOÇO &amp; CERVICAL -->
+    <g class="hover-card">
+      <path d="M 546,235 L 501,215" stroke="#38BDF8" stroke-width="1.6" stroke-dasharray="4,3"/>
+      <circle cx="546" cy="235" r="4.5" fill="#38BDF8" stroke="#0C4A6E" stroke-width="1.5"/>
+      <g transform="translate(225, 175)" filter="url(#cardGlowShadow)">
+        <rect width="276" height="124" rx="9" fill="#0B132B" stroke="#0284C7" stroke-width="1.8"/>
+        <rect x="271" width="5" height="124" rx="2.5" fill="#38BDF8"/>
+        <text x="16" y="24" class="card-title">PESCOÇO &amp; CERVICAL</text>
+        <text x="16" y="39" class="card-subtitle">Via Aérea Difícil &amp; Vasos Nobres Cervicais</text>
+        <a href="#patologia-via-aerea" class="path-btn" transform="translate(16, 48)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Obstrução de V.A.</text>
+        </a>
+        <a href="#patologia-disseccao-carotida" class="path-btn" transform="translate(142, 48)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Dissecção Carotídea</text>
+        </a>
+        <a href="#patologia-trauma-cervical" class="path-btn" transform="translate(16, 80)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Trauma Cervical (C-Spine)</text>
+        </a>
+        <a href="#patologia-anafilaxia" class="path-btn" transform="translate(142, 80)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Edema de Glote / Anafilaxia</text>
+        </a>
+      </g>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SEGMENTO: TÓRAX & CARDIORESPIRATÓRIO -->
+  <!-- ========================================================================= -->
+  <g id="seg-thorax" class="segment-group" data-segment="torax">
+    <!-- Camada de Órgãos Nobres Internos (Revelada no Hover) -->
+    <g class="internal-organs">
+
+          <!-- Pulmões Direito e Esquerdo -->
+          <path d="M 572,272 C 552,262 515,274 502,306 C 490,338 485,385 488,424 C 510,416 545,414 576,424 C 580,392 578,312 572,272 Z"
+                fill="url(#lungGrad)" stroke="#700732" stroke-width="1.5"/>
+          <path d="M 628,272 C 648,262 685,274 698,306 C 710,338 715,385 712,424 C 690,416 665,414 642,424 C 635,410 652,382 645,352 C 632,325 624,305 628,272 Z"
+                fill="url(#lungGrad)" stroke="#700732" stroke-width="1.5"/>
+          <!-- Traqueia Torácica -->
+          <line x1="600" y1="262" x2="600" y2="300" stroke="#93C5FD" stroke-width="7" stroke-linecap="round"/>
+          <path d="M 600,300 L 576,322 M 600,300 L 624,322" stroke="#93C5FD" stroke-width="5" stroke-linecap="round"/>
+          <!-- Arco Aórtico e Troncos Braquiocefálicos -->
+          <path d="M 602,320 C 596,294 606,282 618,288 C 628,292 630,310 612,332" fill="none" stroke="#EF4444" stroke-width="10" stroke-linecap="round"/>
+          <line x1="584" y1="262" x2="584" y2="320" stroke="#3B82F6" stroke-width="9" stroke-linecap="round"/>
+          <!-- Coração (Ventrículos e Átrios) -->
+          <path d="M 580,324 C 568,334 565,360 575,382 C 584,398 614,406 636,402 C 648,400 650,390 644,376 C 638,358 636,336 624,324 C 612,316 592,316 580,324 Z"
+                fill="url(#heartGrad)" stroke="#450A0A" stroke-width="1.8"/>
+          <!-- Costelas e Esterno Ósseo -->
+          <g fill="none" stroke="url(#boneGrad)" stroke-width="4.2" stroke-linecap="round" opacity="0.6">
+            <path d="M 588,272 C 550,266 518,278 512,294"/>
+            <path d="M 612,272 C 650,266 682,278 688,294"/>
+            <path d="M 588,294 C 540,290 502,306 498,324"/>
+            <path d="M 612,294 C 660,290 698,306 702,324"/>
+            <path d="M 588,318 C 532,316 494,336 492,356"/>
+            <path d="M 612,318 C 668,316 706,336 708,356"/>
+            <path d="M 588,344 C 528,346 490,368 490,390"/>
+            <path d="M 612,344 C 672,346 710,368 710,390"/>
+          </g>
+          <rect x="592" y="270" width="16" height="92" rx="3" fill="url(#boneGrad)" stroke="#78716C" stroke-width="1.2" opacity="0.8"/>
+        
+    </g>
+
+    <!-- Camada de Pele Humana Parda Canônica (Opaca por padrão) -->
+    <path class="skin-layer" fill="url(#skinGoldenPardoTorso)" d="M 416,252 C 460,248 505,268 552,266 C 575,265 588,266 600,268 C 612,266 625,265 648,266 C 695,268 740,248 784,252 C 802,258 818,282 822,314 C 824,342 814,370 798,386 C 782,392 768,405 758,422 C 748,440 740,458 736,474 C 702,460 662,435 618,424 C 608,422 602,420 600,420 C 598,420 592,422 582,424 C 538,435 498,460 464,474 C 460,458 452,440 442,422 C 432,405 418,392 402,386 C 386,370 376,342 378,314 C 382,282 398,258 416,252 Z"/>
+
+    <!-- Relevos Musculares, Ósseos e Faciais Realistas -->
+    <g class="muscle-relief">
+
+    <!-- Clavículas Sinuosas Reais (Dupla Curvatura Óssea em S) -->
+    <!-- Clavícula Esquerda -->
+    <path d="M 588,267 C 558,264 502,266 458,252 C 442,247 428,248 416,252" 
+          fill="none" stroke="#4A260F" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M 586,266 C 556,263 504,265 460,251 C 444,246 430,247 418,251" 
+          fill="none" stroke="#F0C89C" stroke-width="1.8" stroke-linecap="round" opacity="0.75"/>
+
+    <!-- Clavícula Direita -->
+    <path d="M 612,267 C 642,264 698,266 742,252 C 758,247 772,248 784,252" 
+          fill="none" stroke="#4A260F" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M 614,266 C 644,263 696,265 740,251 C 756,246 770,247 782,251" 
+          fill="none" stroke="#F0C89C" stroke-width="1.8" stroke-linecap="round" opacity="0.75"/>
+
+    <!-- Sulco Mediano Anterior (Fissura Esternal / Depressão do Esterno) -->
+    <line x1="600" y1="268" x2="600" y2="420" 
+          stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+
+    <!-- Músculos Peitorais Maiores (Fibras Claviculares, Esternocostais e Sulco Subpeitoral) -->
+    <!-- Peitoral Esquerdo -->
+    <path d="M 588,382 C 548,392 495,388 452,362 C 442,352 435,340 432,326" 
+          fill="none" stroke="#4A260F" stroke-width="2.8" stroke-linecap="round"/>
+    <path d="M 584,378 C 546,387 498,384 456,358" 
+          fill="none" stroke="#F0C89C" stroke-width="2.0" opacity="0.55"/>
+    <path d="M 582,276 C 540,282 490,298 448,318" 
+          fill="none" stroke="#8B5228" stroke-width="1.4" opacity="0.45"/>
+    <path d="M 584,305 C 535,314 485,328 445,338" 
+          fill="none" stroke="#8B5228" stroke-width="1.3" opacity="0.4"/>
+
+    <!-- Peitoral Direito -->
+    <path d="M 612,382 C 652,392 705,388 748,362 C 758,352 765,340 768,326" 
+          fill="none" stroke="#4A260F" stroke-width="2.8" stroke-linecap="round"/>
+    <path d="M 616,378 C 654,387 702,384 744,358" 
+          fill="none" stroke="#F0C89C" stroke-width="2.0" opacity="0.55"/>
+    <path d="M 618,276 C 660,282 710,298 752,318" 
+          fill="none" stroke="#8B5228" stroke-width="1.4" opacity="0.45"/>
+    <path d="M 616,305 C 665,314 715,328 755,338" 
+          fill="none" stroke="#8B5228" stroke-width="1.3" opacity="0.4"/>
+
+    <!-- Mamilos e Complexos Aréolo-Papilares (Posicionados no 4º Espaço Intercostal) -->
+    <!-- Mamilo Esquerdo -->
+    <ellipse cx="516" cy="360" rx="6.5" ry="5.5" fill="#7C4520" opacity="0.8"/>
+    <circle cx="516" cy="360" r="2.4" fill="#5C2F12"/>
+    <!-- Mamilo Direito -->
+    <ellipse cx="684" cy="360" rx="6.5" ry="5.5" fill="#7C4520" opacity="0.8"/>
+    <circle cx="684" cy="360" r="2.4" fill="#5C2F12"/>
+
+    <!-- Digitações do Músculo Serrátil Anterior (Costelas 5 a 8 em Leque Muscular) -->
+    <!-- Lado Esquerdo -->
+    <path d="M 438,376 C 450,382 464,388 472,398" fill="none" stroke="#4A260F" stroke-width="1.6" opacity="0.6"/>
+    <path d="M 444,398 C 456,405 468,412 476,424" fill="none" stroke="#4A260F" stroke-width="1.6" opacity="0.6"/>
+    <path d="M 452,422 C 462,430 472,438 480,450" fill="none" stroke="#4A260F" stroke-width="1.6" opacity="0.6"/>
+    <!-- Lado Direito -->
+    <path d="M 762,376 C 750,382 736,388 728,398" fill="none" stroke="#4A260F" stroke-width="1.6" opacity="0.6"/>
+    <path d="M 756,398 C 744,405 732,412 724,424" fill="none" stroke="#4A260F" stroke-width="1.6" opacity="0.6"/>
+    <path d="M 748,422 C 738,430 728,438 720,450" fill="none" stroke="#4A260F" stroke-width="1.6" opacity="0.6"/>
+
+    <!-- Sulco Deltopeitoral e Inserção do Deltoide -->
+    <path d="M 458,252 C 446,278 435,314 432,345" 
+          fill="none" stroke="#4A260F" stroke-width="1.8" opacity="0.65"/>
+    <path d="M 742,252 C 754,278 765,314 768,345" 
+          fill="none" stroke="#4A260F" stroke-width="1.8" opacity="0.65"/>
+
+    </g>
+
+    <!-- Menu Flutuante com Links Diretos para Protocolos de Emergência -->
+    <!-- Card Flutuante de Patologias: TÓRAX &amp; CARDIORESPIRATÓRIO -->
+    <g class="hover-card">
+      <path d="M 745,345 L 835,310" stroke="#38BDF8" stroke-width="1.6" stroke-dasharray="4,3"/>
+      <circle cx="745" cy="345" r="4.5" fill="#38BDF8" stroke="#0C4A6E" stroke-width="1.5"/>
+      <g transform="translate(835, 270)" filter="url(#cardGlowShadow)">
+        <rect width="276" height="154" rx="9" fill="#0B132B" stroke="#0284C7" stroke-width="1.8"/>
+        <rect x="0" width="5" height="154" rx="2.5" fill="#38BDF8"/>
+        <text x="16" y="24" class="card-title">TÓRAX &amp; CARDIORESPIRATÓRIO</text>
+        <text x="16" y="39" class="card-subtitle">Síndromes Coronarianas, Grandes Vasos &amp; Pleuropulmonares</text>
+        <a href="#patologia-sca" class="path-btn" transform="translate(16, 48)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">SCA / Infarto (IAM)</text>
+        </a>
+        <a href="#patologia-disseccao-aorta" class="path-btn" transform="translate(142, 48)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Dissecção Aguda Aorta</text>
+        </a>
+        <a href="#patologia-tep" class="path-btn" transform="translate(16, 80)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Embolia Pulmonar (TEP)</text>
+        </a>
+        <a href="#patologia-pneumotorax" class="path-btn" transform="translate(142, 80)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Pneumotórax Hipertensivo</text>
+        </a>
+        <a href="#patologia-edema-agudo" class="path-btn" transform="translate(16, 112)">
+          <rect width="244" height="26" rx="5"/>
+          <text x="8" y="17">Edema Agudo Pulmonar</text>
+        </a>
+      </g>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SEGMENTO: ABDOME & PELVE -->
+  <!-- ========================================================================= -->
+  <g id="seg-abdomen" class="segment-group" data-segment="abdome">
+    <!-- Camada de Órgãos Nobres Internos (Revelada no Hover) -->
+    <g class="internal-organs">
+
+          <!-- Fígado e Vesícula Biliar -->
+          <path d="M 488,442 C 492,430 545,428 584,440 C 614,444 638,446 648,454 C 650,460 642,468 628,474 C 602,484 578,498 554,514 C 528,528 500,536 490,524 C 485,514 484,470 488,442 Z"
+                fill="url(#liverGrad)" stroke="#451A03" stroke-width="1.5"/>
+          <ellipse cx="558" cy="514" rx="7" ry="10" fill="#84CC16" stroke="#365314" stroke-width="1.2"/>
+          <!-- Estômago e Baço -->
+          <path d="M 610,448 C 622,438 652,436 672,451 C 688,466 688,502 666,524 C 646,542 616,542 598,521 L 600,506 C 614,514 632,510 640,496 C 645,482 632,466 610,456 Z"
+                fill="url(#stomachGrad)" stroke="#9A3412" stroke-width="1.5"/>
+          <ellipse cx="692" cy="472" rx="12" ry="18" fill="#7E22CE" stroke="#3B0764" stroke-width="1.2"/>
+          <!-- Rins Retroperitoneais e Ureteres -->
+          <path d="M 532,504 C 516,500 508,511 508,531 C 508,551 524,564 538,562 C 548,560 548,536 542,522 Z"
+                fill="url(#kidneyGrad)" stroke="#450A0A" stroke-width="1.4"/>
+          <path d="M 668,492 C 684,488 692,499 692,519 C 692,539 676,552 662,550 C 652,548 652,524 658,510 Z"
+                fill="url(#kidneyGrad)" stroke="#450A0A" stroke-width="1.4"/>
+          <!-- Aorta Abdominal e VCI -->
+          <line x1="606" y1="424" x2="606" y2="595" stroke="#EF4444" stroke-width="7.5"/>
+          <line x1="592" y1="424" x2="592" y2="595" stroke="#3B82F6" stroke-width="8.5"/>
+          <!-- Intestino Delgado e Cólon -->
+          <path d="M 522,640 C 512,640 508,624 510,596 C 512,572 514,548 518,530 C 532,522 578,534 622,532 C 668,522 680,528 682,548 C 685,578 682,610 676,640 C 668,660 640,655 620,650 C 605,648 600,660 600,680"
+                fill="none" stroke="#EA580C" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+          <!-- Bexiga Urinária -->
+          <ellipse cx="600" cy="665" rx="20" ry="15" fill="#EAB308" stroke="#854D0E" stroke-width="1.5"/>
+        
+    </g>
+
+    <!-- Camada de Pele Humana Parda Canônica (Opaca por padrão) -->
+    <path class="skin-layer" fill="url(#skinGoldenPardoTorso)" d="M 464,474 C 468,496 474,522 478,546 C 480,568 474,594 468,618 C 476,642 505,672 554,692 C 575,698 590,700 600,700 C 610,700 625,698 646,692 C 695,672 724,642 732,618 C 726,594 720,568 722,546 C 726,522 732,496 736,474 C 702,460 662,435 618,424 C 608,422 602,420 600,420 C 598,420 592,422 582,424 C 538,435 498,460 464,474 Z"/>
+
+    <!-- Relevos Musculares, Ósseos e Faciais Realistas -->
+    <g class="muscle-relief">
+
+    <!-- Linha Alba (Sulco Sagital Mediano Fisiológico) -->
+    <path d="M 600,420 C 599,450 599,485 600,520 C 601,540 600,580 600,675" 
+          fill="none" stroke="#4A260F" stroke-width="2.4" stroke-linecap="round"/>
+
+    <!-- Inscrições Tendíneas Orgânicas e Curvas (Tendinous Intersections dos Gomos) -->
+    <!-- 1ª Inscrição Superior (Nível Epigástrico) -->
+    <path d="M 546,452 C 566,457 586,455 600,452 C 614,455 634,457 654,452" 
+          fill="none" stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M 548,450 C 566,455 586,453 600,450 C 614,453 634,455 652,450" 
+          fill="none" stroke="#F0C89C" stroke-width="1.4" opacity="0.5"/>
+
+    <!-- 2ª Inscrição Média (Nível Supraumbilical) -->
+    <path d="M 548,495 C 568,500 586,498 600,495 C 614,498 632,500 652,495" 
+          fill="none" stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M 550,493 C 568,498 586,496 600,493 C 614,496 632,498 650,493" 
+          fill="none" stroke="#F0C89C" stroke-width="1.4" opacity="0.5"/>
+
+    <!-- 3ª Inscrição Inferior (Nível Transumbilical Ondulado) -->
+    <path d="M 550,538 C 570,543 588,540 600,538 C 612,540 630,543 650,538" 
+          fill="none" stroke="#4A260F" stroke-width="2.0" stroke-linecap="round"/>
+
+    <!-- Linha Semilunar de Spighel (Bordas Laterais Convexas do Reto Abdominal) -->
+    <!-- Linha de Spighel Esquerda -->
+    <path d="M 544,440 C 540,472 542,515 548,560 C 554,600 565,638 580,672" 
+          fill="none" stroke="#4A260F" stroke-width="2.0" stroke-linecap="round"/>
+    <path d="M 546,442 C 542,474 544,517 550,562" 
+          fill="none" stroke="#F0C89C" stroke-width="1.5" opacity="0.5"/>
+
+    <!-- Linha de Spighel Direita -->
+    <path d="M 656,440 C 660,472 658,515 652,560 C 646,600 635,638 620,672" 
+          fill="none" stroke="#4A260F" stroke-width="2.0" stroke-linecap="round"/>
+    <path d="M 654,442 C 658,474 656,517 650,562" 
+          fill="none" stroke="#F0C89C" stroke-width="1.5" opacity="0.5"/>
+
+    <!-- Bojos dos Gomos Musculares (Highlights Orgânicos Arredondados) -->
+    <!-- Par Superior -->
+    <ellipse cx="572" cy="436" rx="16" ry="10" fill="#F0C89C" opacity="0.32"/>
+    <ellipse cx="628" cy="436" rx="16" ry="10" fill="#F0C89C" opacity="0.32"/>
+    <!-- Par Médio -->
+    <ellipse cx="572" cy="476" rx="18" ry="12" fill="#F0C89C" opacity="0.36"/>
+    <ellipse cx="628" cy="476" rx="18" ry="12" fill="#F0C89C" opacity="0.36"/>
+    <!-- Par Umbilical -->
+    <ellipse cx="574" cy="518" rx="16" ry="11" fill="#F0C89C" opacity="0.34"/>
+    <ellipse cx="626" cy="518" rx="16" ry="11" fill="#F0C89C" opacity="0.34"/>
+
+    <!-- Cicatriz Umbilical Fisiológica (Prega Superior, Núcleo e Depressão) -->
+    <ellipse cx="600" cy="528" rx="4.5" ry="5.5" fill="#4A260F"/>
+    <path d="M 596.5,526 C 598,523 602,523 603.5,526" 
+          fill="none" stroke="#F0C89C" stroke-width="1.4"/>
+    <circle cx="600" cy="528.5" r="1.8" fill="#4A260F"/>
+
+    <!-- Cristas Ilíacas e Sulcos Inguinais (Apollo's Belt) -->
+    <!-- Sulco Inguinal Esquerdo -->
+    <path d="M 476,595 C 506,634 544,666 582,686" 
+          fill="none" stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M 478,593 C 508,632 546,664 584,684" 
+          fill="none" stroke="#F0C89C" stroke-width="1.6" opacity="0.55"/>
+
+    <!-- Sulco Inguinal Direito -->
+    <path d="M 724,595 C 694,634 656,666 618,686" 
+          fill="none" stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M 722,593 C 692,632 654,664 616,684" 
+          fill="none" stroke="#F0C89C" stroke-width="1.6" opacity="0.55"/>
+
+    </g>
+
+    <!-- Menu Flutuante com Links Diretos para Protocolos de Emergência -->
+    <!-- Card Flutuante de Patologias: ABDOME &amp; PELVE -->
+    <g class="hover-card">
+      <path d="M 472,550 L 391,520" stroke="#38BDF8" stroke-width="1.6" stroke-dasharray="4,3"/>
+      <circle cx="472" cy="550" r="4.5" fill="#38BDF8" stroke="#0C4A6E" stroke-width="1.5"/>
+      <g transform="translate(115, 480)" filter="url(#cardGlowShadow)">
+        <rect width="276" height="188" rx="9" fill="#0B132B" stroke="#0284C7" stroke-width="1.8"/>
+        <rect x="271" width="5" height="188" rx="2.5" fill="#38BDF8"/>
+        <text x="16" y="24" class="card-title">ABDOME &amp; PELVE</text>
+        <text x="16" y="39" class="card-subtitle">Abdome Agudo Cirúrgico, Clínico &amp; Vascular</text>
+        <a href="#patologia-apendicite" class="path-btn" transform="translate(16, 48)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Apendicite Aguda</text>
+        </a>
+        <a href="#patologia-colecistite" class="path-btn" transform="translate(142, 48)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Colecistite / Colangite</text>
+        </a>
+        <a href="#patologia-pancreatite" class="path-btn" transform="translate(16, 80)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Pancreatite Aguda</text>
+        </a>
+        <a href="#patologia-isquemia-mesenterica" class="path-btn" transform="translate(142, 80)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Isquemia Mesentérica</text>
+        </a>
+        <a href="#patologia-hda" class="path-btn" transform="translate(16, 112)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">HDA / Varizes / Úlcera</text>
+        </a>
+        <a href="#patologia-obstrucao-intestinal" class="path-btn" transform="translate(142, 112)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Obstrução Intestinal</text>
+        </a>
+        <a href="#patologia-aneurisma-aorta" class="path-btn" transform="translate(16, 144)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Aneurisma Aorta (AAA Roto)</text>
+        </a>
+      </g>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SEGMENTO: MEMBROS SUPERIORES -->
+  <!-- ========================================================================= -->
+  <g id="seg-upper-limbs" class="segment-group" data-segment="membros-superiores">
+    <!-- Camada de Órgãos Nobres Internos (Revelada no Hover) -->
+    <g class="internal-organs">
+
+          <!-- Esqueleto e Feixes dos Membros Superiores -->
+          <!-- Braço Esquerdo (Viewer Left) -->
+          <line x1="416" y1="262" x2="376" y2="440" stroke="url(#boneGrad)" stroke-width="14" stroke-linecap="round"/>
+          <line x1="412" y1="266" x2="380" y2="438" stroke="#EF4444" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="418" y1="270" x2="384" y2="438" stroke="#3B82F6" stroke-width="4.0" stroke-linecap="round"/>
+          <!-- Antebraço (Rádio e Ulna) -->
+          <line x1="368" y1="452" x2="328" y2="618" stroke="url(#boneGrad)" stroke-width="8" stroke-linecap="round"/>
+          <line x1="380" y1="452" x2="344" y2="618" stroke="url(#boneGrad)" stroke-width="8" stroke-linecap="round"/>
+          <line x1="374" y1="452" x2="336" y2="618" stroke="#EF4444" stroke-width="2.8"/>
+          <!-- Braço Direito (Viewer Right) -->
+          <line x1="784" y1="262" x2="824" y2="440" stroke="url(#boneGrad)" stroke-width="14" stroke-linecap="round"/>
+          <line x1="788" y1="266" x2="820" y2="438" stroke="#EF4444" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="782" y1="270" x2="816" y2="438" stroke="#3B82F6" stroke-width="4.0" stroke-linecap="round"/>
+          <line x1="832" y1="452" x2="872" y2="618" stroke="url(#boneGrad)" stroke-width="8" stroke-linecap="round"/>
+          <line x1="820" y1="452" x2="856" y2="618" stroke="url(#boneGrad)" stroke-width="8" stroke-linecap="round"/>
+          <line x1="826" y1="452" x2="864" y2="618" stroke="#EF4444" stroke-width="2.8"/>
+        
+    </g>
+
+    <!-- Camada de Pele Humana Parda Canônica (Opaca por padrão) -->
+    <path class="skin-layer" fill="url(#skinGoldenPardo)" d="M 416,252 C 392,264 372,292 364,328 C 360,360 368,390 376,414 C 372,430 366,446 362,460 C 346,482 324,514 320,546 C 318,574 326,604 336,628 C 334,636 328,646 320,658 C 308,670 292,684 284,698 C 280,706 285,715 294,715 C 302,715 310,706 316,694 C 322,684 330,674 334,672 C 332,694 330,718 328,742 C 327,749 335,750 340,744 C 343,724 344,700 345,684 C 346,708 347,734 348,762 C 349,770 357,770 359,762 C 361,736 361,708 361,684 C 362,705 363,726 364,748 C 365,755 373,755 375,748 C 376,726 376,702 375,680 C 377,696 379,712 381,728 C 383,734 389,734 389,726 C 389,708 388,686 387,666 C 386,652 385,638 384,624 C 390,594 400,558 404,524 C 408,490 404,464 398,446 C 406,424 414,390 422,355 C 430,320 434,286 432,264 L 416,252 Z M 784,252 C 808,264 828,292 836,328 C 840,360 832,390 824,414 C 828,430 834,446 838,460 C 854,482 876,514 880,546 C 882,574 874,604 864,628 C 866,636 872,646 880,658 C 892,670 908,684 916,698 C 920,706 915,715 906,715 C 898,715 890,706 884,694 C 878,684 870,674 866,672 C 868,694 870,718 872,742 C 873,749 865,750 860,744 C 857,724 856,700 855,684 C 854,708 853,734 852,762 C 851,770 843,770 841,762 C 839,736 839,708 839,684 C 838,705 837,726 836,748 C 835,755 827,755 825,748 C 824,726 824,702 825,680 C 823,696 821,712 819,728 C 817,734 811,734 811,726 C 811,708 812,686 813,666 C 814,652 815,638 816,624 C 810,594 800,558 796,524 C 792,490 796,464 802,446 C 794,424 786,390 778,355 C 770,320 766,286 768,264 L 784,252 Z"/>
+
+    <!-- Relevos Musculares, Ósseos e Faciais Realistas -->
+    <g class="muscle-relief">
+
+    <!-- Relevos dos Músculos dos Membros Superiores -->
+    <!-- BRAÇO ESQUERDO (Viewer Left) -->
+    <!-- Bojo do Deltoide Anterior e Médio -->
+    <path d="M 416,254 C 395,275 382,310 390,352 C 395,372 402,388 408,398" 
+          fill="none" stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M 418,256 C 398,276 386,310 394,350" 
+          fill="none" stroke="#F0C89C" stroke-width="1.8" opacity="0.6"/>
+
+    <!-- Bíceps Braquial (Ventre Muscular Fusiforme e Sulcos Bicipitais) -->
+    <path d="M 414,332 C 396,352 394,390 402,422" 
+          fill="none" stroke="#4A260F" stroke-width="2.0" stroke-linecap="round"/>
+    <path d="M 416,334 C 400,354 398,388 404,418" 
+          fill="none" stroke="#F0C89C" stroke-width="1.6" opacity="0.55"/>
+    <ellipse cx="398" cy="382" rx="11" ry="24" fill="#F0C89C" opacity="0.25"/>
+
+    <!-- Fossa Cubital (Prega Anterior do Cotovelo com Aponeurose Bicipital) -->
+    <path d="M 374,444 Q 386,452 396,446" 
+          fill="none" stroke="#4A260F" stroke-width="1.8"/>
+
+    <!-- Antebraço: Crista Muscular do Braquiorradial -->
+    <path d="M 368,454 C 348,482 336,520 342,565 C 346,595 352,615 356,626" 
+          fill="none" stroke="#4A260F" stroke-width="2.0" stroke-linecap="round"/>
+    <path d="M 370,456 C 352,484 340,520 346,562" 
+          fill="none" stroke="#F0C89C" stroke-width="1.8" opacity="0.5"/>
+
+    <!-- Palmas e Falanges das Mãos (Sulcos Tenar, Hipotenar e Articulações) -->
+    <path d="M 328,648 C 335,662 348,672 365,668" 
+          fill="none" stroke="#4A260F" stroke-width="1.4" opacity="0.7"/>
+    <path d="M 366,668 C 372,660 376,648 378,638" 
+          fill="none" stroke="#4A260F" stroke-width="1.3" opacity="0.6"/>
+    <!-- Pregas de Flexão dos Dedos -->
+    <line x1="331" y1="712" x2="337" y2="712" stroke="#4A260F" stroke-width="1.2"/>
+    <line x1="347" y1="724" x2="353" y2="724" stroke="#4A260F" stroke-width="1.2"/>
+    <line x1="363" y1="720" x2="369" y2="720" stroke="#4A260F" stroke-width="1.2"/>
+    <line x1="379" y1="708" x2="383" y2="708" stroke="#4A260F" stroke-width="1.2"/>
+
+    <!-- BRAÇO DIREITO (Viewer Right) -->
+    <path d="M 784,254 C 805,275 818,310 810,352 C 805,372 798,388 792,398" 
+          fill="none" stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M 782,256 C 802,276 814,310 806,350" 
+          fill="none" stroke="#F0C89C" stroke-width="1.8" opacity="0.6"/>
+
+    <path d="M 786,332 C 804,352 806,390 798,422" 
+          fill="none" stroke="#4A260F" stroke-width="2.0" stroke-linecap="round"/>
+    <path d="M 784,334 C 800,354 802,388 796,418" 
+          fill="none" stroke="#F0C89C" stroke-width="1.6" opacity="0.55"/>
+    <ellipse cx="802" cy="382" rx="11" ry="24" fill="#F0C89C" opacity="0.25"/>
+
+    <path d="M 826,444 Q 814,452 804,446" 
+          fill="none" stroke="#4A260F" stroke-width="1.8"/>
+
+    <path d="M 832,454 C 852,482 864,520 858,565 C 854,595 848,615 844,626" 
+          fill="none" stroke="#4A260F" stroke-width="2.0" stroke-linecap="round"/>
+    <path d="M 830,456 C 848,484 860,520 854,562" 
+          fill="none" stroke="#F0C89C" stroke-width="1.8" opacity="0.5"/>
+
+    <path d="M 872,648 C 865,662 852,672 835,668" 
+          fill="none" stroke="#4A260F" stroke-width="1.4" opacity="0.7"/>
+    <path d="M 834,668 C 828,660 824,648 822,638" 
+          fill="none" stroke="#4A260F" stroke-width="1.3" opacity="0.6"/>
+    <line x1="869" y1="712" x2="863" y2="712" stroke="#4A260F" stroke-width="1.2"/>
+    <line x1="853" y1="724" x2="847" y2="724" stroke="#4A260F" stroke-width="1.2"/>
+    <line x1="837" y1="720" x2="831" y2="720" stroke="#4A260F" stroke-width="1.2"/>
+    <line x1="821" y1="708" x2="817" y2="708" stroke="#4A260F" stroke-width="1.2"/>
+
+    </g>
+
+    <!-- Menu Flutuante com Links Diretos para Protocolos de Emergência -->
+    <!-- Card Flutuante de Patologias: MEMBROS SUPERIORES -->
+    <g class="hover-card">
+      <path d="M 868,545 L 845,490" stroke="#38BDF8" stroke-width="1.6" stroke-dasharray="4,3"/>
+      <circle cx="868" cy="545" r="4.5" fill="#38BDF8" stroke="#0C4A6E" stroke-width="1.5"/>
+      <g transform="translate(845, 450)" filter="url(#cardGlowShadow)">
+        <rect width="276" height="124" rx="9" fill="#0B132B" stroke="#0284C7" stroke-width="1.8"/>
+        <rect x="0" width="5" height="124" rx="2.5" fill="#38BDF8"/>
+        <text x="16" y="24" class="card-title">MEMBROS SUPERIORES</text>
+        <text x="16" y="39" class="card-subtitle">Trauma Osteoarticular, Isquemia Vascular &amp; Partes Moles</text>
+        <a href="#patologia-fraturas-ms" class="path-btn" transform="translate(16, 48)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Fraturas &amp; Luxações MS</text>
+        </a>
+        <a href="#patologia-oclusao-arterial-ms" class="path-btn" transform="translate(142, 48)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Isquemia Aguda MS</text>
+        </a>
+        <a href="#patologia-sindrome-compartimento" class="path-btn" transform="translate(16, 80)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">S. Compartimental</text>
+        </a>
+        <a href="#patologia-infeccao-mao" class="path-btn" transform="translate(142, 80)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Infecções da Mão / Tenossinovite</text>
+        </a>
+      </g>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SEGMENTO: MEMBROS INFERIORES -->
+  <!-- ========================================================================= -->
+  <g id="seg-lower-limbs" class="segment-group" data-segment="membros-inferiores">
+    <!-- Camada de Órgãos Nobres Internos (Revelada no Hover) -->
+    <g class="internal-organs">
+
+          <!-- Esqueleto e Feixes dos Membros Inferiores -->
+          <!-- Coxa Esquerda (Fêmur e Vasos Femorais) -->
+          <line x1="516" y1="710" x2="524" y2="938" stroke="url(#boneGrad)" stroke-width="18" stroke-linecap="round"/>
+          <line x1="526" y1="710" x2="532" y2="938" stroke="#EF4444" stroke-width="4.6" stroke-linecap="round"/>
+          <line x1="520" y1="710" x2="528" y2="938" stroke="#3B82F6" stroke-width="5.0" stroke-linecap="round"/>
+          <circle cx="524" cy="952" r="14" fill="url(#boneGrad)" stroke="#78716C" stroke-width="1.2"/>
+          <!-- Perna Esquerda (Tíbia e Fíbula) -->
+          <line x1="524" y1="970" x2="542" y2="1215" stroke="url(#boneGrad)" stroke-width="13" stroke-linecap="round"/>
+          <line x1="506" y1="980" x2="512" y2="1215" stroke="url(#boneGrad)" stroke-width="6.5" stroke-linecap="round"/>
+          <line x1="526" y1="970" x2="544" y2="1215" stroke="#EF4444" stroke-width="3.2"/>
+          <line x1="522" y1="970" x2="540" y2="1215" stroke="#3B82F6" stroke-width="3.6"/>
+          <!-- Coxa Direita -->
+          <line x1="684" y1="710" x2="676" y2="938" stroke="url(#boneGrad)" stroke-width="18" stroke-linecap="round"/>
+          <line x1="674" y1="710" x2="668" y2="938" stroke="#EF4444" stroke-width="4.6" stroke-linecap="round"/>
+          <line x1="680" y1="710" x2="672" y2="938" stroke="#3B82F6" stroke-width="5.0" stroke-linecap="round"/>
+          <circle cx="676" cy="952" r="14" fill="url(#boneGrad)" stroke="#78716C" stroke-width="1.2"/>
+          <!-- Perna Direita -->
+          <line x1="676" y1="970" x2="658" y2="1215" stroke="url(#boneGrad)" stroke-width="13" stroke-linecap="round"/>
+          <line x1="694" y1="980" x2="688" y2="1215" stroke="url(#boneGrad)" stroke-width="6.5" stroke-linecap="round"/>
+          <line x1="674" y1="970" x2="656" y2="1215" stroke="#EF4444" stroke-width="3.2"/>
+          <line x1="678" y1="970" x2="660" y2="1215" stroke="#3B82F6" stroke-width="3.6"/>
+        
+    </g>
+
+    <!-- Camada de Pele Humana Parda Canônica (Opaca por padrão) -->
+    <path class="skin-layer" fill="url(#skinGoldenLeg)" d="M 468,618 C 456,654 454,702 456,750 C 458,798 466,846 476,894 C 484,926 490,954 492,978 C 486,1008 482,1042 484,1074 C 486,1106 494,1145 502,1184 C 505,1208 507,1228 508,1242 C 507,1256 506,1270 508,1282 C 510,1292 516,1295 520,1290 C 522,1298 528,1300 532,1294 C 534,1302 540,1304 544,1298 C 546,1305 552,1306 555,1298 C 556,1308 564,1308 566,1300 C 567,1292 564,1282 562,1272 C 560,1260 557,1248 554,1234 C 553,1228 552,1222 553,1214 C 556,1180 564,1138 568,1095 C 572,1055 570,1016 562,984 C 556,970 552,952 556,934 C 562,914 566,888 568,856 C 570,820 576,772 584,718 L 600,700 L 616,718 C 624,772 630,820 632,856 C 634,888 638,914 644,934 C 648,952 644,970 638,984 C 630,1016 628,1055 632,1095 C 636,1138 644,1180 647,1214 C 648,1222 647,1228 646,1234 C 643,1248 640,1260 638,1272 C 636,1282 633,1292 634,1300 C 636,1308 644,1308 645,1298 C 648,1306 654,1305 656,1298 C 660,1304 666,1302 668,1294 C 672,1300 678,1298 680,1290 C 684,1295 690,1292 692,1282 C 694,1270 693,1256 692,1242 C 693,1228 695,1208 698,1184 C 706,1145 714,1106 716,1074 C 718,1042 714,1008 708,978 C 710,954 716,926 724,894 C 734,846 742,798 744,750 C 746,702 744,654 732,618 Z"/>
+
+    <!-- Relevos Musculares, Ósseos e Faciais Realistas -->
+    <g class="muscle-relief">
+
+    <!-- Relevos Anatômicos dos Membros Inferiores -->
+    <!-- QUADRÍCEPS FEMORAL ESQUERDO (Viewer Left) -->
+    <!-- Reto Femoral (Cilindro central potente descendo a coxa) -->
+    <path d="M 518,705 C 514,762 512,825 518,890" 
+          fill="none" stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+    <ellipse cx="518" cy="800" rx="14" ry="46" fill="#F0C89C" opacity="0.28"/>
+
+    <!-- Vasto Lateral Esquerdo (Grande varredura convexa lateral) -->
+    <path d="M 464,730 C 466,785 476,848 496,915" 
+          fill="none" stroke="#4A260F" stroke-width="2.0" stroke-linecap="round"/>
+    <ellipse cx="482" cy="795" rx="12" ry="42" fill="#F0C89C" opacity="0.25"/>
+
+    <!-- Vasto Medial Esquerdo ("Gota Muscular" volumosa sobre o joelho) -->
+    <path d="M 544,848 C 552,882 552,924 542,952" 
+          fill="none" stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M 546,850 C 554,884 554,922 544,948" 
+          fill="none" stroke="#F0C89C" stroke-width="1.8" opacity="0.55"/>
+    <ellipse cx="548" cy="926" rx="9" ry="16" fill="#F0C89C" opacity="0.32"/>
+
+    <!-- Joelho Esquerdo: Patela Anatômica e Ligamento Patelar -->
+    <path d="M 524,938 C 534,937 537,944 536,953 C 535,962 524,967 524,967 C 524,967 513,962 512,953 C 511,944 514,937 524,938 Z" 
+          fill="#DCAB78" stroke="#4A260F" stroke-width="1.8"/>
+    <ellipse cx="524" cy="948" rx="6" ry="4" fill="#F0C89C" opacity="0.6"/>
+    <path d="M 522,967 L 522,994 M 526,967 L 526,994" 
+          stroke="#4A260F" stroke-width="1.8"/>
+    <path d="M 512,972 Q 518,986 520,994" stroke="#8B5228" stroke-width="1.3" fill="none" opacity="0.6"/>
+    <path d="M 536,972 Q 530,986 528,994" stroke="#8B5228" stroke-width="1.3" fill="none" opacity="0.6"/>
+
+    <!-- Perna Esquerda: Crista Tibial Anterior e Relevo do Gastrocnêmio -->
+    <path d="M 524,996 C 526,1044 530,1110 540,1188 C 544,1204 548,1216 552,1222" 
+          fill="none" stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M 526,998 C 528,1046 532,1112 542,1186" 
+          fill="none" stroke="#F0C89C" stroke-width="1.8" opacity="0.6"/>
+    <ellipse cx="552" cy="1068" rx="10" ry="26" fill="#F0C89C" opacity="0.25"/>
+    <ellipse cx="498" cy="1042" rx="9" ry="20" fill="#F0C89C" opacity="0.22"/>
+
+    <!-- Maléolos Esquerdo (Marcadores Anatômicos) -->
+    <circle cx="552" cy="1222" r="3.2" fill="#DCAB78" stroke="#4A260F" stroke-width="1.2"/>
+    <circle cx="508" cy="1238" r="3.4" fill="#DCAB78" stroke="#4A260F" stroke-width="1.2"/>
+
+    <!-- Tendões Extensores no Dorso do Pé Esquerdo -->
+    <path d="M 546,1234 L 560,1292 M 540,1236 L 550,1292 M 534,1238 L 540,1292 M 528,1240 L 530,1290" 
+          stroke="#F0C89C" stroke-width="1.2" opacity="0.5"/>
+
+    <!-- QUADRÍCEPS FEMORAL DIREITO (Viewer Right - Espelho Sagital Perfeito) -->
+    <path d="M 682,705 C 686,762 688,825 682,890" 
+          fill="none" stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+    <ellipse cx="682" cy="800" rx="14" ry="46" fill="#F0C89C" opacity="0.28"/>
+
+    <path d="M 736,730 C 734,785 724,848 704,915" 
+          fill="none" stroke="#4A260F" stroke-width="2.0" stroke-linecap="round"/>
+    <ellipse cx="718" cy="795" rx="12" ry="42" fill="#F0C89C" opacity="0.25"/>
+
+    <path d="M 656,848 C 648,882 648,924 658,952" 
+          fill="none" stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M 654,850 C 646,884 646,922 656,948" 
+          fill="none" stroke="#F0C89C" stroke-width="1.8" opacity="0.55"/>
+    <ellipse cx="652" cy="926" rx="9" ry="16" fill="#F0C89C" opacity="0.32"/>
+
+    <!-- Joelho Direito -->
+    <path d="M 676,938 C 666,937 663,944 664,953 C 665,962 676,967 676,967 C 676,967 687,962 688,953 C 689,944 686,937 676,938 Z" 
+          fill="#DCAB78" stroke="#4A260F" stroke-width="1.8"/>
+    <ellipse cx="676" cy="948" rx="6" ry="4" fill="#F0C89C" opacity="0.6"/>
+    <path d="M 678,967 L 678,994 M 674,967 L 674,994" 
+          stroke="#4A260F" stroke-width="1.8"/>
+    <path d="M 688,972 Q 682,986 680,994" stroke="#8B5228" stroke-width="1.3" fill="none" opacity="0.6"/>
+    <path d="M 664,972 Q 670,986 672,994" stroke="#8B5228" stroke-width="1.3" fill="none" opacity="0.6"/>
+
+    <!-- Perna Direita -->
+    <path d="M 676,996 C 674,1044 670,1110 660,1188 C 656,1204 652,1216 648,1222" 
+          fill="none" stroke="#4A260F" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M 674,998 C 672,1046 668,1112 658,1186" 
+          fill="none" stroke="#F0C89C" stroke-width="1.8" opacity="0.6"/>
+    <ellipse cx="648" cy="1068" rx="10" ry="26" fill="#F0C89C" opacity="0.25"/>
+    <ellipse cx="702" cy="1042" rx="9" ry="20" fill="#F0C89C" opacity="0.22"/>
+
+    <!-- Maléolos Direito -->
+    <circle cx="648" cy="1222" r="3.2" fill="#DCAB78" stroke="#4A260F" stroke-width="1.2"/>
+    <circle cx="692" cy="1238" r="3.4" fill="#DCAB78" stroke="#4A260F" stroke-width="1.2"/>
+
+    <path d="M 654,1234 L 640,1292 M 660,1236 L 650,1292 M 666,1238 L 660,1292 M 672,1240 L 670,1290" 
+          stroke="#F0C89C" stroke-width="1.2" opacity="0.5"/>
+
+    </g>
+
+    <!-- Menu Flutuante com Links Diretos para Protocolos de Emergência -->
+    <!-- Card Flutuante de Patologias: MEMBROS INFERIORES -->
+    <g class="hover-card">
+      <path d="M 486,1020 L 411,970" stroke="#38BDF8" stroke-width="1.6" stroke-dasharray="4,3"/>
+      <circle cx="486" cy="1020" r="4.5" fill="#38BDF8" stroke="#0C4A6E" stroke-width="1.5"/>
+      <g transform="translate(135, 930)" filter="url(#cardGlowShadow)">
+        <rect width="276" height="154" rx="9" fill="#0B132B" stroke="#0284C7" stroke-width="1.8"/>
+        <rect x="271" width="5" height="154" rx="2.5" fill="#38BDF8"/>
+        <text x="16" y="24" class="card-title">MEMBROS INFERIORES</text>
+        <text x="16" y="39" class="card-subtitle">Vascular Agudo, Trauma &amp; Partes Moles</text>
+        <a href="#patologia-tvp" class="path-btn" transform="translate(16, 48)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">TVP / Trombose Venosa</text>
+        </a>
+        <a href="#patologia-oclusao-arterial-mi" class="path-btn" transform="translate(142, 48)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Isquemia Aguda MI</text>
+        </a>
+        <a href="#patologia-celulite-erisipela" class="path-btn" transform="translate(16, 80)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Celulite &amp;amp; Erisipela</text>
+        </a>
+        <a href="#patologia-fasciite-necrosante" class="path-btn" transform="translate(142, 80)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Fasciíte Necrosante</text>
+        </a>
+        <a href="#patologia-fratura-femur" class="path-btn" transform="translate(16, 112)">
+          <rect width="244" height="26" rx="5"/>
+          <text x="8" y="17">Fratura de Fêmur / Pelve</text>
+        </a>
+      </g>
+    </g>
+  </g>
+
+  <!-- RODAPÉ TÉCNICO -->
+  <g transform="translate(600, 1468)" text-anchor="middle">
+    <rect x="-420" y="-18" width="840" height="34" rx="6" fill="#0F172A" stroke="#1E293B" stroke-width="1.2"/>
+    <circle cx="-365" cy="-1" r="5" fill="#CA925E"/>
+    <text x="-352" y="3" fill="#E2E8F0" font-family="'Inter', sans-serif" font-size="11" text-anchor="start">Pele Parda Dourada (Opaca por padrão)</text>
+    
+    <circle cx="-70" cy="-1" r="5" fill="#38BDF8"/>
+    <text x="-57" y="3" fill="#E2E8F0" font-family="'Inter', sans-serif" font-size="11" text-anchor="start">Hover: Ativa Transparência &amp; Revela Anatomia Interna</text>
+
+    <circle cx="225" cy="-1" r="5" fill="#10B981"/>
+    <text x="238" y="3" fill="#E2E8F0" font-family="'Inter', sans-serif" font-size="11" text-anchor="start">Links Diretos para Protocolos</text>
+  </g>
+
+</svg>

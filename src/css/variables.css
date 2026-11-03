@@ -1,0 +1,167 @@
+/* ==========================================================================
+   Design Tokens & Variables — Emergência Pro
+   ========================================================================== */
+
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'SFMono-Regular', 'Courier New', Courier, monospace;
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f3f4f6;
+  --color-border-tertiary: #e5e7eb;
+  --color-border-secondary: #d1d5db;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+}
+
+body {
+  background: #f3f4f6;
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+input, select, textarea {
+  padding: 7px 10px;
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 14px;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: #a32d2d;
+}
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* ─── Modo Noturno Tático (OLED Black / Slate) para Plantão ─── */
+body.high-contrast-night {
+  --color-background-primary: #0b0f17;
+  --color-background-secondary: #05070b;
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-border-primary: #334155;
+  --color-border-secondary: #1f2937;
+  --color-border-tertiary: #111827;
+  background-color: #05070b !important;
+  color: #f8fafc !important;
+}
+body.high-contrast-night .card,
+body.high-contrast-night .rel-col-inner,
+body.high-contrast-night .sticky-clinical-cockpit,
+body.high-contrast-night .cockpit-decision-panel,
+body.high-contrast-night .hdr {
+  background: #0f172a !important;
+  border-color: #1f2937 !important;
+  color: #f8fafc !important;
+}
+body.high-contrast-night .cockpit-decision-hdr {
+  background: linear-gradient(135deg, #020617 0%, #0f172a 100%) !important;
+  border-bottom: 1px solid #1f2937;
+}
+body.high-contrast-night .cockpit-search-input {
+  background: #090d16 !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+body.high-contrast-night .cockpit-chip {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+  color: #cbd5e1 !important;
+}
+body.high-contrast-night .cockpit-chip.active {
+  background: #38bdf8 !important;
+  color: #090d16 !important;
+  border-color: #0284c7 !important;
+  font-weight: 700;
+}
+body.high-contrast-night .cockpit-pinned-alert {
+  background: #172554 !important;
+  border-color: #3b82f6 !important;
+  color: #93c5fd !important;
+}
+body.high-contrast-night .cockpit-pitfall-banner {
+  background: #451a03 !important;
+  border-color: #f59e0b !important;
+  color: #fde68a !important;
+}
+body.high-contrast-night .cockpit-empty-slot {
+  background: #111827 !important;
+  border-color: #1f2937 !important;
+  color: #64748b !important;
+}
+body.high-contrast-night .decision-card {
+  background: #131b26 !important;
+  border-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+}
+body.high-contrast-night .rel-col-textarea {
+  background: #020617 !important;
+  color: #f1f5f9 !important;
+  border-color: #334155 !important;
+}
+body.high-contrast-night input,
+body.high-contrast-night select,
+body.high-contrast-night textarea {
+  background: #111827 !important;
+  color: #f8fafc !important;
+  border-color: #475569 !important;
+}
+body.high-contrast-night .rel-section-copy-overlay {
+  background: rgba(15,23,42,0.92) !important;
+  border-color: rgba(255,255,255,0.18) !important;
+}
+body.high-contrast-night .pep-copy-btn {
+  color: #e2e8f0 !important;
+}
+body.high-contrast-night .tg {
+  background: #1e293b !important;
+  border-color: #475569 !important;
+  color: #cbd5e1 !important;
+}
+body.high-contrast-night .tg.on {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+  border-color: #3b82f6 !important;
+}
+body.high-contrast-night .hdr-divider { background: #334155 !important; }
+body.high-contrast-night .hdr-action-btn.hdr-btn-icon { background: #1e293b !important; border-color: #334155 !important; color: #cbd5e1 !important; }
+body.high-contrast-night .hdr-action-btn.hdr-btn-icon:hover { background: #334155 !important; color: #f8fafc !important; }
+body.high-contrast-night .steps { background: #0f172a !important; border-color: #1e293b !important; }
+body.high-contrast-night .step { background: #1e293b !important; border-color: #334155 !important; color: #cbd5e1 !important; }
+body.high-contrast-night .step:hover { background: #334155 !important; color: #f8fafc !important; }
+body.high-contrast-night .step.active { background: #450a0a !important; border-color: #dc2626 !important; color: #fca5a5 !important; }
+body.high-contrast-night .step.done { background: #052e16 !important; border-color: #16a34a !important; color: #86efac !important; }
+
+/* Animações Globais */
+@keyframes cockpitPulseRed {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+@keyframes slideUpDrawer {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}

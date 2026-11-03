@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net data:; img-src 'self' data:; connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com;">
+<title>Emergência Pro — Admissão com Condutas Baseadas em Evidências</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none'%3E%3Crect width='40' height='40' rx='10' fill='%230f172a'/%3E%3Crect x='0.75' y='0.75' width='38.5' height='38.5' rx='9.25' stroke='%23dc2626' stroke-opacity='0.55' stroke-width='1.5'/%3E%3Cg stroke='%23dc2626' stroke-width='4.4' stroke-linecap='round'%3E%3Cline x1='20' y1='7' x2='20' y2='33'/%3E%3Cline x1='8.74' y1='13.5' x2='31.26' y2='26.5'/%3E%3Cline x1='31.26' y1='13.5' x2='8.74' y2='26.5'/%3E%3C/g%3E%3Cpath d='M6.5 21H13.5L15.4 17.5L17.4 25.5L20 11.5L22.5 27.5L24.8 18.5L26.5 21H33.5' stroke='%23ffffff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#a32d2d">
+<meta property="og:title" content="Emergência Pro">
+<meta property="og:description" content="Admissão com condutas baseadas em evidências">
+<meta property="og:image" content="logo.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" integrity="sha384-hs5SINUk7GPohxRis+rS7grpSWEbtOIJ3sRoseBKg3CDPIKpG55RfSenbvA6ALOt" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.3" integrity="sha384-iWpUQPQzWsFiosLgsS8o+e6E8y3Gm+EW2m/vAAo7A2H3fuc4KOKEx+5CAord2H2z" crossorigin="anonymous"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileReady" async defer></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" integrity="sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/" crossorigin="anonymous"></script>
+<style>
+/* CSS_BUNDLE */
+</style>
+</head>
+<body>
+<div class="login-overlay" id="loginOverlay" style="display:none">
+ <div class="login-box">
+ <div class="login-logo">
+ <div class="login-hico"><svg viewBox="0 0 40 40" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Emergência Pro"><rect width="40" height="40" rx="10" fill="#0f172a"/><rect x="0.75" y="0.75" width="38.5" height="38.5" rx="9.25" stroke="#dc2626" stroke-opacity="0.55" stroke-width="1.5"/><g stroke="#dc2626" stroke-width="4.4" stroke-linecap="round"><line x1="20" y1="7" x2="20" y2="33"/><line x1="8.74" y1="13.5" x2="31.26" y2="26.5"/><line x1="31.26" y1="13.5" x2="8.74" y2="26.5"/></g><path d="M6.5 21H13.5L15.4 17.5L17.4 25.5L20 11.5L22.5 27.5L24.8 18.5L26.5 21H33.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+ <div>
+ <div style="font-size:18px;font-weight:600;color:#111827">Emergência Pro</div>
+ <div style="font-size:12px;color:#6b7280">Acesso restrito</div>
+ </div>
+ </div>
+ <div class="login-fl">
+ <label>E-mail</label>
+ <input type="email" id="loginEmail" placeholder="seu@email.com" onkeydown="if(event.key==='Enter')doLogin()">
+ </div>
+ <div class="login-fl">
+ <label>Senha</label>
+ <input type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+ </div>
+ <div class="cf-turnstile-wrap">
+   <div class="cf-turnstile" data-tname="login"></div>
+ </div>
+ <button class="login-btn" onclick="doLogin()" id="loginBtn">Entrar</button>
+ <div class="login-err" id="loginErr"></div>
+ <div class="login-loading" id="loginLoading">Verificando...</div>
+ <button class="login-link" onclick="showSignup()">Criar conta de profissional</button>
+ <button class="login-link" onclick="doForgotPassword()" style="margin-top:0">Esqueci minha senha</button>
+ </div>
+</div>
+
+<div class="login-overlay" id="signupOverlay" style="display:none">
+ <div class="signup-box">
+  <div class="login-logo">
+   <div class="login-hico"><i class="ti ti-user-plus" aria-hidden="true"></i></div>
+   <div>
+    <div style="font-size:18px;font-weight:600;color:#111827">Criar conta</div>
+    <div style="font-size:12px;color:#6b7280">Acesso restrito a profissionais de saúde</div>
+   </div>
+  </div>
+  <div class="login-fl">
+   <label>E-mail profissional</label>
+   <input type="email" id="signupEmail" placeholder="seu@email.com" autocomplete="email">
+  </div>
+  <div class="login-fl">
+   <label>Senha</label>
+   <input type="password" id="signupPwd" placeholder="••••••••" autocomplete="new-password" oninput="renderPwdRules()">
+   <ul class="pwd-rules" id="pwdRules">
+    <li id="pr-len"><i class="ti ti-circle"></i> Mínimo 10 caracteres</li>
+    <li id="pr-upp"><i class="ti ti-circle"></i> Pelo menos uma letra maiúscula</li>
+    <li id="pr-num"><i class="ti ti-circle"></i> Pelo menos um número</li>
+    <li id="pr-spc"><i class="ti ti-circle"></i> Pelo menos um caractere especial</li>
+   </ul>
+  </div>
+  <div class="login-fl">
+   <label>Confirmar senha</label>
+   <input type="password" id="signupPwd2" placeholder="••••••••" autocomplete="new-password">
+  </div>
+  <div class="cf-turnstile-wrap">
+   <div class="cf-turnstile" data-tname="signup"></div>
+  </div>
+  <button class="login-btn" onclick="doSignup()" id="signupBtn">Criar conta</button>
+  <div class="login-err" id="signupErr"></div>
+  <div class="login-loading" id="signupLoading">Criando...</div>
+  <button class="login-link" onclick="showLogin()">Já tenho conta — entrar</button>
+ </div>
+</div>
+
+<div class="login-overlay" id="kycOverlay" style="display:none">
+ <div class="kyc-box">
+  <div class="login-logo">
+   <div class="login-hico"><i class="ti ti-id-badge" aria-hidden="true"></i></div>
+   <div>
+    <div style="font-size:18px;font-weight:600;color:#111827">Validação profissional</div>
+    <div style="font-size:12px;color:#6b7280">Necessária para aprovação do admin</div>
+   </div>
+  </div>
+  <div class="login-fl">
+   <label>Nome completo</label>
+   <input type="text" id="kycNome" placeholder="Nome completo conforme CRM" autocomplete="name">
+  </div>
+  <div class="kyc-grid">
+   <div class="login-fl">
+    <label>CRM (apenas números)</label>
+    <input type="text" id="kycCrm" placeholder="243521" inputmode="numeric">
+   </div>
+   <div class="login-fl">
+    <label>UF do CRM</label>
+    <input type="text" id="kycCrmUf" placeholder="SP" maxlength="2" style="text-transform:uppercase">
+   </div>
+  </div>
+  <div class="login-fl">
+   <label>Especialidade</label>
+   <input type="text" id="kycEsp" placeholder="Ex: Emergência, Clínica Médica, Cardiologia…">
+  </div>
+  <div class="login-fl">
+   <label>Telefone (com DDD)</label>
+   <input type="tel" id="kycTel" placeholder="(11) 99999-9999" autocomplete="tel">
+  </div>
+  <div class="kyc-grid" style="margin-top:8px">
+   <label class="kyc-upload" id="kycSelfieLbl">
+    <i class="ti ti-camera" aria-hidden="true"></i> Selfie segurando o CRM
+    <input type="file" id="kycSelfie" accept="image/*" capture="user" onchange="onKycFile(this,'selfie')">
+   </label>
+   <label class="kyc-upload" id="kycCrmDocLbl">
+    <i class="ti ti-id" aria-hidden="true"></i> Foto/scan do CRM
+    <input type="file" id="kycCrmDoc" accept="image/*,application/pdf" onchange="onKycFile(this,'crm')">
+   </label>
+  </div>
+  <button class="login-btn" onclick="doKycSubmit()" id="kycBtn" style="margin-top:12px">Enviar para análise</button>
+  <div class="login-err" id="kycErr"></div>
+  <div class="login-loading" id="kycLoading">Enviando...</div>
+  <button class="login-link" onclick="doLogout()">Sair</button>
+ </div>
+</div>
+
+<div class="login-overlay" id="pendingOverlay" style="display:none">
+ <div class="pending-box">
+  <div class="pending-icon" id="pendingIcon"><i class="ti ti-hourglass" aria-hidden="true"></i></div>
+  <div style="font-size:18px;font-weight:600;color:#111827;margin-bottom:8px" id="pendingTitle">Aguardando aprovação</div>
+  <div style="font-size:13px;color:#6b7280;line-height:1.5;margin-bottom:16px" id="pendingMsg">
+   Sua conta foi enviada para análise. Você receberá acesso assim que o administrador validar seus documentos.
+  </div>
+  <button class="login-btn" onclick="doLogout()" style="background:#6b7280">Sair</button>
+ </div>
+</div>
+
+<div class="login-overlay" id="inactivityOverlay" style="display:none">
+ <div class="login-box" style="text-align:center">
+  <div class="login-hico" style="margin:0 auto 1rem;background:#fcebeb"><i class="ti ti-lock" style="font-size:24px;color:#a32d2d" aria-hidden="true"></i></div>
+  <div style="font-size:18px;font-weight:600;color:#111827;margin-bottom:8px">Sessão bloqueada</div>
+  <div style="font-size:13px;color:#6b7280;line-height:1.5;margin-bottom:1.5rem">
+   A tela foi bloqueada por inatividade (15 min) para proteger os dados do paciente em conformidade com a LGPD.
+  </div>
+  <button class="login-btn" onclick="unlockInactivity()"><i class="ti ti-lock-open" aria-hidden="true"></i> Desbloquear sessão</button>
+  <button class="login-link" onclick="doLogout()" style="margin-top:10px">Encerrar sessão (Logout)</button>
+ </div>
+</div>
+
+<div class="app" id="mainApp" style="display:none">
+<div class="hdr">
+ <div class="hdr-brand-bar">
+  <div class="hdr-brand">
+   <div class="hico"><svg viewBox="0 0 40 40" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Emergência Pro"><rect width="40" height="40" rx="10" fill="#0f172a"/><rect x="0.75" y="0.75" width="38.5" height="38.5" rx="9.25" stroke="#dc2626" stroke-opacity="0.55" stroke-width="1.5"/><g stroke="#dc2626" stroke-width="4.4" stroke-linecap="round"><line x1="20" y1="7" x2="20" y2="33"/><line x1="8.74" y1="13.5" x2="31.26" y2="26.5"/><line x1="31.26" y1="13.5" x2="8.74" y2="26.5"/></g><path d="M6.5 21H13.5L15.4 17.5L17.4 25.5L20 11.5L22.5 27.5L24.8 18.5L26.5 21H33.5" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+   <div>
+    <div class="hdr-title-wrap">
+     <span class="hdr-title">Emergência Pro</span>
+     <span class="hdr-badge-status"><i class="ti ti-point-filled"></i> Beira-leito</span>
+    </div>
+    <div class="hdr-subtitle hide-mobile">Admissão com condutas baseadas em evidências</div>
+   </div>
+  </div>
+  <button class="hdr-action-btn hdr-btn-logout hdr-btn-icon mobile-only" onclick="doLogout()" title="Encerrar sessão (Logout)">
+   <i class="ti ti-logout" aria-hidden="true"></i>
+  </button>
+ </div>
+ <div class="hdr-actions">
+  <button class="hdr-action-btn hdr-btn-decision" onclick="toggleCockpitDecisionPanel()" title="Apoio à Decisão Beira-leito (Alt + D)">
+   <i class="ti ti-bolt" aria-hidden="true"></i>
+   <span>Apoio à Decisão</span>
+   <span class="badge-n" id="hdrConflictCount" style="display:none;background:#dc2626;color:#fff;margin-left:3px">0</span>
+  </button>
+  <a href="neuro_emergencia.html" class="hdr-action-btn hdr-btn-crunch" title="Protocolos Táticos (Crunch Time + Pitfalls)">
+   <i class="ti ti-flame" aria-hidden="true"></i>
+   <span>Crunch Time</span>
+  </a>
+  <button class="hdr-action-btn hdr-btn-shift shift-btn" id="shiftHdrBtn" onclick="showShiftPanel()" style="display:none" title="Painel de Plantão & Pacientes">
+   <i class="ti ti-stethoscope" aria-hidden="true"></i>
+   <span>Plantão</span>
+  </button>
+  <button class="hdr-action-btn hdr-btn-admin admin-btn" id="adminHdrBtn" onclick="showAdminPanel()" style="display:none" title="Painel de Administração">
+   <i class="ti ti-shield-lock" aria-hidden="true"></i>
+   <span>Admin</span>
+  </button>
+  <div class="hdr-divider"></div>
+  <a href="index.html" class="hdr-action-btn hdr-btn-home hdr-btn-icon" title="Página Inicial / Sobre">
+   <i class="ti ti-home" aria-hidden="true"></i>
+  </a>
+  <button class="hdr-action-btn hdr-btn-night hdr-btn-icon" id="nightModeBtn" onclick="toggleHighContrastNight()" title="Alternar Modo Noturno de Alto Contraste (Plantão)">
+   <i class="ti ti-moon-stars" aria-hidden="true"></i>
+  </button>
+  <button class="hdr-action-btn hdr-btn-shortcut hdr-btn-icon" onclick="showShortcutModal()" title="Atalhos de teclado (Alt + /)">
+   <i class="ti ti-keyboard" aria-hidden="true"></i>
+  </button>
+  <button class="hdr-action-btn hdr-btn-reset reset-btn hdr-btn-icon" onclick="resetCase()" title="Reiniciar caso atual">
+   <i class="ti ti-refresh" aria-hidden="true"></i>
+  </button>
+  <button class="hdr-action-btn hdr-btn-logout desktop-only-logout logout-btn hdr-btn-icon" onclick="doLogout()" title="Encerrar sessão (Logout)">
+   <i class="ti ti-logout" aria-hidden="true"></i>
+  </button>
+ </div>
+</div>
+<div class="sticky-clinical-cockpit" id="stickyClinicalCockpit"></div>
+<div class="cockpit-decision-panel" id="cockpitDecisionPanel" style="display:none"></div>
+<div class="steps" id="sBar"></div>
+<div class="two-col-wrap">
+ <div class="col-main" id="con"></div>
+ <div class="col-rel">
+  <div class="rel-col-inner">
+   <div class="rel-col-hdr">
+    <div class="rel-col-title-wrap">
+     <span class="rel-col-badge-live"><i class="ti ti-point-filled"></i> AO VIVO</span>
+     <span class="rel-col-title">Prontuário Médico</span>
+     <button type="button" class="btn-split" id="splitModeBtn" onclick="toggleSplitMode()" title="Alternar Modo Dividido (50/50)"><i class="ti ti-layout-columns" aria-hidden="true"></i> 50/50</button>
+    </div>
+    <div class="rel-mode-toggle">
+     <button type="button" class="rel-mode-pill on" id="relModeFullBtn" onclick="S.relMode='full';render()" title="Prontuário Completo"><i class="ti ti-file-text" aria-hidden="true"></i> Completo</button>
+     <button type="button" class="rel-mode-pill" id="relModeResumoBtn" onclick="S.relMode='resumo';render()" title="Resumo Clínico"><i class="ti ti-list" aria-hidden="true"></i> Resumo</button>
+    </div>
+   </div>
+   <div class="pep-action-toolbar" title="Copiar seções prontas para colar no PEP hospitalar">
+    <span class="pep-toolbar-lbl"><i class="ti ti-clipboard-copy" aria-hidden="true"></i> PEP:</span>
+    <button type="button" class="pep-tool-btn" onclick="copyPepSection('anamnese')" title="Copiar Anamnese: Identificação + HDA + Antecedentes"><i class="ti ti-clipboard" aria-hidden="true"></i> 1. Anamnese</button>
+    <button type="button" class="pep-tool-btn" onclick="copyPepSection('ef')" title="Copiar Exame Físico: Sinais Vitais + Exame Físico + ECG/POCUS"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i> 2. Exame Físico</button>
+    <button type="button" class="pep-tool-btn" onclick="copyPepSection('conduta')" title="Copiar Conduta: Hipótese + Ordens/Prescrição + Pendências"><i class="ti ti-pill" aria-hidden="true"></i> 3. Conduta</button>
+    <button type="button" class="pep-tool-btn pep-tool-btn-all" onclick="copyPepSection('tudo')" title="Copiar Prontuário Completo"><i class="ti ti-copy" aria-hidden="true"></i> Tudo</button>
+   </div>
+   <div class="rel-col-txt-wrap">
+    <textarea id="relColTxt" class="rel-col-textarea" spellcheck="false" placeholder="O prontuário do paciente será gerado aqui em tempo real..."></textarea>
+   </div>
+   <div class="rel-col-actions">
+    <button class="btng" style="background:#15803d" onclick="copyRelCol()" title="Copiar relatório completo"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
+    <button class="btng btn-clean-patient" onclick="copyAndClearPatient()" title="Copiar relatório e limpar dados do paciente da memória (LGPD)"><i class="ti ti-copy-check" aria-hidden="true"></i> Copiar & Limpar</button>
+    <button class="btng" style="background:#185fa5" onclick="saveReportFromCol()" title="Salvar relatório"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar</button>
+   </div>
+  </div>
+ </div>
+</div>
+<div id="modalArea"></div>
+<div class="app-footer" id="appFooter">Emergência Pro • v2026.05.20</div>
+</div>
+
+<div class="admin-overlay" id="adminOverlay" style="display:none">
+ <div class="admin-shell">
+  <div class="admin-hdr">
+   <div>
+    <div style="font-size:18px;font-weight:600">Painel administrativo</div>
+    <div style="font-size:12px;color:#6b7280">Aprovação de profissionais</div>
+   </div>
+   <button class="modal-close" onclick="closeAdminPanel()" aria-label="Fechar">×</button>
+  </div>
+  <div class="admin-tabs" id="adminTabs">
+   <button class="admin-tab active" data-tab="pending" onclick="setAdminTab('pending')">Pendentes <span class="badge-n" id="adminCntPending"></span></button>
+   <button class="admin-tab" data-tab="approved" onclick="setAdminTab('approved')">Aprovados</button>
+   <button class="admin-tab" data-tab="rejected" onclick="setAdminTab('rejected')">Rejeitados</button>
+   <button class="admin-tab" data-tab="suspended" onclick="setAdminTab('suspended')">Suspensos</button>
+  </div>
+  <div id="adminList"></div>
+ </div>
+</div>
+<div id="kycDetailArea"></div>
+
+<div class="shift-overlay" id="shiftOverlay" style="display:none">
+ <div class="shift-shell">
+  <div class="shift-hdr">
+   <div>
+    <div style="font-size:18px;font-weight:600">Painel de plantão</div>
+    <div style="font-size:12px;color:#6b7280" id="shiftStatus">—</div>
+   </div>
+   <button class="modal-close" onclick="closeShiftPanel()" aria-label="Fechar">×</button>
+  </div>
+  <div class="shift-info" id="shiftInfo"></div>
+  <div class="shift-actions" id="shiftActions"></div>
+  <div id="shiftBody"></div>
+ </div>
+</div>
+<div id="pacEditArea"></div>
+
+<!-- Floating Action Button (FAB) para Mobile / Consulta Rápida -->
+<button class="fab-report-btn" id="fabReportBtn" onclick="toggleFabDrawer()" aria-label="Ver relatório de admissão" title="Ver relatório de admissão">
+  <i class="ti ti-file-text" aria-hidden="true"></i>
+  <span>Relatório</span>
+</button>
+
+<div class="fab-drawer-overlay" id="fabDrawerOverlay" style="display:none" onclick="if(event.target===this)closeFabDrawer()">
+  <div class="fab-drawer-box">
+    <div class="fab-drawer-hdr">
+      <div>
+        <div style="font-weight:600;font-size:15px;color:var(--color-text-primary)">Relatório ao Vivo</div>
+        <div style="font-size:11px;color:var(--color-text-secondary)">Admissão & Condutas</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="rg">
+          <span class="ro" id="fabRelModeFull" onclick="S.relMode='full';render();updateFabDrawerText();">Completo</span>
+          <span class="ro" id="fabRelModeResumo" onclick="S.relMode='resumo';render();updateFabDrawerText();">Resumo</span>
+        </div>
+        <button class="modal-close" onclick="closeFabDrawer()" aria-label="Fechar">×</button>
+      </div>
+    </div>
+    <div class="fab-drawer-body">
+      <textarea id="fabDrawerTxt" class="fab-drawer-textarea" spellcheck="false"></textarea>
+    </div>
+    <div class="fab-drawer-footer">
+      <button class="btng" onclick="copyFabDrawer()"><i class="ti ti-copy" aria-hidden="true"></i> Copiar</button>
+      
+      <button class="btng" style="background:#185fa5" onclick="saveReportFromFab()"><i class="ti ti-device-floppy" aria-hidden="true"></i> Salvar</button>
+      <button class="btns" onclick="closeFabDrawer()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Button para Apoio à Decisão no Mobile -->
+<!-- Floating Button para Apoio à Decisão no Mobile -->
+<button class="fab-report-btn fab-decision-btn" id="fabDecisionBtn" onclick="toggleCockpitDecisionPanel()" aria-label="Apoio à Decisão Beira-leito" title="Apoio à Decisão & Metas (Alt + D)">
+  <i class="ti ti-bolt" aria-hidden="true"></i>
+  <span>Apoio Beira-Leito</span>
+  <span class="badge-n" id="fabDecisionConflictCount" style="display:none;background:#dc2626;color:#fff;margin-left:3px;font-size:10px">0</span>
+</button>
+
+<!-- Modal de Ajuda de Atalhos de Teclado -->
+<div class="modal-bg" id="shortcutModal" style="display:none" onclick="if(event.target===this)closeShortcutModal()">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-hdr">
+      <div style="font-weight:600;font-size:16px;display:flex;align-items:center;gap:8px">
+        <i class="ti ti-keyboard" style="color:#a32d2d" aria-hidden="true"></i> Atalhos de Navegação Rápida
+      </div>
+      <button class="modal-close" onclick="closeShortcutModal()">×</button>
+    </div>
+    <div style="font-size:13px;color:#374151;line-height:1.6">
+      <div style="margin-bottom:12px;font-size:12px;color:#6b7280">
+        Navegue e opere o prontuário sem tirar as mãos do teclado durante o atendimento:
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <tr style="border-bottom:.5px solid #e5e7eb"><td style="padding:6px 0"><kbd class="kbd">Alt</kbd> + <kbd class="kbd">0</kbd> a <kbd class="kbd">5</kbd></td><td style="color:#4b5563">Pular diretamente para o Passo 0 ao 5</td></tr>
+        <tr style="border-bottom:.5px solid #e5e7eb"><td style="padding:6px 0"><kbd class="kbd">Alt</kbd> + <kbd class="kbd">N</kbd> ou <kbd class="kbd">→</kbd></td><td style="color:#4b5563">Avançar para o próximo passo</td></tr>
+        <tr style="border-bottom:.5px solid #e5e7eb"><td style="padding:6px 0"><kbd class="kbd">Alt</kbd> + <kbd class="kbd">P</kbd> ou <kbd class="kbd">←</kbd></td><td style="color:#4b5563">Voltar ao passo anterior</td></tr>
+        <tr style="border-bottom:.5px solid #e5e7eb"><td style="padding:6px 0"><kbd class="kbd">Alt</kbd> + <kbd class="kbd">C</kbd> ou <kbd class="kbd">Ctrl</kbd>+<kbd class="kbd">Shift</kbd>+<kbd class="kbd">C</kbd></td><td style="color:#4b5563">Copiar relatório completo para área de transferência</td></tr>
+        <tr style="border-bottom:.5px solid #e5e7eb"><td style="padding:6px 0"><kbd class="kbd">Alt</kbd> + <kbd class="kbd">D</kbd></td><td style="color:#4b5563">Abrir / Fechar Apoio à Decisão & Metas Fisiológicas</td></tr>
+        <tr style="border-bottom:.5px solid #e5e7eb"><td style="padding:6px 0"><kbd class="kbd">Alt</kbd> + <kbd class="kbd">S</kbd></td><td style="color:#4b5563">Salvar relatório e adicionar ao Plantão</td></tr>
+        <tr style="border-bottom:.5px solid #e5e7eb"><td style="padding:6px 0"><kbd class="kbd">Alt</kbd> + <kbd class="kbd">R</kbd></td><td style="color:#4b5563">Alternar modo do relatório (Completo / Resumo)</td></tr>
+        <tr style="border-bottom:.5px solid #e5e7eb"><td style="padding:6px 0"><kbd class="kbd">Esc</kbd></td><td style="color:#4b5563">Fechar qualquer modal, drawer ou painel aberto</td></tr>
+        <tr><td style="padding:6px 0"><kbd class="kbd">Alt</kbd> + <kbd class="kbd">/</kbd> ou <kbd class="kbd">?</kbd></td><td style="color:#4b5563">Abrir esta janela de ajuda</td></tr>
+      </table>
+    </div>
+    <div style="margin-top:16px;text-align:right">
+      <button class="btns" onclick="closeShortcutModal()">Entendido</button>
+    </div>
+  </div>
+</div>
+<script>
+/* SCRIPT_BUNDLE */
+</script>
+</body>
+</html>

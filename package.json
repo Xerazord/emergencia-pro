@@ -1,0 +1,21 @@
+{
+  "name": "emergencia-pro",
+  "version": "2.0.0",
+  "description": "Emergência Pro — Admissão com Condutas Baseadas em Evidências",
+  "main": "build.js",
+  "scripts": {
+    "build": "node build.js",
+    "test": "node tests/golden_master_runner.js dist/app.html",
+    "test:record": "node tests/golden_master_runner.js --record",
+    "test:verify": "node tests/golden_master_runner.js --verify dist/app.html",
+    "test:labs": "node scratch/verify_pcr_and_subsyndrome_labs.js"
+  },
+  "keywords": [
+    "emergency-medicine",
+    "clinical-decision-support",
+    "resuscitation"
+  ],
+  "author": "Emergência Pro",
+  "license": "UNLICENSED",
+  "private": true
+}

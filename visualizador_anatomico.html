@@ -1,0 +1,3121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Navegador Anatômico & Topográfico Tático — Emergência Pro</title>
+  <meta name="description" content="Visualizador Anatômico Beira-Leito em Alta Resolução com Mapa Interativo de Patologias Clínicas e Protocolos Críticos de Emergência.">
+  <meta name="theme-color" content="#090d16">
+
+  <!-- Favicon e Ícones -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none'%3E%3Crect width='40' height='40' rx='10' fill='%230f172a'/%3E%3Cpath d='M6.5 21H13.5L15.4 17.5L17.4 25.5L20 11.5L22.5 27.5L24.8 18.5L26.5 21H33.5' stroke='%2338bdf8' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+
+  <!-- Tipografia Médica Tática: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM: TACTICAL BEDSIDE DARK / GLASSMORPHISM
+       ========================================================================== */
+    :root {
+      --bg-void: #05070d;
+      --bg-cockpit: #090d16;
+      --bg-panel: rgba(15, 23, 42, 0.78);
+      --bg-panel-solid: #0f172a;
+      --bg-card: rgba(30, 41, 59, 0.65);
+      --bg-card-hover: rgba(51, 65, 85, 0.75);
+      --bg-input: rgba(15, 23, 42, 0.9);
+      
+      --border-subtle: rgba(148, 163, 184, 0.14);
+      --border-glow: rgba(56, 189, 248, 0.35);
+      --border-active: #38bdf8;
+
+      --text-pure: #ffffff;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --cyan-neon: #38bdf8;
+      --cyan-glow: rgba(56, 189, 248, 0.16);
+      --red-alert: #ef4444;
+      --red-glow: rgba(239, 68, 68, 0.18);
+      --amber-crunch: #f59e0b;
+      --amber-glow: rgba(245, 158, 11, 0.18);
+      --emerald-safe: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.18);
+      --purple-spec: #a855f7;
+
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', 'SFMono-Regular', Menlo, monospace;
+
+      --sidebar-width: 440px;
+      --header-height: 64px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 22px;
+
+      --skin-opacity-slider: 1;
+      --glow-intensity-slider: 1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg-void);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* Background Ambient Tech Grid */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: 
+        radial-gradient(circle at 40% 25%, rgba(6, 182, 212, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 75% 70%, rgba(244, 63, 94, 0.05) 0%, transparent 50%),
+        linear-gradient(rgba(148, 163, 184, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── APP SHELL CONTAINER ─── */
+    .app-shell {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* ─── HEADER DE CONTROLE BEIRA-LEITO ─── */
+    .top-header {
+      height: var(--header-height);
+      background: rgba(9, 13, 22, 0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.25rem;
+      gap: 1rem;
+      z-index: 50;
+      flex-shrink: 0;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-icon-box {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(2, 132, 199, 0.4));
+      border: 1px solid rgba(56, 189, 248, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cyan-neon);
+      font-size: 1.25rem;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.25);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 0.98rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: var(--text-pure);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      letter-spacing: 0.2px;
+    }
+
+    .status-live-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 8px;
+      background: var(--emerald-glow);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      color: var(--emerald-safe);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--emerald-safe);
+      box-shadow: 0 0 8px var(--emerald-safe);
+      animation: pulse-dot 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.5; }
+    }
+
+    /* Header Global Search */
+    .header-search {
+      position: relative;
+      flex: 1;
+      max-width: 380px;
+    }
+
+    .header-search input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 7px 12px 7px 34px;
+      color: var(--text-pure);
+      font-size: 0.82rem;
+      font-family: var(--font-sans);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .header-search input:focus {
+      border-color: var(--cyan-neon);
+      box-shadow: 0 0 12px var(--cyan-glow);
+      background: rgba(15, 23, 42, 0.98);
+    }
+
+    .header-search .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      font-size: 1rem;
+      pointer-events: none;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-tactical {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-tactical:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--cyan-neon);
+      color: var(--text-pure);
+      box-shadow: 0 0 12px var(--cyan-glow);
+    }
+
+    .btn-tactical.btn-primary {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.8), rgba(14, 165, 233, 0.8));
+      border-color: rgba(56, 189, 248, 0.6);
+      color: #fff;
+    }
+
+    .btn-tactical.btn-primary:hover {
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+    }
+
+    /* ─── MAIN WORKSPACE (VIEWPORT + SIDEBAR) ─── */
+    .workspace {
+      flex: 1;
+      display: flex;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ─── PAINEL CENTRAL DO VISUALIZADOR SVG ─── */
+    .viewport-container {
+      flex: 1;
+      position: relative;
+      height: 100%;
+      background: radial-gradient(circle at 50% 45%, #0d1424 0%, #060911 80%, #030508 100%);
+      overflow: hidden;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .viewport-container.is-dragging {
+      cursor: grabbing !important;
+    }
+
+    /* Canvas transformado (Pan & Zoom Stage) */
+    .svg-stage {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-origin: 50% 50%;
+      will-change: transform;
+      transition: transform 0.05s linear;
+    }
+
+    .svg-stage.animate-pan {
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    .svg-stage svg {
+      max-width: 95%;
+      max-height: 95%;
+      width: auto;
+      height: auto;
+      filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.85));
+    }
+
+    /* ─── MODOS DE VISUALIZAÇÃO NO SVG ─── */
+    /* 1. MODO RAIO-X / TRANSLUCIDEZ GLOBAL */
+    .mode-xray .skin-layer {
+      fill-opacity: 0.32 !important;
+      stroke: #38bdf8 !important;
+      stroke-width: 2.2 !important;
+      filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.65)) !important;
+      transition: fill-opacity 0.4s ease, stroke 0.4s ease;
+    }
+    .mode-xray .internal-organs {
+      opacity: 1 !important;
+      filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.35));
+    }
+
+    /* 2. MODO ÓRGÃOS E VASOS PUROS (PELE OCULTA) */
+    .mode-organs .skin-layer,
+    .mode-organs .muscle-line {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      transition: opacity 0.35s ease;
+    }
+    .mode-organs .internal-organs {
+      opacity: 1 !important;
+      filter: drop-shadow(0 0 14px rgba(244, 63, 94, 0.45));
+    }
+    .mode-organs .hover-card {
+      display: none !important;
+    }
+
+    /* 3. MODO SUPERFÍCIE ANATÔMICA (PELE DOURADA FIXA) */
+    .mode-surface .skin-layer {
+      fill-opacity: 1.0 !important;
+      stroke: #673e1e !important;
+      filter: none !important;
+    }
+    .mode-surface .internal-organs {
+      opacity: 0.05 !important;
+      transition: opacity 0.3s ease;
+    }
+    .mode-surface .muscle-line {
+      opacity: 0.85 !important;
+      stroke-width: 1.8 !important;
+    }
+    .mode-surface .hover-card {
+      display: none !important;
+    }
+
+    /* 4. MODO INTERATIVO HOVER (PADRÃO) */
+    /* Mantém as classes padrão do SVG original com destaque aprimorado */
+    .segment-group.active-segment .skin-layer {
+      fill-opacity: 0.16 !important;
+      stroke: #38bdf8 !important;
+      stroke-width: 3.0 !important;
+      filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.85)) !important;
+    }
+
+    .segment-group.active-segment .hover-card {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      transform: translateY(0) !important;
+    }
+
+    /* ─── HUD FLUTUANTE DE CONTROLES NO VIEWPORT ─── */
+    .viewport-hud {
+      position: absolute;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .viewport-hud * {
+      pointer-events: auto;
+    }
+
+    /* Controles de Zoom Flutuantes (Canto Inferior Esquerdo) */
+    .hud-zoom-controls {
+      left: 1.25rem;
+      bottom: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: var(--bg-panel);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 6px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    }
+
+    .hud-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .hud-btn:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--cyan-neon);
+      color: var(--text-pure);
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    .hud-btn.active {
+      background: rgba(2, 132, 199, 0.5);
+      border-color: var(--cyan-neon);
+      color: #fff;
+    }
+
+    .zoom-level-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      text-align: center;
+      padding: 4px 0;
+      color: var(--cyan-neon);
+      font-weight: 700;
+    }
+
+    /* Seletor Rápido de Modos Flutuante (Topo Central) */
+    .hud-mode-pill {
+      top: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--bg-panel);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      padding: 4px 6px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    }
+
+    .mode-tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-size: 0.74rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .mode-tab-btn:hover {
+      color: var(--text-pure);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .mode-tab-btn.active {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: rgba(56, 189, 248, 0.45);
+      color: var(--cyan-neon);
+      box-shadow: 0 0 14px var(--cyan-glow);
+    }
+
+    /* Barra Rápida de Segmentos (Canto Superior Esquerdo) */
+    .hud-segment-bar {
+      top: 1.25rem;
+      left: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: var(--bg-panel);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 8px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    }
+
+    .hud-segment-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-size: 0.74rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: left;
+    }
+
+    .hud-segment-btn:hover {
+      background: var(--bg-card);
+      color: var(--text-pure);
+      border-color: var(--border-subtle);
+    }
+
+    .hud-segment-btn.active {
+      background: rgba(2, 132, 199, 0.25);
+      border-color: var(--cyan-neon);
+      color: var(--cyan-neon);
+      box-shadow: 0 0 12px var(--cyan-glow);
+    }
+
+    .hud-segment-btn i {
+      font-size: 0.95rem;
+    }
+
+    /* Mini Coordenadas e Dica (Canto Inferior Centro) */
+    .hud-tip-badge {
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ─── BARRA LATERAL DE CONTROLE BEIRA-LEITO (SIDEBAR) ─── */
+    .sidebar-panel {
+      width: var(--sidebar-width);
+      height: 100%;
+      background: var(--bg-panel);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-left: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      z-index: 40;
+      flex-shrink: 0;
+      transition: width 0.3s ease, transform 0.3s ease;
+      box-shadow: -10px 0 35px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Sidebar Navigation Tabs */
+    .sidebar-tabs {
+      display: flex;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 6px;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .sb-tab-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: 8px 4px;
+      border-radius: var(--radius-md);
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sb-tab-btn i {
+      font-size: 1.15rem;
+    }
+
+    .sb-tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .sb-tab-btn.active {
+      background: var(--bg-card);
+      color: var(--cyan-neon);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      box-shadow: 0 0 12px var(--cyan-glow);
+    }
+
+    /* Conteúdo da Sidebar (Scrollable) */
+    .sidebar-content {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .sidebar-content::-webkit-scrollbar {
+      width: 5px;
+    }
+    .sidebar-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .sidebar-content::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.2);
+      border-radius: 999px;
+    }
+    .sidebar-content::-webkit-scrollbar-thumb:hover {
+      background: rgba(56, 189, 248, 0.4);
+    }
+
+    .tab-pane {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .tab-pane.active {
+      display: flex;
+    }
+
+    /* Seções e Títulos da Sidebar */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-pure);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-badge {
+      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--cyan-neon);
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    /* Card de Segmento na Sidebar */
+    .segment-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .segment-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: var(--border-subtle);
+      transition: background 0.2s ease, width 0.2s ease;
+    }
+
+    .segment-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(56, 189, 248, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .segment-card:hover::before {
+      background: var(--cyan-neon);
+      width: 6px;
+    }
+
+    .segment-card.active {
+      background: rgba(14, 27, 49, 0.85);
+      border-color: var(--cyan-neon);
+      box-shadow: 0 0 20px var(--cyan-glow);
+    }
+
+    .segment-card.active::before {
+      background: var(--cyan-neon);
+      width: 6px;
+    }
+
+    .seg-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .seg-card-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-pure);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .seg-card-desc {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .seg-card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 4px;
+    }
+
+    .seg-tag {
+      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+    }
+
+    /* Card de Patologias Dinâmico */
+    .active-segment-banner {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.25), rgba(15, 23, 42, 0.8));
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .as-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text-pure);
+    }
+
+    .as-sub {
+      font-size: 0.72rem;
+      color: var(--cyan-neon);
+      font-family: var(--font-mono);
+    }
+
+    .pathology-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .pathology-card:hover {
+      border-color: rgba(56, 189, 248, 0.5);
+      background: var(--bg-card-hover);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .path-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .path-card-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-pure);
+      line-height: 1.3;
+    }
+
+    .path-card-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .crunch-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .crunch-badge.sev-critical {
+      background: var(--red-glow);
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      color: #f87171;
+    }
+
+    .crunch-badge.sev-urgent {
+      background: var(--amber-glow);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      color: #fbbf24;
+    }
+
+    .path-card-summary {
+      font-size: 0.74rem;
+      color: var(--text-main);
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      border-left: 3px solid var(--cyan-neon);
+      line-height: 1.45;
+    }
+
+    .path-card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .btn-action-protocol {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 7px 12px;
+      background: rgba(2, 132, 199, 0.25);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: var(--radius-md);
+      color: var(--cyan-neon);
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-action-protocol:hover {
+      background: rgba(2, 132, 199, 0.6);
+      color: #fff;
+      box-shadow: 0 0 14px var(--cyan-glow);
+    }
+
+    /* Card de Configurações e Sliders */
+    .setting-group {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .slider-control {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    .slider-val {
+      font-family: var(--font-mono);
+      color: var(--cyan-neon);
+      font-weight: 700;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(15, 23, 42, 0.9);
+      outline: none;
+      -webkit-appearance: none;
+      border: 1px solid var(--border-subtle);
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--cyan-neon);
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--cyan-neon);
+    }
+
+    /* Card de Instruções / Guia */
+    .guide-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .guide-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .step-number {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(56, 189, 248, 0.2);
+      border: 1px solid var(--cyan-neon);
+      color: var(--cyan-neon);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .step-text {
+      font-size: 0.76rem;
+      color: var(--text-main);
+      line-height: 1.45;
+    }
+
+    .code-pill {
+      font-family: var(--font-mono);
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 0.7rem;
+      color: var(--cyan-neon);
+    }
+
+    /* ─── MODAL / GAVETA TÁTICA DE CONDUTAS BEIRA-LEITO (DRAWER) ─── */
+    .protocol-drawer {
+      position: fixed;
+      top: 0; right: -560px;
+      width: 540px;
+      max-width: 95vw;
+      height: 100vh;
+      background: rgba(11, 16, 27, 0.95);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border-left: 1px solid var(--border-glow);
+      box-shadow: -20px 0 60px rgba(0, 0, 0, 0.85);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .protocol-drawer.is-open {
+      right: 0 !important;
+    }
+
+    .drawer-header {
+      padding: 1.25rem;
+      background: rgba(15, 23, 42, 0.98);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .drawer-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .drawer-sub {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .drawer-close-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.15s ease;
+    }
+
+    .drawer-close-btn:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: var(--red-alert);
+      color: #fff;
+    }
+
+    .drawer-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .drawer-body::-webkit-scrollbar {
+      width: 5px;
+    }
+    .drawer-body::-webkit-scrollbar-thumb {
+      background: rgba(56, 189, 248, 0.3);
+      border-radius: 999px;
+    }
+
+    .drawer-banner {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.18), rgba(15, 23, 42, 0.8));
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .drawer-banner.sev-urgent {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(15, 23, 42, 0.8));
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+
+    .drawer-section-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .dsc-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--cyan-neon);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .vitals-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .vital-box {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .vital-lbl {
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+    }
+
+    .vital-val {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-pure);
+      font-family: var(--font-mono);
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.76rem;
+      color: var(--text-main);
+      line-height: 1.45;
+    }
+
+    .checklist-item i {
+      color: var(--cyan-neon);
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .prescription-box {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-md);
+      padding: 10px;
+      font-size: 0.76rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+
+    .pitfall-box {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      border-radius: var(--radius-md);
+      padding: 10px;
+      font-size: 0.75rem;
+      line-height: 1.45;
+      color: #fca5a5;
+    }
+
+    .drawer-footer {
+      padding: 1rem 1.25rem;
+      background: rgba(15, 23, 42, 0.98);
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Overlay escuro quando o drawer abre */
+    .drawer-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 95;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .drawer-backdrop.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Responsividade */
+    @media (max-width: 1024px) {
+      :root {
+        --sidebar-width: 360px;
+      }
+      .hud-segment-bar {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .top-header {
+        padding: 0 0.75rem;
+      }
+      .header-search {
+        display: none;
+      }
+      .workspace {
+        flex-direction: column;
+      }
+      .sidebar-panel {
+        width: 100%;
+        height: 45vh;
+        border-left: none;
+        border-top: 1px solid var(--border-subtle);
+      }
+      .protocol-drawer {
+        width: 100vw;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- 1. HEADER SUPERIOR TÁTICO -->
+  <header class="top-header">
+    <a href="app.html" class="brand-section">
+      <div class="brand-icon-box">
+        <i class="ti ti-activity-heartbeat"></i>
+      </div>
+      <div class="brand-text">
+        <div class="brand-title">
+          EMERGÊNCIA PRO
+          <span class="status-live-pill">
+            <span class="status-dot"></span>
+            BEIRA-LEITO ATIVO
+          </span>
+        </div>
+        <div class="brand-subtitle">Cockpit Anatômico &amp; Topográfico Tático</div>
+      </div>
+    </a>
+
+    <!-- Busca Rápida de Patologias -->
+    <div class="header-search">
+      <i class="ti ti-search search-icon"></i>
+      <input type="text" id="globalSearchInput" placeholder="Buscar patologia (ex: AVC, SCA, TEP, Apendicite, AAA, TVP)...">
+    </div>
+
+    <!-- Botões de Ação Rápida -->
+    <div class="header-actions">
+      <button class="btn-tactical" id="btnHelpModal" title="Instruções de como visualizar o modelo">
+        <i class="ti ti-help-circle"></i>
+        <span>Como Visualizar</span>
+      </button>
+
+      <button class="btn-tactical" id="btnResetView" title="Centralizar e resetar zoom do modelo">
+        <i class="ti ti-focus-2"></i>
+        <span>Centralizar</span>
+      </button>
+
+      <button class="btn-tactical" id="btnToggleFullscreen" title="Tela cheia beira-leito">
+        <i class="ti ti-maximize"></i>
+      </button>
+
+      <a href="neuro_emergencia.html" class="btn-tactical" title="Protocolo de Neuroemergência">
+        <i class="ti ti-brain"></i>
+        <span>Neuro</span>
+      </a>
+
+      <a href="app.html" class="btn-tactical btn-primary" title="Ir para o App Principal">
+        <i class="ti ti-layout-dashboard"></i>
+        <span>Abrir App</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- 2. WORKSPACE CENTRAL -->
+  <div class="workspace">
+
+    <!-- 2.1 PAINEL CENTRAL: VIEWPORT DO MODELO SVG -->
+    <main class="viewport-container" id="viewportContainer">
+
+      <!-- HUD: Seletor Rápido de Modos no Topo -->
+      <div class="viewport-hud hud-mode-pill">
+        <button class="mode-tab-btn active" data-mode="interactive" title="Pele natural com transparência reativa ao passar o mouse">
+          <i class="ti ti-cursor-text"></i> Interativo (Hover)
+        </button>
+        <button class="mode-tab-btn" data-mode="xray" title="Pele semitransparente em todo o corpo exibindo vasos e órgãos">
+          <i class="ti ti-radioactive"></i> Raio-X (50%)
+        </button>
+        <button class="mode-tab-btn" data-mode="organs" title="Oculta a pele para focar nos órgãos internos e vasculatura">
+          <i class="ti ti-heart"></i> Órgãos Puros
+        </button>
+        <button class="mode-tab-btn" data-mode="surface" title="Pele opaca com marcos musculares e anatômicos de superfície">
+          <i class="ti ti-user"></i> Superfície
+        </button>
+      </div>
+
+      <!-- HUD: Barra Lateral de Salto Rápido por Segmento -->
+      <div class="viewport-hud hud-segment-bar">
+        <button class="hud-segment-btn" data-seg="cabeca">
+          <i class="ti ti-brain" style="color: #ec4899;"></i> Cabeça
+        </button>
+        <button class="hud-segment-btn" data-seg="pescoco">
+          <i class="ti ti-shield" style="color: #38bdf8;"></i> Pescoço
+        </button>
+        <button class="hud-segment-btn" data-seg="torax">
+          <i class="ti ti-heartbeat" style="color: #ef4444;"></i> Tórax
+        </button>
+        <button class="hud-segment-btn" data-seg="abdome">
+          <i class="ti ti-stethoscope" style="color: #f59e0b;"></i> Abdome
+        </button>
+        <button class="hud-segment-btn" data-seg="membros-superiores">
+          <i class="ti ti-hand-stop" style="color: #10b981;"></i> MMSS
+        </button>
+        <button class="hud-segment-btn" data-seg="membros-inferiores">
+          <i class="ti ti-run" style="color: #8b5cf6;"></i> MMII
+        </button>
+      </div>
+
+      <!-- HUD: Controles de Zoom no Canto Inferior Esquerdo -->
+      <div class="viewport-hud hud-zoom-controls">
+        <button class="hud-btn" id="btnZoomIn" title="Aumentar zoom (+)">
+          <i class="ti ti-plus"></i>
+        </button>
+        <div class="zoom-level-badge" id="zoomLevelDisplay">100%</div>
+        <button class="hud-btn" id="btnZoomOut" title="Diminuir zoom (-)">
+          <i class="ti ti-minus"></i>
+        </button>
+        <button class="hud-btn" id="btnZoomFit" title="Ajustar à tela">
+          <i class="ti ti-arrows-maximize"></i>
+        </button>
+      </div>
+
+      <!-- HUD: Dica de Navegação no Canto Inferior Centro -->
+      <div class="viewport-hud hud-tip-badge">
+        <i class="ti ti-hand-grab"></i>
+        <span>Arraste para mover | Scroll para Zoom | Clique no segmento para protocolos</span>
+      </div>
+
+      <!-- CANVAS TRANSFORMADO (PAN & ZOOM STAGE) -->
+      <div class="svg-stage" id="svgStage">
+        <!-- SVG EMBUTIDO EM ALTA DEFINIÇÃO -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" width="100%" height="100%" id="clinicalBodyNavigator">
+  <title>Menu Topográfico de Patologias Clínicas — Corpo Humano Interativo</title>
+
+  <defs>
+    <!-- Fundo de Cockpit Noturno -->
+    <radialGradient id="bgDark" cx="50%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="60%" stop-color="#090D16"/>
+      <stop offset="100%" stop-color="#04060A"/>
+    </radialGradient>
+
+    <!-- Tom de Pele Pardo com Subtom Dourado/Amarelado (Fitzpatrick IV - Warm Golden/Olive) -->
+    <linearGradient id="skinPardoWarm" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7B4E28"/>
+      <stop offset="15%" stop-color="#9C6936"/>
+      <stop offset="35%" stop-color="#C28B52"/>
+      <stop offset="50%" stop-color="#D79E63"/>
+      <stop offset="65%" stop-color="#C28B52"/>
+      <stop offset="85%" stop-color="#9C6936"/>
+      <stop offset="100%" stop-color="#7B4E28"/>
+    </linearGradient>
+
+    <radialGradient id="skinHeadWarm" cx="50%" cy="38%" r="58%">
+      <stop offset="0%" stop-color="#E2A76E"/>
+      <stop offset="55%" stop-color="#C28B52"/>
+      <stop offset="85%" stop-color="#9C6936"/>
+      <stop offset="100%" stop-color="#7B4E28"/>
+    </radialGradient>
+
+    <!-- Órgãos Internos -->
+    <linearGradient id="boneGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#BDB09E"/>
+      <stop offset="40%" stop-color="#F3ECE1"/>
+      <stop offset="70%" stop-color="#FAF6F0"/>
+      <stop offset="100%" stop-color="#BDB09E"/>
+    </linearGradient>
+
+    <radialGradient id="heartGrad" cx="40%" cy="38%" r="60%">
+      <stop offset="0%" stop-color="#F87171"/>
+      <stop offset="50%" stop-color="#DC2626"/>
+      <stop offset="90%" stop-color="#991B1B"/>
+      <stop offset="100%" stop-color="#450A0A"/>
+    </radialGradient>
+
+    <radialGradient id="lungGrad" cx="55%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#F472B6"/>
+      <stop offset="55%" stop-color="#DB2777"/>
+      <stop offset="90%" stop-color="#9D174D"/>
+      <stop offset="100%" stop-color="#700732"/>
+    </radialGradient>
+
+    <radialGradient id="liverGrad" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#B45309"/>
+      <stop offset="60%" stop-color="#854D0E"/>
+      <stop offset="100%" stop-color="#451A03"/>
+    </radialGradient>
+
+    <radialGradient id="stomachGrad" cx="45%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#FDBA74"/>
+      <stop offset="60%" stop-color="#EA580C"/>
+      <stop offset="100%" stop-color="#9A3412"/>
+    </radialGradient>
+
+    <radialGradient id="kidneyGrad" cx="45%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#DC2626"/>
+      <stop offset="70%" stop-color="#991B1B"/>
+      <stop offset="100%" stop-color="#450A0A"/>
+    </radialGradient>
+
+    <radialGradient id="brainGrad" cx="50%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#FCE7F3"/>
+      <stop offset="55%" stop-color="#F472B6"/>
+      <stop offset="100%" stop-color="#BE185D"/>
+    </radialGradient>
+
+    <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.85"/>
+    </filter>
+  </defs>
+
+  <style>
+    /* Estilos Interativos */
+    .bg-grid { stroke: #1E293B; stroke-width: 0.8; opacity: 0.35; }
+
+    .segment-group {
+      cursor: pointer;
+    }
+
+    .skin-layer {
+      transition: fill-opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                  stroke 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                  stroke-width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                  filter 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hover-card {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.26s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateY(6px);
+    }
+
+    /* CSS Hover: Ativa transparência no segmento, acende contorno ciano e exibe menu */
+    .segment-group:hover .skin-layer {
+      fill-opacity: 0.16 !important;
+      stroke: #38BDF8 !important;
+      stroke-width: 2.8 !important;
+      filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.75)) !important;
+    }
+
+    .segment-group:hover .hover-card {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      transform: translateY(0) !important;
+    }
+
+    /* Botões Interativos de Patologias */
+    .path-btn {
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .path-btn rect {
+      fill: #1E293B;
+      stroke: #334155;
+      stroke-width: 1.2;
+      transition: fill 0.15s ease, stroke 0.15s ease;
+    }
+    .path-btn text {
+      fill: #F1F5F9;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .path-btn:hover rect {
+      fill: #0284C7;
+      stroke: #38BDF8;
+    }
+    .path-btn:hover text {
+      fill: #FFFFFF;
+      font-weight: 700;
+    }
+
+    .card-title {
+      fill: #F8FAFC;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 13.5px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+    .card-subtitle {
+      fill: #94A3B8;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 10.5px;
+    }
+    .muscle-line {
+      fill: none;
+      stroke: #5E3618;
+      stroke-width: 1.3;
+      opacity: 0.5;
+    }
+  </style>
+
+  <!-- Fundo do Cockpit -->
+  <rect width="1200" height="1500" fill="url(#bgDark)"/>
+  <g class="bg-grid">
+    <line x1="60" y1="50" x2="60" y2="1450"/>
+    <line x1="120" y1="50" x2="120" y2="1450"/>
+    <line x1="180" y1="50" x2="180" y2="1450"/>
+    <line x1="240" y1="50" x2="240" y2="1450"/>
+    <line x1="300" y1="50" x2="300" y2="1450"/>
+    <line x1="360" y1="50" x2="360" y2="1450"/>
+    <line x1="420" y1="50" x2="420" y2="1450"/>
+    <line x1="480" y1="50" x2="480" y2="1450"/>
+    <line x1="540" y1="50" x2="540" y2="1450"/>
+    <line x1="600" y1="50" x2="600" y2="1450"/>
+    <line x1="660" y1="50" x2="660" y2="1450"/>
+    <line x1="720" y1="50" x2="720" y2="1450"/>
+    <line x1="780" y1="50" x2="780" y2="1450"/>
+    <line x1="840" y1="50" x2="840" y2="1450"/>
+    <line x1="900" y1="50" x2="900" y2="1450"/>
+    <line x1="960" y1="50" x2="960" y2="1450"/>
+    <line x1="1020" y1="50" x2="1020" y2="1450"/>
+    <line x1="1080" y1="50" x2="1080" y2="1450"/>
+    <line x1="1140" y1="50" x2="1140" y2="1450"/>
+    <line x1="40" y1="60" x2="1160" y2="60"/>
+    <line x1="40" y1="120" x2="1160" y2="120"/>
+    <line x1="40" y1="180" x2="1160" y2="180"/>
+    <line x1="40" y1="240" x2="1160" y2="240"/>
+    <line x1="40" y1="300" x2="1160" y2="300"/>
+    <line x1="40" y1="360" x2="1160" y2="360"/>
+    <line x1="40" y1="420" x2="1160" y2="420"/>
+    <line x1="40" y1="480" x2="1160" y2="480"/>
+    <line x1="40" y1="540" x2="1160" y2="540"/>
+    <line x1="40" y1="600" x2="1160" y2="600"/>
+    <line x1="40" y1="660" x2="1160" y2="660"/>
+    <line x1="40" y1="720" x2="1160" y2="720"/>
+    <line x1="40" y1="780" x2="1160" y2="780"/>
+    <line x1="40" y1="840" x2="1160" y2="840"/>
+    <line x1="40" y1="900" x2="1160" y2="900"/>
+    <line x1="40" y1="960" x2="1160" y2="960"/>
+    <line x1="40" y1="1020" x2="1160" y2="1020"/>
+    <line x1="40" y1="1080" x2="1160" y2="1080"/>
+    <line x1="40" y1="1140" x2="1160" y2="1140"/>
+    <line x1="40" y1="1200" x2="1160" y2="1200"/>
+    <line x1="40" y1="1260" x2="1160" y2="1260"/>
+    <line x1="40" y1="1320" x2="1160" y2="1320"/>
+    <line x1="40" y1="1380" x2="1160" y2="1380"/>
+    <line x1="40" y1="1440" x2="1160" y2="1440"/>
+  </g>
+  <line x1="600" y1="50" x2="600" y2="1440" stroke="#334155" stroke-dasharray="6,4" stroke-width="1.2" opacity="0.6"/>
+
+  <!-- TÍTULO SUPERIOR -->
+  <g transform="translate(600, 42)" text-anchor="middle">
+    <text fill="#F8FAFC" font-family="'Inter', system-ui, sans-serif" font-size="19" font-weight="800" letter-spacing="1.8">MENU TOPOGRÁFICO DE PATOLOGIAS CLÍNICAS</text>
+    <text y="22" fill="#38BDF8" font-family="'Inter', system-ui, sans-serif" font-size="12" font-weight="500">Passe o cursor sobre os segmentos corpóreos para ativar a transparência e acessar os protocolos de emergência</text>
+  </g>
+
+
+  <!-- ================= 1. CABEÇA ================= -->
+  <g id="seg-head" class="segment-group" data-segment="cabeca">
+    <!-- 1.1 Órgãos Internos da Cabeça -->
+    <g class="internal-organs">
+      <!-- Encéfalo -->
+      <path d="M 562,118 C 558,84 578,68 600,68 C 622,68 642,84 638,118 C 636,138 624,150 600,154 C 576,150 564,138 562,118 Z"
+            fill="url(#brainGrad)" stroke="#9D174D" stroke-width="1.5"/>
+      <path d="M 574,98 Q 588,90 600,100 Q 612,90 626,98" fill="none" stroke="#F472B6" stroke-width="1.8"/>
+      <path d="M 570,116 Q 590,108 600,120 Q 610,108 630,116" fill="none" stroke="#F472B6" stroke-width="1.8"/>
+      <circle cx="600" cy="144" r="5" fill="none" stroke="#EF4444" stroke-width="2"/>
+      <path d="M 595,144 L 582,130 M 605,144 L 618,130 M 600,139 L 600,124" stroke="#EF4444" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M 558,122 C 555,80 575,62 600,62 C 625,62 645,80 642,122" fill="none" stroke="#E2E8F0" stroke-width="2.4" stroke-dasharray="5,2"/>
+    </g>
+
+    <!-- 1.2 Camada de Pele da Cabeça (Angular e canônica) -->
+    <path class="skin-layer" fill="url(#skinHeadWarm)" fill-opacity="1.0" stroke="#673E1E" stroke-width="1.8" d="
+      M 600,58
+      C 562,58 552,78 552,114
+      C 552,142 562,164 575,178
+      C 588,184 612,184 625,178
+      C 638,164 648,142 648,114
+      C 648,78 638,58 600,58 Z"/>
+
+    <!-- Relevos Faciais Sutis e Orelhas -->
+    <path d="M 552,110 C 544,108 544,132 553,136" fill="none" stroke="#673E1E" stroke-width="1.6"/>
+    <path d="M 648,110 C 656,108 656,132 647,136" fill="none" stroke="#673E1E" stroke-width="1.6"/>
+    <path d="M 580,112 Q 588,108 595,112 M 605,112 Q 612,108 620,112" stroke="#673E1E" stroke-width="1.3" fill="none"/>
+    <path d="M 600,116 L 597,136 Q 600,140 603,136" stroke="#673E1E" stroke-width="1.3" fill="none"/>
+    <path d="M 588,156 Q 600,160 612,156" stroke="#673E1E" stroke-width="1.5" fill="none"/>
+
+    <!-- 1.3 Menu Flutuante: Cabeça -->
+    <g class="hover-card">
+      <path d="M 648,110 L 725,110" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <circle cx="648" cy="110" r="4" fill="#38BDF8"/>
+      <g transform="translate(725, 60)" filter="url(#cardShadow)">
+        <rect width="260" height="135" rx="8" fill="#0F172A" stroke="#0284C7" stroke-width="1.8"/>
+        <rect width="5" height="135" rx="2.5" fill="#38BDF8"/>
+        <text x="16" y="24" class="card-title">CABEÇA &amp; CRÂNIO</text>
+        <text x="16" y="40" class="card-subtitle">Emergências Neurológicas &amp; Neurocirúrgicas</text>
+        
+        <a href="#patologia-ave" class="path-btn" transform="translate(16, 48)">
+          <rect width="108" height="26" rx="5"/>
+          <text x="8" y="17">AVC Isquêmico / AVE</text>
+        </a>
+        <a href="#patologia-hsa" class="path-btn" transform="translate(132, 48)">
+          <rect width="112" height="26" rx="5"/>
+          <text x="8" y="17">HSA / Hemorrágico</text>
+        </a>
+        <a href="#patologia-tce" class="path-btn" transform="translate(16, 82)">
+          <rect width="108" height="26" rx="5"/>
+          <text x="8" y="17">TCE &amp; Hipertensão PIC</text>
+        </a>
+        <a href="#patologia-cefaleia" class="path-btn" transform="translate(132, 82)">
+          <rect width="112" height="26" rx="5"/>
+          <text x="8" y="17">Cefaleia com Red Flags</text>
+        </a>
+      </g>
+    </g>
+  </g>
+
+
+  <!-- ================= 2. PESCOÇO ================= -->
+  <g id="seg-neck" class="segment-group" data-segment="pescoco">
+    <!-- 2.1 Órgãos Internos do Pescoço -->
+    <g class="internal-organs">
+      <!-- Coluna Cervical C3-C7 -->
+      <g fill="url(#boneGrad)" stroke="#78716C" stroke-width="0.8">
+        <rect x="588" y="180" width="24" height="6" rx="2"/>
+        <rect x="587" y="188" width="26" height="6" rx="2"/>
+        <rect x="586" y="196" width="28" height="7" rx="2"/>
+        <rect x="585" y="205" width="30" height="7" rx="2"/>
+        <rect x="584" y="214" width="32" height="8" rx="2"/>
+      </g>
+      <!-- Laringe e Traqueia Cervical -->
+      <path d="M 592,182 L 600,188 L 608,182 L 607,196 L 593,196 Z" fill="#93C5FD" stroke="#3B82F6" stroke-width="1.2"/>
+      <rect x="594" y="198" width="12" height="26" fill="#60A5FA" opacity="0.6" stroke="#2563EB" stroke-width="1"/>
+      <line x1="595" y1="203" x2="605" y2="203" stroke="#DBEAFE" stroke-width="1.6"/>
+      <line x1="595" y1="210" x2="605" y2="210" stroke="#DBEAFE" stroke-width="1.6"/>
+      <line x1="595" y1="217" x2="605" y2="217" stroke="#DBEAFE" stroke-width="1.6"/>
+      <!-- Feixes Carótida / Jugular -->
+      <path d="M 582,178 L 578,226" stroke="#EF4444" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M 574,178 L 568,226" stroke="#3B82F6" stroke-width="3.8" stroke-linecap="round"/>
+      <path d="M 618,178 L 622,226" stroke="#EF4444" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M 626,178 L 632,226" stroke="#3B82F6" stroke-width="3.8" stroke-linecap="round"/>
+    </g>
+
+    <!-- 2.2 Camada de Pele do Pescoço -->
+    <path class="skin-layer" fill="url(#skinPardoWarm)" fill-opacity="1.0" stroke="#673E1E" stroke-width="1.8" d="
+      M 575,178
+      C 570,192 565,208 556,226
+      L 644,226
+      C 635,208 630,192 625,178 Z"/>
+
+    <!-- Relevo dos Esternocleidomastoideos -->
+    <path d="M 578,180 L 590,226 M 622,180 L 610,226" class="muscle-line"/>
+
+    <!-- 2.3 Menu Flutuante: Pescoço -->
+    <g class="hover-card">
+      <path d="M 556,202 L 475,202" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <circle cx="556" cy="202" r="4" fill="#38BDF8"/>
+      <g transform="translate(215, 150)" filter="url(#cardShadow)">
+        <rect width="250" height="135" rx="8" fill="#0F172A" stroke="#0284C7" stroke-width="1.8"/>
+        <rect x="245" width="5" height="135" rx="2.5" fill="#38BDF8"/>
+        <text x="16" y="24" class="card-title">PESCOÇO &amp; CERVICAL</text>
+        <text x="16" y="40" class="card-subtitle">Via Aérea Difícil &amp; Vasos Cervicais</text>
+        
+        <a href="#patologia-via-aerea" class="path-btn" transform="translate(16, 48)">
+          <rect width="102" height="26" rx="5"/>
+          <text x="8" y="17">Obstrução de V.A.</text>
+        </a>
+        <a href="#patologia-disseccao-carotida" class="path-btn" transform="translate(126, 48)">
+          <rect width="106" height="26" rx="5"/>
+          <text x="8" y="17">Dissecção Carotídea</text>
+        </a>
+        <a href="#patologia-trauma-cervical" class="path-btn" transform="translate(16, 82)">
+          <rect width="102" height="26" rx="5"/>
+          <text x="8" y="17">Trauma Cervical (C-Spine)</text>
+        </a>
+        <a href="#patologia-anafilaxia" class="path-btn" transform="translate(126, 82)">
+          <rect width="106" height="26" rx="5"/>
+          <text x="8" y="17">Edema de Glote / Anafilaxia</text>
+        </a>
+      </g>
+    </g>
+  </g>
+
+
+  <!-- ================= 3. TÓRAX ================= -->
+  <g id="seg-thorax" class="segment-group" data-segment="torax">
+    <!-- 3.1 Órgãos Internos do Tórax -->
+    <g class="internal-organs">
+      <!-- Pulmões -->
+      <path d="M 572,252 C 552,242 515,254 502,286 C 490,318 485,365 488,408 C 510,400 545,398 576,410 C 580,375 578,295 572,252 Z"
+            fill="url(#lungGrad)" stroke="#700732" stroke-width="1.5"/>
+      <path d="M 576,330 L 494,340" stroke="#700732" stroke-width="1.2" stroke-dasharray="4,2"/>
+      <path d="M 508,310 L 565,402" stroke="#700732" stroke-width="1.4"/>
+
+      <path d="M 628,252 C 648,242 685,254 698,286 C 710,318 715,365 712,408 C 690,400 665,398 642,410 C 635,396 652,368 645,338 C 632,310 624,290 628,252 Z"
+            fill="url(#lungGrad)" stroke="#700732" stroke-width="1.5"/>
+      <path d="M 692,310 L 645,402" stroke="#700732" stroke-width="1.4"/>
+
+      <!-- Traqueia Torácica -->
+      <line x1="600" y1="226" x2="600" y2="280" stroke="#93C5FD" stroke-width="7" stroke-linecap="round"/>
+      <path d="M 600,280 L 576,302 M 600,280 L 624,302" stroke="#93C5FD" stroke-width="5" stroke-linecap="round"/>
+
+      <!-- Aorta e VCS -->
+      <path d="M 602,300 C 596,274 606,262 618,268 C 628,272 630,290 612,312" fill="none" stroke="#EF4444" stroke-width="10" stroke-linecap="round"/>
+      <line x1="602" y1="268" x2="588" y2="234" stroke="#EF4444" stroke-width="4.5" stroke-linecap="round"/>
+      <line x1="610" y1="265" x2="608" y2="234" stroke="#EF4444" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="616" y1="267" x2="622" y2="234" stroke="#EF4444" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="584" y1="234" x2="584" y2="300" stroke="#3B82F6" stroke-width="9" stroke-linecap="round"/>
+
+      <!-- Coração -->
+      <path d="
+        M 580,304
+        C 568,314 565,340 575,362
+        C 584,378 614,386 636,382
+        C 648,380 650,370 644,356
+        C 638,338 636,316 624,304
+        C 612,296 592,296 580,304 Z"
+        fill="url(#heartGrad)" stroke="#450A0A" stroke-width="1.8"/>
+      <path d="M 616,316 Q 624,342 632,376" fill="none" stroke="#FCA5A5" stroke-width="1.8" stroke-linecap="round"/>
+
+      <!-- Costelas e Esterno -->
+      <g fill="none" stroke="url(#boneGrad)" stroke-width="4.2" stroke-linecap="round" opacity="0.6">
+        <path d="M 588,242 C 550,236 518,248 512,264"/>
+        <path d="M 612,242 C 650,236 682,248 688,264"/>
+        <path d="M 588,262 C 540,258 502,274 498,292"/>
+        <path d="M 612,262 C 660,258 698,274 702,292"/>
+        <path d="M 588,284 C 532,282 494,302 492,322"/>
+        <path d="M 612,284 C 668,282 706,302 708,322"/>
+        <path d="M 588,308 C 528,310 490,332 490,354"/>
+        <path d="M 612,308 C 672,310 710,332 710,354"/>
+        <path d="M 588,334 C 528,336 492,362 496,384"/>
+        <path d="M 612,334 C 672,336 708,362 704,384"/>
+      </g>
+      <rect x="592" y="240" width="16" height="82" rx="3" fill="url(#boneGrad)" stroke="#78716C" stroke-width="1.2" opacity="0.8"/>
+    </g>
+
+    <!-- 3.2 Camada de Pele do Tórax (Atlética baseada na referência) -->
+    <path class="skin-layer" fill="url(#skinPardoWarm)" fill-opacity="1.0" stroke="#673E1E" stroke-width="1.8" d="
+      M 556,226
+      C 520,232 465,238 430,260
+      C 438,315 452,372 470,430
+      L 730,430
+      C 748,372 762,315 770,260
+      C 735,238 680,232 644,226 Z"/>
+
+    <!-- Relevo dos Músculos Peitorais Maiores e Mamilos -->
+    <path d="M 588,244 C 545,250 475,272 452,315 C 462,348 510,368 582,368" class="muscle-line"/>
+    <path d="M 612,244 C 655,250 725,272 748,315 C 738,348 690,368 618,368" class="muscle-line"/>
+    <circle cx="524" cy="326" r="3" fill="#84552A" opacity="0.6"/>
+    <circle cx="676" cy="326" r="3" fill="#84552A" opacity="0.6"/>
+
+    <!-- 3.3 Menu Flutuante: Tórax -->
+    <g class="hover-card">
+      <path d="M 730,330 L 815,330" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <circle cx="730" cy="330" r="4" fill="#38BDF8"/>
+      <g transform="translate(815, 260)" filter="url(#cardShadow)">
+        <rect width="270" height="156" rx="8" fill="#0F172A" stroke="#0284C7" stroke-width="1.8"/>
+        <rect width="5" height="156" rx="2.5" fill="#38BDF8"/>
+        <text x="16" y="24" class="card-title">TÓRAX &amp; CARDIORESPIRATÓRIO</text>
+        <text x="16" y="40" class="card-subtitle">Síndromes Cardíacas, Aórticas &amp; Pleuropulmonares</text>
+        
+        <a href="#patologia-sca" class="path-btn" transform="translate(16, 48)">
+          <rect width="112" height="26" rx="5"/>
+          <text x="8" y="17">SCA / Infarto (IAM)</text>
+        </a>
+        <a href="#patologia-disseccao-aorta" class="path-btn" transform="translate(136, 48)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Dissecção Aguda Aorta</text>
+        </a>
+        <a href="#patologia-tep" class="path-btn" transform="translate(16, 82)">
+          <rect width="112" height="26" rx="5"/>
+          <text x="8" y="17">Embolia Pulm. (TEP)</text>
+        </a>
+        <a href="#patologia-pneumotorax" class="path-btn" transform="translate(136, 82)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Pneumotórax Hipertensivo</text>
+        </a>
+        <a href="#patologia-edema-agudo" class="path-btn" transform="translate(16, 116)">
+          <rect width="238" height="26" rx="5"/>
+          <text x="8" y="17">Edema Agudo Pulmonar / Choque Cardiogênico</text>
+        </a>
+      </g>
+    </g>
+  </g>
+
+
+  <!-- ================= 4. ABDOME E PELVE ================= -->
+  <g id="seg-abdomen" class="segment-group" data-segment="abdome">
+    <!-- 4.1 Órgãos Internos do Abdome -->
+    <g class="internal-organs">
+      <!-- Fígado e Vesícula Biliar -->
+      <path d="
+        M 488,438
+        C 492,425 545,422 584,434
+        C 614,438 638,440 648,448
+        C 650,454 642,462 628,468
+        C 602,478 578,492 554,508
+        C 528,522 500,530 490,518
+        C 485,508 484,465 488,438 Z"
+        fill="url(#liverGrad)" stroke="#451A03" stroke-width="1.5"/>
+      <ellipse cx="558" cy="508" rx="7" ry="10" fill="#84CC16" stroke="#365314" stroke-width="1.2"/>
+
+      <!-- Estômago e Baço -->
+      <path d="
+        M 610,442
+        C 622,432 652,430 672,445
+        C 688,460 688,496 666,518
+        C 646,536 616,536 598,515
+        L 600,500
+        C 614,508 632,504 640,490
+        C 645,476 632,460 610,450 Z"
+        fill="url(#stomachGrad)" stroke="#9A3412" stroke-width="1.5"/>
+      <ellipse cx="692" cy="466" rx="12" ry="18" fill="#7E22CE" stroke="#3B0764" stroke-width="1.2"/>
+
+      <!-- Rins Retroperitoneais e Ureteres -->
+      <path d="M 532,498 C 516,494 508,505 508,525 C 508,545 524,558 538,556 C 548,554 548,530 542,516 Z"
+            fill="url(#kidneyGrad)" stroke="#450A0A" stroke-width="1.4"/>
+      <path d="M 668,486 C 684,482 692,493 692,513 C 692,533 676,546 662,544 C 652,542 652,518 658,504 Z"
+            fill="url(#kidneyGrad)" stroke="#450A0A" stroke-width="1.4"/>
+      <path d="M 538,530 Q 550,585 586,640" fill="none" stroke="#FACC15" stroke-width="2.2"/>
+      <path d="M 662,518 Q 650,585 614,640" fill="none" stroke="#FACC15" stroke-width="2.2"/>
+
+      <!-- Aorta e VCI -->
+      <line x1="606" y1="430" x2="606" y2="585" stroke="#EF4444" stroke-width="7.5"/>
+      <line x1="592" y1="430" x2="592" y2="585" stroke="#3B82F6" stroke-width="8.5"/>
+      <path d="M 606,585 L 562,660 M 606,585 L 638,660" stroke="#EF4444" stroke-width="5"/>
+      <path d="M 592,585 L 556,660 M 592,585 L 632,660" stroke="#3B82F6" stroke-width="5"/>
+
+      <!-- Intestinos e Bexiga -->
+      <path d="
+        M 522,635
+        C 512,635 508,618 510,590
+        C 512,565 514,540 518,522
+        C 532,514 578,526 622,524
+        C 668,514 680,520 682,540
+        C 685,572 682,605 676,635
+        C 668,655 640,650 620,645
+        C 605,642 600,654 600,675"
+        fill="none" stroke="#EA580C" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+      <path d="
+        M 560,555
+        Q 630,546 638,570
+        Q 560,582 562,600
+        Q 642,596 630,624
+        Q 570,620 592,638"
+        fill="none" stroke="#FB923C" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+      <ellipse cx="600" cy="655" rx="20" ry="15" fill="#EAB308" stroke="#854D0E" stroke-width="1.5"/>
+
+      <!-- Ossos Ilíacos -->
+      <path d="M 495,555 C 480,580 490,650 562,665 L 596,658 L 596,640" fill="none" stroke="url(#boneGrad)" stroke-width="4.5" opacity="0.6"/>
+      <path d="M 705,555 C 720,580 710,650 638,665 L 604,658 L 604,640" fill="none" stroke="url(#boneGrad)" stroke-width="4.5" opacity="0.6"/>
+    </g>
+
+    <!-- 4.2 Camada de Pele do Abdome (Atlética com cintura afunilada) -->
+    <path class="skin-layer" fill="url(#skinPardoWarm)" fill-opacity="1.0" stroke="#673E1E" stroke-width="1.8" d="
+      M 470,430
+      C 480,480 486,535 482,580
+      C 478,622 485,660 508,675
+      L 692,675
+      C 715,660 722,622 718,580
+      C 714,535 720,480 730,430 Z"/>
+
+    <!-- Relevos dos Gomos do Reto Abdominal e Linha Alba (Estilo da referência) -->
+    <line x1="600" y1="435" x2="600" y2="615" class="muscle-line"/>
+    <!-- Inscrições Tendíneas Transversais -->
+    <path d="M 545,470 Q 600,474 655,470" class="muscle-line"/>
+    <path d="M 548,515 Q 600,520 652,515" class="muscle-line"/>
+    <path d="M 552,560 Q 600,564 648,560" class="muscle-line"/>
+    <!-- Cicatriz Umbilical -->
+    <ellipse cx="600" cy="548" rx="3.5" ry="4.5" fill="#5E3618" opacity="0.65"/>
+    <!-- Cristas Ilíacas / Pregas Inguinais -->
+    <path d="M 508,600 C 525,640 565,668 600,670" class="muscle-line"/>
+    <path d="M 692,600 C 675,640 635,668 600,670" class="muscle-line"/>
+
+    <!-- 4.3 Menu Flutuante: Abdome -->
+    <g class="hover-card">
+      <path d="M 482,540 L 390,540" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <circle cx="482" cy="540" r="4" fill="#38BDF8"/>
+      <g transform="translate(120, 460)" filter="url(#cardShadow)">
+        <rect width="270" height="180" rx="8" fill="#0F172A" stroke="#0284C7" stroke-width="1.8"/>
+        <rect x="265" width="5" height="180" rx="2.5" fill="#38BDF8"/>
+        <text x="16" y="24" class="card-title">ABDOME &amp; PELVE</text>
+        <text x="16" y="40" class="card-subtitle">Abdome Agudo Cirúrgico, Clínico &amp; Vascular</text>
+        
+        <a href="#patologia-apendicite" class="path-btn" transform="translate(16, 48)">
+          <rect width="112" height="26" rx="5"/>
+          <text x="8" y="17">Apendicite Aguda</text>
+        </a>
+        <a href="#patologia-colecistite" class="path-btn" transform="translate(136, 48)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Colecistite / Colangite</text>
+        </a>
+        <a href="#patologia-pancreatite" class="path-btn" transform="translate(16, 80)">
+          <rect width="112" height="26" rx="5"/>
+          <text x="8" y="17">Pancreatite Aguda</text>
+        </a>
+        <a href="#patologia-isquemia-mesenterica" class="path-btn" transform="translate(136, 80)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Isquemia Mesentérica</text>
+        </a>
+        <a href="#patologia-hda" class="path-btn" transform="translate(16, 112)">
+          <rect width="112" height="26" rx="5"/>
+          <text x="8" y="17">HDA / Úlcera / Varizes</text>
+        </a>
+        <a href="#patologia-obstrucao-intestinal" class="path-btn" transform="translate(136, 112)">
+          <rect width="118" height="26" rx="5"/>
+          <text x="8" y="17">Obstrução Intestinal</text>
+        </a>
+        <a href="#patologia-aneurisma-aorta" class="path-btn" transform="translate(16, 144)">
+          <rect width="238" height="26" rx="5"/>
+          <text x="8" y="17">Aneurisma de Aorta Abdominal (AAA Roto)</text>
+        </a>
+      </g>
+    </g>
+  </g>
+
+
+  <!-- ================= 5. MEMBROS SUPERIORES ================= -->
+  <g id="seg-upper-limbs" class="segment-group" data-segment="membros-superiores">
+    <!-- 5.1 Órgãos Internos dos Membros Superiores -->
+    <g class="internal-organs">
+      <!-- Braço Direito -->
+      <line x1="430" y1="260" x2="360" y2="425" stroke="url(#boneGrad)" stroke-width="13" stroke-linecap="round"/>
+      <line x1="426" y1="265" x2="364" y2="422" stroke="#EF4444" stroke-width="3" stroke-linecap="round"/>
+      <line x1="432" y1="268" x2="368" y2="422" stroke="#3B82F6" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="354" y1="435" x2="306" y2="580" stroke="url(#boneGrad)" stroke-width="7" stroke-linecap="round"/>
+      <line x1="366" y1="435" x2="322" y2="580" stroke="url(#boneGrad)" stroke-width="7" stroke-linecap="round"/>
+      <line x1="360" y1="435" x2="314" y2="580" stroke="#EF4444" stroke-width="2.5"/>
+      <ellipse cx="308" cy="608" rx="14" ry="22" fill="url(#boneGrad)" opacity="0.6"/>
+
+      <!-- Braço Esquerdo -->
+      <line x1="770" y1="260" x2="840" y2="425" stroke="url(#boneGrad)" stroke-width="13" stroke-linecap="round"/>
+      <line x1="774" y1="265" x2="836" y2="422" stroke="#EF4444" stroke-width="3" stroke-linecap="round"/>
+      <line x1="768" y1="268" x2="832" y2="422" stroke="#3B82F6" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="846" y1="435" x2="894" y2="580" stroke="url(#boneGrad)" stroke-width="7" stroke-linecap="round"/>
+      <line x1="834" y1="435" x2="878" y2="580" stroke="url(#boneGrad)" stroke-width="7" stroke-linecap="round"/>
+      <line x1="840" y1="435" x2="886" y2="580" stroke="#EF4444" stroke-width="2.5"/>
+      <ellipse cx="892" cy="608" rx="14" ry="22" fill="url(#boneGrad)" opacity="0.6"/>
+    </g>
+
+    <!-- 5.2 Camada de Pele dos Membros Superiores (Atléticos e musculosos) -->
+    <!-- MEMBRO SUPERIOR DIREITO -->
+    <path class="skin-layer" fill="url(#skinPardoWarm)" fill-opacity="1.0" stroke="#673E1E" stroke-width="1.8" d="
+      M 430,260
+      C 406,270 385,305 370,355
+      C 355,400 342,445 326,498
+      C 310,548 296,595 284,632
+      C 280,646 288,660 296,658
+      C 302,654 306,638 308,622
+      C 305,644 312,666 318,664
+      C 324,662 324,638 326,618
+      C 326,640 332,660 338,658
+      C 344,654 344,630 346,608
+      C 356,565 372,500 386,444
+      C 398,396 422,340 448,296
+      L 470,430
+      L 430,260 Z"/>
+
+    <!-- MEMBRO SUPERIOR ESQUERDO (Espelhamento Exato de Alta Precisão) -->
+    <path class="skin-layer" fill="url(#skinPardoWarm)" fill-opacity="1.0" stroke="#673E1E" stroke-width="1.8" d="
+      M 770,260
+      C 794,270 815,305 830,355
+      C 845,400 858,445 874,498
+      C 890,548 904,595 916,632
+      C 920,646 912,660 904,658
+      C 898,654 894,638 892,622
+      C 895,644 888,666 882,664
+      C 876,662 876,638 874,618
+      C 874,640 868,660 862,658
+      C 856,654 856,630 854,608
+      C 844,565 828,500 814,444
+      C 802,396 778,340 752,296
+      L 730,430
+      L 770,260 Z"/>
+
+    <!-- Relevos dos Deltoides e Bíceps -->
+    <path d="M 430,260 C 390,280 375,325 388,360" class="muscle-line"/>
+    <path d="M 770,260 C 810,280 825,325 812,360" class="muscle-line"/>
+
+    <!-- 5.3 Menu Flutuante: Membros Superiores -->
+    <g class="hover-card">
+      <path d="M 874,498 L 945,498" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <circle cx="874" cy="498" r="4" fill="#38BDF8"/>
+      <g transform="translate(825, 425)" filter="url(#cardShadow)">
+        <rect width="260" height="135" rx="8" fill="#0F172A" stroke="#0284C7" stroke-width="1.8"/>
+        <rect width="5" height="135" rx="2.5" fill="#38BDF8"/>
+        <text x="16" y="24" class="card-title">MEMBROS SUPERIORES</text>
+        <text x="16" y="40" class="card-subtitle">Trauma Osteoarticular, Vasos &amp; Partes Moles</text>
+        
+        <a href="#patologia-fraturas-ms" class="path-btn" transform="translate(16, 48)">
+          <rect width="108" height="26" rx="5"/>
+          <text x="8" y="17">Fraturas &amp; Luxações</text>
+        </a>
+        <a href="#patologia-oclusao-arterial-ms" class="path-btn" transform="translate(132, 48)">
+          <rect width="112" height="26" rx="5"/>
+          <text x="8" y="17">Isquemia Aguda MS</text>
+        </a>
+        <a href="#patologia-sindrome-compartimento" class="path-btn" transform="translate(16, 82)">
+          <rect width="108" height="26" rx="5"/>
+          <text x="8" y="17">S. Compartimental</text>
+        </a>
+        <a href="#patologia-infeccao-mao" class="path-btn" transform="translate(132, 82)">
+          <rect width="112" height="26" rx="5"/>
+          <text x="8" y="17">Infecções da Mão / Tenossovite</text>
+        </a>
+      </g>
+    </g>
+  </g>
+
+
+  <!-- ================= 6. MEMBROS INFERIORES ================= -->
+  <g id="seg-lower-limbs" class="segment-group" data-segment="membros-inferiores">
+    <!-- 6.1 Órgãos Internos dos Membros Inferiores -->
+    <g class="internal-organs">
+      <!-- Membro Inferior Direito -->
+      <line x1="526" y1="685" x2="538" y2="945" stroke="url(#boneGrad)" stroke-width="16" stroke-linecap="round"/>
+      <line x1="538" y1="685" x2="545" y2="945" stroke="#EF4444" stroke-width="4" stroke-linecap="round"/>
+      <line x1="532" y1="685" x2="542" y2="945" stroke="#3B82F6" stroke-width="4.5" stroke-linecap="round"/>
+      <circle cx="538" cy="960" r="13" fill="url(#boneGrad)" stroke="#78716C" stroke-width="1.2"/>
+      <line x1="534" y1="980" x2="538" y2="1225" stroke="url(#boneGrad)" stroke-width="11" stroke-linecap="round"/>
+      <line x1="520" y1="990" x2="525" y2="1220" stroke="url(#boneGrad)" stroke-width="5.5" stroke-linecap="round"/>
+      <line x1="536" y1="980" x2="540" y2="1225" stroke="#EF4444" stroke-width="2.6"/>
+      <line x1="532" y1="980" x2="536" y2="1225" stroke="#3B82F6" stroke-width="2.8"/>
+      <ellipse cx="536" cy="1255" rx="16" ry="11" fill="url(#boneGrad)" opacity="0.6"/>
+
+      <!-- Membro Inferior Esquerdo -->
+      <line x1="674" y1="685" x2="662" y2="945" stroke="url(#boneGrad)" stroke-width="16" stroke-linecap="round"/>
+      <line x1="662" y1="685" x2="655" y2="945" stroke="#EF4444" stroke-width="4" stroke-linecap="round"/>
+      <line x1="668" y1="685" x2="658" y2="945" stroke="#3B82F6" stroke-width="4.5" stroke-linecap="round"/>
+      <circle cx="662" cy="960" r="13" fill="url(#boneGrad)" stroke="#78716C" stroke-width="1.2"/>
+      <line x1="666" y1="980" x2="662" y2="1225" stroke="url(#boneGrad)" stroke-width="11" stroke-linecap="round"/>
+      <line x1="680" y1="990" x2="675" y2="1220" stroke="url(#boneGrad)" stroke-width="5.5" stroke-linecap="round"/>
+      <line x1="664" y1="980" x2="660" y2="1225" stroke="#EF4444" stroke-width="2.6"/>
+      <line x1="668" y1="980" x2="664" y2="1225" stroke="#3B82F6" stroke-width="2.8"/>
+      <ellipse cx="662" cy="1255" rx="16" ry="11" fill="url(#boneGrad)" opacity="0.6"/>
+    </g>
+
+    <!-- 6.2 Camada de Pele dos Membros Inferiores (Canônica da referência) -->
+    <path class="skin-layer" fill="url(#skinPardoWarm)" fill-opacity="1.0" stroke="#673E1E" stroke-width="1.8" d="
+      M 508,675
+      C 488,725 480,790 486,860
+      C 492,915 504,955 510,985
+      C 514,1025 508,1105 514,1175
+      C 518,1215 514,1235 502,1250
+      C 495,1258 502,1270 518,1272
+      C 536,1274 552,1268 556,1252
+      C 560,1235 554,1215 554,1175
+      C 554,1105 560,1025 560,985
+      C 560,955 554,915 560,860
+      C 566,800 580,740 592,700
+      L 600,700
+      L 608,700
+      C 620,740 634,800 640,860
+      C 646,915 640,955 640,985
+      C 640,1025 646,1105 646,1175
+      C 646,1215 640,1235 644,1252
+      C 648,1268 664,1274 682,1272
+      C 698,1270 705,1258 698,1250
+      C 686,1235 682,1215 686,1175
+      C 692,1105 686,1025 690,985
+      C 696,955 708,915 714,860
+      C 720,790 712,725 692,675 Z"/>
+
+    <!-- Relevo dos Vasto Lateral/Medial, Joelho e Tendão Patelar -->
+    <ellipse cx="538" cy="960" rx="14" ry="11" class="muscle-line"/>
+    <ellipse cx="662" cy="960" rx="14" ry="11" class="muscle-line"/>
+    <path d="M 495,770 C 505,830 515,890 525,940" class="muscle-line"/>
+    <path d="M 705,770 C 695,830 685,890 675,940" class="muscle-line"/>
+
+    <!-- 6.3 Menu Flutuante: Membros Inferiores -->
+    <g class="hover-card">
+      <path d="M 510,985 L 420,985" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <circle cx="510" cy="985" r="4" fill="#38BDF8"/>
+      <g transform="translate(145, 905)" filter="url(#cardShadow)">
+        <rect width="265" height="156" rx="8" fill="#0F172A" stroke="#0284C7" stroke-width="1.8"/>
+        <rect x="260" width="5" height="156" rx="2.5" fill="#38BDF8"/>
+        <text x="16" y="24" class="card-title">MEMBROS INFERIORES</text>
+        <text x="16" y="40" class="card-subtitle">Vascular Agudo, Trauma &amp; Partes Moles</text>
+        
+        <a href="#patologia-tvp" class="path-btn" transform="translate(16, 48)">
+          <rect width="112" height="26" rx="5"/>
+          <text x="8" y="17">TVP / Trombose</text>
+        </a>
+        <a href="#patologia-oclusao-arterial-mi" class="path-btn" transform="translate(136, 48)">
+          <rect width="112" height="26" rx="5"/>
+          <text x="8" y="17">Isquemia Aguda MI</text>
+        </a>
+        <a href="#patologia-celulite-erisipela" class="path-btn" transform="translate(16, 82)">
+          <rect width="112" height="26" rx="5"/>
+          <text x="8" y="17">Celulite / Erisipela</text>
+        </a>
+        <a href="#patologia-fasciite-necrosante" class="path-btn" transform="translate(136, 82)">
+          <rect width="112" height="26" rx="5"/>
+          <text x="8" y="17">Fasciíte Necrosante</text>
+        </a>
+        <a href="#patologia-fratura-femur" class="path-btn" transform="translate(16, 116)">
+          <rect width="232" height="26" rx="5"/>
+          <text x="8" y="17">Fratura de Fêmur / Pelve (Risco Hemorrágico)</text>
+        </a>
+      </g>
+    </g>
+  </g>
+
+
+  <!-- RODAPÉ TÉCNICO -->
+  <g transform="translate(600, 1465)" text-anchor="middle">
+    <rect x="-410" y="-18" width="820" height="34" rx="6" fill="#0F172A" stroke="#1E293B" stroke-width="1.2"/>
+    <circle cx="-355" cy="-1" r="5" fill="#D79E63"/>
+    <text x="-342" y="3" fill="#E2E8F0" font-family="'Inter', sans-serif" font-size="11" text-anchor="start">Pele Parda Dourada (Opaca por padrão)</text>
+    
+    <circle cx="-65" cy="-1" r="5" fill="#38BDF8"/>
+    <text x="-52" y="3" fill="#E2E8F0" font-family="'Inter', sans-serif" font-size="11" text-anchor="start">Hover: Ativa Transparência &amp; Exibe Órgãos</text>
+
+    <circle cx="215" cy="-1" r="5" fill="#10B981"/>
+    <text x="228" y="3" fill="#E2E8F0" font-family="'Inter', sans-serif" font-size="11" text-anchor="start">Links Diretos para Protocolos</text>
+  </g>
+
+</svg>
+      </div>
+
+    </main>
+
+    <!-- 2.2 BARRA LATERAL DE CONTROLE (SIDEBAR DOCK) -->
+    <aside class="sidebar-panel">
+
+      <!-- Abas de Navegação -->
+      <nav class="sidebar-tabs">
+        <button class="sb-tab-btn active" data-tab="tab-segments">
+          <i class="ti ti-body-scan"></i>
+          <span>Segmentos</span>
+        </button>
+        <button class="sb-tab-btn" data-tab="tab-pathologies">
+          <i class="ti ti-notes"></i>
+          <span>Patologias</span>
+        </button>
+        <button class="sb-tab-btn" data-tab="tab-modes">
+          <i class="ti ti-adjustments-horizontal"></i>
+          <span>Modos</span>
+        </button>
+        <button class="sb-tab-btn" data-tab="tab-guide">
+          <i class="ti ti-book-2"></i>
+          <span>Instruções</span>
+        </button>
+      </nav>
+
+      <!-- Conteúdo das Abas -->
+      <div class="sidebar-content">
+
+        <!-- ABA 1: SEGMENTOS ANATÔMICOS -->
+        <div class="tab-pane active" id="tab-segments">
+          <div class="section-header">
+            <div class="section-title">
+              <i class="ti ti-layout-grid"></i>
+              <span>Navegação Topográfica</span>
+            </div>
+            <span class="section-badge">6 Segmentos</span>
+          </div>
+
+          <!-- Cards dos Segmentos -->
+          <div class="segment-card" data-seg="cabeca">
+            <div class="seg-card-top">
+              <div class="seg-card-title">
+                <i class="ti ti-brain" style="color: #ec4899;"></i> Cabeça &amp; Crânio
+              </div>
+              <span class="crunch-badge sev-critical">AVC / HSA / TCE</span>
+            </div>
+            <div class="seg-card-desc">
+              Encéfalo, polígono vascular de Willis, crânio e nervos cranianos.
+            </div>
+            <div class="seg-card-tags">
+              <span class="seg-tag">AVC Isquêmico</span>
+              <span class="seg-tag">HSA</span>
+              <span class="seg-tag">TCE Grave</span>
+              <span class="seg-tag">Meningite</span>
+            </div>
+          </div>
+
+          <div class="segment-card" data-seg="pescoco">
+            <div class="seg-card-top">
+              <div class="seg-card-title">
+                <i class="ti ti-shield" style="color: #38bdf8;"></i> Pescoço &amp; Cervical
+              </div>
+              <span class="crunch-badge sev-critical">Via Aérea Difícil</span>
+            </div>
+            <div class="seg-card-desc">
+              Laringe, traqueia cervical, carótidas, jugulares e coluna cervical C1-C7.
+            </div>
+            <div class="seg-card-tags">
+              <span class="seg-tag">Obstrução V.A.</span>
+              <span class="seg-tag">Dissecção Carotídea</span>
+              <span class="seg-tag">Trauma C-Spine</span>
+              <span class="seg-tag">Anafilaxia</span>
+            </div>
+          </div>
+
+          <div class="segment-card" data-seg="torax">
+            <div class="seg-card-top">
+              <div class="seg-card-title">
+                <i class="ti ti-heartbeat" style="color: #ef4444;"></i> Tórax &amp; Cardiorrespiratório
+              </div>
+              <span class="crunch-badge sev-critical">IAM / TEP / Aorta</span>
+            </div>
+            <div class="seg-card-desc">
+              Coração, arco aórtico, artérias pulmonares, pulmões e grade costal.
+            </div>
+            <div class="seg-card-tags">
+              <span class="seg-tag">SCA / IAM</span>
+              <span class="seg-tag">Dissecção de Aorta</span>
+              <span class="seg-tag">TEP Maciço</span>
+              <span class="seg-tag">Pneumotórax</span>
+            </div>
+          </div>
+
+          <div class="segment-card" data-seg="abdome">
+            <div class="seg-card-top">
+              <div class="seg-card-title">
+                <i class="ti ti-stethoscope" style="color: #f59e0b;"></i> Abdome &amp; Pelve
+              </div>
+              <span class="crunch-badge sev-urgent">Abdome Agudo</span>
+            </div>
+            <div class="seg-card-desc">
+              Fígado, vias biliares, pâncreas, aorta abdominal, rins e intestinos.
+            </div>
+            <div class="seg-card-tags">
+              <span class="seg-tag">AAA Roto</span>
+              <span class="seg-tag">Apendicite</span>
+              <span class="seg-tag">Pancreatite</span>
+              <span class="seg-tag">HDA</span>
+            </div>
+          </div>
+
+          <div class="segment-card" data-seg="membros-superiores">
+            <div class="seg-card-top">
+              <div class="seg-card-title">
+                <i class="ti ti-hand-stop" style="color: #10b981;"></i> Membros Superiores
+              </div>
+              <span class="crunch-badge sev-urgent">Trauma / Vascular</span>
+            </div>
+            <div class="seg-card-desc">
+              Artérias braquial/radial, nervos periféricos, compartimentos e mãos.
+            </div>
+            <div class="seg-card-tags">
+              <span class="seg-tag">Fraturas Expostas</span>
+              <span class="seg-tag">Isquemia MS</span>
+              <span class="seg-tag">S. Compartimental</span>
+            </div>
+          </div>
+
+          <div class="segment-card" data-seg="membros-inferiores">
+            <div class="seg-card-top">
+              <div class="seg-card-title">
+                <i class="ti ti-run" style="color: #8b5cf6;"></i> Membros Inferiores
+              </div>
+              <span class="crunch-badge sev-critical">TVP / Isquemia Aguda</span>
+            </div>
+            <div class="seg-card-desc">
+              Eixo iliofemoral/poplíteo, feixes neurovasculares e compartimentos da perna.
+            </div>
+            <div class="seg-card-tags">
+              <span class="seg-tag">TVP</span>
+              <span class="seg-tag">Isquemia MI</span>
+              <span class="seg-tag">Fasciíte Necrosante</span>
+              <span class="seg-tag">Fratura Fêmur</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ABA 2: PATOLOGIAS DE EMERGÊNCIA (DINÂMICO) -->
+        <div class="tab-pane" id="tab-pathologies">
+          
+          <!-- Banner do Segmento Ativo -->
+          <div class="active-segment-banner" id="activeSegmentBanner">
+            <div>
+              <div class="as-title" id="asBannerTitle">Todas as Patologias</div>
+              <div class="as-sub" id="asBannerSub">Clique em um segmento para filtrar</div>
+            </div>
+            <button class="btn-tactical" id="btnFilterAllPathologies" style="padding: 4px 8px; font-size: 0.7rem;">
+              Ver Todas
+            </button>
+          </div>
+
+          <!-- Lista de Cards de Patologias -->
+          <div id="pathologyCardsContainer" style="display: flex; flex-direction: column; gap: 10px;">
+            <!-- Preenchido via JavaScript -->
+          </div>
+
+        </div>
+
+        <!-- ABA 3: MODOS DE VISÃO & CONTROLES TÁTICOS -->
+        <div class="tab-pane" id="tab-modes">
+          <div class="section-header">
+            <div class="section-title">
+              <i class="ti ti-adjustments-alt"></i>
+              <span>Modos de Visualização</span>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <div style="font-weight: 700; color: #fff; font-size: 0.82rem;">Selecione a Camada Ativa</div>
+            
+            <button class="btn-tactical mode-btn-full active" data-mode="interactive">
+              <i class="ti ti-cursor-text" style="color: var(--cyan-neon);"></i>
+              <div style="text-align: left; flex: 1;">
+                <div style="font-weight: 700;">Modo Interativo (Padrão)</div>
+                <div style="font-size: 0.68rem; color: var(--text-muted);">Pele parda natural; ativa transparência e menu no hover/clique.</div>
+              </div>
+            </button>
+
+            <button class="btn-tactical mode-btn-full" data-mode="xray">
+              <i class="ti ti-radioactive" style="color: #38bdf8;"></i>
+              <div style="text-align: left; flex: 1;">
+                <div style="font-weight: 700;">Modo Raio-X (Translucidez 50%)</div>
+                <div style="font-size: 0.68rem; color: var(--text-muted);">Pele translúcida com brilho neon azul, revelando todo o interior.</div>
+              </div>
+            </button>
+
+            <button class="btn-tactical mode-btn-full" data-mode="organs">
+              <i class="ti ti-heart" style="color: #ef4444;"></i>
+              <div style="text-align: left; flex: 1;">
+                <div style="font-weight: 700;">Modo Órgãos e Vasos Puros</div>
+                <div style="font-size: 0.68rem; color: var(--text-muted);">Pele 100% oculta; foco máximo em esqueleto, cérebro, vísceras e vasos.</div>
+              </div>
+            </button>
+
+            <button class="btn-tactical mode-btn-full" data-mode="surface">
+              <i class="ti ti-user" style="color: #d97706;"></i>
+              <div style="text-align: left; flex: 1;">
+                <div style="font-weight: 700;">Modo Superfície Anatômica</div>
+                <div style="font-size: 0.68rem; color: var(--text-muted);">Pele Dourada Parda com relevo muscular e pontos de punção.</div>
+              </div>
+            </button>
+          </div>
+
+          <!-- Ajuste Fino de Transparência -->
+          <div class="setting-group">
+            <div style="font-weight: 700; color: #fff; font-size: 0.82rem;">Controle Fino de Translucidez</div>
+            
+            <div class="slider-control">
+              <div class="slider-header">
+                <span>Opacidade da Pele</span>
+                <span class="slider-val" id="skinOpacityVal">100%</span>
+              </div>
+              <input type="range" id="skinOpacitySlider" min="0" max="100" value="100">
+            </div>
+
+            <div class="slider-control">
+              <div class="slider-header">
+                <span>Brilho dos Órgãos / Vasos</span>
+                <span class="slider-val" id="glowVal">100%</span>
+              </div>
+              <input type="range" id="glowSlider" min="30" max="200" value="100">
+            </div>
+          </div>
+        </div>
+
+        <!-- ABA 4: INSTRUÇÕES DE VISUALIZAÇÃO E GUIA BEIRA-LEITO -->
+        <div class="tab-pane" id="tab-guide">
+          <div class="section-header">
+            <div class="section-title">
+              <i class="ti ti-help-hexagon"></i>
+              <span>Como Visualizar o Modelo</span>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <div style="font-weight: 800; color: #fff; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;">
+              <i class="ti ti-device-laptop" style="color: var(--cyan-neon);"></i>
+              Instruções para o Médico / Plantonista
+            </div>
+
+            <div class="guide-step">
+              <div class="step-number">1</div>
+              <div class="step-text">
+                <strong>Abertura Direta no Navegador:</strong><br>
+                Basta dar um <strong>duplo clique</strong> no arquivo <span class="code-pill">visualizador_anatomico.html</span> no seu computador. Ele abrirá instantaneamente em qualquer navegador (Chrome, Safari, Edge, Firefox, Brave) sem precisar de internet.
+              </div>
+            </div>
+
+            <div class="guide-step">
+              <div class="step-number">2</div>
+              <div class="step-text">
+                <strong>Via Servidor Local (Opcional):</strong><br>
+                Abra o terminal na pasta do projeto e execute:<br>
+                <span class="code-pill">python3 -m http.server 8080</span><br>
+                Em seguida, acesse no navegador: <span class="code-pill">http://localhost:8080/visualizador_anatomico.html</span>.
+              </div>
+            </div>
+
+            <div class="guide-step">
+              <div class="step-number">3</div>
+              <div class="step-text">
+                <strong>Navegação e Interatividade:</strong><br>
+                • <strong>Mover / Pan:</strong> Clique e arraste com o botão esquerdo do mouse.<br>
+                • <strong>Zoom:</strong> Role a roda do mouse (scroll) ou use os botões <span class="code-pill">+</span> e <span class="code-pill">-</span>.<br>
+                • <strong>Focar Segmento:</strong> Clique em qualquer segmento no corpo ou nos botões da barra lateral.<br>
+                • <strong>Ver Protocolo Beira-Leito:</strong> Clique nos botões azuis das patologias para abrir a gaveta com doses e condutas completas.
+              </div>
+            </div>
+
+            <div class="guide-step">
+              <div class="step-number">4</div>
+              <div class="step-text">
+                <strong>Atalhos de Teclado Táticos:</strong><br>
+                • <span class="code-pill">1</span> a <span class="code-pill">6</span>: Focar nos segmentos (Cabeça, Pescoço, Tórax, Abdome, MMSS, MMII).<br>
+                • <span class="code-pill">+</span> / <span class="code-pill">-</span>: Zoom in / Zoom out.<br>
+                • <span class="code-pill">0</span> ou <span class="code-pill">R</span>: Reset e centralização da câmera.<br>
+                • <span class="code-pill">M</span>: Alternar modo de visão (Raio-X, Órgãos, Superfície).<br>
+                • <span class="code-pill">F</span>: Alternar Tela Cheia.<br>
+                • <span class="code-pill">ESC</span>: Fechar gaveta de protocolo.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+</div>
+
+<!-- 3. GAVETA TÁTICA DE CONDUTAS BEIRA-LEITO (DRAWER) -->
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+<div class="protocol-drawer" id="protocolDrawer">
+  <div class="drawer-header">
+    <div>
+      <div class="drawer-title" id="drawerTitle">
+        <i class="ti ti-activity" style="color: var(--cyan-neon);"></i>
+        <span>Título da Patologia</span>
+      </div>
+      <div class="drawer-sub" id="drawerSubtitle">Subtítulo e Segmento</div>
+    </div>
+    <button class="drawer-close-btn" id="drawerCloseBtn" title="Fechar (ESC)">
+      <i class="ti ti-x"></i>
+    </button>
+  </div>
+
+  <div class="drawer-body">
+    <!-- Banner de Urgência e Crunch Time -->
+    <div class="drawer-banner" id="drawerBanner">
+      <div>
+        <div style="font-size: 0.7rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.5px;" id="drawerSeverityText">
+          CRÍTICO — SALA VERMELHA
+        </div>
+        <div style="font-size: 1.05rem; font-weight: 800; color: #fff; margin-top: 2px;" id="drawerCrunchTime">
+          &lt; 4.5h (Janela Trombólise)
+        </div>
+      </div>
+      <i class="ti ti-clock-alert" style="font-size: 2rem; color: rgba(255, 255, 255, 0.7);"></i>
+    </div>
+
+    <!-- Alvos Vitais & Metas Imediatas -->
+    <div class="drawer-section-card">
+      <div class="dsc-title">
+        <i class="ti ti-dashboard"></i>
+        <span>Alvos Fisiológicos &amp; Metas Vitais</span>
+      </div>
+      <div class="vitals-grid" id="drawerVitalsGrid">
+        <!-- Preenchido via JavaScript -->
+      </div>
+    </div>
+
+    <!-- Checklist de Ações Imediatas -->
+    <div class="drawer-section-card">
+      <div class="dsc-title">
+        <i class="ti ti-list-check"></i>
+        <span>Ações Imediatas Beira-Leito (Minuto Zero)</span>
+      </div>
+      <div id="drawerImmediateActions" style="display: flex; flex-direction: column; gap: 8px;">
+        <!-- Preenchido via JavaScript -->
+      </div>
+    </div>
+
+    <!-- Prescrição & Doses de Emergência -->
+    <div class="drawer-section-card">
+      <div class="dsc-title">
+        <i class="ti ti-prescription"></i>
+        <span>Prescrição Tática &amp; Doses Exatas</span>
+      </div>
+      <div class="prescription-box" id="drawerPrescriptionBox">
+        <!-- Preenchido via JavaScript -->
+      </div>
+    </div>
+
+    <!-- Red Flags & Pitfalls Críticos -->
+    <div class="drawer-section-card">
+      <div class="dsc-title" style="color: #f87171;">
+        <i class="ti ti-alert-triangle"></i>
+        <span>Armadilhas Clínicas &amp; Pitfalls Fatais</span>
+      </div>
+      <div class="pitfall-box" id="drawerPitfallBox">
+        <!-- Preenchido via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <div class="drawer-footer">
+    <a href="#" class="btn-tactical btn-primary" id="drawerAppLink" target="_blank" style="flex: 1; justify-content: center;">
+      <i class="ti ti-external-link"></i>
+      <span id="drawerAppLinkText">Abrir no App Emergência Pro</span>
+    </a>
+  </div>
+</div>
+
+
+<!-- 4. CONTROLE JAVASCRIPT REATIVO -->
+<script>
+  // Dicionários de Dados
+  const PATHOLOGIES = {"patologia-ave": {"id": "patologia-ave", "segment": "cabeca", "segmentName": "Cabeça & Crânio", "title": "AVC Isquêmico / AVE Agudo", "subtitle": "Oclusão Arterial Cerebral Aguda & Penumbra Isquêmica", "crunchTime": "< 4.5h (Trombólise) | < 24h (Trombectomia)", "severity": "CRÍTICO — SALA VERMELHA", "severityClass": "sev-critical", "icon": "ti-brain", "vitalTargets": [{"label": "PA Alvo Pré-Trombólise", "val": "< 185/110 mmHg"}, {"label": "PA Alvo Pós-Trombólise", "val": "< 180/105 mmHg"}, {"label": "Glicemia Capilar", "val": "140 – 180 mg/dL"}, {"label": "SatO2", "val": "≥ 94% (O2 se < 94%)"}, {"label": "Cabeceira", "val": "0° a 15° se déficit flutuante"}], "immediateActions": ["Acionar protocolo AVC imediato: TC crânio sem contraste em < 20 min;", "Calcular escala NIHSS imediatamente (avaliar gravidade do déficit);", "Coleta rápida: Glicemia capilar, coagulograma, hemograma e ECG 12 derivações;", "AngioTC intra e extracraniana para avaliar oclusão de grande vaso (ACM M1, Carótida interna, Basilar);"], "prescriptions": ["Alteplase (rt-PA): 0,9 mg/kg IV (máximo 90 mg) — 10% em bolus de 1 min e 90% em infusão contínua em 60 min. (OU Tenecteplase 0,25 mg/kg em bolus único, máx 25 mg);", "Controle pressórico antes da trombólise se PA ≥ 185/110: Nitroprussiato de Sódio IV ou Esmolol / Nicardipino / Labetalol;", "NÃO prescrever AAS, clopidogrel ou anticoagulantes nas primeiras 24 horas pós-trombólise;", "TC de crânio de controle em 24h obrigatória antes de liberar antiagregação."], "pitfalls": "Cuidado com AVC Mimics (hipoglicemia severa, paralisia de Todd pós-crise convulsiva, enxaqueca com aura, conversão). Tratar imediatamente hipoglicemia antes de definir déficit.", "link": "neuro_emergencia.html", "linkText": "Abrir Protocolo Neuroemergência Completo"}, "patologia-hsa": {"id": "patologia-hsa", "segment": "cabeca", "segmentName": "Cabeça & Crânio", "title": "HSA — Hemorragia Subaracnoideia", "subtitle": "Ruptura de Aneurisma Sacular & Cefaleia em Trovoada (Thunderclap)", "crunchTime": "< 1h (Prevenção de Resangramento)", "severity": "EMERGÊNCIA NEUROCIRÚRGICA", "severityClass": "sev-critical", "icon": "ti-alert-circle", "vitalTargets": [{"label": "PAS Alvo", "val": "< 140 – 160 mmHg (evitar PAS < 120)"}, {"label": "PAM Mínima", "val": "≥ 80 mmHg (manter perfusão)"}, {"label": "Temperatura", "val": "< 37,5°C (evitar pirexia)"}, {"label": "Euvolemia", "val": "SF 0,9% para evitar vasoespasmo"}], "immediateActions": ["TC crânio sem contraste em corte fino (sensibilidade > 98% nas primeiras 6h);", "Se TC normal após 6h com alta suspeita clínica: Punção Lombar (analisar xantocromia e 4 tubos sequenciais);", "AngioTC de vasos intracranianos para localizar o aneurisma roto;", "Acionar equipe de Neurocirurgia / Neurorradiologia Intervencionista para oclusão precoce (< 24-72h)."], "prescriptions": ["Nimodipino: 60 mg VO ou por SNG de 4 em 4 horas por 21 dias (profilaxia de isquemia tardia por vasoespasmo);", "Controle ágil de dor: Dipirona 1-2g IV + Morfina/Fentanil titulados (evitar AINEs e antiplaquetários);", "Anti-eméticos: Ondansetrona 8 mg IV;", "Laxativos emolientes e repouso no leito absoluto com cabeceira a 30° (evitar manobra de Valsalva)."], "pitfalls": "Nunca reduzir agressivamente a pressão (PAS < 120 mmHg), pois pode precipitar infarto cerebral na zona de penumbra e vasoespasmo. Aneurisma ressangra com maior frequência nas primeiras 24h.", "link": "neuro_emergencia.html#hsa", "linkText": "Ver Conduta de HSA e Dano Secundário"}, "patologia-tce": {"id": "patologia-tce", "segment": "cabeca", "segmentName": "Cabeça & Crânio", "title": "TCE Grave & Hipertensão Intracraniana", "subtitle": "Glasgow ≤ 8, Hematomas Epidurais/Subdurais & Iminência de Herniação", "crunchTime": "< 30 min (Descompressão & Neuroproteção)", "severity": "IMINÊNCIA DE HERNIÇÃO UNCAL", "severityClass": "sev-critical", "icon": "ti-skull", "vitalTargets": [{"label": "PAM Alvo", "val": "≥ 80 mmHg (manter PPC > 60-70)"}, {"label": "PAS Alvo", "val": "> 100-110 mmHg (evitar hipoperfusão)"}, {"label": "PaCO2 Alvo", "val": "35 – 40 mmHg (evitar hiper/hipocapnia)"}, {"label": "SatO2", "val": "≥ 95% (evitar hipóxia absolutamente)"}], "immediateActions": ["Sequência Rápida de Intubação com pré-oxigenação e agente neuroprotetor (Quetamina + Rocurônio ou Etomidato);", "Alinhamento cervical rígido em posição neutra e elevação da cabeceira a 30° (sem torção ou compressão jugular);", "Pesquisa ativa de sinais de herniação uncal: Anisocoria, midríase fixa ipsilateral, hemiplegia contralateral, Tríade de Cushing (HAS + Bradicardia + Respiração irregular);", "Acionar Neurocirurgia para craniectomia descompressiva / drenagem cirúrgica de hematoma."], "prescriptions": ["Terapia Hiperosmolar de Emergência se sinais de herniação ou deterioração clínica:", "  * Salina Hipertônica a 3%: 250 a 500 mL IV em bolus rápido de 15 minutos (OU NaCl 20% 30-50 mL diluídos);", "  * OU Manitol a 20%: 0,5 a 1,0 g/kg IV em 15-20 minutos (se paciente não chocado);", "Sedação contínua profunda (Propofol ou Midazolam + Fentanil);", "Profilaxia anticonvulsivante precoce: Levetiracetam 1g IV ou Fenitoína 20 mg/kg IV nas primeiras 7 dias."], "pitfalls": "Um único episódio de PAS < 90 mmHg ou SatO2 < 90% duplica a mortalidade no TCE grave. JAMAIS hiperventilar de rotina (PaCO2 < 30 causa vasoconstrição cerebral grave e isquemia).", "link": "neuro_emergencia.html#tce", "linkText": "Abrir Protocolo de TCE & Hipertensão PIC"}, "patologia-cefaleia": {"id": "patologia-cefaleia", "segment": "cabeca", "segmentName": "Cabeça & Crânio", "title": "Cefaleia com Red Flags / Meningite", "subtitle": "Regras SNOOP4, Síndrome Meníngea & Trombose Venosa Cerebral", "crunchTime": "< 60 min (Início de Antibioticoterapia Empírica)", "severity": "ALTA URGÊNCIA CLÍNICA", "severityClass": "sev-urgent", "icon": "ti-virus", "vitalTargets": [{"label": "Tempo Porta-ATB", "val": "< 1h da suspeita clínica"}, {"label": "Dexametasona", "val": "Antes ou simultânea ao 1° ATB"}, {"label": "Glicemia / Lactato", "val": "Rastrear sinais de sepse"}], "immediateActions": ["Triagem de Red Flags SNOOP4: Início súbito/trovoada, sintomas sistêmicos (febre), neoplasia prévia, déficit neurológico focal, papiledema, idade > 50 anos;", "Se suspeita de Meningite bacteriana: Coletar hemoculturas e NÃO atrasar ATB para TC de crânio ou Punção Lombar;", "Realizar TC crânio antes da PL apenas se: coma/Glasgow rebaixado, déficit focal novo, papiledema, imunossupressão grave ou convulsão recente."], "prescriptions": ["Dexametasona: 10 mg IV — administrar 15-20 minutos ANTES ou SIMULTANEAMENTE à 1ª dose de antibiótico (perde benefício se dada > 1h depois);", "Ceftriaxona: 2 g IV de 12 em 12 horas;", "Ampicilina: 2 g IV de 4 em 4 horas (adicionar se > 50 anos, gestante ou imunossuprimido — cobertura de Listeria monocytogenes);", "Vancomicina: 15-20 mg/kg IV de 12/12h se suspeita de pneumococo resistente;", "Aciclovir: 10 mg/kg IV 8/8h se suspeita de Encefalite por Herpes Vírus (confusão mental, febre, crises temporais)."], "pitfalls": "Nunca administrar dexametasona empírica em cefaleia se houver suspeita de HSA ou se atrasar o antibiótico. Evitar opioides de rotina para cefaleias primárias.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-via-aerea": {"id": "patologia-via-aerea", "segment": "pescoco", "segmentName": "Pescoço & Cervical", "title": "Obstrução Aguda de Via Aérea", "subtitle": "Edema Laringotraqueal, Corpo Estranho & Falha de Intubação", "crunchTime": "< 3 a 5 min (Prevenção de PCR Hipóxica)", "severity": "CÓDIGO VERMELHO ABSOLUTO", "severityClass": "sev-critical", "icon": "ti-lungs", "vitalTargets": [{"label": "SatO2 Alvo", "val": "> 90% (oxigenação emergencial)"}, {"label": "Monitorização", "val": "Capnografia quantitativa em onda"}], "immediateActions": ["Oxigênio a 100% com máscara com reservatório não reinalante;", "Avaliação rápida de via aérea difícil: Regra LEMON (Look, Evaluate 3-3-2, Mallampati, Obstruction, Neck mobility);", "Posicionar cabeceira, aspiração rígida Yankauer, canula de Guedel ou nasofaríngea se tolerado;", "Preparar videolaringoscópio, lâminas diversas, bougie e dispositivo extraglótico (máscara laríngea);", "Se 'NÃO INTUBO, NÃO OXIGENO' (CICO): Ativar Cricotireoidostomia Cirúrgica Imediata."], "prescriptions": ["Sedação para Sequência Rápida: Quetamina 1,5 a 2,0 mg/kg IV ou Etomidato 0,3 mg/kg IV;", "Bloqueador Neuromuscular: Rocurônio 1,2 mg/kg IV (OU Succinilcolina 1,5 mg/kg IV se sem contraindicações);", "Antídoto de reversão de Rocurônio se disponível: Sugamadex 16 mg/kg IV se falha catastrófica de IOT;", "Kit Crico Cirúrgica beira-leito: Bisturi lâmina 11, Bougie elástico e tubo traqueal 6.0 com cuff."], "pitfalls": "Não insistir em mais de 3 tentativas de laringoscopia direta. Cada tentativa adicional causa trauma, edema e sangramento, transformando uma via aérea difícil em catastrófica.", "link": "app.html", "linkText": "Ver Protocolo de Via Aérea Difícil"}, "patologia-disseccao-carotida": {"id": "patologia-disseccao-carotida", "segment": "pescoco", "segmentName": "Pescoço & Cervical", "title": "Dissecção de Artéria Carótida / Vertebral", "subtitle": "Dor Cervical Súbita, Síndrome de Horner & Isquemia Cerebral", "crunchTime": "< 2h (Prevenção de AVE Tromboembólico)", "severity": "ALTA URGÊNCIA VASCULAR", "severityClass": "sev-critical", "icon": "ti-heart-rate-monitor", "vitalTargets": [{"label": "PA Sistólica", "val": "120 – 160 mmHg (evitar hipoperfusão)"}, {"label": "Exame Pupilar", "val": "Pesquisar miose + ptose ipsilateral"}], "immediateActions": ["AngioTC de vasos cervicais e intracranianos de urgência com contraste arterial;", "Identificar Tríade: Dor cervical/cefaleia unilateral + Síndrome de Horner ipsilateral + Déficit focal cerebral/retiniano;", "Avaliação imediata com Cirurgia Vascular e Neurologia Vascular."], "prescriptions": ["Anticoagulação plena com Enoxaparina 1 mg/kg SC 12/12h ou Heparina Não Fracionada IV (se sem evidência de hemorragia ou infarto extenso com transformação hemorrágica);", "OU Dupla Antiagregação Plaquetária (AAS 100-300 mg + Clopidogrel 75 mg) conforme protocolo institucional;", "Analgesia otimizada com Dipirona 1g IV e controle pressórico moderado."], "pitfalls": "Dor no pescoço após trauma leve ou manipulação quiroprática não deve ser negligenciada como 'torcicolo simples' quando associada a cefaleia ou alteração pupilar.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-trauma-cervical": {"id": "patologia-trauma-cervical", "segment": "pescoco", "segmentName": "Pescoço & Cervical", "title": "Trauma Cervical (C-Spine)", "subtitle": "Fratura Vertebral, Instabilidade Medular & Choque Neurogênico", "crunchTime": "< 1h (Alinhamento & Prevenção de Déficit)", "severity": "TRAUMA CRÍTICO", "severityClass": "sev-critical", "icon": "ti-shield-alert", "vitalTargets": [{"label": "PAM em Choque Medular", "val": "≥ 85 – 90 mmHg por 7 dias"}, {"label": "Imobilização", "val": "Restrição rigorosa até TC"}], "immediateActions": ["Aplicação dos critérios NEXUS ou Canadian C-Spine Rule para indicação de imagem;", "TC multislice de coluna cervical completa (superior ao Rx simples para descartar fraturas de C1-C2 e C7-T1);", "Exame neurológico motor e sensitivo detalhado (nível neurológico ASIA e reflexo bulbocavernoso);", "Diferenciar choque neurogênico (Hipotensão + Bradicardia + Pele quente) de choque hipovolêmico."], "prescriptions": ["Cristaloides cautelosos (SF ou Ringer Lactato);", "Vasopressor de primeira escolha no choque neurogênico: Noradrenalina IV (com ou sem Dopamina) para manter PAM ≥ 85-90 mmHg;", "Corticoides em altas doses (Metilprednisolona): NÃO recomendados pelas diretrizes contemporâneas pelo alto risco infeccioso e benefício nulo."], "pitfalls": "Remover a prancha rígida assim que o paciente estiver na maca hospitalar (máximo 2h) para evitar úlceras por pressão e dor extrema, mantendo o colar cervical rígido.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-anafilaxia": {"id": "patologia-anafilaxia", "segment": "pescoco", "segmentName": "Pescoço & Cervical", "title": "Edema de Glote / Anafilaxia Grave", "subtitle": "Colapso Cardiorrespiratório Alérgico & Choque Distributivo", "crunchTime": "< 5 min (Adrenalina Imediata)", "severity": "CHOQUE ALÉRGICO FULMINANTE", "severityClass": "sev-critical", "icon": "ti-flame", "vitalTargets": [{"label": "Primeira Droga", "val": "Adrenalina IM (sem demora)"}, {"label": "Via de Aplicação", "val": "Vasto lateral da coxa"}, {"label": "Volume Inicial", "val": "Ringer Lactato 20 mL/kg rápido"}], "immediateActions": ["Interromper imediatamente o agente causal suspeito (drogas, hemoderivados, contraste);", "Aplicar EPINEFRINA (ADRENALINA) IM IMEDIATAMENTE;", "Colocar o paciente em decúbito dorsal com membros inferiores elevados (a menos que haja desconforto respiratório predominante);", "Obter 2 acessos venosos periféricos calibrosos;", "Preparar material de via aérea avançada (intubação precoce antes que o edema oclua totalmente a glote)."], "prescriptions": ["ADRENALINA (1:1.000 / 1 mg/mL): 0,5 mg IM (0,01 mg/kg em crianças, máx 0,3 mg) na face anterolateral da coxa. REPETIR a cada 5 a 15 minutos se má resposta;", "Expansão volêmica rápida com Ringer Lactato ou SF 0,9%: 1.000 a 2.000 mL em bolus rápido;", "Difenidramina (anti-H1): 50 mg IV lenta;", "Hidrocortisona: 200 a 500 mg IV ou Metilprednisolona 125 mg IV (prevenção de resposta bifásica tardia);", "Inalação com Fenoterol/Salbutamol + Brometo de Ipratrópio se broncoespasmo associado."], "pitfalls": "Nunca administrar corticoide ou anti-histamínico antes da Adrenalina. Anti-H1 não trata edema de glote nem colapso hemodinâmico. Atrasar a adrenalina é a principal causa de morte por anafilaxia.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-sca": {"id": "patologia-sca", "segment": "torax", "segmentName": "Tórax & Cardiorrespiratório", "title": "SCA / Infarto Agudo do Miocárdio (IAM)", "subtitle": "IAM com Supra de ST (STEMI) & Sem Supra (NSTEMI / AI)", "crunchTime": "< 10 min (ECG) | < 90 min (Porta-Balão) | < 30 min (Porta-Agulha)", "severity": "CRÍTICO — CATETERISMO IMEDIATO", "severityClass": "sev-critical", "icon": "ti-heartbeat", "vitalTargets": [{"label": "Tempo Porta-ECG", "val": "≤ 10 minutos da chegada"}, {"label": "SatO2 Alvo", "val": "90 – 96% (O2 suplementar só se < 90%)"}, {"label": "PA Alvo", "val": "Evitar PAS < 90 mmHg (especialmente em IAM de VD)"}], "immediateActions": ["ECG de 12 derivações realizado e interpretado em ≤ 10 minutos (incluir V3R, V4R, V7 e V8 se infarto inferior ou suspeita de dorsal);", "Monitorização cardíaca contínua e acesso venoso;", "Ativar equipe de hemodinâmica imediatamente se IAM com Supra (Porta-Balão < 90-120 min);", "Se tempo até ICP for > 120 min: Iniciar Fibrinólise (Tenecteplase ou Alteplase) em até 30 min (Porta-Agulha) se sem contraindicações."], "prescriptions": ["AAS: 200 a 300 mg VO mastigados imediatamente;", "Inibidor de P2Y12: Ticagrelor 180 mg VO (OU Clopidogrel 300 mg, ou 600 mg se ICP planejada);", "Anticoagulação: Enoxaparina 30 mg IV em bolus + 1 mg/kg SC 12/12h (OU Heparina Não Fracionada 60 UI/kg IV bolus máx 4.000 UI, seguida de infusão contínua);", "Nitrato: Nitroglicerina SL 0,4 mg ou infusão IV contínua se dor isquêmica persistente (CONTRAINDICADO se PAS < 90, IAM de VD ou uso de Sildenafil nas últimas 24h/Tadalafil nas 48h);", "Morfina: Reservada apenas para dor refratária intensa (pode lentificar absorção de antiplaquetários orais)."], "pitfalls": "Oxigênio suplementar de rotina em paciente com SatO2 ≥ 90% causa vasoconstrição coronariana reflexa e aumenta área de necrose. Administre O2 apenas se SatO2 < 90%.", "link": "app.html", "linkText": "Ver Conduta Completa de SCA no App"}, "patologia-disseccao-aorta": {"id": "patologia-disseccao-aorta", "segment": "torax", "segmentName": "Tórax & Cardiorrespiratório", "title": "Dissecção Aguda de Aorta (Stanford A / B)", "subtitle": "Dor Torácica Lancinante, Diferencial de Pulsos & Isquemia Orgânica", "crunchTime": "< 30 min (Controle Anti-impulso Imediato)", "severity": "LETALIDADE 1% A 2% POR HORA", "severityClass": "sev-critical", "icon": "ti-activity", "vitalTargets": [{"label": "Frequência Cardíaca", "val": "< 60 bpm (CONTROLAR PRIMEIRO)"}, {"label": "Pressão Arterial Sistólica", "val": "100 – 120 mmHg (CONTROLAR EM SEGUIDA)"}, {"label": "dP/dt Aórtico", "val": "Reduzir força de cisalhamento"}], "immediateActions": ["AngioTC de Tórax e Abdome Total com protocolo de aorta de emergência;", "Aferição de PA nos 4 membros (diferença de PAS > 20 mmHg entre membros superiores é altamente sugestiva);", "Classificação: Stanford A (envolve aorta ascendente — EMERGÊNCIA CIRÚRGICA CARDÍACA) vs Stanford B (apenas aorta descendente — tratamento clínico inicial a menos que haja complicação);", "POCUS cardíaco na sala vermelha: avaliar derrame pericárdico / tamponamento e refluxo aórtico agudo."], "prescriptions": ["1° PASSO: Betabloqueador IV para FC < 60 bpm:", "  * Esmolol IV: Bolus de 500 mcg/kg em 1 min, seguido de infusão 50-200 mcg/kg/min;", "  * OU Labetalol IV: 20 mg em bolus a cada 10 min até meta;", "  * OU Metoprolol IV: 5 mg a cada 5 min (máx 15 mg);", "2° PASSO: Vasodilatador arterial IV se PAS persistir > 120 mmHg após FC < 60:", "  * Nitroprussiato de Sódio IV em bomba (0,3 a 5 mcg/kg/min) — NUNCA dar antes do betabloqueador (risco de taquicardia reflexa e piora da dissecção);", "Analgesia potente com Fentanil ou Morfina IV titulados."], "pitfalls": "JAMAIS iniciar vasodilatador isolado (como nitroprussiato ou hidralazina) sem bloqueio adrenérgico prévio. A taquicardia reflexa resultante rasga a íntima aórtica.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-tep": {"id": "patologia-tep", "segment": "torax", "segmentName": "Tórax & Cardiorrespiratório", "title": "TEP — Tromboembolismo Pulmonar Agudo", "subtitle": "Sobrecarga de Ventrículo Direito, Choque Obstrutivo & Hipóxia", "crunchTime": "< 1h (Trombólise em TEP Maciço de Alto Risco)", "severity": "CHOQUE OBSTRUTIVO / SALA VERMELHA", "severityClass": "sev-critical", "icon": "ti-wind", "vitalTargets": [{"label": "PAM Alvo", "val": "≥ 65 mmHg"}, {"label": "SatO2", "val": "> 92%"}, {"label": "Ressuscitação Volêmica", "val": "Prudente (< 500 mL para evitar falência de VD)"}], "immediateActions": ["Estratificação de Risco pelo Escore de Wells / Geneva e PESI / sPESI;", "Definição de ALTO RISCO (TEP Maciço): Hipotensão sustentada (PAS < 90 mmHg ou queda ≥ 40 mmHg por > 15 min não explicada por hipovolemia/arritmia/sepse);", "AngioTC de artérias pulmonares (padrão-ouro) se paciente estável;", "Se instável na sala vermelha: Ecocardiograma POCUS beira-leito imediato (dilatação de VD, sinal de McConnel) autoriza trombólise empírica imediata."], "prescriptions": ["Se TEP Maciço com Choque (Trombólise Sistêmica):", "  * Alteplase (rt-PA): 100 mg IV em infusão de 2 horas (OU 50 mg IV em 15 minutos se PCR iminente);", "  * OU Tenecteplase peso-ajustado em bolus único;", "Se TEP de Risco Intermediário ou Baixo (Anticoagulação Plena):", "  * Enoxaparina 1 mg/kg SC de 12/12h (iniciar imediatamente antes mesmo da confirmação tomográfica se alta probabilidade clínica e baixo risco de sangramento);", "Vasopressor no choque de VD: Noradrenalina IV (titular para PAM ≥ 65 mmHg) associada a Dobutamina se disfunção miocárdica de VD com PAS adequada."], "pitfalls": "Evite sobrecarga de fluidos em pacientes com TEP e choque de VD. Grandes volumes dilatam ainda mais o ventrículo direito, desviam o septo interventricular e colapsam o ventrículo esquerdo.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-pneumotorax": {"id": "patologia-pneumotorax", "segment": "torax", "segmentName": "Tórax & Cardiorrespiratório", "title": "Pneumotórax Hipertensivo", "subtitle": "Mecanismo Valvular Unidirecional, Choque Obstrutivo & Parada Iminente", "crunchTime": "< 1-2 min (Descompressão Imediata — Não Pedir RX)", "severity": "EMERGÊNCIA MÉDICA EXTREMA", "severityClass": "sev-critical", "icon": "ti-gas-station", "vitalTargets": [{"label": "Diagnóstico", "val": "100% Clínico beira-leito"}, {"label": "Radiografia", "val": "PROIBIDA até descompressão"}, {"label": "Expansão Pulmonar", "val": "Drenagem tubular em selo d'água"}], "immediateActions": ["Reconhecer Tríade Clínica: Hipotensão/Choque + Murmúrio vesicular ausente unilateral + Turgência jugular (com desvio de traqueia contralateral tardio);", "NÃO SOLICITAR RADIOGRAFIA DE TÓRAX — a espera pelo raio-x pode ser fatal;", "Descompressão torácica imediata com agulha ou toracostomia digital;", "Posicionamento: 4° ou 5° Espaço Intercostal na Linha Axilar Anterior/Média (ATLS 10ª Edição) — alternativamente 2° EIC na linha hemiclavicular."], "prescriptions": ["Toracostomia com Agulha calibrosa (Cateter/Jelco 14G ou 16G com comprimento ≥ 7-8 cm);", "OU Toracostomia Digital rápida com dedo enluvado para alívio imediato da tensão pleural;", "Seguida imediatamente de Drenagem Torácica Fechada definitiva com dreno tubular calibroso (28 a 32 Fr) acoplado a selo d'água;", "Oxigênio a 100% sob máscara;", "Radiografia de tórax de controle apenas APÓS o dreno estar instalado e fixado."], "pitfalls": "Solicitar raio-X de tórax em pneumotórax clinicamente hipertensivo é erro grave. A descompressão deve preceder qualquer exame de imagem.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-edema-agudo": {"id": "patologia-edema-agudo", "segment": "torax", "segmentName": "Tórax & Cardiorrespiratório", "title": "Edema Agudo Pulmonar / Choque Cardiogênico", "subtitle": "Insuficiência Cardíaca Descompensada, Congestão Alveolar & Falência de Bomba", "crunchTime": "< 15 min (VNI Precoce e Vasodilatação)", "severity": "INSUFICIÊNCIA RESPIRATÓRIA GRAVE", "severityClass": "sev-critical", "icon": "ti-droplet", "vitalTargets": [{"label": "SatO2 Alvo", "val": "≥ 92% (com VNI)"}, {"label": "Pressão Arterial", "val": "PAS > 100 mmHg para vasodilatadores"}, {"label": "POCUS Pulmonar", "val": "Pesquisar Linhas B bilaterais ('pulmão molhado')"}], "immediateActions": ["Sentar o paciente imediatamente com pernas pendentes;", "Instalar Ventilação Não Invasiva (VNI) precoce: CPAP (8-10 cmH2O) ou BiPAP (IPAP 12-14, EPAP 6-8) — reduz necessidade de intubação em até 60%;", "Monitorização contínua, oximetria e acesso venoso;", "POCUS Cardíaco e Pulmonar: contratilidade do VE, diâmetro de VCI e linhas B difusas."], "prescriptions": ["Se Perfil Hipertensivo (PAS ≥ 140 mmHg) — PRIORIDADE VASODILATADOR:", "  * Nitroglicerina IV em infusão contínua: iniciar a 20 mcg/min e titular rapidamente a cada 3-5 min até controle;", "  * Dinitrato de Isossorbida ou Nitroglicerina SL enquanto prepara a bomba de infusão;", "  * Furosemida IV: 40 a 80 mg IV em bolus (ou 1 a 2x a dose de uso crônico domiciliar);", "Se Perfil Choque Cardiogênico (Hipotensão / Baixa perfusão / PAS < 90 mmHg):", "  * SUSPENDER vasodilatadores e diuréticos imediatamente;", "  * Iniciar Noradrenalina IV para restabelecer PAM ≥ 65 mmHg;", "  * Associar Dobutamina IV (2,5 a 20 mcg/kg/min) após restabelecimento da pressão de perfusão coronariana."], "pitfalls": "Não dar furosemida antes do vasodilatador no edema agudo hipertensivo. A causa é redistribuição de fluidos por vasoconstrição extrema de pós-carga e não apenas sobrecarga hídrica bruta.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-apendicite": {"id": "patologia-apendicite", "segment": "abdome", "segmentName": "Abdome & Pelve", "title": "Apendicite Aguda", "subtitle": "Abdome Agudo Inflamatório, Escore de Alvarado & Risco de Perfuração", "crunchTime": "< 12 a 24h (Cirurgia Precoce)", "severity": "URGÊNCIA CIRÚRGICA", "severityClass": "sev-urgent", "icon": "ti-cut", "vitalTargets": [{"label": "Escore Alvarado", "val": "≥ 7: Alta probabilidade cirúrgica"}, {"label": "Jejum", "val": "Zero VO imediato"}], "immediateActions": ["Estratificação pelo Escore de Alvarado ou Escore AIR;", "Exame físico detalhado: Ponto de McBurney, sinal de Blumberg, sinal de Rovsing, sinal do Psoas e Obturador;", "Imagem confirmatória: Ultrassom de abdome (apêndice > 6 mm, não compressível, coprólito) em crianças/jovens; TC de abdome total com contraste se adulto ou dúvida clínica;", "Avaliação da Cirurgia Geral para apendicectomia videolaparoscópica."], "prescriptions": ["Jejum absoluto e hidratação venosa com Ringer Lactato ou SF 0,9% (30-40 mL/kg/dia);", "Analgesia otimizada: Dipirona 1-2g IV + Cetoprofeno 100mg IV (se função renal normal) + Tramadol ou Morfina se dor moderada/intensa (NÃO mascara exame físico);", "Antiemético: Ondansetrona 8 mg IV;", "Antibioticoterapia profilática pré-operatória (até 60 min antes da incisão): Ceftriaxona 2g IV + Metronidazol 500mg IV (OU Ciprofloxacino + Metronidazol)."], "pitfalls": "Antigo dogma de que analgesia mascara o exame de apendicite é falso e desumano. Trate a dor do paciente prontamente enquanto aguarda os exames e a cirurgia.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-colecistite": {"id": "patologia-colecistite", "segment": "abdome", "segmentName": "Abdome & Pelve", "title": "Colecistite Aguda & Colangite Aguda", "subtitle": "Diretrizes de Tokyo (TG18), Sinal de Murphy & Pêntade de Reynolds", "crunchTime": "< 6h (Descompressão Biliar na Colangite)", "severity": "SEPSE BILIAR / URGÊNCIA CIRÚRGICA", "severityClass": "sev-critical", "icon": "ti-virus", "vitalTargets": [{"label": "Tríade de Charcot", "val": "Febre + Icterícia + Dor em HCD"}, {"label": "Pêntade Reynolds", "val": "+ Hipotensão + Confusão Mental (COLANGITE SUPURATIVA)"}], "immediateActions": ["Ultrassonografia de abdome superior na sala de emergência: Cálculo impactado no infundíbulo, espessamento de parede vesicular > 4 mm, líquido perivesicular, sinal de Murphy ultrassonográfico;", "Diferenciar Colecistite (inflamação localizada) de Colangite Aguda (infecção ascendente das vias biliares — sepse letal se não desobstruída);", "Se Colangite Aguda Grave: Ativar CPRE de emergência ou drenagem biliar percutânea/trans-hepática."], "prescriptions": ["Jejum e ressuscitação volêmica guiada por metas com Ringer Lactato;", "Antibioticoterapia venosa imediata (na 1ª hora):", "  * Ceftriaxona 2g IV 1x/dia + Metronidazol 500mg IV 8/8h;", "  * OU Piperacilina/Tazobactam 4,5g IV de 6/6h se colangite grave ou sepse;", "Analgesia com Dipirona IV e opioides fracos/fortes; Evitar morfina em espasmo intenso do esfíncter de Oddi se alternativas estiverem disponíveis."], "pitfalls": "Colangite aguda com Pêntade de Reynolds tem mortalidade próxima a 100% sem drenagem biliar de emergência. Antibióticos isolados não alcançam a via biliar ocluída sob pressão.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-pancreatite": {"id": "patologia-pancreatite", "segment": "abdome", "segmentName": "Abdome & Pelve", "title": "Pancreatite Aguda Grave", "subtitle": "Critérios de Atlanta, Resposta Inflamatória Sistêmica & Necrose", "crunchTime": "< 24-48h (Ressuscitação Volêmica Otimizada)", "severity": "ALTO RISCO DE DISFUNÇÃO ORGÂNICA", "severityClass": "sev-urgent", "icon": "ti-alert-triangle", "vitalTargets": [{"label": "Diurese Alvo", "val": "> 0,5 a 1,0 mL/kg/h"}, {"label": "Hematócrito Alvo", "val": "< 44% (indica hemodiluição adequada)"}, {"label": "Ureia / Creatinina", "val": "Queda progressiva nas primeiras 24h"}], "immediateActions": ["Diagnóstico (≥ 2 de 3 critérios de Atlanta): Dor abdominal típica em faixa com irradiação dorsal; Lipase ou Amilase > 3x o limite superior da normalidade; Achados confirmatórios em TC/RM/USG;", "Estratificação de Gravidade precoce: SIRS na admissão e em 48h, BISAP, APACHE II;", "USG de abdome para descartar etiologia biliar (cálculos/lama);"], "prescriptions": ["Hidratação Venosa Guiada por Metas com RINGER LACTATO (200 a 250 mL/h nas primeiras 12-24h, reavaliando a cada 4h);", "Analgesia potente com opioides titulados (Dipirona 2g IV 6/6h + Morfina ou Fentanil);", "Nutrição Enteral precoce via oral ou por sonda nasoenteral assim que dor e íleo melhorarem (evitar NPT prolongada);", "Antibióticos profiláticos de rotina: NÃO recomendados pelas diretrizes da IAP/APA mesmo na pancreatite necrosante sem infecção comprovada."], "pitfalls": "NÃO solicitar TC de abdome com contraste nas primeiras 48-72 horas de sintomas para estadiar necrose (subestima gravidade inicial e o contraste pode piorar lesão renal aguda). TC indicada precocemente apenas se dúvida diagnóstica.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-isquemia-mesenterica": {"id": "patologia-isquemia-mesenterica", "segment": "abdome", "segmentName": "Abdome & Pelve", "title": "Isquemia Mesentérica Aguda", "subtitle": "Embolia de Artéria Mesentérica Superior & Necrose Intestinal", "crunchTime": "< 6h (Janela de Resgate Intestinal)", "severity": "ALTA LETALIDADE (> 60-80%)", "severityClass": "sev-critical", "icon": "ti-biohazard", "vitalTargets": [{"label": "Quadro Clínico", "val": "Dor abdominal severa desproporcional ao exame"}, {"label": "Lactato Sérico", "val": "Marcador de necrose em estágio avançado"}], "immediateActions": ["Suspeita clínica em pacientes idosos com dor abdominal aguda severa e exame físico abdominal 'inocente' ou brando, especialmente com história de Fibrilação Atrial ou vasculopatia;", "ANGIOTC DE ABDOME PROTOCOLO ARTERIAL MESENTÉRICO IMEDIATA — não perder tempo com raio-x simples ou ultrassom;", "Avaliação de emergência da Cirurgia Vascular e Cirurgia Geral para laparotomia / revascularização."], "prescriptions": ["Heparinização plena imediata com Heparina Não Fracionada IV em bomba para prevenir propagação do trombo;", "Ressuscitação volêmica vigorosa com cristaloides;", "Antibioticoterapia de amplo espectro (Ceftriaxona + Metronidazol ou Piperacilina/Tazobactam) cobrindo flora intestinal e translocação bacteriana;", "Correção rápida de acidose metabólica e preparação para sala de cirurgia imediata."], "pitfalls": "Esperar o aparecimento de sinais de irritação peritoneal (descompressão dolorosa) para intervir significa que a alça já necrosou e perfurou. O diagnóstico deve ser feito na fase de dor desproporcional.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-hda": {"id": "patologia-hda", "segment": "abdome", "segmentName": "Abdome & Pelve", "title": "Hemorragia Digestiva Alta (HDA)", "subtitle": "Úlcera Péptica Sangrante, Varizes Esofágicas & Síndrome de Mallory-Weiss", "crunchTime": "< 12 a 24h (EDA de Emergência) | < 30 min (Estabilização)", "severity": "RISCO DE CHOQUE HIPOVOLÊMICO", "severityClass": "sev-critical", "icon": "ti-droplets", "vitalTargets": [{"label": "Hb Alvo", "val": "7,0 – 8,0 g/dL (restritiva) ou 9,0 g/dL se DAC ativa"}, {"label": "Escore Glasgow-Blatchford", "val": "Estratificação de alto risco"}], "immediateActions": ["Dois acessos venosos periféricos calibrosos (14G ou 16G);", "Ressuscitação com cristaloides e hemocomponentes se instabilidade hemodinâmica;", "Diferenciar HDA Varicosa (cirrótico, estigmas de hepatopatia) de Não Varicosa;", "Acionar equipe de Endoscopia Digestiva Alta (EDA terapêutica em < 12-24h, ou imediata se choque persistente)."], "prescriptions": ["Inibidor de Bomba de Prótons: Omeprazol 80 mg IV em bolus, seguido de 8 mg/h em infusão contínua por 72h (ou 40 mg IV 12/12h);", "Se suspeita de HDA Varicosa / Cirrose:", "  * Terlipressina: 2 mg IV em bolus inicial, seguida de 1-2 mg a cada 4 horas (OU Octreotide 50 mcg bolus + 50 mcg/h);", "  * Ceftriaxona: 1 g IV 1x/dia por 7 dias (profilaxia obrigatória de peritonite bacteriana espontânea e sepse);", "Procinético pré-EDA: Eritromicina 250 mg IV ou Metoclopramida 10 mg IV 30-60 min antes do exame (esvaziamento gástrico de coágulos)."], "pitfalls": "Estratégia transfusional liberal (transfundir para Hb > 9-10 em cirróticos sem coronariopatia) aumenta a pressão portal, induz ressangramento maciço de varizes e aumenta mortalidade.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-obstrucao-intestinal": {"id": "patologia-obstrucao-intestinal", "segment": "abdome", "segmentName": "Abdome & Pelve", "title": "Obstrução Intestinal Aguda", "subtitle": "Brigas/Aderências, Hérnias Encarceradas, Vôlvulo & Câncer Colorretal", "crunchTime": "< 2h (Se Estrangulamento / Choque)", "severity": "EMERGÊNCIA CIRÚRGICA", "severityClass": "sev-urgent", "icon": "ti-circle-off", "vitalTargets": [{"label": "Descompressão Gástrica", "val": "SNG aberta imediata"}, {"label": "Distúrbios Hidroeletrolíticos", "val": "Repor K+, Na+, Cl- e H2O"}], "immediateActions": ["Passagem imediata de Sonda Nasogástrica calibrosa aberta em frasco para descompressão do trato digestivo e prevenção de broncoaspiração;", "Exame minucioso de TODOS os sítios herniários (inguinais, femorais, umbilicais, incisionais);", "TC de abdome total com contraste (identificar local de transição, causa e sinais de isquemia de alça: pneumatose intestinal, defeito de enchimento vascular, líquido livre);"], "prescriptions": ["Jejum oral absoluto;", "Hidratação volêmica agressiva com Ringer Lactato ou SF 0,9% para compensar terceiro espaço;", "Correção de alcalose metabólica hipoclorêmica/hipocalêmica decorrente de vômitos incoercíveis;", "Antibioticoterapia se suspeita de estrangulamento ou perfuração (Ceftriaxona + Metronidazol)."], "pitfalls": "Nunca administrar procinéticos (metoclopramida) ou laxativos em paciente com suspeita de obstrução mecânica de alça (risco iminente de perfuração intestinal).", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-aneurisma-aorta": {"id": "patologia-aneurisma-aorta", "segment": "abdome", "segmentName": "Abdome & Pelve", "title": "Aneurisma de Aorta Abdominal (AAA Roto)", "subtitle": "Ruptura Aórtica Retroperitoneal, Choque Hemorrágico Exsanguinante", "crunchTime": "< 15 a 30 min (Centro Cirúrgico Vascular Imediato)", "severity": "MORTALIDADE GLOBAL > 80%", "severityClass": "sev-critical", "icon": "ti-heart-broken", "vitalTargets": [{"label": "Ressuscitação Hipotensiva", "val": "PAS Alvo 80 – 90 mmHg"}, {"label": "Cristaloides", "val": "Mínimo possível (< 1.000 mL)"}, {"label": "Transfusão 1:1:1", "val": "Ativar protocolo maciço"}], "immediateActions": ["Reconhecer Tríade Clássica: Dor abdominal/lombar súbita intensa + Massa abdominal pulsátil palpável + Hipotensão/Choque;", "Ultrassonografia FAST abdominal na sala vermelha: Confirma diâmetro aórtico > 3-5 cm e líquido livre intra ou retroperitoneal;", "Acionar imediatamente Cirurgia Vascular e Centro Cirúrgico (Reparo aberto ou endovascular EVAR de emergência);", "Tipagem sanguínea, prova cruzada e ativação do Protocolo de Transfusão Maciça."], "prescriptions": ["Ressuscitação Hipotensiva Permissiva (manter PAS entre 80 e 90 mmHg enquanto consciente — PAS elevada estoura o coágulo e causa exsanguinação imediata);", "Hemoderivados balanceados em proporção 1:1:1 (Concentrado de Hemácias : Plasma Fresco Congelado : Plaquetas);", "Ácido Tranexâmico: 1g IV em 10 minutos, seguido de 1g em 8 horas se trauma/hemorragia maciça;", "Aquecimento ativo do paciente (prevenção da Tríade Letal: Hipotermia, Coagulopatia e Acidose)."], "pitfalls": "Infusão agressiva de litros de soro fisiológico rompe o tamponamento retroperitoneal pré-formado e causa morte instantânea por choque hemorrágico irreversível.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-fraturas-ms": {"id": "patologia-fraturas-ms", "segment": "membros-superiores", "segmentName": "Membros Superiores", "title": "Fraturas Expostas & Luxações Agudas de MMSS", "subtitle": "Trauma Osteoarticular, Classificação de Gustilo & Risco Isquêmico", "crunchTime": "< 6h (Profilaxia Cirúrgica) | < 30 min (Redução de Luxação)", "severity": "URGÊNCIA ORTOPÉDICA E VASCULAR", "severityClass": "sev-urgent", "icon": "ti-bone", "vitalTargets": [{"label": "Avaliação Neurovascular", "val": "Pulsos distal e teste sensitivo-motor"}, {"label": "Cobertura Estéril", "val": "Gaze estéril embebida em SF"}], "immediateActions": ["Exame neurovascular completo distal à lesão (pulsos radial e ulnar, enchimento capilar, teste dos nervos radial, mediano e ulnar);", "Remover anéis e pulseiras imediatamente do membro traumatizado antes do edema expansivo;", "Em fraturas expostas: Lavagem mecânica abundante da ferida com SF 0,9% estéril e curativo estéril compressivo. NÃO tentar recolocar fragmentos ósseos contaminados para dentro da ferida na emergência;", "Radiografia simples em 2 incidências (AP e Perfil) das articulações acima e abaixo da fratura."], "prescriptions": ["Antibioticoterapia precoce (iniciar na 1ª hora):", "  * Gustilo I e II (< 10 cm, contaminação leve/moderada): Cefazolina 2g IV 8/8h;", "  * Gustilo III (alta energia, perda tecidual, esmagamento): Cefazolina 2g IV + Gentamicina 5 mg/kg IV 1x/dia;", "  * Se contaminação com terra/fezes: associar Penicilina Cristalina ou Metronidazol;", "Profilaxia Antitetânica (Vacina + Imunoglobulina antitetânica conforme status vacinal);", "Analgesia venosa multimodal e alinhamento/imobilização provisória em tala gessada."], "pitfalls": "Luxação articular com ausência de pulso distal exige tentativa imediata de redução incruenta na sala de emergência com sedoanalgesia, sem aguardar horas pelo especialista.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-oclusao-arterial-ms": {"id": "patologia-oclusao-arterial-ms", "segment": "membros-superiores", "segmentName": "Membros Superiores", "title": "Isquemia Aguda de Membro Superior", "subtitle": "Embolia da Artéria Braquial/Subclávia & Regra dos 6 'P's", "crunchTime": "< 4 a 6h (Janela de Viabilidade Neuromuscular)", "severity": "RISCO IMINENTE DE PERDA DO MEMBRO", "severityClass": "sev-critical", "icon": "ti-hand-stop", "vitalTargets": [{"label": "Os 6 'P's", "val": "Pain, Pallor, Pulselessness, Paresthesia, Poikilothermia, Paralysis"}, {"label": "Doppler Portátil", "val": "Fluxo arterial trifásico ausente"}], "immediateActions": ["Avaliação dos 6 'P's da isquemia aguda: Dor (Pain), Palidez (Pallor), Ausência de pulso (Pulselessness), Parestesia (Paresthesia), Frio (Poikilothermia) e Paralisia (Paralysis);", "Ausculta e ultrassom Doppler portátil vascular beira-leito dos pulsos braquial, radial e ulnar;", "Avaliação de emergência da Cirurgia Vascular para embolectomia cirúrgica com cateter de Fogarty ou trombólise intra-arterial."], "prescriptions": ["Heparinização Sistêmica Imediata com Heparina Não Fracionada:", "  * Bolus de 80 UI/kg IV (máx 5.000 UI), seguido de infusão contínua de 18 UI/kg/h;", "Proteção térmica do membro com algodão ortopédico e faixa (NÃO colocar compressas quentes ou gelo);", "Manter o membro ligeiramente pendente para favorecer perfusão gravitacional (NÃO elevar o membro);", "Analgesia venosa potente com opioides."], "pitfalls": "Parestesia e paralisia motora indicam isquemia avançada grave com sofrimento neuromuscular irreversível iminente. O tempo até a desobstrução não pode exceder 6 horas.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-sindrome-compartimento": {"id": "patologia-sindrome-compartimento", "segment": "membros-superiores", "segmentName": "Membros Superiores", "title": "Síndrome Compartimental Aguda", "subtitle": "Hipertensão Osteofascial, Isquemia Microvascular & Necrose Muscular", "crunchTime": "< 4h (Fasciotomia de Emergência)", "severity": "EMERGÊNCIA CIRÚRGICA DESCOMPRESSIVA", "severityClass": "sev-critical", "icon": "ti-gauge", "vitalTargets": [{"label": "Delta P Alvo", "val": "PAD - P. compartimento > 30 mmHg"}, {"label": "Sinal Precoce Mais Sensível", "val": "Dor extrema ao estiramento passivo"}], "immediateActions": ["Suspeitar em qualquer trauma, fratura fechada, esmagamento, queimadura circunferencial ou pós-revascularização;", "Remover IMEDIATAMENTE qualquer gesso, atadura, tala ou curativo compressivo;", "Manter o membro no nível do coração (NÃO elevar, pois a elevação reduz a pressão arterial de perfusão local e piora a isquemia compartimental);", "Medição da pressão compartimental (se disponível dispositivo específico como Stryker): Delta P ≤ 30 mmHg é indicação formal de fasciotomia."], "prescriptions": ["Fasciotomia cirúrgica descompressiva ampla de urgência em centro cirúrgico;", "Hidratação venosa vigorosa com SF ou Ringer para prevenção de rabdomiólise e insuficiência renal aguda por mioglobinúria;", "Analgesia otimizada venosa;", "Monitorar eletrólitos seriados (hipercalemia severa decorrente de lise muscular)."], "pitfalls": "A presença de pulsos distais NÃO descarta síndrome compartimental! A pressão compartimental oclui a microcirculação capilar muito antes de colapsar a artéria principal.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-infeccao-mao": {"id": "patologia-infeccao-mao", "segment": "membros-superiores", "segmentName": "Membros Superiores", "title": "Infecções da Mão / Tenossinovite", "subtitle": "Tenossinovite dos Flexores, Celulite Necrosante & Panarício", "crunchTime": "< 12h (Preservação Funcional da Mão)", "severity": "ALTO RISCO DE INVALIDEZ PERMANENTE", "severityClass": "sev-urgent", "icon": "ti-virus", "vitalTargets": [{"label": "4 Sinais de Kanavel", "val": "Presença indica tenossinovite flexora"}, {"label": "Internação", "val": "Mandatória para ATB venoso e drenagem"}], "immediateActions": ["Pesquisa ativa dos 4 Sinais Cardinais de Kanavel:", "  1. Dedo mantido em flexão simétrica em repouso;", "  2. Aumento de volume fusiforme uniforme em todo o comprimento do dedo ('dedo em salsicha');", "  3. Dor severa à extensão passiva do dedo (sinal mais precoce e sensível);", "  4. Dor à palpação ao longo de toda a bainha do tendão flexor;", "Avaliação imediata com Cirurgia da Mão ou Ortopedia para lavagem e drenagem cirúrgica de urgência."], "prescriptions": ["Internação hospitalar obrigatória e imobilização da mão em posição funcional elevada;", "Antibioticoterapia venosa imediata:", "  * Oxacilina 2g IV 4/4h (ou Cefazolina 2g 8/8h);", "  * Se risco para MRSA: Vancomicina 15-20 mg/kg 12/12h ou Daptomicina;", "  * Se mordedura humana ou animal: Amoxicilina-Clavulanato IV ou Ampicilina-Sulbactam 1,5 a 3,0 g IV 6/6h."], "pitfalls": "Tratar tenossinovite flexora purulenta com antibióticos orais ambulatoriais resulta em necrose isquêmica do tendão e perda irreversível da função da mão.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-tvp": {"id": "patologia-tvp", "segment": "membros-inferiores", "segmentName": "Membros Inferiores", "title": "TVP — Trombose Venosa Profunda", "subtitle": "Oclusão Venosa Iliofemoral/Poplítea & Prevenção de Embolia Pulmonar", "crunchTime": "< 2 a 4h (Anticoagulação Precoce)", "severity": "ALTA URGÊNCIA TROMBOEMBÓLICA", "severityClass": "sev-urgent", "icon": "ti-heart-rate-monitor", "vitalTargets": [{"label": "Escore de Wells TVP", "val": "≥ 2 pontos: TVP provável"}, {"label": "Assimetria Panturrilha", "val": "> 3 cm (aferida 10 cm abaixo da tuberosidade tibial)"}], "immediateActions": ["Calcular Escore de Wells para TVP;", "Ultrassonografia Doppler Venoso Compressivo do membro acometido (perda de compressibilidade da veia com o transdutor confirma diagnóstico);", "Se alta probabilidade clínica e ultrassom indisponível nas próximas 4h: Iniciar anticoagulação terapêutica antes do exame se ausência de sangramento ativo;", "Rastrear sintomas respiratórios associados (descartar TEP concomitante)."], "prescriptions": ["Anticoagulação Terapêutica Plena Imediata:", "  * Enoxaparina: 1 mg/kg SC de 12 em 12 horas (OU 1,5 mg/kg SC 1x/dia);", "  * OU DOACs de início direto: Rivaroxabana 15 mg VO 12/12h por 21 dias (ou Apixabana 10 mg VO 12/12h por 7 dias);", "  * Se ClCr < 30 mL/min: Heparina Não Fracionada IV ajustada por TTPa;", "Elevação do membro em repouso nos primeiros dias para alívio do edema e analgesia com Dipirona/Paracetamol."], "pitfalls": "Flegmasia Cerulea Dolens (trombose maciça iliofemoral com cianose, edema em pedra e isquemia secundária por colapso arterial) é emergência cirúrgica vascular com risco de amputação e choque.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-oclusao-arterial-mi": {"id": "patologia-oclusao-arterial-mi", "segment": "membros-inferiores", "segmentName": "Membros Inferiores", "title": "Isquemia Crítica Aguda de Membro Inferior", "subtitle": "Oclusão Embolica ou Trombótica de Artéria Femoral / Poplítea", "crunchTime": "< 6h (Janela Crítica de Salvamento do Membro)", "severity": "EMERGÊNCIA VASCULAR CRÍTICA", "severityClass": "sev-critical", "icon": "ti-alert-octagon", "vitalTargets": [{"label": "Sinais de Gravidade", "val": "Déficit motor (pé caído) + perda de sensibilidade"}, {"label": "Pulsos", "val": "Femoral, poplíteo, tibial posterior e pedioso ausentes"}], "immediateActions": ["Classificação de Rutherford da Isquemia Aguda de Extremidades (I: Viável, IIa: Ameaça marginal, IIb: Ameaça imediata — déficit motor, III: Irreversível — paralisia e rigor mortis muscular);", "Doppler vascular portátil beira-leito imediato;", "Acionar equipe de Cirurgia Vascular de emergência para revascularização (embolectomia com Fogarty, bypass ou trombólise intra-arterial farmacomecânica)."], "prescriptions": ["Heparinização Plena Imediata com Heparina Não Fracionada:", "  * Bolus IV de 5.000 a 10.000 UI (80 UI/kg), seguido de infusão contínua em bomba de 18 UI/kg/h;", "Proteção e isolamento térmico do membro com algodão ortopédico frouxo;", "Posicionamento neutro ou ligeiramente declive (NUNCA elevar o membro e NUNCA aplicar calor local);", "Hidratação e analgesia potente com opioides."], "pitfalls": "Atraso no diagnóstico de isquemia classe IIb resulta em rabdomiólise maciça, hipercalemia com parada cardíaca durante a reperfusão e necessidade de amputação maior de coxa.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-celulite-erisipela": {"id": "patologia-celulite-erisipela", "segment": "membros-inferiores", "segmentName": "Membros Inferiores", "title": "Celulite Grave & Erisipela Bolhosa", "subtitle": "Infecção Bacteriana Aguda Derme/Hipoderme & Descarte de Fasciíte", "crunchTime": "< 24h (Controle Infeccioso e Demarcação)", "severity": "URGÊNCIA CLÍNICA", "severityClass": "sev-urgent", "icon": "ti-flame", "vitalTargets": [{"label": "Demarcação Cutânea", "val": "Desenhar bordos com caneta dermográfica"}, {"label": "Portas de Entrada", "val": "Inspeção interdigital obrigatória"}], "immediateActions": ["Diferenciar Erisipela (placa eritematosa viva, brilhante, com bordos nítidos elevados, predomínio de estreptococos) de Celulite (eritema com bordos mal delimitados, hipoderme profunda, estreptococos e S. aureus);", "DEMARCAR o limite do eritema na pele com caneta dermográfica para monitoramento objetivo da resposta terapêutica nas próximas 12-24h;", "Pesquisar ativamente sinais de gravidade / fasciíte: dor desproporcional, bolhas hemorrágicas, crepitação, hipoestesia central, sepse ou choque."], "prescriptions": ["Elevação do membro acometido acima do nível do coração durante o repouso no leito;", "Antibioticoterapia venosa inicial:", "  * Cefazolina: 1 a 2 g IV de 8 em 8 horas (OU Oxacilina 2 g IV 4/4h);", "  * Se fatores de risco para MRSA comunitário ou sepse: Vancomicina 15-20 mg/kg IV 12/12h ou Daptomicina 6-8 mg/kg IV 1x/dia;", "Analgesia adequada com Dipirona e paracetamol;", "Tratar a porta de entrada (micoses interdigitais, úlceras venosas)."], "pitfalls": "Confundir celulite com trombose venosa profunda (ou vice-versa). O ultrassom Doppler venoso é útil em casos de edema unilateral agudo com eritema duvidoso.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-fasciite-necrosante": {"id": "patologia-fasciite-necrosante", "segment": "membros-inferiores", "segmentName": "Membros Inferiores", "title": "Fasciíte Necrosante / Gangrena", "subtitle": "Infecção Fúngica/Bacteriana Fissural Profunda & Choque Séptico Fulminante", "crunchTime": "< 1 a 2h (Debridamento Cirúrgico Extenso Imediato)", "severity": "EMERGÊNCIA CIRÚRGICA ABSOLUTA", "severityClass": "sev-critical", "icon": "ti-skull", "vitalTargets": [{"label": "Escore LRINEC", "val": "≥ 6 pontos: Alta suspeita de necrose de fáscia"}, {"label": "Dor", "val": "Excruciante, desproporcional ao aspecto cutâneo"}, {"label": "Cirurgia", "val": "Cada hora de atraso aumenta mortalidade"}], "immediateActions": ["Reconhecimento IMEDIATO dos sinais de alerta: Dor excruciante desproporcional, edema tenso 'em madeira', bolhas de conteúdo violáceo/hemorrágico, crepitação subcutânea à palpação, áreas de pele anidra com anestesia focal e choque séptico precoce;", "Cálculo do escore LRINEC (PCR, leucócitos, hemoglobina, sódio, creatinina, glicose);", "Acionar CIRURGIA GERAL / VASCULAR / ORTOPEDIA PARA DEBRIDAMENTO CIRÚRGICO EXTENSO IMEDIATO;", "NÃO postergar cirurgia para realizar tomografia ou ressonância magnética!"], "prescriptions": ["Antibioticoterapia Tríplice Imediata em altas doses (na 1ª hora):", "  * Meropenem: 1 g IV de 8 em 8 horas (OU Piperacilina/Tazobactam 4,5 g 6/6h);", "  * MAIS Vancomicina: 15 a 20 mg/kg IV de 12/12h (cobertura MRSA);", "  * MAIS CLINDAMICINA: 900 mg IV de 8/8h (OBRIGATÓRIA — efeito antitoxina por inibição ribossômica bacteriana);", "Ressuscitação volêmica maciça guiada por metas (cristaloides) + Noradrenalina precoce no choque séptico;", "Imunoglobulina humana IV pode ser considerada se choque por Streptococcus pyogenes do grupo A."], "pitfalls": "Aguardar a confirmação tomográfica ou bacteriológica para indicar cirurgia em paciente com suspeita de fasciíte necrosante é fatal. O teste do dedo (finger test) ou incisão exploratória beira-leito é diagnóstico.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}, "patologia-fratura-femur": {"id": "patologia-fratura-femur", "segment": "membros-inferiores", "segmentName": "Membros Inferiores", "title": "Fratura de Fêmur / Pelve Instável", "subtitle": "Hemorragia Oculta Grave (1.500 a 3.000 mL) & Choque Traumático", "crunchTime": "< 30 min (Controle Hemodinâmico & Imobilização)", "severity": "TRAUMA CRÍTICO COM RISCO EXSANGUINANTE", "severityClass": "sev-critical", "icon": "ti-shield-alert", "vitalTargets": [{"label": "Perda Sanguínea Estimada", "val": "Fêmur: 1.000-1.500 mL | Pelve: até 3.000 mL"}, {"label": "Estabilização Pélvica", "val": "Cinta pélvica ao nível dos trocânteres maiores"}], "immediateActions": ["Fechamento e estabilização rápida do anel pélvico com cinta comercial ou lençol atado no nível dos trocânteres maiores (NÃO no abdome!);", "Instalação de tração alinhada provisória de fêmur (férula de tração cutânea ou tração esquelética);", "Dois acessos venosos periféricos calibrosos (14G ou 16G);", "Radiografia de tórax e pelve AP na sala de trauma + USG eFAST abdominal."], "prescriptions": ["ÁCIDO TRANEXÂMICO: 1 g IV em 10 minutos nas primeiras 3h do trauma, seguido de 1 g IV em 8 horas (CRASH-2);", "Ativação do Protocolo de Transfusão Maciça balanceada (1 CH : 1 PFC : 1 CP);", "Aquecimento ativo com mantas térmicas (evitar hipotermia);", "Avaliação ortopédica urgente para fixador externo ou tração formal e angioembolização / packing pélvico se sangramento arterial pélvico refratário."], "pitfalls": "Nunca palpar repetidamente ou realizar manobras mecânicas de 'abrir e fechar' a pelve em paciente politraumatizado instável. Cada tentativa desestabiliza o coágulo retroperitoneal e causa sangramento fatal.", "link": "app.html", "linkText": "Acessar no Emergência Pro"}};
+  const SEGMENTS_META = {"cabeca": {"id": "cabeca", "svgId": "seg-head", "title": "Cabeça & Crânio", "icon": "ti-brain", "color": "#ec4899", "desc": "Encéfalo, polígono vascular de Willis, crânio e órgãos dos sentidos.", "organs": ["Encéfalo", "Córtex Cerebral", "Polígono de Willis", "Artérias Carótidas Internas", "Calvária"], "pathologies": ["patologia-ave", "patologia-hsa", "patologia-tce", "patologia-cefaleia"], "viewBoxFocus": "450 0 300 350"}, "pescoco": {"id": "pescoco", "svgId": "seg-neck", "title": "Pescoço & Cervical", "icon": "ti-shield", "color": "#38bdf8", "desc": "Via aérea superior, laringe, traqueia, feixe carotídeo/jugular e coluna cervical C1-C7.", "organs": ["Traqueia Cervical", "Laringe / Glote", "Artérias Carótidas", "Veias Jugulares", "Coluna Cervical C3-C7"], "pathologies": ["patologia-via-aerea", "patologia-disseccao-carotida", "patologia-trauma-cervical", "patologia-anafilaxia"], "viewBoxFocus": "460 120 280 260"}, "torax": {"id": "torax", "svgId": "seg-thorax", "title": "Tórax & Cardiorrespiratório", "icon": "ti-heartbeat", "color": "#ef4444", "desc": "Coração, arco aórtico, artérias coronárias, pulmões, árvore brônquica e gradeado costal.", "organs": ["Coração & Coronárias", "Aorta Ascendente / Arco", "Veia Cava Superior", "Pulmões & Pleuras", "Esterno & Costelas"], "pathologies": ["patologia-sca", "patologia-disseccao-aorta", "patologia-tep", "patologia-pneumotorax", "patologia-edema-agudo"], "viewBoxFocus": "400 200 400 380"}, "abdome": {"id": "abdome", "svgId": "seg-abdomen", "title": "Abdome & Pelve", "icon": "ti-stethoscope", "color": "#f59e0b", "desc": "Fígado, vias biliares, pâncreas, estômago, baço, rins, aorta abdominal, intestinos e bexiga.", "organs": ["Fígado & Vesícula", "Pâncreas & Estômago", "Rins & Ureteres", "Aorta Abdominal & VCI", "Alças Intestinais", "Bexiga & Ossos Ilíacos"], "pathologies": ["patologia-apendicite", "patologia-colecistite", "patologia-pancreatite", "patologia-isquemia-mesenterica", "patologia-hda", "patologia-obstrucao-intestinal", "patologia-aneurisma-aorta"], "viewBoxFocus": "420 400 360 400"}, "membros-superiores": {"id": "membros-superiores", "svgId": "seg-upper-limbs", "title": "Membros Superiores", "icon": "ti-hand-stop", "color": "#10b981", "desc": "Ombros, braços, antebraços, punhos, mãos, eixos neurovasculares braquial/radial/ulnar.", "organs": ["Úmero & Rádio/Ulna", "Artéria Braquial", "Artérias Radial & Ulnar", "Arcos Palmares", "Músculos Deltoide & Bíceps"], "pathologies": ["patologia-fraturas-ms", "patologia-oclusao-arterial-ms", "patologia-sindrome-compartimento", "patologia-infeccao-mao"], "viewBoxFocus": "240 220 720 540"}, "membros-inferiores": {"id": "membros-inferiores", "svgId": "seg-lower-limbs", "title": "Membros Inferiores", "icon": "ti-run", "color": "#8b5cf6", "desc": "Quadril, coxas, joelhos, pernas, tornozelos, pés, eixos iliofemoral, poplíteo e tibial.", "organs": ["Fêmur & Tíbia/Fíbula", "Artéria & Veia Femoral", "Feixe Poplíteo", "Veias Safenas", "Artérias Tibiais & Pediosa"], "pathologies": ["patologia-tvp", "patologia-oclusao-arterial-mi", "patologia-celulite-erisipela", "patologia-fasciite-necrosante", "patologia-fratura-femur"], "viewBoxFocus": "420 640 360 700"}};
+
+  // Estado do Cockpit
+  const state = {
+    activeSegment: null,
+    activeMode: 'interactive', // interactive, xray, organs, surface
+    zoom: 1.0,
+    panX: 0,
+    panY: 0,
+    isDragging: false,
+    dragStartX: 0,
+    dragStartY: 0,
+    activeDrawerPathology: null
+  };
+
+  // Elementos do DOM
+  const viewportContainer = document.getElementById('viewportContainer');
+  const svgStage = document.getElementById('svgStage');
+  const clinicalSvg = document.getElementById('clinicalBodyNavigator');
+  const zoomLevelDisplay = document.getElementById('zoomLevelDisplay');
+  const skinOpacitySlider = document.getElementById('skinOpacitySlider');
+  const skinOpacityVal = document.getElementById('skinOpacityVal');
+  const glowSlider = document.getElementById('glowSlider');
+  const glowVal = document.getElementById('glowVal');
+
+  // Drawer Elements
+  const protocolDrawer = document.getElementById('protocolDrawer');
+  const drawerBackdrop = document.getElementById('drawerBackdrop');
+  const drawerCloseBtn = document.getElementById('drawerCloseBtn');
+  const drawerTitle = document.getElementById('drawerTitle');
+  const drawerSubtitle = document.getElementById('drawerSubtitle');
+  const drawerBanner = document.getElementById('drawerBanner');
+  const drawerSeverityText = document.getElementById('drawerSeverityText');
+  const drawerCrunchTime = document.getElementById('drawerCrunchTime');
+  const drawerVitalsGrid = document.getElementById('drawerVitalsGrid');
+  const drawerImmediateActions = document.getElementById('drawerImmediateActions');
+  const drawerPrescriptionBox = document.getElementById('drawerPrescriptionBox');
+  const drawerPitfallBox = document.getElementById('drawerPitfallBox');
+  const drawerAppLink = document.getElementById('drawerAppLink');
+  const drawerAppLinkText = document.getElementById('drawerAppLinkText');
+
+  // Sidebar Elements
+  const pathologyCardsContainer = document.getElementById('pathologyCardsContainer');
+  const activeSegmentBanner = document.getElementById('activeSegmentBanner');
+  const asBannerTitle = document.getElementById('asBannerTitle');
+  const asBannerSub = document.getElementById('asBannerSub');
+  const btnFilterAllPathologies = document.getElementById('btnFilterAllPathologies');
+  const globalSearchInput = document.getElementById('globalSearchInput');
+
+  // =========================================================================
+  // MOTOR DE PAN & ZOOM (DRAGGING, WHEEL, PINCH, KEYBOARD)
+  // =========================================================================
+
+  function updateTransform(animate = false) {
+    if (animate) {
+      svgStage.classList.add('animate-pan');
+      setTimeout(() => svgStage.classList.remove('animate-pan'), 500);
+    } else {
+      svgStage.classList.remove('animate-pan');
+    }
+    svgStage.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${state.zoom})`;
+    zoomLevelDisplay.textContent = Math.round(state.zoom * 100) + '%';
+  }
+
+  // Pan com Mouse Drag
+  viewportContainer.addEventListener('mousedown', (e) => {
+    // Se clicar em um botão dentro do SVG ou do HUD, não iniciar arrasto
+    if (e.target.closest('.path-btn') || e.target.closest('.viewport-hud')) return;
+    
+    state.isDragging = true;
+    state.dragStartX = e.clientX - state.panX;
+    state.dragStartY = e.clientY - state.panY;
+    viewportContainer.classList.add('is-dragging');
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!state.isDragging) return;
+    state.panX = e.clientX - state.dragStartX;
+    state.panY = e.clientY - state.dragStartY;
+    updateTransform(false);
+  });
+
+  window.addEventListener('mouseup', () => {
+    state.isDragging = false;
+    viewportContainer.classList.remove('is-dragging');
+  });
+
+  // Zoom com Mouse Wheel
+  viewportContainer.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const zoomFactor = e.deltaY < 0 ? 1.15 : 0.87;
+    const newZoom = Math.min(Math.max(state.zoom * zoomFactor, 0.4), 4.5);
+
+    // Ajustar ponto focal do zoom em direção ao cursor
+    const rect = viewportContainer.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left - rect.width / 2;
+    const mouseY = e.clientY - rect.top - rect.height / 2;
+
+    state.panX -= (mouseX - state.panX) * (zoomFactor - 1);
+    state.panY -= (mouseY - state.panY) * (zoomFactor - 1);
+    state.zoom = newZoom;
+
+    updateTransform(false);
+  }, { passive: false });
+
+  // Botões de Zoom HUD
+  document.getElementById('btnZoomIn').addEventListener('click', () => {
+    state.zoom = Math.min(state.zoom * 1.25, 4.5);
+    updateTransform(true);
+  });
+
+  document.getElementById('btnZoomOut').addEventListener('click', () => {
+    state.zoom = Math.max(state.zoom / 1.25, 0.4);
+    updateTransform(true);
+  });
+
+  document.getElementById('btnZoomFit').addEventListener('click', resetView);
+  document.getElementById('btnResetView').addEventListener('click', resetView);
+
+  function resetView() {
+    state.zoom = 1.0;
+    state.panX = 0;
+    state.panY = 0;
+    updateTransform(true);
+  }
+
+  // Touch Suport para Tablets (iPad, Surface)
+  let initialTouchDistance = null;
+  viewportContainer.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      state.isDragging = true;
+      state.dragStartX = e.touches[0].clientX - state.panX;
+      state.dragStartY = e.touches[0].clientY - state.panY;
+    } else if (e.touches.length === 2) {
+      state.isDragging = false;
+      initialTouchDistance = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+    }
+  });
+
+  viewportContainer.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 1 && state.isDragging) {
+      state.panX = e.touches[0].clientX - state.dragStartX;
+      state.panY = e.touches[0].clientY - state.dragStartY;
+      updateTransform(false);
+    } else if (e.touches.length === 2 && initialTouchDistance) {
+      const currentDistance = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      const factor = currentDistance / initialTouchDistance;
+      state.zoom = Math.min(Math.max(state.zoom * factor, 0.4), 4.5);
+      initialTouchDistance = currentDistance;
+      updateTransform(false);
+    }
+  }, { passive: true });
+
+  viewportContainer.addEventListener('touchend', () => {
+    state.isDragging = false;
+    initialTouchDistance = null;
+  });
+
+
+  // =========================================================================
+  // GESTÃO DE MODOS DE VISUALIZAÇÃO (INTERATIVO, RAIO-X, ÓRGÃOS, SUPERFÍCIE)
+  // =========================================================================
+
+  function setMode(mode) {
+    state.activeMode = mode;
+    viewportContainer.classList.remove('mode-interactive', 'mode-xray', 'mode-organs', 'mode-surface');
+    viewportContainer.classList.add(`mode-${mode}`);
+
+    // Atualizar botões no HUD superior
+    document.querySelectorAll('.mode-tab-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.mode === mode);
+    });
+
+    // Atualizar botões na sidebar
+    document.querySelectorAll('.mode-btn-full').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.mode === mode);
+    });
+
+    // Ajustar opacidade conforme o modo
+    if (mode === 'xray') {
+      applySkinOpacity(0.35);
+      skinOpacitySlider.value = 35;
+    } else if (mode === 'organs') {
+      applySkinOpacity(0);
+      skinOpacitySlider.value = 0;
+    } else if (mode === 'surface') {
+      applySkinOpacity(1.0);
+      skinOpacitySlider.value = 100;
+    } else {
+      applySkinOpacity(1.0);
+      skinOpacitySlider.value = 100;
+    }
+  }
+
+  document.querySelectorAll('.mode-tab-btn, .mode-btn-full').forEach(btn => {
+    btn.addEventListener('click', () => setMode(btn.dataset.mode));
+  });
+
+  // Sliders de Transparência e Brilho
+  function applySkinOpacity(opacity) {
+    skinOpacityVal.textContent = Math.round(opacity * 100) + '%';
+    const skinLayers = document.querySelectorAll('.skin-layer');
+    skinLayers.forEach(el => {
+      if (state.activeMode !== 'organs') {
+        el.style.fillOpacity = opacity;
+      }
+    });
+  }
+
+  skinOpacitySlider.addEventListener('input', (e) => {
+    const val = parseFloat(e.target.value) / 100;
+    applySkinOpacity(val);
+  });
+
+  glowSlider.addEventListener('input', (e) => {
+    const val = e.target.value;
+    glowVal.textContent = val + '%';
+    const organs = document.querySelectorAll('.internal-organs');
+    organs.forEach(el => {
+      el.style.filter = `brightness(${val / 100}) drop-shadow(0 0 10px rgba(56, 189, 248, ${val / 200}))`;
+    });
+  });
+
+
+  // =========================================================================
+  // SINCRONIZAÇÃO DE SEGMENTOS (SVG + SIDEBAR + SELEÇÃO)
+  // =========================================================================
+
+  function selectSegment(segmentId, focusCamera = true) {
+    state.activeSegment = segmentId;
+
+    // Atualizar classes dos grupos do SVG
+    document.querySelectorAll('.segment-group').forEach(grp => {
+      const isCurrent = grp.dataset.segment === segmentId;
+      grp.classList.toggle('active-segment', isCurrent);
+    });
+
+    // Atualizar botões HUD
+    document.querySelectorAll('.hud-segment-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.seg === segmentId);
+    });
+
+    // Atualizar cards da sidebar
+    document.querySelectorAll('.segment-card').forEach(card => {
+      card.classList.toggle('active', card.dataset.seg === segmentId);
+    });
+
+    // Atualizar banner e lista de patologias
+    if (segmentId && SEGMENTS_META[segmentId]) {
+      const meta = SEGMENTS_META[segmentId];
+      asBannerTitle.textContent = meta.title;
+      asBannerSub.textContent = `${meta.pathologies.length} Protocolos Críticos`;
+      renderPathologyCards(meta.pathologies);
+
+      // Focar a câmera suavemente no segmento
+      if (focusCamera) {
+        focusCameraOnSegment(segmentId);
+      }
+    } else {
+      asBannerTitle.textContent = 'Todas as Patologias';
+      asBannerSub.textContent = 'Exibindo todos os protocolos clínicos';
+      renderPathologyCards(Object.keys(PATHOLOGIES));
+    }
+  }
+
+  function focusCameraOnSegment(segmentId) {
+    const meta = SEGMENTS_META[segmentId];
+    if (!meta) return;
+
+    // Ajustes focais de pan/zoom pré-calculados para cada segmento
+    const focusTargets = {
+      'cabeca': { zoom: 2.2, y: 350 },
+      'pescoco': { zoom: 2.2, y: 220 },
+      'torax': { zoom: 1.8, y: 50 },
+      'abdome': { zoom: 1.8, y: -200 },
+      'membros-superiores': { zoom: 1.4, y: 0 },
+      'membros-inferiores': { zoom: 1.4, y: -450 }
+    };
+
+    const target = focusTargets[segmentId] || { zoom: 1.0, y: 0 };
+    state.zoom = target.zoom;
+    state.panX = 0;
+    state.panY = target.y;
+    updateTransform(true);
+  }
+
+  // Eventos de clique nos Segmentos do SVG
+  document.querySelectorAll('.segment-group').forEach(grp => {
+    grp.addEventListener('click', (e) => {
+      // Não interceptar se clicou diretamente em um botão de patologia dentro do SVG
+      if (e.target.closest('.path-btn')) return;
+      const seg = grp.dataset.segment;
+      selectSegment(seg, true);
+      // Alternar para aba de patologias na sidebar
+      switchSidebarTab('tab-pathologies');
+    });
+  });
+
+  // Eventos de clique nos botões HUD de segmento
+  document.querySelectorAll('.hud-segment-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const seg = btn.dataset.seg;
+      selectSegment(seg, true);
+    });
+  });
+
+  // Eventos de clique nos cards de segmento da sidebar
+  document.querySelectorAll('.segment-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const seg = card.dataset.seg;
+      selectSegment(seg, true);
+      switchSidebarTab('tab-pathologies');
+    });
+  });
+
+  btnFilterAllPathologies.addEventListener('click', () => {
+    selectSegment(null, false);
+    resetView();
+  });
+
+
+  // =========================================================================
+  // RENDERIZAÇÃO DOS CARDS DE PATOLOGIAS
+  // =========================================================================
+
+  function renderPathologyCards(pathologyIdList) {
+    pathologyCardsContainer.innerHTML = '';
+
+    if (!pathologyIdList || pathologyIdList.length === 0) {
+      pathologyCardsContainer.innerHTML = `
+        <div style="text-align: center; padding: 2rem 1rem; color: var(--text-dim);">
+          <i class="ti ti-clipboard-x" style="font-size: 2rem;"></i>
+          <div style="margin-top: 8px; font-size: 0.82rem;">Nenhuma patologia encontrada para este filtro.</div>
+        </div>
+      `;
+      return;
+    }
+
+    pathologyIdList.forEach(id => {
+      const item = PATHOLOGIES[id];
+      if (!item) return;
+
+      const card = document.createElement('div');
+      card.className = 'pathology-card';
+      card.innerHTML = `
+        <div class="path-card-header">
+          <div>
+            <div class="path-card-title">${item.title}</div>
+            <div class="path-card-sub">${item.subtitle}</div>
+          </div>
+          <span class="crunch-badge ${item.severityClass}">${item.severity}</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: var(--cyan-neon); font-family: var(--font-mono);">
+          <i class="ti ti-clock-bolt"></i>
+          <strong>CRUNCH TIME:</strong> ${item.crunchTime}
+        </div>
+
+        <div class="path-card-summary">
+          <strong>Conduta Chave:</strong> ${item.immediateActions[0] || ''}
+        </div>
+
+        <div class="path-card-actions">
+          <button class="btn-action-protocol" onclick="openProtocolDrawer('${item.id}')">
+            <i class="ti ti-notes"></i>
+            <span>Protocolo Beira-Leito</span>
+          </button>
+        </div>
+      `;
+      pathologyCardsContainer.appendChild(card);
+    });
+  }
+
+
+  // =========================================================================
+  // GAVETA TÁTICA DE CONDUTAS BEIRA-LEITO (DRAWER)
+  // =========================================================================
+
+  window.openProtocolDrawer = function(pathologyId) {
+    const item = PATHOLOGIES[pathologyId];
+    if (!item) return;
+
+    state.activeDrawerPathology = item;
+
+    drawerTitle.querySelector('span').textContent = item.title;
+    drawerSubtitle.textContent = `${item.segmentName} • ${item.subtitle}`;
+    drawerSeverityText.textContent = item.severity;
+    drawerCrunchTime.textContent = item.crunchTime;
+
+    drawerBanner.className = `drawer-banner ${item.severityClass}`;
+
+    // Metas Vitais
+    drawerVitalsGrid.innerHTML = '';
+    (item.vitalTargets || []).forEach(vt => {
+      const vBox = document.createElement('div');
+      vBox.className = 'vital-box';
+      vBox.innerHTML = `
+        <span class="vital-lbl">${vt.label}</span>
+        <span class="vital-val">${vt.val}</span>
+      `;
+      drawerVitalsGrid.appendChild(vBox);
+    });
+
+    // Ações Imediatas
+    drawerImmediateActions.innerHTML = '';
+    (item.immediateActions || []).forEach(act => {
+      const actEl = document.createElement('div');
+      actEl.className = 'checklist-item';
+      actEl.innerHTML = `
+        <i class="ti ti-square-check"></i>
+        <span>${act}</span>
+      `;
+      drawerImmediateActions.appendChild(actEl);
+    });
+
+    // Prescrições e Doses
+    drawerPrescriptionBox.innerHTML = (item.prescriptions || [])
+      .map(p => `<div style="margin-bottom: 6px;">• ${p}</div>`)
+      .join('');
+
+    // Pitfalls
+    drawerPitfallBox.innerHTML = `
+      <strong><i class="ti ti-alert-triangle"></i> Cuidado Clínico:</strong><br>
+      ${item.pitfalls}
+    `;
+
+    // Links
+    drawerAppLink.href = item.link || 'app.html';
+    drawerAppLinkText.textContent = item.linkText || 'Abrir no App Emergência Pro';
+
+    // Abrir Gaveta
+    protocolDrawer.classList.add('is-open');
+    drawerBackdrop.classList.add('is-visible');
+  };
+
+  function closeProtocolDrawer() {
+    protocolDrawer.classList.remove('is-open');
+    drawerBackdrop.classList.remove('is-visible');
+    state.activeDrawerPathology = null;
+  }
+
+  drawerCloseBtn.addEventListener('click', closeProtocolDrawer);
+  drawerBackdrop.addEventListener('click', closeProtocolDrawer);
+
+
+  // =========================================================================
+  // INTERCEPTAR CLIQUES NOS BOTÕES DO PRÓPRIO SVG (#patologia-...)
+  // =========================================================================
+
+  document.querySelectorAll('.path-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const href = btn.getAttribute('href') || '';
+      const pathId = href.replace('#', '');
+      if (PATHOLOGIES[pathId]) {
+        openProtocolDrawer(pathId);
+      }
+    });
+  });
+
+
+  // =========================================================================
+  // SISTEMA DE ABAS DA SIDEBAR
+  // =========================================================================
+
+  function switchSidebarTab(tabId) {
+    document.querySelectorAll('.sb-tab-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === tabId);
+    });
+
+    document.querySelectorAll('.tab-pane').forEach(pane => {
+      pane.classList.toggle('active', pane.id === tabId);
+    });
+  }
+
+  document.querySelectorAll('.sb-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchSidebarTab(btn.dataset.tab));
+  });
+
+
+  // =========================================================================
+  // BUSCA GLOBAL DE PATOLOGIAS
+  // =========================================================================
+
+  globalSearchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    if (!query) {
+      if (state.activeSegment) {
+        renderPathologyCards(SEGMENTS_META[state.activeSegment].pathologies);
+      } else {
+        renderPathologyCards(Object.keys(PATHOLOGIES));
+      }
+      return;
+    }
+
+    // Filtrar em todas as patologias
+    const filtered = Object.keys(PATHOLOGIES).filter(id => {
+      const p = PATHOLOGIES[id];
+      return (
+        p.title.toLowerCase().includes(query) ||
+        p.subtitle.toLowerCase().includes(query) ||
+        p.segmentName.toLowerCase().includes(query) ||
+        (p.immediateActions || []).some(a => a.toLowerCase().includes(query)) ||
+        (p.prescriptions || []).some(pr => pr.toLowerCase().includes(query))
+      );
+    });
+
+    switchSidebarTab('tab-pathologies');
+    asBannerTitle.textContent = `Busca: "${query}"`;
+    asBannerSub.textContent = `${filtered.length} resultados encontrados`;
+    renderPathologyCards(filtered);
+  });
+
+
+  // =========================================================================
+  // MODAL DE GUIA E FULLSCREEN
+  // =========================================================================
+
+  document.getElementById('btnHelpModal').addEventListener('click', () => {
+    switchSidebarTab('tab-guide');
+  });
+
+  document.getElementById('btnToggleFullscreen').addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  });
+
+
+  // =========================================================================
+  // ATALHOS DE TECLADO TÁTICOS
+  // =========================================================================
+
+  window.addEventListener('keydown', (e) => {
+    // Ignorar se estiver digitando na busca
+    if (e.target.tagName === 'INPUT') return;
+
+    if (e.key === 'Escape') {
+      closeProtocolDrawer();
+    } else if (e.key === '+' || e.key === '=') {
+      document.getElementById('btnZoomIn').click();
+    } else if (e.key === '-' || e.key === '_') {
+      document.getElementById('btnZoomOut').click();
+    } else if (e.key === '0' || e.key.toLowerCase() === 'r') {
+      resetView();
+    } else if (e.key.toLowerCase() === 'f') {
+      document.getElementById('btnToggleFullscreen').click();
+    } else if (e.key.toLowerCase() === 'm') {
+      // Alternar modos cíclicos
+      const modes = ['interactive', 'xray', 'organs', 'surface'];
+      const nextIdx = (modes.indexOf(state.activeMode) + 1) % modes.length;
+      setMode(modes[nextIdx]);
+    } else if (e.key === '1') {
+      selectSegment('cabeca');
+    } else if (e.key === '2') {
+      selectSegment('pescoco');
+    } else if (e.key === '3') {
+      selectSegment('torax');
+    } else if (e.key === '4') {
+      selectSegment('abdome');
+    } else if (e.key === '5') {
+      selectSegment('membros-superiores');
+    } else if (e.key === '6') {
+      selectSegment('membros-inferiores');
+    }
+  });
+
+
+  // =========================================================================
+  // INICIALIZAÇÃO
+  // =========================================================================
+  renderPathologyCards(Object.keys(PATHOLOGIES));
+  updateTransform(false);
+
+</script>
+
+</body>
+</html>
