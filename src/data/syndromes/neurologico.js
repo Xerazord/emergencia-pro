@@ -543,7 +543,7 @@ const CT_NEUROLOGICO = {
           "Controle pressórico se PAS > 160 mmHg: nitroprussiato de sódio 0,5–10 mcg/kg/min EV contínuo, titulado conforme alvo. Alvo PAS 140–160 antes do clipping; depois, 140–180",
           "Analgesia: dipirona 2 g EV + paracetamol 1 g EV. Evitar AAS / AINE (risco hemorrágico)",
           "Antiemético: ondansetrona 4–8 mg EV (preferência sobre metoclopramida em pacientes com risco neurológico)",
-          "usar apenas se convulsão presente (fenitoína 20 mg/kg EV ou levetiracetam 60 mg/kg EV)",
+          "Anticonvulsivante de resgate apenas se crise convulsiva documentada (Fenitoína 20 mg/kg EV em infusão lenta ou Levetiracetam 60 mg/kg EV; não indicada profilaxia rotineira)",
           "Reversão de anticoagulação se em uso (vitamina K, complexo protrombínico, idarucizumabe, andexanet — conforme agente)"
         ]
       },
@@ -567,8 +567,7 @@ const CT_NEUROLOGICO = {
           "Internação em UTI neurológica em todos os casos",
           "Hidratação para euvolemia (não hipervolemia — abandonada nos guidelines recentes)",
           "Monitorar diurese, Na sérico 6/6h, lactato",
-          "Iniciar prevenção de TVP com compressão pneumática; HBPM somente após segurança da hemostasia (geralmente > 24h pós-tratamento do aneurisma)",
-          "Comunicação com família"
+          "Iniciar prevenção de TVP com compressão pneumática; HBPM somente após segurança da hemostasia (geralmente > 24h pós-tratamento do aneurisma)"
         ]
       }
     ]

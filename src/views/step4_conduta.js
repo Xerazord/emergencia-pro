@@ -276,16 +276,41 @@ function rUnifiedConductsBoard(T){
     return true;
    }
   }
+  if(sid==='cho' && S.subsind==='cho_sep'){
+   const l=item.toLowerCase();
+   if(secId==='esp' && (l.includes('piperacilina')||l.includes('ceftriaxona')||l.includes('hemocultura')||l.includes('vasopressor inicial'))){
+    return true;
+   }
+  }
   return false;
  }
 
- // Deduplicação canônica em escopo geral do quadro: registra itens da síndrome-mãe
- const boardSeenCanonical = new Set();
+ function getSemanticConductKey(item){
+  if(!item) return '';
+  const ck = getCanonicalConductKey(item);
+  if(ck) return 'ck:' + ck;
+  const l = item.toLowerCase();
+  if(l.includes('hemocultura') || l.includes('hemoculturas')) return 'sem:hemocultura';
+  if(l.includes('lactato sérico') || l.includes('lactato basal') || (l.includes('gasometria') && l.includes('lactato'))) return 'sem:lactato';
+  if(l.includes('painel laboratorial') || l.includes('laboratório de urgência') || l.includes('laboratório da sepse') || l.includes('laboratório de triagem')) return 'sem:lab_geral';
+  if(l.includes('radiografia de tórax') || l.includes('rx de tórax') || l.includes('raio-x de tórax') || l.includes('rx tórax')) return 'sem:rx_torax';
+  if(l.includes('expansão volêmica') || l.includes('30 ml/kg') || l.includes('30ml/kg') || l.includes('ressuscitação volêmica')) return 'sem:volume_sepse';
+  if(l.includes('abertura de protocolo sepse') || l.includes('protocolo de sepse') || l.includes('rastreio de sepse')) return 'sem:proto_sepse';
+  if(l.includes('controle mecânico do foco') || l.includes('controle cirúrgico ou percutâneo') || l.includes('controle cirúrgico de foco') || l.includes('remoção imediata de acessos')) return 'sem:controle_foco';
+  if(l.includes('internação prioritária imediata em leito de unidade de terapia intensiva') || l.includes('internação obrigatória em uti') || l.includes('internação prioritária em uti')) return 'sem:uti';
+  if(l.includes('linha arterial') || l.includes('pai')) return 'sem:pai';
+  const clean = l.replace(/[^a-z0-9]/g, '').slice(0, 40);
+  return 'txt:' + clean;
+ }
+
+ // Deduplicação semântica global no quadro de condutas
+ const boardSeenKeys = new Set();
  if(T.s){
   T.s.forEach(sec=>{
    (sec.it||[]).forEach(it=>{
-    const ck = getCanonicalConductKey(it);
-    if(ck) boardSeenCanonical.add(ck);
+    if(shouldSuppressMotherItem(it, sec.id, sid)) return;
+    const sk = getSemanticConductKey(it);
+    if(sk) boardSeenKeys.add(sk);
    });
   });
  }
@@ -307,13 +332,14 @@ function rUnifiedConductsBoard(T){
    const sec=subT&&subT.s?subT.s.find(s=>s.id===secId):null;
    if(sec&&sec.it){
     sec.it.forEach((item,idx)=>{
+     const sk = getSemanticConductKey(item);
      const ck = getCanonicalConductKey(item);
      if(secId === 'sup' && (ck || isGenericVitalSupportItem(item))){
-      if(ck && !boardSeenCanonical.has(ck)) boardSeenCanonical.add(ck);
+      if(sk && !boardSeenKeys.has(sk)) boardSeenKeys.add(sk);
       return;
      }
-     if(ck && boardSeenCanonical.has(ck)) return;
-     if(ck) boardSeenCanonical.add(ck);
+     if(sk && boardSeenKeys.has(sk)) return;
+     if(sk) boardSeenKeys.add(sk);
      subEntries.push({item,idx,secId});
     });
    }
@@ -322,16 +348,19 @@ function rUnifiedConductsBoard(T){
   const diffEntries=diffList.map(d=>{
    const fItems=[];
    macro.secIds.forEach(secId=>{
+    // Diferenciais associados não clonam suporte vital geral nem disposição hospitalar da síndrome mãe
+    if((secId === 'sup' || secId === 'dsp') && T.s && T.s.some(s => s.id === secId)) return;
     const sec=d.obj.s?d.obj.s.find(s=>s.id===secId):null;
     if(sec&&sec.it){
      sec.it.forEach((item,idx)=>{
+      const sk = getSemanticConductKey(item);
       const ck = getCanonicalConductKey(item);
       if(secId === 'sup' && (ck || isGenericVitalSupportItem(item))){
-       if(ck && !boardSeenCanonical.has(ck)) boardSeenCanonical.add(ck);
+       if(sk && !boardSeenKeys.has(sk)) boardSeenKeys.add(sk);
        return;
       }
-      if(ck && boardSeenCanonical.has(ck)) return;
-      if(ck) boardSeenCanonical.add(ck);
+      if(sk && boardSeenKeys.has(sk)) return;
+      if(sk) boardSeenKeys.add(sk);
       fItems.push({item,idx,secId});
      });
     }

@@ -95,12 +95,12 @@ const CT_SISTEMICO = {
     "s": [
       {
         "id": "sup",
-        "t": "Suporte e metas de ressuscitação (Surviving Sepsis / ESICM)",
+        "t": "Suporte hemodinâmico e metas de ressuscitação no choque séptico",
         "it": [
-          "Abertura de protocolo sepse, coleta de laboratoriais e 2 pares de hemocultura",
-          "Se choque séptico, início de ATB < 1h da admissão, se sepse suspeita, início em até 3h, após descartar diferenciais",
-          "Se hipotensão, expansão volêmica possível com até 30ml/kg de cristaloide balanceado",
-          "Caso PAD < 40 ou refratariedade a bolus de cristaloide, início precoce de vasopressor em acesso periférico"
+          "Ressuscitação volêmica guiada por resposta dinâmica com cristaloide balanceado (máx 30 mL/kg), monitorando congestão por POCUS",
+          "Vasopressor imediato de 1ª linha (Norepinefrina em BIC titulada para PAM ≥ 65 mmHg) via periférica provisória ou central",
+          "Instalação precoce de Linha Arterial (PAI) e Cateter Venoso Central para monitorização invasiva contínua",
+          "Monitorização seriada de perfusão: débito urinário horário (Foley), TEC a cada hora e clearance de lactato em 2–4h"
         ]
       },
       {
@@ -288,12 +288,10 @@ const CT_SISTEMICO = {
     "s": [
       {
         "id": "sup",
-        "t": "Rastreio de sepse e bundle da 1ª hora (Surviving Sepsis Campaign)",
+        "t": "Rastreio de sepse e ressuscitação hemodinâmica inicial",
         "it": [
-          "Abertura de protocolo sepse, coleta de laboratoriais e 2 pares de hemocultura",
-          "Se choque séptico, início de ATB < 1h da admissão, se sepse suspeita, início em até 3h, após descartar diferenciais",
-          "Se hipotensão, expansão volêmica possível com até 30ml/kg de cristaloide balanceado",
-          "Caso PAD < 40 ou refratariedade a bolus de cristaloide, início precoce de vasopressor em acesso periférico"
+          "Pacote de ressuscitação hemodinâmica na Sepse: expansão volêmica criteriosa com cristaloide balanceado (até 30 mL/kg), monitorização de perfusão (alvo PAM ≥ 65 mmHg, TEC ≤ 3s, diurese horária) e vasopressor precoce (Norepinefrina em BIC) se PAD < 40 ou refratariedade volêmica",
+          "Monitorização multiparamétrica contínua (ECG, oximetria de pulso, PANI a cada 15 min), 2 acessos venosos periféricos calibrosos e oxigenoterapia com alvo SpO₂ 92–96%"
         ]
       },
       {
@@ -798,7 +796,6 @@ const CT_SISTEMICO = {
         "id": "sup",
         "t": "Avaliação e demarcação da área infectada",
         "it": [
-          "Demarcação dos limites do eritema com caneta dermográfica na admissão",
           "Demarcar os limites do eritema com caneta dermográfica na admissão para acompanhar a resposta clínica nas primeiras 24–48h",
           "Pesquisa de porta de entrada: tinea pedis interdigital, fissuras nos pés, úlceras ou ferimentos prévios"
         ]

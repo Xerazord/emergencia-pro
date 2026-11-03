@@ -138,11 +138,11 @@ const CT_RESPIRATORIO = {
     "s": [
       {
         "id": "sup",
-        "t": "Classificação de gravidade",
+        "t": "Suporte e monitorização",
         "it": [
-          "Leve-moderada: FR < 30, SatO2 ≥ 92%, fala em frases, sem uso musculatura acessória intensa",
-          "Grave: SatO2 < 92%, FR > 30, uso musculatura acessória, fala em palavras",
-          "IOT + epinefrina IM"
+          "Monitorização multiparamétrica contínua (oximetria de pulso, FR, ritmo cardíaco) e cabeceira elevada",
+          "Oxigenoterapia sob cateter nasal ou máscara para alvo de SpO₂ 93–95%",
+          "Preparo imediato para via aérea avançada (IOT com sequência rápida) e suporte ventilatório se exaustão respiratória ou rebaixamento"
         ]
       },
       {
@@ -275,30 +275,30 @@ const CT_RESPIRATORIO = {
     "s": [
       {
         "id": "sup",
-        "t": "Avaliação",
+        "t": "Avaliação clínica e estabilização",
         "it": [
-          "obliteração do ângulo costofrênico (> 200 mL)",
-          "volume > 500 mL pode causar atelectasia compressiva significativa",
-          "Classificar: transudato (ICC, cirrose, síndrome nefrótica) vs. exsudato (Critérios de Light)"
+          "Monitorização contínua de oximetria de pulso e frequência respiratória",
+          "Oxigenoterapia sob cateter nasal ou máscara para manter SpO₂ 92–96%",
+          "POCUS pulmonar para quantificação do derrame, pesquisa de septações e marcação do sítio de punção"
         ]
       },
       {
         "id": "esp",
-        "t": "Manejo",
+        "t": "Procedimentos e condutas terapêuticas",
         "it": [
-          "guiada por POCUS, retirar ≤ 1.500 mL por sessão (risco de edema de reexpansão)",
-          "Drenagem torácica: derrame parapneumônico complicado (pH < 7,2, glicose < 60 mg/dL, LDH > 1.000 UI/L), empiema ou hemotórax",
-          "Tratar etiologia: furosemida para ICC, ATB IV para empiema, pleurodese ou drenagem para maligno"
+          "Toracocentese diagnóstica e de alívio guiada por POCUS (retirar ≤ 1.500 mL por punção para prevenção de edema pulmonar de reexpansão)",
+          "Drenagem torácica em selo d'água se derrame parapneumônico complicado (pH < 7,2, glicose < 60 mg/dL, LDH > 1.000 UI/L), empiema purulento franco ou hemotórax",
+          "Terapêutica etiológica direcionada: diuréticos de alça para transudatos cardiogênicos, antibioticoterapia parenteral para infecções"
         ]
       },
       {
         "id": "inv",
-        "t": "Análise do líquido pleural",
+        "t": "Análise bioquímica e microbiológica do líquido pleural",
         "it": [
-          "Critérios de Light",
-          "pH, glicose, LDH, proteína total, celularidade",
-          "Citologia oncótica se derrame suspeito de maligno",
-          "ADA ≥ 40 U/L"
+          "Bioquímica pleural para Critérios de Light: Proteína total, LDH pleural e sérico (relação > 0,5 e > 0,6)",
+          "Citologia diferencial, pH, glicose, gram e cultura bacteriana com antibiograma do líquido pleural",
+          "Citologia oncótica seriada se suspeita de etiologia neoplásica",
+          "Dosagem de ADA (adenosina desaminase) se suspeita de tuberculose pleural (valor de corte ≥ 40 U/L)"
         ]
       }
     ]

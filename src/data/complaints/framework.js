@@ -4,6 +4,28 @@ const QX_ANAMNESE={},QX_EF={},QX_HDA={},QX_HPP={},QX_BADGE={},QX_EF_TEXT={};
 // Helpers de UI (reduzem boilerplate em renderers de queixa)
 function tags(label,opts,arrRef,action){return `${label?`<div class="sl">${label}</div>`:''}<div class="tags" style="margin-bottom:8px">${opts.map(v=>{const s=String(v).replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/"/g,"&quot;");return `<span class="tag ${arrRef.includes(v)?'on':''}" onclick="${action.replace(/%V/g,s)}">${esc(v)}</span>`;}).join('')}</div>`;}
 function radio(label,opts,curr,action){return `${label?`<div class="sl">${label}</div>`:''}<div class="rg" style="margin-bottom:8px">${opts.map(v=>{const s=String(v).replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/"/g,"&quot;");return `<span class="ro ${curr===v?'on':''}" onclick="${action.replace(/%V/g,s)}">${esc(v)}</span>`;}).join('')}</div>`;}
+function segRadio(label,opts,curr,action){
+ return `<div class="seg-row">
+  <div class="seg-label">${esc(label)}</div>
+  <div class="seg-control">${opts.map(v=>{
+    const s=String(v).replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/"/g,"&quot;");
+    const isOn=curr===v;
+    const isAlert=isOn&&['Obstruída','Prejudicada/Ausente','Colocado/Mantido','Assimétrica','Reduzido','Abolido','> 3s','> 5s','Em flush','Filiformes','Ausentes','Anisocóricas','Midriáticas','Mióticas','Não reagentes','Presente'].includes(v);
+    return `<button type="button" class="seg-btn ${isOn?'on':''} ${isAlert?'alert':''}" onclick="${action.replace(/%V/g,s)}">${esc(v)}</button>`;
+  }).join('')}</div>
+ </div>`;
+}
+function segTags(label,opts,arrRef,action){
+ const arr=arrRef||[];
+ return `<div class="seg-row">
+  <div class="seg-label">${esc(label)}</div>
+  <div class="seg-tags">${opts.map(v=>{
+    const s=String(v).replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/"/g,"&quot;");
+    const isOn=arr.includes(v);
+    return `<button type="button" class="seg-tag-btn ${isOn?'on':''}" onclick="${action.replace(/%V/g,s)}">${esc(v)}</button>`;
+  }).join('')}</div>
+ </div>`;
+}
 
 const QX_SPEC={},QX_SPEC_BY_SIGLA={};
 function qxSpec(sigla){return QX_SPEC_BY_SIGLA[sigla];}

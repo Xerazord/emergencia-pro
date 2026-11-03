@@ -280,19 +280,18 @@ const CT_ABDOMINAL = {
     ]
   },
   "dab": {
-    "l": "Dor abdominal",
+    "l": "Dor abdominal (investigação / inespecífica)",
     "s": [
       {
         "id": "inv",
-        "t": "Localização e etiologias suspeitas",
+        "t": "Avaliação diagnóstica e condutas iniciais",
         "it": [
-          "QSD / Hipocôndrio D",
-          "Epigástrio",
-          "QIE / FIE",
-          "QID / FID",
-          "Periumbilical",
-          "Hipogástrio / Pelve",
-          "Difusa"
+          "Avaliação seriada de abdome com palpação cuidadosa e checagem de sinais de peritonite",
+          "Rotina de abdome agudo (Rx tórax PA em ortostase + Rx abdome simples em decúbito e ortostase)",
+          "USG de abdome total / vias biliares no leito ou no setor conforme suspeita",
+          "TC de abdome e pelve com contraste venoso se dúvida diagnóstica ou sinais de abdome agudo",
+          "Dieta zero e hidratação venosa isotônica guiada por metas até definição etiológica",
+          "Analgesia escalonada evitando mascarar sinais de abdome agudo cirúrgico"
         ]
       }
     ]
@@ -547,7 +546,7 @@ const CT_ABDOMINAL = {
         "it": [
           "Internação prioritária em UTI / Centro de Referência em Hepatologia com vaga zero para Transplante Hepático de Emergência",
           "Avaliação dos Critérios de King's College para Paracetamol (pH arterial < 7,30 ou INR > 6,5 + Creatinina > 3,4 mg/dL + Encefalopatia)",
-          "Avaliação dos Critérios de King's College para Paracetamol (pH arterial < 7,30 ou INR > 6,5 + Creatinina > 3,4 mg/dL + Encefalopatia)"
+          "Avaliação dos Critérios de King's College para Não-Paracetamol (INR > 6,5 isolado OU pelo menos 3 de: etiologia desfavorável, icterícia > 7 dias antes da encefalopatia, idade < 10 ou > 40 anos, INR > 3,5, bilirrubina > 17,5 mg/dL)"
         ]
       }
     ]

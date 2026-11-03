@@ -656,10 +656,182 @@ label { display: block; font-size: 12px; color: var(--color-text-secondary); mar
 
 /* Acordeões e ABCDE */
 .abcs { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); margin-bottom: 7px; overflow: hidden; }
-.abch { padding: 9px 13px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: var(--color-background-secondary); font-size: 14px; font-weight: 500; }
+.abch { padding: 9px 13px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: var(--color-background-secondary); font-size: 14px; font-weight: 500; transition: background 0.15s ease; }
+.abch:hover { background: #f1f5f9; }
 .abcb { padding: 12px; border-top: 0.5px solid var(--color-border-tertiary); display: none; }
-.abcb.open { display: block; }
+.abcb.open {
+  display: block;
+  animation: accSlideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes accSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .abcde-badge { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 5px; background: #7c3aed; color: #fff; font-weight: 700; font-size: 11px; margin-right: 6px; flex-shrink: 0; }
+
+/* Telemetry HUD — Sinais Vitais Compactos */
+.vital-hud-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.vital-hud-card {
+  background: var(--color-background-primary);
+  border: 1px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.18s ease;
+  border-left: 3.5px solid #cbd5e1;
+}
+.vital-hud-card:focus-within {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  border-color: #93c5fd;
+}
+.vital-hud-card.vok {
+  border-left-color: #22c55e !important;
+}
+.vital-hud-card.vw {
+  border-left-color: #f59e0b !important;
+  background: #fffbeb !important;
+}
+.vital-hud-card.vc {
+  border-left-color: #ef4444 !important;
+  background: #fef2f2 !important;
+  box-shadow: 0 0 0 1px #fecaca;
+}
+.vital-hud-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 3px;
+}
+.vital-hud-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.vital-hud-unit {
+  font-size: 10.5px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+.vital-hud-input {
+  width: 100%;
+  border: none !important;
+  background: transparent !important;
+  padding: 2px 0 !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: var(--color-text-primary) !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-family: inherit;
+}
+.vital-hud-input::placeholder {
+  color: #cbd5e1;
+  font-weight: 400;
+  font-size: 13px;
+}
+
+/* Segmented HUD Controls — Exame Físico ABCDE */
+.seg-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.seg-row:last-child {
+  border-bottom: none;
+}
+.seg-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  min-width: 110px;
+  flex-shrink: 0;
+}
+.seg-control {
+  display: inline-flex;
+  align-items: center;
+  background: #f1f5f9;
+  border-radius: 6px;
+  padding: 2px;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+.seg-btn {
+  border: none;
+  background: transparent;
+  padding: 4px 9px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #475569;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  font-family: inherit;
+}
+.seg-btn:hover {
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.6);
+}
+.seg-btn.on {
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.seg-btn.on.alert {
+  background: #fee2e2;
+  color: #991b1b;
+  box-shadow: 0 0 0 1px #f87171;
+}
+.seg-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.seg-tag-btn {
+  border: 1px solid var(--color-border-tertiary);
+  background: var(--color-background-primary);
+  padding: 3px 8px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+.seg-tag-btn:hover {
+  background: var(--color-background-secondary);
+  color: var(--color-text-primary);
+}
+.seg-tag-btn.on {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #991b1b;
+  font-weight: 600;
+}
 
 /* Vitals & Scores */
 .sgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 10px; }
@@ -3899,11 +4071,11 @@ const CT_RESPIRATORIO = {
     "s": [
       {
         "id": "sup",
-        "t": "Classificação de gravidade",
+        "t": "Suporte e monitorização",
         "it": [
-          "Leve-moderada: FR < 30, SatO2 ≥ 92%, fala em frases, sem uso musculatura acessória intensa",
-          "Grave: SatO2 < 92%, FR > 30, uso musculatura acessória, fala em palavras",
-          "IOT + epinefrina IM"
+          "Monitorização multiparamétrica contínua (oximetria de pulso, FR, ritmo cardíaco) e cabeceira elevada",
+          "Oxigenoterapia sob cateter nasal ou máscara para alvo de SpO₂ 93–95%",
+          "Preparo imediato para via aérea avançada (IOT com sequência rápida) e suporte ventilatório se exaustão respiratória ou rebaixamento"
         ]
       },
       {
@@ -4036,30 +4208,30 @@ const CT_RESPIRATORIO = {
     "s": [
       {
         "id": "sup",
-        "t": "Avaliação",
+        "t": "Avaliação clínica e estabilização",
         "it": [
-          "obliteração do ângulo costofrênico (> 200 mL)",
-          "volume > 500 mL pode causar atelectasia compressiva significativa",
-          "Classificar: transudato (ICC, cirrose, síndrome nefrótica) vs. exsudato (Critérios de Light)"
+          "Monitorização contínua de oximetria de pulso e frequência respiratória",
+          "Oxigenoterapia sob cateter nasal ou máscara para manter SpO₂ 92–96%",
+          "POCUS pulmonar para quantificação do derrame, pesquisa de septações e marcação do sítio de punção"
         ]
       },
       {
         "id": "esp",
-        "t": "Manejo",
+        "t": "Procedimentos e condutas terapêuticas",
         "it": [
-          "guiada por POCUS, retirar ≤ 1.500 mL por sessão (risco de edema de reexpansão)",
-          "Drenagem torácica: derrame parapneumônico complicado (pH < 7,2, glicose < 60 mg/dL, LDH > 1.000 UI/L), empiema ou hemotórax",
-          "Tratar etiologia: furosemida para ICC, ATB IV para empiema, pleurodese ou drenagem para maligno"
+          "Toracocentese diagnóstica e de alívio guiada por POCUS (retirar ≤ 1.500 mL por punção para prevenção de edema pulmonar de reexpansão)",
+          "Drenagem torácica em selo d'água se derrame parapneumônico complicado (pH < 7,2, glicose < 60 mg/dL, LDH > 1.000 UI/L), empiema purulento franco ou hemotórax",
+          "Terapêutica etiológica direcionada: diuréticos de alça para transudatos cardiogênicos, antibioticoterapia parenteral para infecções"
         ]
       },
       {
         "id": "inv",
-        "t": "Análise do líquido pleural",
+        "t": "Análise bioquímica e microbiológica do líquido pleural",
         "it": [
-          "Critérios de Light",
-          "pH, glicose, LDH, proteína total, celularidade",
-          "Citologia oncótica se derrame suspeito de maligno",
-          "ADA ≥ 40 U/L"
+          "Bioquímica pleural para Critérios de Light: Proteína total, LDH pleural e sérico (relação > 0,5 e > 0,6)",
+          "Citologia diferencial, pH, glicose, gram e cultura bacteriana com antibiograma do líquido pleural",
+          "Citologia oncótica seriada se suspeita de etiologia neoplásica",
+          "Dosagem de ADA (adenosina desaminase) se suspeita de tuberculose pleural (valor de corte ≥ 40 U/L)"
         ]
       }
     ]
@@ -4662,7 +4834,7 @@ const CT_NEUROLOGICO = {
           "Controle pressórico se PAS > 160 mmHg: nitroprussiato de sódio 0,5–10 mcg/kg/min EV contínuo, titulado conforme alvo. Alvo PAS 140–160 antes do clipping; depois, 140–180",
           "Analgesia: dipirona 2 g EV + paracetamol 1 g EV. Evitar AAS / AINE (risco hemorrágico)",
           "Antiemético: ondansetrona 4–8 mg EV (preferência sobre metoclopramida em pacientes com risco neurológico)",
-          "usar apenas se convulsão presente (fenitoína 20 mg/kg EV ou levetiracetam 60 mg/kg EV)",
+          "Anticonvulsivante de resgate apenas se crise convulsiva documentada (Fenitoína 20 mg/kg EV em infusão lenta ou Levetiracetam 60 mg/kg EV; não indicada profilaxia rotineira)",
           "Reversão de anticoagulação se em uso (vitamina K, complexo protrombínico, idarucizumabe, andexanet — conforme agente)"
         ]
       },
@@ -4686,8 +4858,7 @@ const CT_NEUROLOGICO = {
           "Internação em UTI neurológica em todos os casos",
           "Hidratação para euvolemia (não hipervolemia — abandonada nos guidelines recentes)",
           "Monitorar diurese, Na sérico 6/6h, lactato",
-          "Iniciar prevenção de TVP com compressão pneumática; HBPM somente após segurança da hemostasia (geralmente > 24h pós-tratamento do aneurisma)",
-          "Comunicação com família"
+          "Iniciar prevenção de TVP com compressão pneumática; HBPM somente após segurança da hemostasia (geralmente > 24h pós-tratamento do aneurisma)"
         ]
       }
     ]
@@ -5153,19 +5324,18 @@ const CT_ABDOMINAL = {
     ]
   },
   "dab": {
-    "l": "Dor abdominal",
+    "l": "Dor abdominal (investigação / inespecífica)",
     "s": [
       {
         "id": "inv",
-        "t": "Localização e etiologias suspeitas",
+        "t": "Avaliação diagnóstica e condutas iniciais",
         "it": [
-          "QSD / Hipocôndrio D",
-          "Epigástrio",
-          "QIE / FIE",
-          "QID / FID",
-          "Periumbilical",
-          "Hipogástrio / Pelve",
-          "Difusa"
+          "Avaliação seriada de abdome com palpação cuidadosa e checagem de sinais de peritonite",
+          "Rotina de abdome agudo (Rx tórax PA em ortostase + Rx abdome simples em decúbito e ortostase)",
+          "USG de abdome total / vias biliares no leito ou no setor conforme suspeita",
+          "TC de abdome e pelve com contraste venoso se dúvida diagnóstica ou sinais de abdome agudo",
+          "Dieta zero e hidratação venosa isotônica guiada por metas até definição etiológica",
+          "Analgesia escalonada evitando mascarar sinais de abdome agudo cirúrgico"
         ]
       }
     ]
@@ -5420,7 +5590,7 @@ const CT_ABDOMINAL = {
         "it": [
           "Internação prioritária em UTI / Centro de Referência em Hepatologia com vaga zero para Transplante Hepático de Emergência",
           "Avaliação dos Critérios de King's College para Paracetamol (pH arterial < 7,30 ou INR > 6,5 + Creatinina > 3,4 mg/dL + Encefalopatia)",
-          "Avaliação dos Critérios de King's College para Paracetamol (pH arterial < 7,30 ou INR > 6,5 + Creatinina > 3,4 mg/dL + Encefalopatia)"
+          "Avaliação dos Critérios de King's College para Não-Paracetamol (INR > 6,5 isolado OU pelo menos 3 de: etiologia desfavorável, icterícia > 7 dias antes da encefalopatia, idade < 10 ou > 40 anos, INR > 3,5, bilirrubina > 17,5 mg/dL)"
         ]
       }
     ]
@@ -5641,12 +5811,12 @@ const CT_SISTEMICO = {
     "s": [
       {
         "id": "sup",
-        "t": "Suporte e metas de ressuscitação (Surviving Sepsis / ESICM)",
+        "t": "Suporte hemodinâmico e metas de ressuscitação no choque séptico",
         "it": [
-          "Abertura de protocolo sepse, coleta de laboratoriais e 2 pares de hemocultura",
-          "Se choque séptico, início de ATB < 1h da admissão, se sepse suspeita, início em até 3h, após descartar diferenciais",
-          "Se hipotensão, expansão volêmica possível com até 30ml/kg de cristaloide balanceado",
-          "Caso PAD < 40 ou refratariedade a bolus de cristaloide, início precoce de vasopressor em acesso periférico"
+          "Ressuscitação volêmica guiada por resposta dinâmica com cristaloide balanceado (máx 30 mL/kg), monitorando congestão por POCUS",
+          "Vasopressor imediato de 1ª linha (Norepinefrina em BIC titulada para PAM ≥ 65 mmHg) via periférica provisória ou central",
+          "Instalação precoce de Linha Arterial (PAI) e Cateter Venoso Central para monitorização invasiva contínua",
+          "Monitorização seriada de perfusão: débito urinário horário (Foley), TEC a cada hora e clearance de lactato em 2–4h"
         ]
       },
       {
@@ -5834,12 +6004,10 @@ const CT_SISTEMICO = {
     "s": [
       {
         "id": "sup",
-        "t": "Rastreio de sepse e bundle da 1ª hora (Surviving Sepsis Campaign)",
+        "t": "Rastreio de sepse e ressuscitação hemodinâmica inicial",
         "it": [
-          "Abertura de protocolo sepse, coleta de laboratoriais e 2 pares de hemocultura",
-          "Se choque séptico, início de ATB < 1h da admissão, se sepse suspeita, início em até 3h, após descartar diferenciais",
-          "Se hipotensão, expansão volêmica possível com até 30ml/kg de cristaloide balanceado",
-          "Caso PAD < 40 ou refratariedade a bolus de cristaloide, início precoce de vasopressor em acesso periférico"
+          "Pacote de ressuscitação hemodinâmica na Sepse: expansão volêmica criteriosa com cristaloide balanceado (até 30 mL/kg), monitorização de perfusão (alvo PAM ≥ 65 mmHg, TEC ≤ 3s, diurese horária) e vasopressor precoce (Norepinefrina em BIC) se PAD < 40 ou refratariedade volêmica",
+          "Monitorização multiparamétrica contínua (ECG, oximetria de pulso, PANI a cada 15 min), 2 acessos venosos periféricos calibrosos e oxigenoterapia com alvo SpO₂ 92–96%"
         ]
       },
       {
@@ -6344,7 +6512,6 @@ const CT_SISTEMICO = {
         "id": "sup",
         "t": "Avaliação e demarcação da área infectada",
         "it": [
-          "Demarcação dos limites do eritema com caneta dermográfica na admissão",
           "Demarcar os limites do eritema com caneta dermográfica na admissão para acompanhar a resposta clínica nas primeiras 24–48h",
           "Pesquisa de porta de entrada: tinea pedis interdigital, fissuras nos pés, úlceras ou ferimentos prévios"
         ]
@@ -6742,6 +6909,28 @@ const QX_ANAMNESE={},QX_EF={},QX_HDA={},QX_HPP={},QX_BADGE={},QX_EF_TEXT={};
 // Helpers de UI (reduzem boilerplate em renderers de queixa)
 function tags(label,opts,arrRef,action){return `${label?`<div class="sl">${label}</div>`:''}<div class="tags" style="margin-bottom:8px">${opts.map(v=>{const s=String(v).replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/"/g,"&quot;");return `<span class="tag ${arrRef.includes(v)?'on':''}" onclick="${action.replace(/%V/g,s)}">${esc(v)}</span>`;}).join('')}</div>`;}
 function radio(label,opts,curr,action){return `${label?`<div class="sl">${label}</div>`:''}<div class="rg" style="margin-bottom:8px">${opts.map(v=>{const s=String(v).replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/"/g,"&quot;");return `<span class="ro ${curr===v?'on':''}" onclick="${action.replace(/%V/g,s)}">${esc(v)}</span>`;}).join('')}</div>`;}
+function segRadio(label,opts,curr,action){
+ return `<div class="seg-row">
+  <div class="seg-label">${esc(label)}</div>
+  <div class="seg-control">${opts.map(v=>{
+    const s=String(v).replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/"/g,"&quot;");
+    const isOn=curr===v;
+    const isAlert=isOn&&['Obstruída','Prejudicada/Ausente','Colocado/Mantido','Assimétrica','Reduzido','Abolido','> 3s','> 5s','Em flush','Filiformes','Ausentes','Anisocóricas','Midriáticas','Mióticas','Não reagentes','Presente'].includes(v);
+    return `<button type="button" class="seg-btn ${isOn?'on':''} ${isAlert?'alert':''}" onclick="${action.replace(/%V/g,s)}">${esc(v)}</button>`;
+  }).join('')}</div>
+ </div>`;
+}
+function segTags(label,opts,arrRef,action){
+ const arr=arrRef||[];
+ return `<div class="seg-row">
+  <div class="seg-label">${esc(label)}</div>
+  <div class="seg-tags">${opts.map(v=>{
+    const s=String(v).replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/"/g,"&quot;");
+    const isOn=arr.includes(v);
+    return `<button type="button" class="seg-tag-btn ${isOn?'on':''}" onclick="${action.replace(/%V/g,s)}">${esc(v)}</button>`;
+  }).join('')}</div>
+ </div>`;
+}
 
 const QX_SPEC={},QX_SPEC_BY_SIGLA={};
 function qxSpec(sigla){return QX_SPEC_BY_SIGLA[sigla];}
@@ -8391,10 +8580,24 @@ const VITAL_HL_MAP={
 };
 function itemHasVitalHl(item){const it=String(item).toLowerCase();return vA().some(al=>{const kw=VITAL_HL_MAP[al]||[];return kw.some(k=>it.includes(k.toLowerCase()));});}
 
-function vC(k,v){const n=parseFloat(v);if(!v)return'vok';if(k==='fc')return(n<40||n>130)?'vc':(n<60||n>100)?'vw':'vok';if(k==='sat')return n<90?'vc':n<95?'vw':'vok';if(k==='fr')return(n<8||n>30)?'vc':(n<12||n>20)?'vw':'vok';if(k==='gli')return n<60?'vc':n<70||n>200?'vw':'vok';if(k==='pa'&&v&&v.includes('/')){const s=parseFloat(v.split('/')[0]);return isNaN(s)?'vok':s<90?'vc':s>180?'vw':'vok';}return'vok';}
+function vC(k,v){const n=parseFloat(v);if(!v)return'vok';if(k==='fc')return(n<40||n>130)?'vc':(n<60||n>100)?'vw':'vok';if(k==='sat')return n<90?'vc':n<95?'vw':'vok';if(k==='fr')return(n<8||n>30)?'vc':(n<12||n>20)?'vw':'vok';if(k==='temp')return(n<35||n>=39)?'vc':(n>=37.8||n<36)?'vw':'vok';if(k==='gli')return n<60?'vc':n<70||n>200?'vw':'vok';if(k==='pa'&&v&&v.includes('/')){const s=parseFloat(v.split('/')[0]);return isNaN(s)?'vok':s<90?'vc':s>180?'vw':'vok';}return'vok';}
 function vA(){const a=[],fc=parseFloat(S.fc),sat=parseFloat(S.sat),fr=parseFloat(S.fr);if(S.fc&&(fc>120||fc<40))a.push('FC crítica');if(S.sat&&sat<90)a.push('Sat < 90%');if(S.fr&&(fr>30||fr<8))a.push('FR crítica');if(S.pa&&S.pa.includes('/')){const s=parseFloat(S.pa.split('/')[0]);if(!isNaN(s)){if(s<90)a.push('Hipotensão');if(s>180)a.push('HAS grave');}}return a;}
 function vBH(){return[{k:'fc',l:'FC',v:S.fc},{k:'sat',l:'Sat',v:S.sat},{k:'pa',l:'PA',v:S.pa},{k:'fr',l:'FR',v:S.fr},{k:'gli',l:'Glic',v:S.gli}].map(x=>`<div class="vbar ${vC(x.k,x.v)}">${esc(x.l)}<br><strong>${esc(x.v||'—')}</strong></div>`).join('');}
-function uvb(){const b=document.getElementById('vbars');if(b)b.innerHTML=vBH();const n2=document.getElementById('news2LiveBox');if(n2)n2.innerHTML=renderNews2LiveCard();const s5n=document.getElementById('news2AlertS5');if(s5n)s5n.innerHTML=renderNews2Step5Alert();}
+function uvb(){
+ ['fc','sat','pa','fr','temp','gli'].forEach(k=>{
+  const el=document.getElementById('vhud_'+k);
+  if(el){
+   const cls=S[k]?vC(k,S[k]):'';
+   el.className='vital-hud-card '+(cls||'');
+  }
+ });
+ const b=document.getElementById('vbars');
+ if(b)b.innerHTML=vBH();
+ const n2=document.getElementById('news2LiveBox');
+ if(n2)n2.innerHTML=renderNews2LiveCard();
+ const s5n=document.getElementById('news2AlertS5');
+ if(s5n)s5n.innerHTML=renderNews2Step5Alert();
+}
 function calcNEWS2(S){
  let score=0;const breakdown=[];let singleParamAlert=false;
  const fr=parseFloat(S.fr);
@@ -10874,19 +11077,45 @@ function s2(){
  const va=vA();
  return `<div id="step-2" class="card">
   <div class="st"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i> Sinais vitais</div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:10px;margin-bottom:12px">
-   <div><label>FC (bpm)</label><input type="number" inputmode="numeric" min="0" max="300" value="${esc(S.fc)}" oninput="S.fc=this.value;uvb()" placeholder="bpm"></div>
-   <div><label>SatO2 (%)</label><input type="number" inputmode="numeric" min="0" max="100" value="${esc(S.sat)}" oninput="S.sat=this.value;uvb()" placeholder="%"></div>
-   <div><label>PA (mmHg)</label><input type="text" inputmode="numeric" pattern="\\d{2,3}/\\d{2,3}" value="${esc(S.pa)}" oninput="S.pa=this.value.replace(/[^0-9\\/]/g,'');uvb()" placeholder="120/80"></div>
-   <div><label>FR (irpm)</label><input type="number" inputmode="numeric" min="0" max="80" value="${esc(S.fr)}" oninput="S.fr=this.value;uvb()" placeholder="irpm"></div>
-   <div><label>Temp. (°C)</label><input type="number" inputmode="decimal" step="0.1" min="25" max="45" value="${esc(S.temp)}" oninput="S.temp=this.value;uvb()" placeholder="°C"></div>
-   <div><label>Glicemia (mg/dL)</label><input type="number" inputmode="numeric" min="0" max="1000" value="${esc(S.gli)}" oninput="S.gli=this.value;uvb()" placeholder="mg/dL"></div>
+  <div class="vital-hud-grid">
+   <div class="vital-hud-card ${S.fc?vC('fc',S.fc):''}" id="vhud_fc">
+    <div class="vital-hud-hdr"><span class="vital-hud-lbl">FC</span><span class="vital-hud-unit">bpm</span></div>
+    <input type="number" class="vital-hud-input" inputmode="numeric" min="0" max="300" value="${esc(S.fc)}" oninput="S.fc=this.value;uvb()" placeholder="—">
+   </div>
+   <div class="vital-hud-card ${S.sat?vC('sat',S.sat):''}" id="vhud_sat">
+    <div class="vital-hud-hdr"><span class="vital-hud-lbl">SatO₂</span><span class="vital-hud-unit">%</span></div>
+    <input type="number" class="vital-hud-input" inputmode="numeric" min="0" max="100" value="${esc(S.sat)}" oninput="S.sat=this.value;uvb()" placeholder="—">
+   </div>
+   <div class="vital-hud-card ${S.pa?vC('pa',S.pa):''}" id="vhud_pa">
+    <div class="vital-hud-hdr"><span class="vital-hud-lbl">PA</span><span class="vital-hud-unit">mmHg</span></div>
+    <input type="text" class="vital-hud-input" inputmode="numeric" pattern="\\d{2,3}/\\d{2,3}" value="${esc(S.pa)}" oninput="S.pa=this.value.replace(/[^0-9\\/]/g,'');uvb()" placeholder="120/80">
+   </div>
+   <div class="vital-hud-card ${S.fr?vC('fr',S.fr):''}" id="vhud_fr">
+    <div class="vital-hud-hdr"><span class="vital-hud-lbl">FR</span><span class="vital-hud-unit">irpm</span></div>
+    <input type="number" class="vital-hud-input" inputmode="numeric" min="0" max="80" value="${esc(S.fr)}" oninput="S.fr=this.value;uvb()" placeholder="—">
+   </div>
+   <div class="vital-hud-card ${S.temp?vC('temp',S.temp):''}" id="vhud_temp">
+    <div class="vital-hud-hdr"><span class="vital-hud-lbl">Temp.</span><span class="vital-hud-unit">°C</span></div>
+    <input type="number" class="vital-hud-input" inputmode="decimal" step="0.1" min="25" max="45" value="${esc(S.temp)}" oninput="S.temp=this.value;uvb()" placeholder="—">
+   </div>
+   <div class="vital-hud-card ${S.gli?vC('gli',S.gli):''}" id="vhud_gli">
+    <div class="vital-hud-hdr"><span class="vital-hud-lbl">Glicemia</span><span class="vital-hud-unit">mg/dL</span></div>
+    <input type="number" class="vital-hud-input" inputmode="numeric" min="0" max="1000" value="${esc(S.gli)}" oninput="S.gli=this.value;uvb()" placeholder="—">
+   </div>
   </div>
   <div class="r2" style="margin-bottom:10px">
-   <div><label>Peso estimado (kg)</label><input type="number" inputmode="decimal" step="0.5" min="0" max="300" value="${esc(S.peso)}" oninput="S.peso=this.value" placeholder="kg"></div>
-   <div>
-    <div class="sl" style="margin-bottom:4px">Escala de Dor · 0 a 10 ${S.eva!==''&&S.eva!=null?`<span style="font-weight:700;color:#b91c1c;margin-left:6px">(${S.eva}/10)</span>`:''}</div>
-    <div style="display:flex;gap:3px">${[0,1,2,3,4,5,6,7,8,9,10].map(n=>`<button type="button" style="flex:1;padding:5px 0;border-radius:4px;border:.5px solid ${S.eva==n?'#a32d2d':'#d1d5db'};background:${S.eva==n?'#fcebeb':'#fff'};color:${S.eva==n?'#a32d2d':'#374151'};font-size:12px;cursor:pointer;font-weight:${S.eva==n?'700':'400'}" onclick="S.eva=${n};render()">${n}</button>`).join('')}</div>
+   <div class="vital-hud-card" style="border-left-color:#94a3b8">
+    <div class="vital-hud-hdr"><span class="vital-hud-lbl">Peso estimado</span><span class="vital-hud-unit">kg</span></div>
+    <input type="number" class="vital-hud-input" inputmode="decimal" step="0.5" min="0" max="300" value="${esc(S.peso)}" oninput="S.peso=this.value" placeholder="—">
+   </div>
+   <div style="background:var(--color-background-primary);border:1px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:8px 12px;border-left:3.5px solid #a32d2d;display:flex;flex-direction:column;justify-content:center">
+    <div class="vital-hud-hdr">
+     <span class="vital-hud-lbl">Escala de Dor (EVA)</span>
+     ${S.eva!==''&&S.eva!=null?`<span style="font-weight:700;color:#b91c1c;font-size:11px">(${S.eva}/10)</span>`:''}
+    </div>
+    <div style="display:flex;gap:3px;margin-top:2px">
+     ${[0,1,2,3,4,5,6,7,8,9,10].map(n=>`<button type="button" style="flex:1;padding:5px 0;border-radius:4px;border:.5px solid ${S.eva==n?'#a32d2d':'#d1d5db'};background:${S.eva==n?'#fcebeb':'#fff'};color:${S.eva==n?'#a32d2d':'#374151'};font-size:12px;cursor:pointer;font-weight:${S.eva==n?'700':'400'}" onclick="S.eva=${n};render()">${n}</button>`).join('')}
+    </div>
    </div>
   </div>
   ${va.length?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> ${va.join(' | ')}</div>`:''}
@@ -10910,11 +11139,11 @@ function s2(){
 /* ─── Passo 3: Exame Físico (Ambulatorial vs. ABCDE), ECG & POCUS ─── */
 function abcH(){
  const a=S.abc,g=gcs();
- const aContent=`${radio('Estado:',['Pérvia e Patente','Obstruída'],a.va,"S.abc.va='%V';render()")}${radio('Fonação:',['Preservada','Prejudicada/Ausente'],a.fon,"S.abc.fon='%V';render()")}${radio('Colar cervical:',['Não indicado','Colocado/Mantido'],a.col,"S.abc.col='%V';render()")}${a.va==='Obstruída'?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> VA comprometida — manejo imediato</div>`:''}`;
- const bContent=`${radio('Expansibilidade:',['Simétrica','Assimétrica'],a.exp,"S.abc.exp='%V';render()")}${tags('Esforço:',['Taquipneia','Dispneia','Uso de musculatura acessória','Respiração paradoxal'],a.esf,"ts(S.abc.esf,'%V')")}${radio('MV:',['Presente e Simétrico','Reduzido','Abolido'],a.mv,"S.abc.mv='%V';render()")}${tags('Ruídos:',['Crépitos','Sibilos','Roncos','Atrito pleural'],a.rud,"ts(S.abc.rud,'%V')")}`;
- const cContent=`${radio('TEC:',['< 3s','> 3s','> 5s','Em flush'],a.tec,"S.abc.tec='%V';render()")}${tags('Ausculta:',['Regular','Irregular','Reduzida','Sopro','Bulhas hipofonéticas'],a.aus,"ts(S.abc.aus,'%V')")}${radio('Pulsos:',['Simétricos','Assimétricos','Filiformes','Ausentes'],a.pul,"S.abc.pul='%V';render()")}${tags('Abdome:',['Flácido','Dor à palpação','Defesa','Descompressão dolorosa','Distendido','Ruídos abolidos'],a.abd,"ts(S.abc.abd,'%V')")}${(a.tec==='> 5s'||a.pul==='Filiformes'||a.pul==='Ausentes')?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> Sinais de choque — ressuscitação imediata</div>`:''}`;
- const dContent=`<div class="gcsg"><div class="gcsc"><label>Ab. Ocular</label><select onchange="S.abc.ao=+this.value;render()"><option value="4" ${a.ao==4?'selected':''}>4-Espontânea</option><option value="3" ${a.ao==3?'selected':''}>3-Comando</option><option value="2" ${a.ao==2?'selected':''}>2-Dor</option><option value="1" ${a.ao==1?'selected':''}>1-Ausente</option></select></div><div class="gcsc"><label>R. Verbal</label><select onchange="S.abc.rv=+this.value;render()"><option value="5" ${a.rv==5?'selected':''}>5-Orientado</option><option value="4" ${a.rv==4?'selected':''}>4-Confuso</option><option value="3" ${a.rv==3?'selected':''}>3-Palavras</option><option value="2" ${a.rv==2?'selected':''}>2-Sons</option><option value="1" ${a.rv==1?'selected':''}>1-Ausente</option></select></div><div class="gcsc"><label>R. Motora</label><select onchange="S.abc.rm=+this.value;render()"><option value="6" ${a.rm==6?'selected':''}>6-Obedece</option><option value="5" ${a.rm==5?'selected':''}>5-Localiza</option><option value="4" ${a.rm==4?'selected':''}>4-Flex.N</option><option value="3" ${a.rm==3?'selected':''}>3-Flex.A</option><option value="2" ${a.rm==2?'selected':''}>2-Extensão</option><option value="1" ${a.rm==1?'selected':''}>1-Ausente</option></select></div></div><div class="gcst"><small style="color:var(--color-text-secondary)">Glasgow Coma Scale</small><div class="big">${g}/15</div><div style="margin-top:3px"><span class="sb ${gcsC(g)}">${gcsL(g)}</span></div></div>${g<=8?`<div class="abox aw"><i class="ti ti-alert-circle" aria-hidden="true"></i> Glasgow ≤ 8 — Vigilância de patência de VA (avaliar IOT se associada a HIC, disfagia grave ou insuficiência respiratória)</div>`:''}${radio('Pupilas:',['Isocóricas e Reativas','Anisocóricas','Midriáticas','Mióticas','Não reagentes'],a.pup,"S.abc.pup='%V';render()")}${tags('Déficits:',['Hemiparesia','Hemihipoestesia','PF central','Disartria','Afasia','Ataxia'],a.def,"ts(S.abc.def,'%V')")}${qxEFInCritical()}`;
- const eContent=`${radio('Edema MMII:',['Ausente','Presente'],a.ede,"S.abc.ede='%V';render()")}${a.ede==='Presente'?radio('Cacifo:',['Com cacifo','Sem cacifo'],a.cac,"S.abc.cac='%V';render()"):''}${tags('Pele:',['Palidez','Frialdade','Icterícia','Cianose','Lesões','Petéquias','Equimoses'],a.pel,"ts(S.abc.pel,'%V')")}`;
+ const aContent=`${segRadio('Estado da VA:',['Pérvia e Patente','Obstruída'],a.va,"S.abc.va='%V';render()")}${segRadio('Fonação:',['Preservada','Prejudicada/Ausente'],a.fon,"S.abc.fon='%V';render()")}${segRadio('Colar cervical:',['Não indicado','Colocado/Mantido'],a.col,"S.abc.col='%V';render()")}${a.va==='Obstruída'?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> VA comprometida — manejo imediato</div>`:''}`;
+ const bContent=`${segRadio('Expansibilidade:',['Simétrica','Assimétrica'],a.exp,"S.abc.exp='%V';render()")}${segTags('Esforço respiratório:',['Taquipneia','Dispneia','Uso de musculatura acessória','Respiração paradoxal'],a.esf,"ts(S.abc.esf,'%V')")}${segRadio('Murmúrio vesicular:',['Presente e Simétrico','Reduzido','Abolido'],a.mv,"S.abc.mv='%V';render()")}${segTags('Ruídos adventícios:',['Crépitos','Sibilos','Roncos','Atrito pleural'],a.rud,"ts(S.abc.rud,'%V')")}`;
+ const cContent=`${segRadio('TEC:',['< 3s','> 3s','> 5s','Em flush'],a.tec,"S.abc.tec='%V';render()")}${segTags('Ausculta cardíaca:',['Regular','Irregular','Reduzida','Sopro','Bulhas hipofonéticas'],a.aus,"ts(S.abc.aus,'%V')")}${segRadio('Pulsos periféricos:',['Simétricos','Assimétricos','Filiformes','Ausentes'],a.pul,"S.abc.pul='%V';render()")}${segTags('Abdome:',['Flácido','Dor à palpação','Defesa','Descompressão dolorosa','Distendido','Ruídos abolidos'],a.abd,"ts(S.abc.abd,'%V')")}${(a.tec==='> 5s'||a.pul==='Filiformes'||a.pul==='Ausentes')?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> Sinais de choque — ressuscitação imediata</div>`:''}`;
+ const dContent=`<div class="gcsg"><div class="gcsc"><label>Ab. Ocular</label><select onchange="S.abc.ao=+this.value;render()"><option value="4" ${a.ao==4?'selected':''}>4-Espontânea</option><option value="3" ${a.ao==3?'selected':''}>3-Comando</option><option value="2" ${a.ao==2?'selected':''}>2-Dor</option><option value="1" ${a.ao==1?'selected':''}>1-Ausente</option></select></div><div class="gcsc"><label>R. Verbal</label><select onchange="S.abc.rv=+this.value;render()"><option value="5" ${a.rv==5?'selected':''}>5-Orientado</option><option value="4" ${a.rv==4?'selected':''}>4-Confuso</option><option value="3" ${a.rv==3?'selected':''}>3-Palavras</option><option value="2" ${a.rv==2?'selected':''}>2-Sons</option><option value="1" ${a.rv==1?'selected':''}>1-Ausente</option></select></div><div class="gcsc"><label>R. Motora</label><select onchange="S.abc.rm=+this.value;render()"><option value="6" ${a.rm==6?'selected':''}>6-Obedece</option><option value="5" ${a.rm==5?'selected':''}>5-Localiza</option><option value="4" ${a.rm==4?'selected':''}>4-Flex.N</option><option value="3" ${a.rm==3?'selected':''}>3-Flex.A</option><option value="2" ${a.rm==2?'selected':''}>2-Extensão</option><option value="1" ${a.rm==1?'selected':''}>1-Ausente</option></select></div></div><div class="gcst"><small style="color:var(--color-text-secondary)">Glasgow Coma Scale</small><div class="big">${g}/15</div><div style="margin-top:3px"><span class="sb ${gcsC(g)}">${gcsL(g)}</span></div></div>${g<=8?`<div class="abox aw"><i class="ti ti-alert-circle" aria-hidden="true"></i> Glasgow ≤ 8 — Vigilância de patência de VA (avaliar IOT se associada a HIC, disfagia grave ou insuficiência respiratória)</div>`:''}${segRadio('Pupilas:',['Isocóricas e Reativas','Anisocóricas','Midriáticas','Mióticas','Não reagentes'],a.pup,"S.abc.pup='%V';render()")}${segTags('Déficits focais:',['Hemiparesia','Hemihipoestesia','PF central','Disartria','Afasia','Ataxia'],a.def,"ts(S.abc.def,'%V')")}${qxEFInCritical()}`;
+ const eContent=`${segRadio('Edema MMII:',['Ausente','Presente'],a.ede,"S.abc.ede='%V';render()")}${a.ede==='Presente'?segRadio('Cacifo:',['Com cacifo','Sem cacifo'],a.cac,"S.abc.cac='%V';render()"):''}${segTags('Pele / Ectoscopia:',['Palidez','Frialdade','Icterícia','Cianose','Lesões','Petéquias','Equimoses'],a.pel,"ts(S.abc.pel,'%V')")}`;
  return abcBlock('a','A — Via aérea',aContent)+abcBlock('b','B — Respiração',bContent)+abcBlock('c','C — Circulação',cContent)+abcBlock('d',`D — Neurológico · Glasgow ${g}/15`,dContent)+abcBlock('e','E — Exposição',eContent);
 }
 const ECG_RITMO=['Sinusal','FA','Flutter atrial','TSV','TV monomórfica','TV polimórfica','FV','BAV 2º Mobitz I','BAV 2º Mobitz II','BAVT','Marca-passo','Outro'];
@@ -11320,16 +11549,41 @@ function rUnifiedConductsBoard(T){
     return true;
    }
   }
+  if(sid==='cho' && S.subsind==='cho_sep'){
+   const l=item.toLowerCase();
+   if(secId==='esp' && (l.includes('piperacilina')||l.includes('ceftriaxona')||l.includes('hemocultura')||l.includes('vasopressor inicial'))){
+    return true;
+   }
+  }
   return false;
  }
 
- // Deduplicação canônica em escopo geral do quadro: registra itens da síndrome-mãe
- const boardSeenCanonical = new Set();
+ function getSemanticConductKey(item){
+  if(!item) return '';
+  const ck = getCanonicalConductKey(item);
+  if(ck) return 'ck:' + ck;
+  const l = item.toLowerCase();
+  if(l.includes('hemocultura') || l.includes('hemoculturas')) return 'sem:hemocultura';
+  if(l.includes('lactato sérico') || l.includes('lactato basal') || (l.includes('gasometria') && l.includes('lactato'))) return 'sem:lactato';
+  if(l.includes('painel laboratorial') || l.includes('laboratório de urgência') || l.includes('laboratório da sepse') || l.includes('laboratório de triagem')) return 'sem:lab_geral';
+  if(l.includes('radiografia de tórax') || l.includes('rx de tórax') || l.includes('raio-x de tórax') || l.includes('rx tórax')) return 'sem:rx_torax';
+  if(l.includes('expansão volêmica') || l.includes('30 ml/kg') || l.includes('30ml/kg') || l.includes('ressuscitação volêmica')) return 'sem:volume_sepse';
+  if(l.includes('abertura de protocolo sepse') || l.includes('protocolo de sepse') || l.includes('rastreio de sepse')) return 'sem:proto_sepse';
+  if(l.includes('controle mecânico do foco') || l.includes('controle cirúrgico ou percutâneo') || l.includes('controle cirúrgico de foco') || l.includes('remoção imediata de acessos')) return 'sem:controle_foco';
+  if(l.includes('internação prioritária imediata em leito de unidade de terapia intensiva') || l.includes('internação obrigatória em uti') || l.includes('internação prioritária em uti')) return 'sem:uti';
+  if(l.includes('linha arterial') || l.includes('pai')) return 'sem:pai';
+  const clean = l.replace(/[^a-z0-9]/g, '').slice(0, 40);
+  return 'txt:' + clean;
+ }
+
+ // Deduplicação semântica global no quadro de condutas
+ const boardSeenKeys = new Set();
  if(T.s){
   T.s.forEach(sec=>{
    (sec.it||[]).forEach(it=>{
-    const ck = getCanonicalConductKey(it);
-    if(ck) boardSeenCanonical.add(ck);
+    if(shouldSuppressMotherItem(it, sec.id, sid)) return;
+    const sk = getSemanticConductKey(it);
+    if(sk) boardSeenKeys.add(sk);
    });
   });
  }
@@ -11351,13 +11605,14 @@ function rUnifiedConductsBoard(T){
    const sec=subT&&subT.s?subT.s.find(s=>s.id===secId):null;
    if(sec&&sec.it){
     sec.it.forEach((item,idx)=>{
+     const sk = getSemanticConductKey(item);
      const ck = getCanonicalConductKey(item);
      if(secId === 'sup' && (ck || isGenericVitalSupportItem(item))){
-      if(ck && !boardSeenCanonical.has(ck)) boardSeenCanonical.add(ck);
+      if(sk && !boardSeenKeys.has(sk)) boardSeenKeys.add(sk);
       return;
      }
-     if(ck && boardSeenCanonical.has(ck)) return;
-     if(ck) boardSeenCanonical.add(ck);
+     if(sk && boardSeenKeys.has(sk)) return;
+     if(sk) boardSeenKeys.add(sk);
      subEntries.push({item,idx,secId});
     });
    }
@@ -11366,16 +11621,19 @@ function rUnifiedConductsBoard(T){
   const diffEntries=diffList.map(d=>{
    const fItems=[];
    macro.secIds.forEach(secId=>{
+    // Diferenciais associados não clonam suporte vital geral nem disposição hospitalar da síndrome mãe
+    if((secId === 'sup' || secId === 'dsp') && T.s && T.s.some(s => s.id === secId)) return;
     const sec=d.obj.s?d.obj.s.find(s=>s.id===secId):null;
     if(sec&&sec.it){
      sec.it.forEach((item,idx)=>{
+      const sk = getSemanticConductKey(item);
       const ck = getCanonicalConductKey(item);
       if(secId === 'sup' && (ck || isGenericVitalSupportItem(item))){
-       if(ck && !boardSeenCanonical.has(ck)) boardSeenCanonical.add(ck);
+       if(sk && !boardSeenKeys.has(sk)) boardSeenKeys.add(sk);
        return;
       }
-      if(ck && boardSeenCanonical.has(ck)) return;
-      if(ck) boardSeenCanonical.add(ck);
+      if(sk && boardSeenKeys.has(sk)) return;
+      if(sk) boardSeenKeys.add(sk);
       fItems.push({item,idx,secId});
      });
     }

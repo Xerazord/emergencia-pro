@@ -8,10 +8,24 @@ const VITAL_HL_MAP={
 };
 function itemHasVitalHl(item){const it=String(item).toLowerCase();return vA().some(al=>{const kw=VITAL_HL_MAP[al]||[];return kw.some(k=>it.includes(k.toLowerCase()));});}
 
-function vC(k,v){const n=parseFloat(v);if(!v)return'vok';if(k==='fc')return(n<40||n>130)?'vc':(n<60||n>100)?'vw':'vok';if(k==='sat')return n<90?'vc':n<95?'vw':'vok';if(k==='fr')return(n<8||n>30)?'vc':(n<12||n>20)?'vw':'vok';if(k==='gli')return n<60?'vc':n<70||n>200?'vw':'vok';if(k==='pa'&&v&&v.includes('/')){const s=parseFloat(v.split('/')[0]);return isNaN(s)?'vok':s<90?'vc':s>180?'vw':'vok';}return'vok';}
+function vC(k,v){const n=parseFloat(v);if(!v)return'vok';if(k==='fc')return(n<40||n>130)?'vc':(n<60||n>100)?'vw':'vok';if(k==='sat')return n<90?'vc':n<95?'vw':'vok';if(k==='fr')return(n<8||n>30)?'vc':(n<12||n>20)?'vw':'vok';if(k==='temp')return(n<35||n>=39)?'vc':(n>=37.8||n<36)?'vw':'vok';if(k==='gli')return n<60?'vc':n<70||n>200?'vw':'vok';if(k==='pa'&&v&&v.includes('/')){const s=parseFloat(v.split('/')[0]);return isNaN(s)?'vok':s<90?'vc':s>180?'vw':'vok';}return'vok';}
 function vA(){const a=[],fc=parseFloat(S.fc),sat=parseFloat(S.sat),fr=parseFloat(S.fr);if(S.fc&&(fc>120||fc<40))a.push('FC crítica');if(S.sat&&sat<90)a.push('Sat < 90%');if(S.fr&&(fr>30||fr<8))a.push('FR crítica');if(S.pa&&S.pa.includes('/')){const s=parseFloat(S.pa.split('/')[0]);if(!isNaN(s)){if(s<90)a.push('Hipotensão');if(s>180)a.push('HAS grave');}}return a;}
 function vBH(){return[{k:'fc',l:'FC',v:S.fc},{k:'sat',l:'Sat',v:S.sat},{k:'pa',l:'PA',v:S.pa},{k:'fr',l:'FR',v:S.fr},{k:'gli',l:'Glic',v:S.gli}].map(x=>`<div class="vbar ${vC(x.k,x.v)}">${esc(x.l)}<br><strong>${esc(x.v||'—')}</strong></div>`).join('');}
-function uvb(){const b=document.getElementById('vbars');if(b)b.innerHTML=vBH();const n2=document.getElementById('news2LiveBox');if(n2)n2.innerHTML=renderNews2LiveCard();const s5n=document.getElementById('news2AlertS5');if(s5n)s5n.innerHTML=renderNews2Step5Alert();}
+function uvb(){
+ ['fc','sat','pa','fr','temp','gli'].forEach(k=>{
+  const el=document.getElementById('vhud_'+k);
+  if(el){
+   const cls=S[k]?vC(k,S[k]):'';
+   el.className='vital-hud-card '+(cls||'');
+  }
+ });
+ const b=document.getElementById('vbars');
+ if(b)b.innerHTML=vBH();
+ const n2=document.getElementById('news2LiveBox');
+ if(n2)n2.innerHTML=renderNews2LiveCard();
+ const s5n=document.getElementById('news2AlertS5');
+ if(s5n)s5n.innerHTML=renderNews2Step5Alert();
+}
 function calcNEWS2(S){
  let score=0;const breakdown=[];let singleParamAlert=false;
  const fr=parseFloat(S.fr);
