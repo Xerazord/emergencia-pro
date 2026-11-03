@@ -9,9 +9,5 @@ function buildAntecedentes(){
  return `# ANTECEDENTES PESSOAIS\n- Patológicos: ${hppStr}\n- Medicações em uso: ${mucStr}\n- Alergias: ${aleStr}${hab}`;
 }
 function buildVitais(){
- const va=vA();
- const n2=calcNEWS2(S);
- const n2Str=n2?` | NEWS2: ${n2.score} pts (${n2.nivelLabel})`:'';
- const alerts=va.length?'\n⚠ ALERTAS: '+va.join(' | '):'';
- return `# SINAIS VITAIS DE ENTRADA\n- FC: ${S.fc||'—'} bpm | SatO2: ${S.sat||'—'}% | PA: ${S.pa||'—'} mmHg | FR: ${S.fr||'—'} irpm | Temp: ${S.temp||'—'}°C | Glicemia: ${S.gli||'—'} mg/dL${S.peso?' | Peso: '+S.peso+' kg':''}${S.eva!==''&&S.eva!==null?' | EVA: '+S.eva+'/10':''}${n2Str}${alerts}`;
+ return `# SINAIS VITAIS DE ENTRADA\n- FC: ${S.fc||'—'} bpm | SatO2: ${S.sat||'—'}% | PA: ${S.pa||'—'} mmHg | FR: ${S.fr||'—'} irpm | Temp: ${S.temp||'—'}°C | Glicemia: ${S.gli||'—'} mg/dL${S.peso?' | Peso: '+S.peso+' kg':''}${S.eva!==''&&S.eva!==null?' | EVA: '+S.eva+'/10':''}`;
 }

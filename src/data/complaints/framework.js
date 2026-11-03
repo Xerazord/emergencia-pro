@@ -30,21 +30,23 @@ function segTags(label,opts,arrRef,action){
 const QX_SPEC={},QX_SPEC_BY_SIGLA={};
 function qxSpec(sigla){return QX_SPEC_BY_SIGLA[sigla];}
 function qxBlockDef(sigla,k){const s=qxSpec(sigla);const bls=s?(typeof s.blocks==='function'?s.blocks(S):s.blocks||[]):[];return bls.find(b=>b.key===k)||null;}
+let _justOpenedKey = null;
 function qxAutoOpenNext(sigla,k){
  const b=qxBlockDef(sigla,k);
  if(!b||!b.autoOpenNext)return;
  if(!S[sigla+'Open']) S[sigla+'Open']={};
  S[sigla+'Open'][b.autoOpenNext]=true;
+ _justOpenedKey = sigla + '_' + b.autoOpenNext;
 }
 function qxTag(sigla,k,v){const sp=qxSpec(sigla);const arr=S[sigla][k];const i=arr.indexOf(v);if(i>-1){arr.splice(i,1);if(sp&&sp.onRemove)sp.onRemove(k,v);}else{arr.push(v);if(sp&&sp.onAdd)sp.onAdd(k,v);}if(arr.length>0)qxAutoOpenNext(sigla,k);render();}
 function qxRadio(sigla,k,v){S[sigla][k]=v;const sp=qxSpec(sigla);if(sp&&sp.onAdd)sp.onAdd(k,v);qxAutoOpenNext(sigla,k);render();}
-function qxToggle(sigla,k){const o=S[sigla+'Open'];if(o)o[k]=!o[k];render();}
+function qxToggle(sigla,k){const o=S[sigla+'Open'];if(o){o[k]=!o[k];if(o[k])_justOpenedKey=sigla+'_'+k;}render();}
 function qxBlockBody(sigla,b){const val=S[sigla][b.key];let body='';
  if(b.type==='radio')body=radio('',b.options,val,`qxRadio('${sigla}','${b.key}','%V')`);
  else if(b.type==='tags')body=tags('',b.options,val,`qxTag('${sigla}','${b.key}','%V')`);
  if(b.extra)body+=b.extra(S);
  return body;}
-function qxBlock(sigla,b){const o=S[sigla+'Open']||{};const isOpen=!!o[b.key];return `<div class="abcs"><div class="abch" onclick="qxToggle('${sigla}','${b.key}')"><span style="font-weight:500">${esc(b.label)}</span><i class="ti ti-chevron-${isOpen?'up':'down'}" style="margin-left:auto" aria-hidden="true"></i></div>${isOpen?`<div class="abcb open">${qxBlockBody(sigla,b)}</div>`:''}</div>`;}
+function qxBlock(sigla,b){const o=S[sigla+'Open']||{};const isOpen=!!o[b.key];const animCls=(isOpen&&_justOpenedKey===(sigla+'_'+b.key))?' anim-open':'';return `<div class="abcs"><div class="abch" onclick="qxToggle('${sigla}','${b.key}')"><span style="font-weight:500">${esc(b.label)}</span><i class="ti ti-chevron-${isOpen?'up':'down'}" style="margin-left:auto" aria-hidden="true"></i></div>${isOpen?`<div class="abcb open${animCls}">${qxBlockBody(sigla,b)}</div>`:''}</div>`;}
 function accordionRender(sigla){const s=qxSpec(sigla);if(!s)return '';const bls=(typeof s.blocks==='function'?s.blocks(S):s.blocks||[]);return bls.filter(b=>!b.hidden||!b.hidden(S)).map(b=>qxBlock(sigla,b)).join('');}
 function registerQx(name,spec){
  QX_SPEC[name]=spec;
@@ -81,8 +83,8 @@ function qxEFInCritical(){
 }
 
 // Accordion progressivo — ABCDE
-function abcToggle(key){S.abcOpen[key]=!S.abcOpen[key];render();}
-function abcBlock(key,label,content){const isOpen=S.abcOpen[key];return `<div class="abcs" data-abc-sec="${key}"><div class="abch" onclick="abcToggle('${key}')"><strong>${label}</strong><i class="ti ti-chevron-${isOpen?'up':'down'}" style="margin-left:auto" aria-hidden="true"></i></div>${isOpen?`<div class="abcb open">${content}</div>`:''}</div>`;}
+function abcToggle(key){S.abcOpen[key]=!S.abcOpen[key];if(S.abcOpen[key])_justOpenedKey='abc_'+key;render();}
+function abcBlock(key,label,content){const isOpen=S.abcOpen[key];const animCls=(isOpen&&_justOpenedKey===('abc_'+key))?' anim-open':'';return `<div class="abcs" data-abc-sec="${key}"><div class="abch" onclick="abcToggle('${key}')"><strong>${label}</strong><i class="ti ti-chevron-${isOpen?'up':'down'}" style="margin-left:auto" aria-hidden="true"></i></div>${isOpen?`<div class="abcb open${animCls}">${content}</div>`:''}</div>`;}
 // Listener uma vez: clicar dentro de uma seção ABC abre a próxima (capture phase, antes do render())
 function setupAbcAutoNext(){
  if(typeof window !== 'undefined' && window._abcAutoNextSetup) return;

@@ -105,6 +105,8 @@ label { display: block; font-size: 12px; color: var(--color-text-secondary); mar
 .abcb { padding: 12px; border-top: 0.5px solid var(--color-border-tertiary); display: none; }
 .abcb.open {
   display: block;
+}
+.abcb.open.anim-open {
   animation: accSlideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 

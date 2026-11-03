@@ -173,9 +173,11 @@ function triggerReportLiveDiff(){
 }
 
 function updateRelCol(){
+ const newVal = S.relMode==='resumo'?gResumo():gRel();
+ const rt=document.getElementById('relTxt');
+ if(rt)rt.textContent = newVal;
  const ta=document.getElementById('relColTxt');
  if(!ta)return;
- const newVal = S.relMode==='resumo'?gResumo():gRel();
  if(_lastRelValue && _lastRelValue !== newVal){
   triggerReportLiveDiff();
  }

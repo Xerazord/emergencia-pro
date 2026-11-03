@@ -661,6 +661,8 @@ label { display: block; font-size: 12px; color: var(--color-text-secondary); mar
 .abcb { padding: 12px; border-top: 0.5px solid var(--color-border-tertiary); display: none; }
 .abcb.open {
   display: block;
+}
+.abcb.open.anim-open {
   animation: accSlideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -6935,21 +6937,23 @@ function segTags(label,opts,arrRef,action){
 const QX_SPEC={},QX_SPEC_BY_SIGLA={};
 function qxSpec(sigla){return QX_SPEC_BY_SIGLA[sigla];}
 function qxBlockDef(sigla,k){const s=qxSpec(sigla);const bls=s?(typeof s.blocks==='function'?s.blocks(S):s.blocks||[]):[];return bls.find(b=>b.key===k)||null;}
+let _justOpenedKey = null;
 function qxAutoOpenNext(sigla,k){
  const b=qxBlockDef(sigla,k);
  if(!b||!b.autoOpenNext)return;
  if(!S[sigla+'Open']) S[sigla+'Open']={};
  S[sigla+'Open'][b.autoOpenNext]=true;
+ _justOpenedKey = sigla + '_' + b.autoOpenNext;
 }
 function qxTag(sigla,k,v){const sp=qxSpec(sigla);const arr=S[sigla][k];const i=arr.indexOf(v);if(i>-1){arr.splice(i,1);if(sp&&sp.onRemove)sp.onRemove(k,v);}else{arr.push(v);if(sp&&sp.onAdd)sp.onAdd(k,v);}if(arr.length>0)qxAutoOpenNext(sigla,k);render();}
 function qxRadio(sigla,k,v){S[sigla][k]=v;const sp=qxSpec(sigla);if(sp&&sp.onAdd)sp.onAdd(k,v);qxAutoOpenNext(sigla,k);render();}
-function qxToggle(sigla,k){const o=S[sigla+'Open'];if(o)o[k]=!o[k];render();}
+function qxToggle(sigla,k){const o=S[sigla+'Open'];if(o){o[k]=!o[k];if(o[k])_justOpenedKey=sigla+'_'+k;}render();}
 function qxBlockBody(sigla,b){const val=S[sigla][b.key];let body='';
  if(b.type==='radio')body=radio('',b.options,val,`qxRadio('${sigla}','${b.key}','%V')`);
  else if(b.type==='tags')body=tags('',b.options,val,`qxTag('${sigla}','${b.key}','%V')`);
  if(b.extra)body+=b.extra(S);
  return body;}
-function qxBlock(sigla,b){const o=S[sigla+'Open']||{};const isOpen=!!o[b.key];return `<div class="abcs"><div class="abch" onclick="qxToggle('${sigla}','${b.key}')"><span style="font-weight:500">${esc(b.label)}</span><i class="ti ti-chevron-${isOpen?'up':'down'}" style="margin-left:auto" aria-hidden="true"></i></div>${isOpen?`<div class="abcb open">${qxBlockBody(sigla,b)}</div>`:''}</div>`;}
+function qxBlock(sigla,b){const o=S[sigla+'Open']||{};const isOpen=!!o[b.key];const animCls=(isOpen&&_justOpenedKey===(sigla+'_'+b.key))?' anim-open':'';return `<div class="abcs"><div class="abch" onclick="qxToggle('${sigla}','${b.key}')"><span style="font-weight:500">${esc(b.label)}</span><i class="ti ti-chevron-${isOpen?'up':'down'}" style="margin-left:auto" aria-hidden="true"></i></div>${isOpen?`<div class="abcb open${animCls}">${qxBlockBody(sigla,b)}</div>`:''}</div>`;}
 function accordionRender(sigla){const s=qxSpec(sigla);if(!s)return '';const bls=(typeof s.blocks==='function'?s.blocks(S):s.blocks||[]);return bls.filter(b=>!b.hidden||!b.hidden(S)).map(b=>qxBlock(sigla,b)).join('');}
 function registerQx(name,spec){
  QX_SPEC[name]=spec;
@@ -6986,8 +6990,8 @@ function qxEFInCritical(){
 }
 
 // Accordion progressivo — ABCDE
-function abcToggle(key){S.abcOpen[key]=!S.abcOpen[key];render();}
-function abcBlock(key,label,content){const isOpen=S.abcOpen[key];return `<div class="abcs" data-abc-sec="${key}"><div class="abch" onclick="abcToggle('${key}')"><strong>${label}</strong><i class="ti ti-chevron-${isOpen?'up':'down'}" style="margin-left:auto" aria-hidden="true"></i></div>${isOpen?`<div class="abcb open">${content}</div>`:''}</div>`;}
+function abcToggle(key){S.abcOpen[key]=!S.abcOpen[key];if(S.abcOpen[key])_justOpenedKey='abc_'+key;render();}
+function abcBlock(key,label,content){const isOpen=S.abcOpen[key];const animCls=(isOpen&&_justOpenedKey===('abc_'+key))?' anim-open':'';return `<div class="abcs" data-abc-sec="${key}"><div class="abch" onclick="abcToggle('${key}')"><strong>${label}</strong><i class="ti ti-chevron-${isOpen?'up':'down'}" style="margin-left:auto" aria-hidden="true"></i></div>${isOpen?`<div class="abcb open${animCls}">${content}</div>`:''}</div>`;}
 // Listener uma vez: clicar dentro de uma seção ABC abre a próxima (capture phase, antes do render())
 function setupAbcAutoNext(){
  if(typeof window !== 'undefined' && window._abcAutoNextSetup) return;
@@ -10375,11 +10379,7 @@ function buildAntecedentes(){
  return `# ANTECEDENTES PESSOAIS\n- Patológicos: ${hppStr}\n- Medicações em uso: ${mucStr}\n- Alergias: ${aleStr}${hab}`;
 }
 function buildVitais(){
- const va=vA();
- const n2=calcNEWS2(S);
- const n2Str=n2?` | NEWS2: ${n2.score} pts (${n2.nivelLabel})`:'';
- const alerts=va.length?'\n⚠ ALERTAS: '+va.join(' | '):'';
- return `# SINAIS VITAIS DE ENTRADA\n- FC: ${S.fc||'—'} bpm | SatO2: ${S.sat||'—'}% | PA: ${S.pa||'—'} mmHg | FR: ${S.fr||'—'} irpm | Temp: ${S.temp||'—'}°C | Glicemia: ${S.gli||'—'} mg/dL${S.peso?' | Peso: '+S.peso+' kg':''}${S.eva!==''&&S.eva!==null?' | EVA: '+S.eva+'/10':''}${n2Str}${alerts}`;
+ return `# SINAIS VITAIS DE ENTRADA\n- FC: ${S.fc||'—'} bpm | SatO2: ${S.sat||'—'}% | PA: ${S.pa||'—'} mmHg | FR: ${S.fr||'—'} irpm | Temp: ${S.temp||'—'}°C | Glicemia: ${S.gli||'—'} mg/dL${S.peso?' | Peso: '+S.peso+' kg':''}${S.eva!==''&&S.eva!==null?' | EVA: '+S.eva+'/10':''}`;
 }
 
 
@@ -11175,7 +11175,7 @@ function rECG(){
  const e=S.ecgS;
  return `<div class="card"><div class="st"><i class="ti ti-activity-heartbeat" aria-hidden="true"></i> ECG</div><button class="xbtn ${e.normal?'on':''}" style="width:100%;margin-bottom:10px" onclick="ecgSetNormal()"><i class="ti ti-check" aria-hidden="true"></i> ECG Normal</button><div style="margin-bottom:10px"><label>FC (bpm)</label><input type="number" inputmode="numeric" min="0" max="300" value="${esc(e.fcEcg)}" oninput="S.ecgS.normal=false;S.ecgS.fcEcg=this.value" placeholder="bpm"></div>${accordionRender('ecgS')}</div>`;
 }
-function rPOCUS(){const p=S.pocS;return`<div class="card"><div class="st"><i class="ti ti-wave-sine" aria-hidden="true"></i> POCUS</div>${[['pulmao','Pulmão'],['coracao','Coração'],['abdome','Abdome'],['mmii','MMII'],['outros','Outros']].map(([k,l])=>`<div style="margin-bottom:8px"><label>${l}</label><input type="text" value="${esc(p[k])}" oninput="S.pocS['${k}']=this.value" placeholder="${l}..."></div>`).join('')}</div>`;}
+function rPOCUS(){const p=S.pocS;return`<div class="card"><div class="st"><i class="ti ti-wave-sine" aria-hidden="true"></i> POCUS</div>${[['pulmao','Pulmão'],['coracao','Coração'],['abdome','Abdome'],['mmii','MMII'],['outros','Outros']].map(([k,l])=>`<div style="margin-bottom:8px"><label>${l}</label><input type="text" value="${esc(p[k])}" oninput="S.pocS['${k}']=this.value;updateRelCol();if(typeof autoSave==='function')autoSave();" placeholder="${l}..."></div>`).join('')}</div>`;}
 function dispGrav(){const fr=parseFloat(S.fr),sat=parseFloat(S.sat),fala=S.dspEF.fala,cian=S.dspEF.cianose;let pts=0;if(S.fr&&(fr>30||fr<12))pts+=2;else if(S.fr&&fr>24)pts+=1;if(S.sat&&sat<90)pts+=2;else if(S.sat&&sat<94)pts+=1;if(fala==='Palavras soltas'||fala==='Impossível falar')pts+=2;else if(fala==='Frases incompletas')pts+=1;if(cian==='Central (lábios/língua)')pts+=2;if(pts>=4)return'grave';if(pts>=2)return'mod';return'leve';}
 function dispGravBadge(){if(S.queixa!=='Dispneia')return'';const hasData=S.fr||S.sat||S.dspEF.fala||S.dspEF.cianose;if(!hasData)return'';const g=dispGrav();const[level,txt]=g==='grave'?['grave','Gravidade sugerida: GRAVE — IOT/VNI considerar imediatamente']:g==='mod'?['mod','Gravidade sugerida: MODERADA — monitorização intensa, O2 alto fluxo']:['leve','Gravidade sugerida: LEVE — tratar e reavaliar'];return gravBadge(level,txt,{noMargin:true});}
 function setNormalPhysicalExam(){
@@ -11969,9 +11969,11 @@ function triggerReportLiveDiff(){
 }
 
 function updateRelCol(){
+ const newVal = S.relMode==='resumo'?gResumo():gRel();
+ const rt=document.getElementById('relTxt');
+ if(rt)rt.textContent = newVal;
  const ta=document.getElementById('relColTxt');
  if(!ta)return;
- const newVal = S.relMode==='resumo'?gResumo():gRel();
  if(_lastRelValue && _lastRelValue !== newVal){
   triggerReportLiveDiff();
  }
@@ -12078,6 +12080,7 @@ function render(){
  if(focusState && typeof restoreFocusState === 'function'){
   restoreFocusState(focusState);
  }
+ if(typeof _justOpenedKey !== 'undefined') _justOpenedKey = null;
 }
 
 

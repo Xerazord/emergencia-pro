@@ -77,5 +77,6 @@ function render(){
  if(focusState && typeof restoreFocusState === 'function'){
   restoreFocusState(focusState);
  }
+ if(typeof _justOpenedKey !== 'undefined') _justOpenedKey = null;
 }
 
