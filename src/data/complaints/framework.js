@@ -8,7 +8,12 @@ function radio(label,opts,curr,action){return `${label?`<div class="sl">${label}
 const QX_SPEC={},QX_SPEC_BY_SIGLA={};
 function qxSpec(sigla){return QX_SPEC_BY_SIGLA[sigla];}
 function qxBlockDef(sigla,k){const s=qxSpec(sigla);const bls=s?(typeof s.blocks==='function'?s.blocks(S):s.blocks||[]):[];return bls.find(b=>b.key===k)||null;}
-function qxAutoOpenNext(sigla,k){const b=qxBlockDef(sigla,k);if(!b||!b.autoOpenNext)return;const o=S[sigla+'Open'];if(o&&o[b.autoOpenNext]===undefined)o[b.autoOpenNext]=true;}
+function qxAutoOpenNext(sigla,k){
+ const b=qxBlockDef(sigla,k);
+ if(!b||!b.autoOpenNext)return;
+ if(!S[sigla+'Open']) S[sigla+'Open']={};
+ S[sigla+'Open'][b.autoOpenNext]=true;
+}
 function qxTag(sigla,k,v){const sp=qxSpec(sigla);const arr=S[sigla][k];const i=arr.indexOf(v);if(i>-1){arr.splice(i,1);if(sp&&sp.onRemove)sp.onRemove(k,v);}else{arr.push(v);if(sp&&sp.onAdd)sp.onAdd(k,v);}if(arr.length>0)qxAutoOpenNext(sigla,k);render();}
 function qxRadio(sigla,k,v){S[sigla][k]=v;const sp=qxSpec(sigla);if(sp&&sp.onAdd)sp.onAdd(k,v);qxAutoOpenNext(sigla,k);render();}
 function qxToggle(sigla,k){const o=S[sigla+'Open'];if(o)o[k]=!o[k];render();}

@@ -380,12 +380,10 @@ function rUnifiedConductsBoard(T){
         const k=sid+'_'+secId+'_'+idx;
         const cl=ccls(k);
         const hl=itemHasVitalHl(item)?' hl':'';
-        const evKey=getEvidenceKeyForItem(item);
-        const evBtn=evKey?`<button type="button" class="evidence-info-btn" onclick="event.stopPropagation();showEvidencePopover(event,'${evKey}')" title="Ver diretriz e evidência clínica" aria-label="Ver evidência"><i class="ti ti-info-circle"></i></button>`:'';
         return `
          <div class="chk ${cl}${hl}" onclick="cyc('${k}')">
           <div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div>
-          <div class="ctx">${item}${evBtn}</div>
+          <div class="ctx">${item}</div>
          </div>`;
        }).join('')}
       </div>`:''}
@@ -399,12 +397,10 @@ function rUnifiedConductsBoard(T){
         const k=subId+'_'+secId+'_'+idx;
         const cl=ccls(k);
         const hl=itemHasVitalHl(item)?' hl':'';
-        const evKey=getEvidenceKeyForItem(item);
-        const evBtn=evKey?`<button type="button" class="evidence-info-btn" onclick="event.stopPropagation();showEvidencePopover(event,'${evKey}')" title="Ver diretriz e evidência clínica" aria-label="Ver evidência"><i class="ti ti-info-circle"></i></button>`:'';
         return `
          <div class="chk ${cl}${hl}" onclick="cyc('${k}')">
           <div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div>
-          <div class="ctx"><span style="display:inline-block;padding:1px 5px;background:#fcebeb;color:#991b1b;border-radius:4px;font-size:11px;font-weight:600;margin-right:6px">[${esc(subT.l)}]</span>${item}${evBtn}</div>
+          <div class="ctx"><span style="display:inline-block;padding:1px 5px;background:#fcebeb;color:#991b1b;border-radius:4px;font-size:11px;font-weight:600;margin-right:6px">[${esc(subT.l)}]</span>${item}</div>
          </div>`;
        }).join('')}
       </div>`:''}
@@ -418,12 +414,10 @@ function rUnifiedConductsBoard(T){
         const k=d.id+'_'+secId+'_'+idx;
         const cl=ccls(k);
         const hl=itemHasVitalHl(item)?' hl':'';
-        const evKey=getEvidenceKeyForItem(item);
-        const evBtn=evKey?`<button type="button" class="evidence-info-btn" onclick="event.stopPropagation();showEvidencePopover(event,'${evKey}')" title="Ver diretriz e evidência clínica" aria-label="Ver evidência"><i class="ti ti-info-circle"></i></button>`:'';
         return `
          <div class="chk ${cl}${hl}" onclick="cyc('${k}')">
           <div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div>
-          <div class="ctx"><span style="display:inline-block;padding:1px 5px;background:#dcfce7;color:#15803d;border-radius:4px;font-size:11px;font-weight:600;margin-right:6px">[${esc(d.label)}]</span>${item}${evBtn}</div>
+          <div class="ctx"><span style="display:inline-block;padding:1px 5px;background:#dcfce7;color:#15803d;border-radius:4px;font-size:11px;font-weight:600;margin-right:6px">[${esc(d.label)}]</span>${item}</div>
          </div>`;
        }).join('')}
       </div>

@@ -7,11 +7,12 @@ function s5(){
   `<option value="${esc(k)}" ${S.condPendCat===k?'selected':''}>${esc(v)}</option>`
  ).join('');
  return `<div id="step-5" class="card"><div class="st"><i class="ti ti-file-text" aria-hidden="true"></i> Relatório de admissão</div>${pSumH()}${QX_BADGE[S.queixa]?QX_BADGE[S.queixa]():''}<div id="news2AlertS5">${renderNews2Step5Alert()}</div><div class="desktop-hide-relcard">
-<div class="s5-pep-copy-bar">
- <button type="button" class="xbtn" style="flex:1;min-width:90px;font-size:11.5px;padding:6px 8px;background:#f8fafc;border-color:#cbd5e1" onclick="copyPepSection('anamnese')"><i class="ti ti-clipboard" aria-hidden="true"></i> 1. Anamnese</button>
- <button type="button" class="xbtn" style="flex:1;min-width:90px;font-size:11.5px;padding:6px 8px;background:#f8fafc;border-color:#cbd5e1" onclick="copyPepSection('ef')"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i> 2. Exame Físico</button>
- <button type="button" class="xbtn" style="flex:1;min-width:90px;font-size:11.5px;padding:6px 8px;background:#f8fafc;border-color:#cbd5e1" onclick="copyPepSection('conduta')"><i class="ti ti-pill" aria-hidden="true"></i> 3. Conduta</button>
- <button type="button" class="xbtn" style="flex:1;min-width:80px;font-size:11.5px;padding:6px 8px;background:#f0fdf4;border-color:#86efac;color:#15803d;font-weight:600" onclick="copyPepSection('tudo')"><i class="ti ti-copy" aria-hidden="true"></i> Tudo</button>
+<div class="pep-action-toolbar" style="margin-bottom:10px;border-radius:6px;border:0.5px solid var(--color-border-tertiary)" title="Copiar seções prontas para colar no PEP hospitalar">
+ <span class="pep-toolbar-lbl"><i class="ti ti-clipboard-data" aria-hidden="true"></i> PEP:</span>
+ <button type="button" class="pep-tool-btn" style="flex:1" onclick="copyPepSection('anamnese')"><i class="ti ti-clipboard" aria-hidden="true"></i> Anamnese</button>
+ <button type="button" class="pep-tool-btn" style="flex:1" onclick="copyPepSection('ef')"><i class="ti ti-stethoscope" aria-hidden="true"></i> Exame Físico</button>
+ <button type="button" class="pep-tool-btn" style="flex:1" onclick="copyPepSection('conduta')"><i class="ti ti-checklist" aria-hidden="true"></i> Conduta</button>
+ <button type="button" class="pep-tool-btn pep-tool-btn-all" onclick="copyPepSection('tudo')"><i class="ti ti-copy" aria-hidden="true"></i> Tudo</button>
 </div>
 <div class="rg" style="margin-bottom:10px"><span class="ro ${S.relMode==='full'?'on':''}" onclick="S.relMode='full';render()"><i class="ti ti-file-text" aria-hidden="true"></i> Completo</span><span class="ro ${S.relMode==='resumo'?'on':''}" onclick="S.relMode='resumo';render()"><i class="ti ti-list" aria-hidden="true"></i> Resumo de plantão</span></div><div class="relbox" id="relTxt"></div></div>
 <div style="border-top:.5px solid #e5e7eb;padding-top:12px;margin-top:12px;margin-bottom:12px">

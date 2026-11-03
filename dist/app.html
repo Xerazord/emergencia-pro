@@ -745,13 +745,13 @@ label { display: block; font-size: 12px; color: var(--color-text-secondary); mar
 .csh { padding: 10px 14px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: var(--color-background-primary); font-size: 13.5px; font-weight: 600; color: var(--color-text-primary); }
 .csb { padding: 10px 14px; border-top: 0.5px solid var(--color-border-tertiary); display: none; background: var(--color-background-primary); }
 .csb.open { display: block; }
-.chk { display: flex; align-items: center; gap: 10px; padding: 7px 9px; border-radius: var(--border-radius-md); cursor: pointer; font-size: 13px; line-height: 1.45; margin-bottom: 3px; transition: background 0.12s; }
+.chk { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: var(--border-radius-md); cursor: pointer; font-size: 13px; line-height: 1.45; margin-bottom: 3px; transition: all 0.12s ease; border-left: 3px solid transparent; }
 .chk:hover { background: var(--color-background-secondary); }
-.chk.on { background: #f0fdf4; color: #166534; font-weight: 500; }
-.chk.rec { background: #fef2f2; color: #991b1b; text-decoration: line-through; }
-.cico { width: 18px; height: 18px; border-radius: 4px; border: 1px solid var(--color-border-secondary); display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
-.chk.on .cico { background: #16a34a; border-color: #16a34a; color: #fff; }
-.chk.rec .cico { background: #dc2626; border-color: #dc2626; color: #fff; }
+.chk.on, .chk.done { background: #f0fdf4 !important; color: #14532d !important; font-weight: 500; border-left: 3px solid #16a34a !important; }
+.chk.rec { background: #fef2f2 !important; color: #991b1b !important; text-decoration: line-through; border-left: 3px solid #dc2626 !important; }
+.cico { width: 18px; height: 18px; border-radius: 4px; border: 1.5px solid var(--color-border-secondary); display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; background: var(--color-background-primary); transition: all 0.12s ease; }
+.chk.on .cico, .chk.done .cico { background: #16a34a !important; border-color: #16a34a !important; color: #fff !important; }
+.chk.rec .cico { background: #dc2626 !important; border-color: #dc2626 !important; color: #fff !important; }
 
 .csec-sup { border-left: 4px solid #dc2626; }
 .csec-inv { border-left: 4px solid #16a34a; }
@@ -818,6 +818,147 @@ label { display: block; font-size: 12px; color: var(--color-text-secondary); mar
 }
 
 .kbd { display: inline-block; padding: 2px 6px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; line-height: 1.4; color: #1f2937; background-color: #f3f4f6; border: 1px solid #d1d5db; border-radius: 4px; box-shadow: inset 0 -1px 0 #cbd5e1; }
+
+/* ─── Header & Toolbar do Prontuário (.col-rel) ─── */
+.rel-col-hdr {
+  padding: 8px 12px;
+  background: var(--color-background-primary);
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-shrink: 0;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+.rel-col-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.rel-col-badge-live {
+  font-size: 10px;
+  font-weight: 700;
+  color: #15803d;
+  background: #dcfce7;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  letter-spacing: 0.04em;
+}
+.rel-col-badge-live i { font-size: 9px; }
+.rel-col-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+.btn-split {
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border-secondary);
+  color: var(--color-text-secondary);
+  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  transition: all 0.15s ease;
+}
+.btn-split:hover, .btn-split.active {
+  background: #2563eb;
+  border-color: #1d4ed8;
+  color: #ffffff;
+}
+.rel-mode-toggle {
+  display: flex;
+  background: var(--color-background-secondary);
+  border-radius: 8px;
+  padding: 2px;
+  border: 0.5px solid var(--color-border-secondary);
+  gap: 2px;
+}
+.rel-mode-pill {
+  background: transparent;
+  border: none;
+  padding: 3px 9px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+}
+.rel-mode-pill:hover {
+  color: var(--color-text-primary);
+}
+.rel-mode-pill.on {
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* Toolbar de Cópia Seletiva para o PEP */
+.pep-action-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  background: #f8fafc;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  flex-wrap: wrap;
+}
+.pep-toolbar-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 2px;
+}
+.pep-tool-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 4px 8px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #334155;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.12s ease;
+  white-space: nowrap;
+}
+.pep-tool-btn:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  color: #1d4ed8;
+}
+.pep-tool-btn:active {
+  transform: scale(0.97);
+}
+.pep-tool-btn-all {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #15803d;
+  font-weight: 600;
+}
+.pep-tool-btn-all:hover {
+  background: #dcfce7;
+  border-color: #4ade80;
+  color: #166534;
+}
 
 
 /* ─── File: overlays.css ─── */
@@ -1125,10 +1266,10 @@ label { display: block; font-size: 12px; color: var(--color-text-secondary); mar
     </div>
    </div>
    <div class="pep-action-toolbar" title="Copiar seções prontas para colar no PEP hospitalar">
-    <span class="pep-toolbar-lbl"><i class="ti ti-clipboard-copy" aria-hidden="true"></i> PEP:</span>
-    <button type="button" class="pep-tool-btn" onclick="copyPepSection('anamnese')" title="Copiar Anamnese: Identificação + HDA + Antecedentes"><i class="ti ti-clipboard" aria-hidden="true"></i> 1. Anamnese</button>
-    <button type="button" class="pep-tool-btn" onclick="copyPepSection('ef')" title="Copiar Exame Físico: Sinais Vitais + Exame Físico + ECG/POCUS"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i> 2. Exame Físico</button>
-    <button type="button" class="pep-tool-btn" onclick="copyPepSection('conduta')" title="Copiar Conduta: Hipótese + Ordens/Prescrição + Pendências"><i class="ti ti-pill" aria-hidden="true"></i> 3. Conduta</button>
+    <span class="pep-toolbar-lbl"><i class="ti ti-clipboard-data" aria-hidden="true"></i> PEP:</span>
+    <button type="button" class="pep-tool-btn" onclick="copyPepSection('anamnese')" title="Copiar Anamnese: Identificação + HDA + Antecedentes"><i class="ti ti-clipboard" aria-hidden="true"></i> Anamnese</button>
+    <button type="button" class="pep-tool-btn" onclick="copyPepSection('ef')" title="Copiar Exame Físico: Sinais Vitais + Exame Físico + ECG/POCUS"><i class="ti ti-stethoscope" aria-hidden="true"></i> Exame Físico</button>
+    <button type="button" class="pep-tool-btn" onclick="copyPepSection('conduta')" title="Copiar Conduta: Hipótese + Ordens/Prescrição + Pendências"><i class="ti ti-checklist" aria-hidden="true"></i> Conduta</button>
     <button type="button" class="pep-tool-btn pep-tool-btn-all" onclick="copyPepSection('tudo')" title="Copiar Prontuário Completo"><i class="ti ti-copy" aria-hidden="true"></i> Tudo</button>
    </div>
    <div class="rel-col-txt-wrap">
@@ -6605,7 +6746,12 @@ function radio(label,opts,curr,action){return `${label?`<div class="sl">${label}
 const QX_SPEC={},QX_SPEC_BY_SIGLA={};
 function qxSpec(sigla){return QX_SPEC_BY_SIGLA[sigla];}
 function qxBlockDef(sigla,k){const s=qxSpec(sigla);const bls=s?(typeof s.blocks==='function'?s.blocks(S):s.blocks||[]):[];return bls.find(b=>b.key===k)||null;}
-function qxAutoOpenNext(sigla,k){const b=qxBlockDef(sigla,k);if(!b||!b.autoOpenNext)return;const o=S[sigla+'Open'];if(o&&o[b.autoOpenNext]===undefined)o[b.autoOpenNext]=true;}
+function qxAutoOpenNext(sigla,k){
+ const b=qxBlockDef(sigla,k);
+ if(!b||!b.autoOpenNext)return;
+ if(!S[sigla+'Open']) S[sigla+'Open']={};
+ S[sigla+'Open'][b.autoOpenNext]=true;
+}
 function qxTag(sigla,k,v){const sp=qxSpec(sigla);const arr=S[sigla][k];const i=arr.indexOf(v);if(i>-1){arr.splice(i,1);if(sp&&sp.onRemove)sp.onRemove(k,v);}else{arr.push(v);if(sp&&sp.onAdd)sp.onAdd(k,v);}if(arr.length>0)qxAutoOpenNext(sigla,k);render();}
 function qxRadio(sigla,k,v){S[sigla][k]=v;const sp=qxSpec(sigla);if(sp&&sp.onAdd)sp.onAdd(k,v);qxAutoOpenNext(sigla,k);render();}
 function qxToggle(sigla,k){const o=S[sigla+'Open'];if(o)o[k]=!o[k];render();}
@@ -10518,8 +10664,8 @@ function cyc(k){if(!S.chk[k])S.chk[k]='done';else delete S.chk[k];render();}
 function selSub(id){S.subsind=S.subsind===id?null:id;render();}
 function toggleSub(id){const i=S.subsinds.indexOf(id);if(i>-1){S.subsinds.splice(i,1);Object.keys(S.chk).filter(k=>k.startsWith(id+'_inv_')).forEach(k=>delete S.chk[k]);}else{S.subsinds.push(id);}render();}
 function rSindBlock(sid){const T=CT[sid];if(!T)return'';if(!T.s||T.s.length===0){if(T.subExcl||T.subAdd)return'';return `<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div><div class="abox ai"><i class="ti ti-info-circle" aria-hidden="true"></i> Conduta em desenvolvimento. Registre a abordagem específica no campo "Impressão clínica livre" acima.</div></div>`;}const totSel=T.s.reduce((a,sec)=>a+(sec.it||[]).filter((_,i)=>S.chk[sid+'_'+sec.id+'_'+i]).length,0);const inlineAlerts=getInlineAlerts();const alertsHtml=inlineAlerts.length?`<div class="abox aw" style="margin-bottom:8px;font-size:12.5px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>Alertas de Antecedentes e Medicações:</strong><ul style="margin:4px 0 0 18px;padding:0">${inlineAlerts.map(a=>`<li style="margin-bottom:3px">${esc(a)}</li>`).join('')}</ul></div>`:'';return`<div class="card"><div class="st"><i class="ti ti-list-check" aria-hidden="true"></i> Conduta — ${T.l}</div>${alertsHtml}<div class="ai" style="margin-bottom:10px;font-size:12px"><i class="ti ti-info-circle" aria-hidden="true"></i> Seleção direta de 1 clique: selecione para prescrever / incluir na conduta</div>${totSel?`<div class="psm" style="background:#f0fdf4;border-color:#bbf7d0;margin-bottom:10px"><span class="psml" style="color:#15803d"><i class="ti ti-clipboard-check" aria-hidden="true"></i> Prescrição ativa:</span><span class="psmb" style="background:#dcfce7;color:#15803d">${totSel} ite${totSel>1?'ns':'m'} selecionado${totSel>1?'s':''}</span></div>`:''}${T.s.map(sec=>rCSec(sid,sec)).join('')}</div>`;}
-function cico(k){return S.chk[k]?'ti-check':'ti-check';}
-function ccls(k){return S.chk[k]?'done':'';}
+function cico(k){return S.chk[k]?'ti-check':'';}
+function ccls(k){return S.chk[k]?'on done':'';}
 function cAge(d){S.idade=Math.min(119,Math.max(0,S.idade+d));render();}
 function cAgeDig(place,dir){const t=Math.floor(S.idade/10),u=S.idade%10;if(place===10){const nt=(t+dir+13)%13;S.idade=Math.min(119,nt*10+u);}else{const nu=(u+dir+10)%10;S.idade=Math.min(119,Math.floor(S.idade/10)*10+nu);}render();}
 let _pendingScroll=null;
@@ -10724,7 +10870,40 @@ function s1(){
 
 /* ─── View Module: step2_dados.js ─── */
 /* ─── Passo 2: Sinais Vitais & Antecedentes Clínicos ─── */
-function s2(){const va=vA();return`<div id="step-2" class="card"><div class="st"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i> Sinais vitais</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:12px;margin-bottom:12px"><div><label>FC</label><input type="number" inputmode="numeric" min="0" max="300" value="${esc(S.fc)}" oninput="S.fc=this.value;uvb()" placeholder="bpm"></div><div><label>SatO2</label><input type="number" inputmode="numeric" min="0" max="100" value="${esc(S.sat)}" oninput="S.sat=this.value;uvb()" placeholder="%"></div><div><label>PA</label><input type="text" inputmode="numeric" pattern="\\d{2,3}/\\d{2,3}" value="${esc(S.pa)}" oninput="S.pa=this.value.replace(/[^0-9\\/]/g,'');uvb()" placeholder="120/80"></div><div><label>FR</label><input type="number" inputmode="numeric" min="0" max="80" value="${esc(S.fr)}" oninput="S.fr=this.value;uvb()" placeholder="irpm"></div><div><label>Temp.</label><input type="number" inputmode="decimal" step="0.1" min="25" max="45" value="${esc(S.temp)}" oninput="S.temp=this.value;uvb()" placeholder="°C"></div><div><label>Glicemia</label><input type="number" inputmode="numeric" min="0" max="1000" value="${esc(S.gli)}" oninput="S.gli=this.value;uvb()" placeholder="mg/dL"></div></div><div class="r2" style="margin-bottom:12px"><div><label>Peso estimado</label><input type="number" inputmode="decimal" step="0.5" min="0" max="300" value="${esc(S.peso)}" oninput="S.peso=this.value" placeholder="kg"></div><div><div class="sl" style="margin-bottom:4px">Escala de Dor · 0 a 10</div><div style="display:flex;gap:3px">${[0,1,2,3,4,5,6,7,8,9,10].map(n=>`<button style="flex:1;padding:5px 0;border-radius:4px;border:.5px solid ${S.eva==n?'#a32d2d':'#d1d5db'};background:${S.eva==n?'#fcebeb':'#fff'};color:${S.eva==n?'#a32d2d':'#374151'};font-size:12px;cursor:pointer" onclick="S.eva=${n};render()">${n}</button>`).join('')}</div></div></div><div class="vbars" id="vbars">${vBH()}</div>${va.length?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> ${va.join(' | ')}</div>`:''}<div id="news2LiveBox" style="margin-top:8px">${renderNews2LiveCard()}</div></div><div class="card"><div class="st"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Antecedentes</div>${tags('Antecedentes Patológicos:',['HAS','DM2','ICC','AVC','DAC','IRC','DPOC','FA','Neoplasia','Cirrose','HIV','Outras'],S.hpp,"ts(S.hpp,'%V')")}<div class="r2" style="margin-bottom:10px"><div><label>Medicações em uso</label><input type="text" value="${esc(S.muc)}" oninput="S.muc=this.value" placeholder="Ex: Metoprolol, AAS"></div><div><label>Alergias</label><input type="text" value="${esc(S.ale)}" oninput="S.ale=this.value"></div></div>${radio('Tabagismo:',['Não fumante','Ex-fumante','Fumante ativo'],S.tab,"S.tab='%V';render()")}${radio('Etilismo:',['Nega','Eventual','Regular','Abusivo'],S.etil,"S.etil='%V';render()")}<div><label>Drogas ilícitas</label><input type="text" value="${esc(S.drog)}" oninput="S.drog=this.value" placeholder="Nega ou descreva"></div></div>`;}
+function s2(){
+ const va=vA();
+ return `<div id="step-2" class="card">
+  <div class="st"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i> Sinais vitais</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:10px;margin-bottom:12px">
+   <div><label>FC (bpm)</label><input type="number" inputmode="numeric" min="0" max="300" value="${esc(S.fc)}" oninput="S.fc=this.value;uvb()" placeholder="bpm"></div>
+   <div><label>SatO2 (%)</label><input type="number" inputmode="numeric" min="0" max="100" value="${esc(S.sat)}" oninput="S.sat=this.value;uvb()" placeholder="%"></div>
+   <div><label>PA (mmHg)</label><input type="text" inputmode="numeric" pattern="\\d{2,3}/\\d{2,3}" value="${esc(S.pa)}" oninput="S.pa=this.value.replace(/[^0-9\\/]/g,'');uvb()" placeholder="120/80"></div>
+   <div><label>FR (irpm)</label><input type="number" inputmode="numeric" min="0" max="80" value="${esc(S.fr)}" oninput="S.fr=this.value;uvb()" placeholder="irpm"></div>
+   <div><label>Temp. (°C)</label><input type="number" inputmode="decimal" step="0.1" min="25" max="45" value="${esc(S.temp)}" oninput="S.temp=this.value;uvb()" placeholder="°C"></div>
+   <div><label>Glicemia (mg/dL)</label><input type="number" inputmode="numeric" min="0" max="1000" value="${esc(S.gli)}" oninput="S.gli=this.value;uvb()" placeholder="mg/dL"></div>
+  </div>
+  <div class="r2" style="margin-bottom:10px">
+   <div><label>Peso estimado (kg)</label><input type="number" inputmode="decimal" step="0.5" min="0" max="300" value="${esc(S.peso)}" oninput="S.peso=this.value" placeholder="kg"></div>
+   <div>
+    <div class="sl" style="margin-bottom:4px">Escala de Dor · 0 a 10 ${S.eva!==''&&S.eva!=null?`<span style="font-weight:700;color:#b91c1c;margin-left:6px">(${S.eva}/10)</span>`:''}</div>
+    <div style="display:flex;gap:3px">${[0,1,2,3,4,5,6,7,8,9,10].map(n=>`<button type="button" style="flex:1;padding:5px 0;border-radius:4px;border:.5px solid ${S.eva==n?'#a32d2d':'#d1d5db'};background:${S.eva==n?'#fcebeb':'#fff'};color:${S.eva==n?'#a32d2d':'#374151'};font-size:12px;cursor:pointer;font-weight:${S.eva==n?'700':'400'}" onclick="S.eva=${n};render()">${n}</button>`).join('')}</div>
+   </div>
+  </div>
+  ${va.length?`<div class="abox ad" style="margin-top:8px"><i class="ti ti-alert-circle" aria-hidden="true"></i> ${va.join(' | ')}</div>`:''}
+  <div id="news2LiveBox" style="margin-top:8px">${renderNews2LiveCard()}</div>
+ </div>
+ <div class="card">
+  <div class="st"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Antecedentes</div>
+  ${tags('Antecedentes Patológicos:',['HAS','DM2','ICC','AVC','DAC','IRC','DPOC','FA','Neoplasia','Cirrose','HIV','Outras'],S.hpp,"ts(S.hpp,'%V')")}
+  <div class="r2" style="margin-bottom:10px">
+   <div><label>Medicações em uso</label><input type="text" value="${esc(S.muc)}" oninput="S.muc=this.value" placeholder="Ex: Metoprolol, AAS"></div>
+   <div><label>Alergias</label><input type="text" value="${esc(S.ale)}" oninput="S.ale=this.value"></div>
+  </div>
+  ${radio('Tabagismo:',['Não fumante','Ex-fumante','Fumante ativo'],S.tab,"S.tab='%V';render()")}
+  ${radio('Etilismo:',['Nega','Eventual','Regular','Abusivo'],S.etil,"S.etil='%V';render()")}
+  <div><label>Drogas ilícitas</label><input type="text" value="${esc(S.drog)}" oninput="S.drog=this.value" placeholder="Nega ou descreva"></div>
+ </div>`;
+}
 
 
 /* ─── View Module: step3_exame.js ─── */
@@ -11245,12 +11424,10 @@ function rUnifiedConductsBoard(T){
         const k=sid+'_'+secId+'_'+idx;
         const cl=ccls(k);
         const hl=itemHasVitalHl(item)?' hl':'';
-        const evKey=getEvidenceKeyForItem(item);
-        const evBtn=evKey?`<button type="button" class="evidence-info-btn" onclick="event.stopPropagation();showEvidencePopover(event,'${evKey}')" title="Ver diretriz e evidência clínica" aria-label="Ver evidência"><i class="ti ti-info-circle"></i></button>`:'';
         return `
          <div class="chk ${cl}${hl}" onclick="cyc('${k}')">
           <div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div>
-          <div class="ctx">${item}${evBtn}</div>
+          <div class="ctx">${item}</div>
          </div>`;
        }).join('')}
       </div>`:''}
@@ -11264,12 +11441,10 @@ function rUnifiedConductsBoard(T){
         const k=subId+'_'+secId+'_'+idx;
         const cl=ccls(k);
         const hl=itemHasVitalHl(item)?' hl':'';
-        const evKey=getEvidenceKeyForItem(item);
-        const evBtn=evKey?`<button type="button" class="evidence-info-btn" onclick="event.stopPropagation();showEvidencePopover(event,'${evKey}')" title="Ver diretriz e evidência clínica" aria-label="Ver evidência"><i class="ti ti-info-circle"></i></button>`:'';
         return `
          <div class="chk ${cl}${hl}" onclick="cyc('${k}')">
           <div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div>
-          <div class="ctx"><span style="display:inline-block;padding:1px 5px;background:#fcebeb;color:#991b1b;border-radius:4px;font-size:11px;font-weight:600;margin-right:6px">[${esc(subT.l)}]</span>${item}${evBtn}</div>
+          <div class="ctx"><span style="display:inline-block;padding:1px 5px;background:#fcebeb;color:#991b1b;border-radius:4px;font-size:11px;font-weight:600;margin-right:6px">[${esc(subT.l)}]</span>${item}</div>
          </div>`;
        }).join('')}
       </div>`:''}
@@ -11283,12 +11458,10 @@ function rUnifiedConductsBoard(T){
         const k=d.id+'_'+secId+'_'+idx;
         const cl=ccls(k);
         const hl=itemHasVitalHl(item)?' hl':'';
-        const evKey=getEvidenceKeyForItem(item);
-        const evBtn=evKey?`<button type="button" class="evidence-info-btn" onclick="event.stopPropagation();showEvidencePopover(event,'${evKey}')" title="Ver diretriz e evidência clínica" aria-label="Ver evidência"><i class="ti ti-info-circle"></i></button>`:'';
         return `
          <div class="chk ${cl}${hl}" onclick="cyc('${k}')">
           <div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div>
-          <div class="ctx"><span style="display:inline-block;padding:1px 5px;background:#dcfce7;color:#15803d;border-radius:4px;font-size:11px;font-weight:600;margin-right:6px">[${esc(d.label)}]</span>${item}${evBtn}</div>
+          <div class="ctx"><span style="display:inline-block;padding:1px 5px;background:#dcfce7;color:#15803d;border-radius:4px;font-size:11px;font-weight:600;margin-right:6px">[${esc(d.label)}]</span>${item}</div>
          </div>`;
        }).join('')}
       </div>
@@ -11372,11 +11545,12 @@ function s5(){
   `<option value="${esc(k)}" ${S.condPendCat===k?'selected':''}>${esc(v)}</option>`
  ).join('');
  return `<div id="step-5" class="card"><div class="st"><i class="ti ti-file-text" aria-hidden="true"></i> Relatório de admissão</div>${pSumH()}${QX_BADGE[S.queixa]?QX_BADGE[S.queixa]():''}<div id="news2AlertS5">${renderNews2Step5Alert()}</div><div class="desktop-hide-relcard">
-<div class="s5-pep-copy-bar">
- <button type="button" class="xbtn" style="flex:1;min-width:90px;font-size:11.5px;padding:6px 8px;background:#f8fafc;border-color:#cbd5e1" onclick="copyPepSection('anamnese')"><i class="ti ti-clipboard" aria-hidden="true"></i> 1. Anamnese</button>
- <button type="button" class="xbtn" style="flex:1;min-width:90px;font-size:11.5px;padding:6px 8px;background:#f8fafc;border-color:#cbd5e1" onclick="copyPepSection('ef')"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i> 2. Exame Físico</button>
- <button type="button" class="xbtn" style="flex:1;min-width:90px;font-size:11.5px;padding:6px 8px;background:#f8fafc;border-color:#cbd5e1" onclick="copyPepSection('conduta')"><i class="ti ti-pill" aria-hidden="true"></i> 3. Conduta</button>
- <button type="button" class="xbtn" style="flex:1;min-width:80px;font-size:11.5px;padding:6px 8px;background:#f0fdf4;border-color:#86efac;color:#15803d;font-weight:600" onclick="copyPepSection('tudo')"><i class="ti ti-copy" aria-hidden="true"></i> Tudo</button>
+<div class="pep-action-toolbar" style="margin-bottom:10px;border-radius:6px;border:0.5px solid var(--color-border-tertiary)" title="Copiar seções prontas para colar no PEP hospitalar">
+ <span class="pep-toolbar-lbl"><i class="ti ti-clipboard-data" aria-hidden="true"></i> PEP:</span>
+ <button type="button" class="pep-tool-btn" style="flex:1" onclick="copyPepSection('anamnese')"><i class="ti ti-clipboard" aria-hidden="true"></i> Anamnese</button>
+ <button type="button" class="pep-tool-btn" style="flex:1" onclick="copyPepSection('ef')"><i class="ti ti-stethoscope" aria-hidden="true"></i> Exame Físico</button>
+ <button type="button" class="pep-tool-btn" style="flex:1" onclick="copyPepSection('conduta')"><i class="ti ti-checklist" aria-hidden="true"></i> Conduta</button>
+ <button type="button" class="pep-tool-btn pep-tool-btn-all" onclick="copyPepSection('tudo')"><i class="ti ti-copy" aria-hidden="true"></i> Tudo</button>
 </div>
 <div class="rg" style="margin-bottom:10px"><span class="ro ${S.relMode==='full'?'on':''}" onclick="S.relMode='full';render()"><i class="ti ti-file-text" aria-hidden="true"></i> Completo</span><span class="ro ${S.relMode==='resumo'?'on':''}" onclick="S.relMode='resumo';render()"><i class="ti ti-list" aria-hidden="true"></i> Resumo de plantão</span></div><div class="relbox" id="relTxt"></div></div>
 <div style="border-top:.5px solid #e5e7eb;padding-top:12px;margin-top:12px;margin-bottom:12px">
