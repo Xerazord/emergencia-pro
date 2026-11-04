@@ -99,10 +99,10 @@ function runScenarios(ctx) {
         S.hpp = ['HAS', 'DM tipo 2', 'Tabagismo'];
         S.muc = 'Losartana 50mg, Metformina 850mg';
         S.pa = '150/90'; S.fc = '88'; S.fr = '18'; S.sat = '97'; S.temp = '36.5'; S.gli = '130';
-        S.sind = 'dtx'; S.subsind = 'dtx_sca_ss';
-        S.chk['dtx_sup_0'] = true; S.chk['dtx_sup_1'] = true;
-        S.chk['dtx_inv_0'] = true; S.chk['dtx_inv_1'] = true; S.chk['dtx_inv_2'] = true;
-        S.chk['dtx_sca_ss_esp_0'] = true; S.chk['dtx_sca_ss_esp_1'] = true;
+        S.sind = 'dtx'; S.subsind = 'sca_noca';
+        S.chk['sca_noca_sup_0'] = true; S.chk['sca_noca_sup_1'] = true;
+        S.chk['sca_noca_inv_0'] = true; S.chk['sca_noca_inv_1'] = true;
+        S.chk['sca_noca_esp_0'] = true; S.chk['sca_noca_esp_1'] = true;
       }
     },
     {
@@ -115,8 +115,8 @@ function runScenarios(ctx) {
         Object.assign(S.dt, { qual: ['Lancinante / rasgando'], loc: ['Precordial'], irr: ['Dorso'], ini: 'Súbito em repouso' });
         S.hpp = ['HAS de difícil controle'];
         S.pa = '190/110'; S.fc = '102'; S.fr = '22'; S.sat = '96'; S.temp = '36.2';
-        S.sind = 'dtx'; S.subsind = 'dtx_ao';
-        S.chk['dtx_sup_0'] = true; S.chk['dtx_ao_esp_0'] = true; S.chk['dtx_ao_esp_1'] = true;
+        S.sind = 'dtx'; S.subsind = 'dt_ind'; S.subsinds = ['diss'];
+        S.chk['dt_ind_sup_0'] = true; S.chk['diss_inv_0'] = true;
       }
     },
     {
@@ -132,7 +132,7 @@ function runScenarios(ctx) {
         S.ef = 'crit';
         S.abc = { va: 'Pérvia e Patente', fon: 'Frases entrecortadas', col: 'Não indicado', exp: 'Reduzida', esf: ['Tiragem intercostal', 'Uso musc. acessória'], mv: 'Diminuído difusamente', rud: ['Sibilância difusa', 'Roncos'], tec: '2s', aus: ['Regular'], pul: 'Cheios', abd: ['Sem alterações'], ao: 4, rv: 5, rm: 6, pup: 'Isocóricas e Reativas', def: [], ede: 'Ausente', cac: 'Com cacifo', pel: ['Sudorese fria'] };
         S.sind = 'dsp'; S.subsind = 'dpoc_ag';
-        S.chk['dsp_sup_0'] = true; S.chk['dpoc_ag_esp_0'] = true; S.chk['dpoc_ag_esp_1'] = true;
+        S.chk['dpoc_ag_sup_0'] = true; S.chk['dpoc_ag_esp_0'] = true; S.chk['dpoc_ag_esp_1'] = true;
       }
     },
     {
@@ -147,7 +147,7 @@ function runScenarios(ctx) {
         S.ef = 'crit';
         S.abc = { va: 'Pérvia e Patente', fon: 'Preservada', col: 'Não indicado', exp: 'Reduzida', esf: ['Taquipneia importante'], mv: 'Diminuído em base D', rud: ['Crépitos'], tec: '> 3s', aus: ['Taquicárdico'], pul: 'Filiformes', abd: ['Sem alterações'], ao: 3, rv: 4, rm: 6, pup: 'Isocóricas e Reativas', def: [], ede: 'Ausente', cac: 'Com cacifo', pel: ['Pálido', 'Livedo'] };
         S.sind = 'cho'; S.subsind = 'cho_sep';
-        S.chk['cho_sup_0'] = true; S.chk['cho_sup_1'] = true; S.chk['cho_sep_esp_0'] = true; S.chk['cho_sep_esp_1'] = true;
+        S.chk['cho_sep_sup_0'] = true; S.chk['cho_sep_esp_0'] = true; S.chk['cho_sep_esp_1'] = true;
       }
     },
     {
@@ -161,7 +161,7 @@ function runScenarios(ctx) {
         S.pa = '175/95'; S.fc = '76'; S.fr = '16'; S.sat = '98'; S.temp = '36.6'; S.gli = '115';
         S.sind = 'neu'; S.subsind = 'avc_isq';
         S.nihss = { consc: 1, conscPerg: 1, conscCmd: 0, olhar: 1, campoVis: 0, paralisiaFac: 2, braçoE: 3, pernaE: 2, braçoD: 0, pernaD: 0, ataxia: 0, sensib: 1, ling: 1, disart: 1, extin: 0, evaluated: true };
-        S.chk['neu_sup_0'] = true; S.chk['avc_isq_esp_0'] = true;
+        S.chk['avc_isq_sup_0'] = true; S.chk['avc_isq_esp_0'] = true;
       }
     },
     {
@@ -217,8 +217,8 @@ function runScenarios(ctx) {
           instab: ['Ausência de sintomas de baixo débito']
         });
         S.pa = '125/80'; S.fc = '165'; S.fr = '18'; S.sat = '98'; S.temp = '36.7';
-        S.sind = 'pal';
-        S.chk['pal_sup_0'] = true; S.chk['pal_inv_0'] = true;
+        S.sind = 'pal'; S.subsind = 'pal_ind';
+        S.chk['pal_ind_sup_0'] = true; S.chk['pal_ind_inv_0'] = true;
       }
     },
     {
@@ -236,7 +236,7 @@ function runScenarios(ctx) {
         });
         S.pa = '130/80'; S.fc = '96'; S.fr = '18'; S.sat = '97'; S.temp = '38.4';
         S.sind = 'emmi'; S.subsind = 'emmi_cel';
-        S.chk['emmi_sup_0'] = true; S.chk['emmi_cel_esp_0'] = true;
+        S.chk['emmi_cel_sup_0'] = true; S.chk['emmi_cel_esp_0'] = true;
       }
     },
     {
@@ -255,7 +255,7 @@ function runScenarios(ctx) {
         S.wellsTvp = { cancer: false, paralisia: false, acamado: true, dorTrajeto: true, edemaMembro: true, edemaPant: true, cacifo: true, colaterais: false, tvpPrevia: false, diagAlt: false };
         S.pa = '120/75'; S.fc = '84'; S.fr = '16'; S.sat = '98'; S.temp = '36.5';
         S.sind = 'emmi'; S.subsind = 'emmi_tvp';
-        S.chk['emmi_sup_0'] = true; S.chk['emmi_tvp_esp_0'] = true;
+        S.chk['emmi_tvp_sup_0'] = true; S.chk['emmi_tvp_esp_0'] = true;
       }
     },
     {
@@ -267,8 +267,8 @@ function runScenarios(ctx) {
         S.queixa = 'Cefaleia'; S.tempo = '6 horas';
         Object.assign(S.cef, { inicio: 'Progressivo', loc: ['Hemicraniana D'], qual: ['Pulsátil'], assoc: ['Náuseas / vômitos', 'Fotofobia', 'Fonofobia'], modif: ['Piora com esforço físico'] });
         S.pa = '120/70'; S.fc = '78'; S.fr = '14'; S.sat = '99'; S.temp = '36.4';
-        S.sind = 'cef'; S.subsind = 'cef_pri';
-        S.chk['cef_sup_0'] = true; S.chk['cef_pri_esp_0'] = true; S.chk['cef_pri_esp_1'] = true;
+        S.sind = 'cef'; S.subsind = 'cef_prim';
+        S.chk['cef_prim_sup_0'] = true; S.chk['cef_prim_sin_0'] = true;
       }
     },
     {
@@ -282,7 +282,7 @@ function runScenarios(ctx) {
         S.alvarado = { mig: true, anox: true, nau: true, dorFid: true, descomp: true, febre: true, leuco: true, desvio: false };
         S.pa = '125/80'; S.fc = '92'; S.fr = '18'; S.sat = '98'; S.temp = '38.0';
         S.sind = 'abd'; S.subsind = 'dab_inf';
-        S.chk['abd_sup_0'] = true; S.chk['dab_inf_esp_0'] = true;
+        S.chk['dab_inf_sup_0'] = true; S.chk['dab_inf_esp_0'] = true;
       }
     }
   ];

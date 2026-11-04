@@ -4,6 +4,10 @@ const CT_RESPIRATORIO = {
     "l": "Síndrome dispneica",
     "subExcl": [
       {
+        "id": "dsp_ind",
+        "l": "Dispneia indiferenciada / Suporte inicial"
+      },
+      {
         "id": "eap",
         "l": "IC aguda descompensada / EAP"
       },
@@ -46,38 +50,42 @@ const CT_RESPIRATORIO = {
         "l": "Pneumotórax associado"
       }
     ],
+    "s": []
+  },
+  "dsp_ind": {
+    "l": "Dispneia indiferenciada / Suporte inicial",
     "s": [
       {
         "id": "sup",
         "t": "Suporte ventilatório e abordagem emergencial imediata",
         "it": [
           "Posicionamento sentado ou cabeceira elevada a 45–90° (posição de Fowler)",
-          "Oximetria contínua com alvo de SpO₂: 94–98% na população geral e 88–92% em pacientes com retenção crônica de CO₂ (DPOC / hipoventilação da obesidade)",
-          "Ventilação Não Invasiva (VNI) precoce: CPAP 5–10 cmH₂O ou BiPAP (EPAP 4–6 cmH₂O, IPAP 10–15 cmH₂O) se FR > 25 irpm, uso de musculatura acessória ou SpO₂ < 90% com oxigênio em alto fluxo (reduz intubação em ~50% e mortalidade)",
-          "Intubação Orotraqueal (IOT) em sequência rápida: indicada se exaustão respiratória iminente, rebaixamento de consciência (Glasgow ≤ 8), instabilidade hemodinâmica refratária ou acidose hipercápnica progressiva apesar da VNI",
-          "Monitor cardíaco contínuo de 12 derivações à beira-leito"
+          "Oximetria contínua com alvo de SpO₂: 94–98% na população geral (88–92% se suspeita de retenção crônica de CO₂)",
+          "Ventilação Não Invasiva (VNI) precoce: CPAP 5–10 cmH₂O ou BiPAP (EPAP 4–6 cmH₂O, IPAP 10–15 cmH₂O) se FR > 25 irpm, tiragem ou SpO₂ < 90%",
+          "Intubação Orotraqueal (IOT) em sequência rápida: se exaustão respiratória iminente, rebaixamento de consciência (Glasgow ≤ 8) ou acidose hipercápnica progressiva",
+          "Monitor cardíaco contínuo de 12 derivações e acesso venoso periférico calibroso"
         ]
       },
       {
         "id": "esp",
-        "t": "Terapêutica direcionada e mnemônico CHAMPIT (ESC 2026)",
+        "t": "Terapêutica direcionada e rastreio etiológico (CHAMPIT)",
         "it": [
           "Rastreio etiológico emergencial CHAMPIT: Coronariana (SCA), Hipertensiva, Arritmia, Mecânica (valvopatia aguda/CIV), Pulmonar (TEP), Infecciosa (sepse/pneumonia), Tamponamento pericárdico",
-          "Broncoespasmo ativo (sibilos/expiração prolongada): Salbutamol 2,5 mg inalatório (ou fenoterol) + Brometo de Ipratrópio 0,5 mg inalatório a cada 20 min nas primeiras doses",
-          "Pneumonia associada: iniciar antibioticoterapia empírica imediata conforme estratificação por CURB-65 / PSI",
-          "Suspeita de TEP com hipoxemia refratária: iniciar anticoagulação empírica precoce se probabilidade alta e ausência de sangramento ativo"
+          "Broncoespasmo ativo (sibilos/expiração prolongada): Salbutamol 2,5 mg inalatório + Brometo de Ipratrópio 0,5 mg inalatório a cada 20 min nas primeiras doses",
+          "Morfina 2–4 mg IV titulada apenas com indicação precisa (ansiedade intensa/congestão pulmonar)"
         ]
       },
       {
         "id": "inv",
         "t": "Investigação complementar no leito",
         "it": [
-          "POCUS pulmonar (Protocolo BLUE): diferenciar perfil B (linhas B bilaterais difusas = EAP) de perfil A (deslizamento preservado = asma/DPOC/TEP), consolidação (pneumonia) e ausência de deslizamento (pneumotórax)",
-          "Peptídeos natriuréticos (BNP ou NT-proBNP): valor de descarte (BNP < 100 pg/mL ou NT-proBNP < 300 pg/mL tornam causa cardíaca improvável)",
-          "ECG de 12 derivações na admissão: pesquisar sobrecarga ventricular, taquiarritmias (ex: FA com alta resposta), BRE novo ou alterações isquêmicas de ST",
-          "Radiografia de tórax no leito (PA / AP): avaliar congestão hilofugal, consolidações alveolares, pneumotórax e derrame pleural",
-          "Gasometria arterial se insuficiência respiratória aguda grave, suspeita de acidose/hipercapnia ou SpO₂ não confiável",
-          "D-dímero se suspeita de tromboembolismo pulmonar com probabilidade intermediária/baixa"
+          "POCUS pulmonar (Protocolo BLUE): diferenciar perfil B (linhas B bilaterais = EAP) de perfil A (asma/DPOC/TEP), consolidação e pneumotórax",
+          "Radiografia de tórax no leito (PA / AP): avaliar congestão hilofugal, consolidações, pneumotórax e derrame pleural",
+          "ECG de 12 derivações na admissão",
+          "Gasometria arterial com lactato sérico se insuficiência respiratória moderada a grave",
+          "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia",
+          "Peptídeos natriuréticos (BNP ou NT-proBNP) se dúvida diagnóstica cardiopulmonar",
+          "D-dímero se suspeita de TEP com probabilidade intermediária/baixa"
         ]
       },
       {
@@ -85,7 +93,7 @@ const CT_RESPIRATORIO = {
         "t": "Disposição",
         "it": [
           "Internação em Unidade de Terapia Intensiva (UTI) se necessidade de VNI mantida, IOT, instabilidade hemodinâmica ou disfunção orgânica",
-          "Internação em leito semi-intensivo / enfermaria monitorizada se estabilização com oxigenoterapia de baixo fluxo e resposta rápida às condutas"
+          "Internação em leito semi-intensivo / enfermaria monitorizada se estabilização com oxigenoterapia de baixo fluxo"
         ]
       }
     ]

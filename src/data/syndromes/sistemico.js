@@ -4,6 +4,10 @@ const CT_SISTEMICO = {
     "l": "Choque indiferenciado",
     "subExcl": [
       {
+        "id": "cho_ind",
+        "l": "Choque indiferenciado / Suporte e triagem inicial (MOMENTO ZERO)"
+      },
+      {
         "id": "cho_sep",
         "l": "Choque séptico / vasoplégico"
       },
@@ -38,54 +42,47 @@ const CT_SISTEMICO = {
         "l": "Hemorragia digestiva ativa"
       }
     ],
+    "s": []
+  },
+  "cho_ind": {
+    "l": "Choque indiferenciado / Suporte e triagem inicial (MOMENTO ZERO)",
     "s": [
       {
         "id": "sup",
         "t": "MOMENTO ZERO: Suporte vital & Exame físico focado de perfusão",
         "it": [
           "Monitorização multiparamétrica contínua: ECG, oximetria de pulso contínua, PANI a cada 3–5 min",
-          "Acesso vascular imediato: 2 acessos venosos periféricos calibrosos 16–18G (< 2 min); se insucesso, punção intraóssea (IO) imediata em tíbia ou úmero proximal",
-          "Exame físico focado da macro e microcirculação: Tempo de Enchimento Capilar (TEC — meta ≤ 3 segundos) + gradiente térmico e perfusão cutânea (mottling score / livedo reticular)",
-          "Avaliação seriada do nível de consciência (Escala de Coma de Glasgow / agitação / sonolência patológica), frequência respiratória e sinais de esforço ventilatório",
-          "Cateter vesical de demora (Foley) para monitorização horária estrita de débito urinário (meta ≥ 0,5 mL/kg/h)",
-          "Oxigenoterapia com alvo SpO₂ 92–96% (evitar hiperóxia iatrogênica; titular VNI ou IOT com hemodinâmica protegida se exaustão respiratória)"
+          "Acesso vascular imediato: 2 acessos venosos periféricos calibrosos 16–18G (< 2 min) ou punção intraóssea (IO)",
+          "Exame físico focado de perfusão: Tempo de Enchimento Capilar (TEC — meta ≤ 3s), gradiente térmico e livedo",
+          "Cateter vesical de demora (Foley) para monitorização horária de débito urinário (meta ≥ 0,5 mL/kg/h)",
+          "Oxigenoterapia com alvo SpO₂ 92–96%"
         ]
       },
       {
         "id": "inv",
-        "t": "MOMENTO ZERO: POCUS protocolar & Investigação laboratorial de entrada",
+        "t": "POCUS protocolar & Investigação laboratorial de entrada",
         "it": [
-          "POCUS protocolar à beira-leito — Débito e causas obstrutivas óbvias: contratilidade de VE, sinais de TEP maciço (Sinal de McConnell / dilatação aguda de VD), tamponamento cardíaco (derrame pericárdico com colapso de câmaras direitas) e pneumotórax hipertensivo (ausência de lung sliding)",
-          "POCUS protocolar — Avaliação inferencial de PVC e congestão venosa sistêmica: aferição do diâmetro e colapsabilidade da VCI + Doppler venoso de veias jugulares e femorais (pesquisa de padrão pulsátil congestivo retrógrado estilo VExUS)",
-          "Coleta imediata de gasometria com dosagem de lactato sérico na admissão e controle seriado em 2–4 horas (tendência de queda indica melhora da perfusão; não constitui meta isolada para volume ou vasopressor)",
-          "Laboratório de triagem imediata: hemograma completo, plaquetas, função renal (ureia, creatinina), eletrólitos, coagulograma (TP/INR, TTPa) e troponina"
+          "POCUS protocolar à beira-leito (Protocolo RUSH): avaliar contratilidade de VE, dilatação de VD (TEP), tamponamento pericárdico e pneumotórax",
+          "Avaliação de VCI e congestão venosa retrógrada",
+          "Coleta imediata de gasometria com dosagem de lactato sérico na admissão",
+          "Laboratório de triagem imediata: hemograma completo, plaquetas, função renal, eletrólitos, coagulograma (TP/INR, TTPa) e troponina"
         ]
       },
       {
         "id": "esp",
-        "t": "MOMENTO ZERO: Protocolo de falha diagnóstica inicial (Choque críptico sem causa óbvia)",
+        "t": "Manejo empírico inicial do choque indiferenciado",
         "it": [
-          "Coleta imediata de 2 pares de hemoculturas de sítios venosos distintos (antes de iniciar o antibiótico, sem atrasar infusão)",
-          "Antibioticoterapia empírica de amplo espectro na 1ª hora — Opção A: Piperacilina-Tazobactam 4,5 g IV 6/6h (cobertura ampla nosocomial e Pseudomonas)",
-          "Antibioticoterapia empírica de amplo espectro na 1ª hora — Opção B: Ceftriaxona 2 g IV 12/12h ou 24/24h + Vancomicina 15–20 mg/kg IV 12/12h (cobertura combinada para comunitário grave e MRSA)",
-          "ECG de 12 derivações com derivações direitas/posteriores na busca ativa de Síndrome Coronariana Aguda oculta ou equivalente isquêmico",
-          "Vasopressor inicial precoce: Norepinefrina 0,05–0,5 mcg/kg/min em BIC para restaurar PAM alvo ≥ 65 mmHg e recrutar volume estressado"
-        ]
-      },
-      {
-        "id": "sin",
-        "t": "MOMENTO ZERO: Medidas de conforto e controle térmico",
-        "it": [
-          "Controle térmico ativo/passivo: aquecimento se temperatura central < 36°C (hipotermia piora coagulopatia e disfunção ventricular)",
-          "Analgesia parcimoniosa com Dipirona 1 g IV se dor (evitar AINEs e doses altas de sedativos/opioides que deprimem o tônus simpático compensatório)"
+          "Vasopressor inicial: Norepinefrina 0,05–0,5 mcg/kg/min em BIC se hipotensão com má perfusão enquanto investiga etiologia",
+          "ECG de 12 derivações na busca ativa de síndrome coronariana aguda ou arritmias",
+          "Coleta de hemoculturas e início de antimicrobiano empírico na 1ª hora se suspeita infecciosa"
         ]
       },
       {
         "id": "dsp",
-        "t": "MOMENTO ZERO: Disposição e alocação",
+        "t": "Disposição e vaga intensiva",
         "it": [
-          "Internação prioritária imediata em leito de Unidade de Terapia Intensiva (UTI) com vaga zero / prioridade 1",
-          "Instalação precoce de Linha Arterial (PAI) para monitorização invasiva contínua de PAM e coleta seriada de gasometria"
+          "Internação prioritária imediata em leito de Unidade de Terapia Intensiva (UTI)",
+          "Instalação de Linha Arterial (PAI) para monitorização invasiva contínua"
         ]
       }
     ]
@@ -338,6 +335,10 @@ const CT_SISTEMICO = {
     "l": "Dor lombar aguda",
     "subExcl": [
       {
+        "id": "dlb_ind",
+        "l": "Dor lombar indiferenciada / Triagem de Red Flags"
+      },
+      {
         "id": "dlb_mec",
         "l": "Lombalgia Mecânica / Lombociatalgia Aguda"
       },
@@ -372,51 +373,46 @@ const CT_SISTEMICO = {
         "l": "Rebaixamento de consciência / Delirium"
       }
     ],
+    "s": []
+  },
+  "dlb_ind": {
+    "l": "Dor lombar indiferenciada / Triagem de Red Flags",
     "s": [
       {
         "id": "sup",
         "t": "Rastreio sistemático de Red Flags (Sinais de Alarme)",
         "it": [
-          "Avaliação neurológica focada em membros inferiores: força motora (L4-extensão do joelho, L5-dorsiflexão do hálux, S1-flexão plantar), sensibilidade de dermátomos e reflexos patelar e aquileu",
+          "Avaliação neurológica focada em membros inferiores: força motora, reflexos e sensibilidade",
           "Pesquisa de anestesia em sela e palpação de globo vesical (retenção urinária aguda)",
-          "Palpação cuidadosa do abdome: busca ativa de massa aórtica pulsátil em pacientes com mais de 50 anos",
-          "Aferição de temperatura axilar e sinais vitais completos"
+          "Palpação abdominal cuidadosa (busca de massa aórtica pulsátil em > 50 anos)",
+          "Aferição de sinais vitais e temperatura axilar"
         ]
       },
       {
         "id": "sin",
-        "t": "Analgesia multimodal e orientações na lombalgia mecânica",
+        "t": "Analgesia de resgate",
         "it": [
-          "Dipirona 1 a 2 g IV a cada 6h OU Paracetamol 750–1.000 mg VO a cada 6h",
-          "Anti-inflamatório Não Esteroidal (AINE): Cetoprofeno 100 mg IV 12/12h ou Ibuprofeno 600 mg VO 8/8h por curto período (3 a 5 dias), se função renal preservada e sem risco hemorrágico",
-          "Relaxante muscular adjuvante se espasmo paravertebral intenso: Ciclobenzaprina 5 a 10 mg VO à noite por 5 a 7 dias",
-          "Aplicação de calor local úmido na região lombar por 15 a 20 minutos várias vezes ao dia"
-        ]
-      },
-      {
-        "id": "esp",
-        "t": "Conduta e intervenção específica",
-        "it": [
-          "Lombalgia mecânica simples sem red flags: analgesia oral ambulatorial, orientações ergonômicas e desmistificação do quadro",
-          "Suspeita de Cauda Equina ou Abscesso Epidural: NPO absoluto, leito monitorizado e acionamento emergencial da Neurocirurgia / Ortopedia de coluna",
-          "Suspeita de Aneurisma de Aorta Abdominal roto ou sintomático: acionamento imediato da Cirurgia Vascular com hipotensão permissiva e reposição com hemoderivados"
+          "Dipirona 1 a 2 g IV lento",
+          "Cetoprofeno 100 mg IV ou Tenoxicam 20 mg IV se função renal normal",
+          "Ciclobenzaprina 5 a 10 mg VO à noite se espasmo muscular associado",
+          "Morfina 2–4 mg IV se dor intratável refratária"
         ]
       },
       {
         "id": "inv",
-        "t": "Investigação complementar racional",
+        "t": "Investigação complementar",
         "it": [
-          "Ressonância Magnética (RM) de coluna lombossacra de emergência: exame padrão-ouro indicado imediatamente se suspeita de Cauda Equina, déficit neurológico focal progressivo ou infecção espinhal",
-          "Tomografia Computadorizada (TC) de coluna ou abdome: indicada se RM contraindicada ou para avaliar trauma ósseo / cólica renal / aneurisma aórtico",
-          "Laboratório na suspeita de alarme: Hemograma completo, Função renal (Ureia e Creatinina) e Urina tipo 1 (sedimento urinário)"
+          "RM de coluna lombossacra urgente se sinais de cauda equina, déficit motor ou febre com dor espinhal",
+          "TC ou USG de abdome se suspeita vascular ou cólica nefrética",
+          "EAS / Urina tipo 1, hemograma e PCR"
         ]
       },
       {
         "id": "dsp",
         "t": "Disposição",
         "it": [
-          "Cauda Equina / Abscesso Epidural / AAA roto: encaminhamento cirúrgico imediato e internação hospitalar/UTI",
-          "Lombalgia mecânica sem critérios de alarme: alta médica orientada com analgésicos orais, manutenção da marcha e orientação formal de retorno se retenção urinária, anestesia em sela, febre ou fraqueza nas pernas"
+          "Alta orientada com analgésicos e retorno formal se sinais de alarme em lombalgias mecânicas sem déficit",
+          "Internação imediata / parecer da Neurocirurgia se cauda equina ou abscesso epidural"
         ]
       }
     ]
@@ -587,6 +583,10 @@ const CT_SISTEMICO = {
     "l": "Edema / Dor em Membros Inferiores",
     "subExcl": [
       {
+        "id": "emmi_ind",
+        "l": "Edema / Dor em MMII indiferenciado (triagem inicial)"
+      },
+      {
         "id": "emmi_tvp",
         "l": "Trombose Venosa Profunda (TVP de MMII)"
       },
@@ -625,51 +625,44 @@ const CT_SISTEMICO = {
         "l": "Edema agudo de pulmão / IC associada"
       }
     ],
+    "s": []
+  },
+  "emmi_ind": {
+    "l": "Edema / Dor em MMII indiferenciado (triagem inicial)",
     "s": [
       {
         "id": "sup",
-        "t": "Avaliação sistemática e diagnóstico diferencial vascular",
+        "t": "Avaliação inicial e exame físico comparativo",
         "it": [
-          "Exame físico comparativo bilateral minucioso: palpação de pulsos periféricos (femoral, poplíteo, tibial posterior e pedioso dorsal)",
-          "Medição da circunferência das panturrilhas com fita métrica a 10 cm abaixo da tuberosidade tibial (assimetria ≥ 3 cm é sugestiva de TVP)",
-          "Avaliação de temperatura local, perfusão capilar distal, coloração cutânea (palidez, cianose, eritema), presença de bolhas e empastamento muscular"
+          "Exame físico comparativo bilateral minucioso: pulsos periféricos (femoral, poplíteo, tibial posterior e pedioso)",
+          "Medição da circunferência das panturrilhas com fita métrica (10 cm abaixo da tuberosidade tibial)",
+          "Avaliação de temperatura local, perfusão distal, eritema, empastamento e sinais de compartimento",
+          "Manter membro na horizontal sem compressão até definição etiológica"
         ]
       },
       {
         "id": "sin",
-        "t": "Analgesia e posicionamento adequado",
+        "t": "Analgesia",
         "it": [
-          "Elevação do membro a 30° se TVP ou celulite/insuficiência venosa (facilita o retorno venoso e reduz o edema)",
-          "Manter membro na horizontal ou levemente pendente se suspeita de isquemia arterial aguda",
-          "Dipirona 1 g IV a cada 6h + Morfina 2–4 mg IV se dor isquêmica aguda severa"
-        ]
-      },
-      {
-        "id": "esp",
-        "t": "Diretriz de intervenção por etiologia",
-        "it": [
-          "Suspeita de TVP com escore de Wells provável (≥ 2): iniciar anticoagulação plena enquanto aguarda confirmação ultrassonográfica, se sem contraindicações hemorrágicas",
-          "Isquemia arterial aguda: heparinização sistêmica imediata com Heparina Não Fracionada (HNF) bolus e acionamento vascular emergencial",
-          "Infecção necrosante de partes moles: desbridamento cirúrgico de emergência e antibioticoterapia tripla imediata"
+          "Dipirona 1 g IV a cada 6h",
+          "Morfina 2–4 mg IV se dor isquêmica intensa"
         ]
       },
       {
         "id": "inv",
-        "t": "Investigação complementar escalonada",
+        "t": "Investigação diagnóstica",
         "it": [
-          "Ultrassonografia com Doppler venoso de compressão de MMII: padrão-ouro para TVP (incompressibilidade da veia, ausência de fluxo fásico)",
-          "D-dímero de alta sensibilidade com ponto de corte ajustado pela idade (idade × 10 mcg/L se > 50 anos): utilizar APENAS se probabilidade de TVP improvável (Wells ≤ 1) para exclusão diagnóstica",
-          "Doppler arterial de MMII ou Angiotomografia arterial se suspeita de oclusão arterial aguda",
-          "Escore LRINEC (Laboratory Risk Indicator for Necrotizing Fasciitis) se sinais atípicos, bolhas ou crepitação: hemograma, PCR, sódio, glicose, creatinina"
+          "USG com Doppler vascular de MMII (venoso ou arterial conforme suspeita clínica)",
+          "D-dímero se Wells baixo/intermediário para TVP",
+          "Hemograma completo, PCR, eletrólitos, função renal e lactato"
         ]
       },
       {
         "id": "dsp",
         "t": "Disposição",
         "it": [
-          "Isquemia arterial aguda e infecção necrosante: centro cirúrgico de emergência e UTI pós-operatória",
-          "TVP proximal não complicada de baixo risco com suporte adequado: elegível para anticoagulação domiciliar com DOAC oral seguro e acompanhamento ambulatorial",
-          "Edema bilateral por IC descompensada, sepse de partes moles ou flebite complicada: internação hospitalar"
+          "Internação / parecer cirúrgico imediato se isquemia arterial aguda ou suspeita de infecção necrosante",
+          "Manejo clínico ambulatorial ou em enfermaria conforme gravidade"
         ]
       }
     ]

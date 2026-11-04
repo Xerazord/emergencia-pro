@@ -3163,6 +3163,10 @@ const CT_CARDIOVASCULAR = {
     "l": "Dor torácica",
     "subExcl": [
       {
+        "id": "dt_ind",
+        "l": "Dor torácica indiferenciada / Em investigação"
+      },
+      {
         "id": "sca_oca",
         "l": "SCA — OCA (Oclusão / Equivalente STEMI)"
       },
@@ -3209,10 +3213,14 @@ const CT_CARDIOVASCULAR = {
         "l": "Dispepsia / Refluxo gastroesofágico"
       }
     ],
+    "s": []
+  },
+  "dt_ind": {
+    "l": "Dor torácica indiferenciada / Em investigação",
     "s": [
       {
         "id": "sup",
-        "t": "Monitorização e suporte inicial (comum)",
+        "t": "Monitorização e suporte inicial",
         "it": [
           "Monitorização cardíaca contínua (ECG, SatO₂, PA não-invasiva)",
           "ECG de 12 derivações realizado e interpretado em < 10 min da admissão",
@@ -3227,8 +3235,7 @@ const CT_CARDIOVASCULAR = {
         "it": [
           "Dipirona 1–2 g IV lento se dor leve a moderada",
           "Nitrato SL (Isossorbida 5 mg) se dor isquêmica persistente e PAS > 100 mmHg [CONTRAINDICADO se uso de inibidor de PDE-5 em 24–48h ou suspeita de IAM de VD]",
-          "Morfina 2–4 mg IV titulada apenas para dor intensa refratária [atenção: retarda absorção de antiplaquetários orais]",
-          "Evitar AINEs em suspeita coronariana (risco aumentado de eventos adversos e rotura miocárdica)"
+          "Morfina 2–4 mg IV titulada apenas para dor intensa refratária [atenção: retarda absorção de antiplaquetários orais]"
         ]
       },
       {
@@ -3245,8 +3252,8 @@ const CT_CARDIOVASCULAR = {
         "id": "dsp",
         "t": "Estratificação de risco e disposição",
         "it": [
-          "Calcular escores de risco na admissão (apenas se ausência de supra de ST ou equivalentes de OCA): HEART Score e EDACS",
-          "Dor torácica sem OCA: HEART ≤ 3 + hs-cTn normal em 0h/1h indica baixo risco para MACE (< 1%), elegível para alta e seguimento em 72h",
+          "Calcular escores de risco na admissão: HEART Score e EDACS",
+          "Dor torácica sem OCA: HEART ≤ 3 + hs-cTn normal em 0h/1h indica baixo risco para MACE (< 1%), observação e seguimento ambulatorial",
           "Dor torácica sem OCA: HEART 4–6 indica risco intermediário, observação monitorizada por 6–12h com troponina seriada",
           "Dor torácica sem OCA: HEART ≥ 7 ou troponina dinâmica positiva indica alto risco, internação em leito monitorizado/UTI e coronariografia"
         ]
@@ -3640,6 +3647,10 @@ const CT_CARDIOVASCULAR = {
     "l": "Palpitações / Arritmias",
     "subExcl": [
       {
+        "id": "pal_ind",
+        "l": "Arritmia / Palpitação indiferenciada (estabilização inicial)"
+      },
+      {
         "id": "pal_tsv",
         "l": "TSV (Reentrada Nodal / Via Acessória)"
       },
@@ -3678,6 +3689,10 @@ const CT_CARDIOVASCULAR = {
         "l": "Edema agudo de pulmão / IC associada"
       }
     ],
+    "s": []
+  },
+  "pal_ind": {
+    "l": "Arritmia / Palpitação indiferenciada (estabilização inicial)",
     "s": [
       {
         "id": "sup",
@@ -3939,6 +3954,10 @@ const CT_RESPIRATORIO = {
     "l": "Síndrome dispneica",
     "subExcl": [
       {
+        "id": "dsp_ind",
+        "l": "Dispneia indiferenciada / Suporte inicial"
+      },
+      {
         "id": "eap",
         "l": "IC aguda descompensada / EAP"
       },
@@ -3981,38 +4000,42 @@ const CT_RESPIRATORIO = {
         "l": "Pneumotórax associado"
       }
     ],
+    "s": []
+  },
+  "dsp_ind": {
+    "l": "Dispneia indiferenciada / Suporte inicial",
     "s": [
       {
         "id": "sup",
         "t": "Suporte ventilatório e abordagem emergencial imediata",
         "it": [
           "Posicionamento sentado ou cabeceira elevada a 45–90° (posição de Fowler)",
-          "Oximetria contínua com alvo de SpO₂: 94–98% na população geral e 88–92% em pacientes com retenção crônica de CO₂ (DPOC / hipoventilação da obesidade)",
-          "Ventilação Não Invasiva (VNI) precoce: CPAP 5–10 cmH₂O ou BiPAP (EPAP 4–6 cmH₂O, IPAP 10–15 cmH₂O) se FR > 25 irpm, uso de musculatura acessória ou SpO₂ < 90% com oxigênio em alto fluxo (reduz intubação em ~50% e mortalidade)",
-          "Intubação Orotraqueal (IOT) em sequência rápida: indicada se exaustão respiratória iminente, rebaixamento de consciência (Glasgow ≤ 8), instabilidade hemodinâmica refratária ou acidose hipercápnica progressiva apesar da VNI",
-          "Monitor cardíaco contínuo de 12 derivações à beira-leito"
+          "Oximetria contínua com alvo de SpO₂: 94–98% na população geral (88–92% se suspeita de retenção crônica de CO₂)",
+          "Ventilação Não Invasiva (VNI) precoce: CPAP 5–10 cmH₂O ou BiPAP (EPAP 4–6 cmH₂O, IPAP 10–15 cmH₂O) se FR > 25 irpm, tiragem ou SpO₂ < 90%",
+          "Intubação Orotraqueal (IOT) em sequência rápida: se exaustão respiratória iminente, rebaixamento de consciência (Glasgow ≤ 8) ou acidose hipercápnica progressiva",
+          "Monitor cardíaco contínuo de 12 derivações e acesso venoso periférico calibroso"
         ]
       },
       {
         "id": "esp",
-        "t": "Terapêutica direcionada e mnemônico CHAMPIT (ESC 2026)",
+        "t": "Terapêutica direcionada e rastreio etiológico (CHAMPIT)",
         "it": [
           "Rastreio etiológico emergencial CHAMPIT: Coronariana (SCA), Hipertensiva, Arritmia, Mecânica (valvopatia aguda/CIV), Pulmonar (TEP), Infecciosa (sepse/pneumonia), Tamponamento pericárdico",
-          "Broncoespasmo ativo (sibilos/expiração prolongada): Salbutamol 2,5 mg inalatório (ou fenoterol) + Brometo de Ipratrópio 0,5 mg inalatório a cada 20 min nas primeiras doses",
-          "Pneumonia associada: iniciar antibioticoterapia empírica imediata conforme estratificação por CURB-65 / PSI",
-          "Suspeita de TEP com hipoxemia refratária: iniciar anticoagulação empírica precoce se probabilidade alta e ausência de sangramento ativo"
+          "Broncoespasmo ativo (sibilos/expiração prolongada): Salbutamol 2,5 mg inalatório + Brometo de Ipratrópio 0,5 mg inalatório a cada 20 min nas primeiras doses",
+          "Morfina 2–4 mg IV titulada apenas com indicação precisa (ansiedade intensa/congestão pulmonar)"
         ]
       },
       {
         "id": "inv",
         "t": "Investigação complementar no leito",
         "it": [
-          "POCUS pulmonar (Protocolo BLUE): diferenciar perfil B (linhas B bilaterais difusas = EAP) de perfil A (deslizamento preservado = asma/DPOC/TEP), consolidação (pneumonia) e ausência de deslizamento (pneumotórax)",
-          "Peptídeos natriuréticos (BNP ou NT-proBNP): valor de descarte (BNP < 100 pg/mL ou NT-proBNP < 300 pg/mL tornam causa cardíaca improvável)",
-          "ECG de 12 derivações na admissão: pesquisar sobrecarga ventricular, taquiarritmias (ex: FA com alta resposta), BRE novo ou alterações isquêmicas de ST",
-          "Radiografia de tórax no leito (PA / AP): avaliar congestão hilofugal, consolidações alveolares, pneumotórax e derrame pleural",
-          "Gasometria arterial se insuficiência respiratória aguda grave, suspeita de acidose/hipercapnia ou SpO₂ não confiável",
-          "D-dímero se suspeita de tromboembolismo pulmonar com probabilidade intermediária/baixa"
+          "POCUS pulmonar (Protocolo BLUE): diferenciar perfil B (linhas B bilaterais = EAP) de perfil A (asma/DPOC/TEP), consolidação e pneumotórax",
+          "Radiografia de tórax no leito (PA / AP): avaliar congestão hilofugal, consolidações, pneumotórax e derrame pleural",
+          "ECG de 12 derivações na admissão",
+          "Gasometria arterial com lactato sérico se insuficiência respiratória moderada a grave",
+          "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia",
+          "Peptídeos natriuréticos (BNP ou NT-proBNP) se dúvida diagnóstica cardiopulmonar",
+          "D-dímero se suspeita de TEP com probabilidade intermediária/baixa"
         ]
       },
       {
@@ -4020,7 +4043,7 @@ const CT_RESPIRATORIO = {
         "t": "Disposição",
         "it": [
           "Internação em Unidade de Terapia Intensiva (UTI) se necessidade de VNI mantida, IOT, instabilidade hemodinâmica ou disfunção orgânica",
-          "Internação em leito semi-intensivo / enfermaria monitorizada se estabilização com oxigenoterapia de baixo fluxo e resposta rápida às condutas"
+          "Internação em leito semi-intensivo / enfermaria monitorizada se estabilização com oxigenoterapia de baixo fluxo"
         ]
       }
     ]
@@ -4297,6 +4320,10 @@ const CT_NEUROLOGICO = {
     "l": "Síndrome neurovascular (AVC / AIT)",
     "subExcl": [
       {
+        "id": "neu_ind",
+        "l": "Déficit neurológico focal agudo / Suspeita de AVC em triagem"
+      },
+      {
         "id": "avc_isq",
         "l": "AVC Isquêmico Agudo (AVCi)"
       },
@@ -4319,26 +4346,30 @@ const CT_NEUROLOGICO = {
         "l": "Crise convulsiva associada"
       }
     ],
+    "s": []
+  },
+  "neu_ind": {
+    "l": "Déficit neurológico focal agudo / Suspeita de AVC em triagem",
     "s": [
       {
         "id": "sup",
         "t": "Triagem imediata e protocolo código AVC (AHA/ASA 2026)",
         "it": [
           "Ativação imediata do Código AVC e determinação estrita da UVVB (Última Vez Visto Bem)",
-          "Acionamento prioritário da equipe de Neuroimagem / Radiologia para meta porta-TC < 20 minutos",
+          "Acionamento prioritário da Neuroimagem para meta porta-TC < 20 minutos",
           "Glicemia capilar imediata na admissão (< 5 min)",
-          "Avaliação e registro formal do escore NIHSS completo para determinar elegibilidade terapêutica",
-          "Acesso venoso calibroso (18G) exclusivo, monitorização cardíaca contínua e oximetria de pulso (manter SpO₂ ≥ 94%)",
-          "Jejum absoluto (NPO) rigoroso e teste formal de deglutição à beira-leito antes de qualquer oferta oral"
+          "Avaliação e registro formal do escore NIHSS completo",
+          "Acesso venoso calibroso (18G) exclusivo, monitorização cardíaca contínua e oximetria de pulso (SpO₂ ≥ 94%)",
+          "Jejum absoluto (NPO) rigoroso até teste de deglutição"
         ]
       },
       {
         "id": "sin",
         "t": "Manejo de suporte e neuroproteção",
         "it": [
-          "Posicionamento no leito: manter cabeceira a 0° se AVCi sem sinais de hipertensão intracraniana (otimiza fluxo cerebral penumbral); elevar a 30° se suspeita de AVCh, vômitos ou risco de broncoaspiração",
-          "Controle estrito de temperatura: tratar febre (Temp ≥ 37,5°C) imediatamente com Dipirona 1 g IV ou Paracetamol 1 g IV (hipertermia acelera a apoptose neuronal isquêmica)",
-          "Controle glicêmico rigoroso: manter glicemia entre 140–180 mg/dL com insulina regular conforme escala; tratar hipoglicemia imediatamente (< 70 mg/dL)"
+          "Posicionamento inicial: cabeceira elevada a 30° se vômitos/risco de aspiração ou suspeita de hemorragia; cabeceira a 0° se suspeita de isquemia pura sem HIC",
+          "Controle estrito de temperatura: tratar febre (Temp ≥ 37,5°C) imediatamente com Dipirona 1 g IV",
+          "Controle glicêmico rigoroso: manter glicemia entre 140–180 mg/dL"
         ]
       },
       {
@@ -4346,17 +4377,17 @@ const CT_NEUROLOGICO = {
         "t": "Investigação complementar urgente",
         "it": [
           "TC de crânio sem contraste imediata: excluir sangramento intracraniano e avaliar precocemente o escore ASPECTS",
-          "Angiotomografia arterial de crânio e vasos cervicais (AngioTC) em < 30 min se candidato a Trombectomia Mecânica (pesquisa de oclusão de grande vaso: carótida interna e ACM-M1)",
+          "Angiotomografia arterial de crânio e vasos cervicais (AngioTC) em < 30 min se janela terapêutica",
           "Hemograma completo, plaquetas, coagulograma (TP/INR, TTPa), glicemia e função renal",
-          "ECG de 12 derivações na admissão: pesquisar fibrilação atrial aguda, isquemia miocárdica concomitante ou arritmias"
+          "ECG de 12 derivações na admissão"
         ]
       },
       {
         "id": "dsp",
         "t": "Disposição",
         "it": [
-          "Internação obrigatória em Unidade de Cuidado Integral ao AVC (Unidade de AVC / UTI Neurológica)",
-          "Acionamento urgente da Neurologia Vascular e da equipe de Neurorradiologia Intervencionista / Neurocirurgia"
+          "Internação em Unidade de AVC (Stroke Unit) ou UTI conforme achado da neuroimagem",
+          "Definição imediata de conduta (trombólise/trombectomia vs neurocirurgia) após TC de crânio"
         ]
       }
     ]
@@ -4493,6 +4524,10 @@ const CT_NEUROLOGICO = {
     "l": "Rebaixamento de consciência / Coma",
     "subExcl": [
       {
+        "id": "rnc_ind",
+        "l": "Coma / Rebaixamento indiferenciado (manejo inicial)"
+      },
+      {
         "id": "rnc_met",
         "l": "Encefalopatia Tóxico-Metabólica (Uremia, Hepática, Hipoglicemia)"
       },
@@ -4519,45 +4554,47 @@ const CT_NEUROLOGICO = {
         "l": "Foco infeccioso / Sepse associada"
       }
     ],
+    "s": []
+  },
+  "rnc_ind": {
+    "l": "Coma / Rebaixamento indiferenciado (manejo inicial)",
     "s": [
       {
         "id": "sup",
-        "t": "MOMENTO ZERO: Manejo inicial do coma e proteção de via aérea (NCS)",
+        "t": "Manejo inicial do coma e proteção de via aérea (NCS)",
         "it": [
-          "Posicionamento e aspiração de vias aéreas: decúbito lateral se sem suspeita de trauma cervical; cabeceira a 30° se suspeita de hipertensão intracraniana",
-          "Vigilância de proteção e patência de VA para necessidade de IOT se RNC associada a HIC OU disfagia intensa OU insuficiência respiratória (Glasgow isolado não indica intubação mandatória em coma não-traumático)",
+          "Posicionamento e aspiração de vias aéreas: decúbito lateral se sem trauma; cabeceira a 30° se suspeita de HIC",
+          "Vigilância de proteção e patência de VA para necessidade de IOT se perda de reflexos protetores ou insuficiência respiratória",
           "Glicemia capilar IMEDIATA na admissão (< 5 min)",
-          "Monitorização contínua: oximetria de pulso (meta SpO₂ ≥ 94%), ECG contínuo, PA não invasiva a cada 5–15 min e temperatura central",
-          "Coleta imediata de gasometria arterial e lactato sérico (pesquisar acidose metabólica grave com gap aumentado, hipóxia ou hipercapnia)"
+          "Monitorização contínua: SpO₂ ≥ 94%, ECG contínuo, PA não invasiva e temperatura central",
+          "Coleta de gasometria arterial e lactato sérico"
         ]
       },
       {
         "id": "esp",
-        "t": "MOMENTO ZERO: Terapêutica empírica reversível e neuroproteção inicial",
+        "t": "Terapêutica empírica de reversão imediata",
         "it": [
-          "Hipoglicemia confirmada (Glicemia < 70 mg/dL): Tiamina 100 mg IV lento SEGUIDA IMEDIATAMENTE de Glicose a 50% 50 mL IV (25 g de glicose) em bólus; reavaliar dextro em 15 min",
-          "Suspeita de toxídrome opioide (miose puntiforme + depressão respiratória + coma): Naloxona 0,04 a 0,4 mg IV/IM/IN, repetindo a cada 2–3 min até restauração do drive respiratório (dose de até 2 mg se parada iminente)",
-          "Hipertensão Intracraniana (HIC) aguda / herniação iminente (anisocoria, tríade de Cushing, postura de descerebração): Salina Hipertônica 3% 150–250 mL IV em 15 min OU Manitol 20% 0,5–1 g/kg IV",
-          "Suspeita de meningoencefalite (febre + rigidez de nuca + coma): Ceftriaxona 2 g IV 12/12h + Ampicilina 2 g IV 4/4h (se > 50 anos ou imunossuprimido) + Vancomicina 15–20 mg/kg 12/12h + Dexametasona 10 mg IV (iniciar ANTES ou junto do 1º ATB)"
+          "Hipoglicemia (Glicemia < 70 mg/dL): Tiamina 100 mg IV lento seguida de Glicose a 50% 50 mL IV em bólus",
+          "Suspeita de toxídrome opioide: Naloxona 0,04 a 0,4 mg IV/IM/IN, repetindo a cada 2–3 min até restauração do drive respiratório",
+          "Hipertensão Intracraniana aguda / herniação: Salina Hipertônica 3% 150–250 mL IV OU Manitol 20% 0,5–1 g/kg IV"
         ]
       },
       {
         "id": "inv",
-        "t": "MOMENTO ZERO: Investigação complementar urgente",
+        "t": "Investigação complementar urgente",
         "it": [
-          "TC de crânio sem contraste em < 30 minutos: descartar hemorragia intracraniana, efeito de massa, hidrocefalia aguda e edema cerebral difuso",
-          "Painel laboratorial completo: eletrólitos (Na, K, Ca ionizado, Mg), função renal (ureia, creatinina), função hepática e amônia sérica (encefalopatia hepática)",
-          "Screening toxicológico urinário e sérico (álcool, benzodiazepínicos, opioides, antidepressivos, cocaína)",
-          "Eletroencefalograma (EEG) urgente: mandatório se coma inexplicado sem lesão estrutural na TC para descartar Estado de Mal Epiléptico Não Convulsivo (EMENC)",
-          "Punção lombar (PL) para análise bioquímica, citológica e microbiológica do líquor (realizar após TC descartar lesão expansiva com desvio de linha média)"
+          "TC de crânio sem contraste em < 30 minutos: descartar hemorragia, efeito de massa ou edema difuso",
+          "Painel laboratorial completo: eletrólitos (Na, K, Ca ionizado, Mg), função renal (ureia, creatinina), amônia sérica",
+          "Screening toxicológico urinário e sérico",
+          "Eletroencefalograma (EEG) urgente se TC normal para descartar EMENC"
         ]
       },
       {
         "id": "dsp",
-        "t": "MOMENTO ZERO: Disposição e leito monitorizado",
+        "t": "Disposição",
         "it": [
           "Internação imediata em leito de Terapia Intensiva (UTI geral ou neurocrítica)",
-          "Acionamento prioritário da Neurologia / Neurocirurgia"
+          "Acionamento prioritário da Neurologia / Neurocirurgia conforme achados"
         ]
       }
     ]
@@ -4692,6 +4729,10 @@ const CT_NEUROLOGICO = {
     "l": "Cefaleia",
     "subExcl": [
       {
+        "id": "cef_ind",
+        "l": "Cefaleia aguda em investigação / Triagem inicial"
+      },
+      {
         "id": "cef_prim",
         "l": "Suspeita de cefaleia primária"
       },
@@ -4736,51 +4777,44 @@ const CT_NEUROLOGICO = {
         "l": "Neuralgia do trigêmeo"
       }
     ],
+    "s": []
+  },
+  "cef_ind": {
+    "l": "Cefaleia aguda em investigação / Triagem inicial",
     "s": [
       {
         "id": "sup",
-        "t": "Triagem / monitorização",
+        "t": "Triagem e monitorização",
         "it": [
-          "Monitor de sinais vitais e EVA na chegada",
-          "Documentar escala de dor e resposta à analgesia a cada 30 minutos",
-          "Acesso venoso periférico se houver indicação de medicação IV ou exames com contraste",
-          "Avaliação neurológica focada (Glasgow, pupilas, força, fala, marcha)",
-          "Alocar em ambiente calmo, com pouca luz e sem ruídos, se hipótese de cefaleia migranosa"
+          "Monitor de sinais vitais e EVA na admissão",
+          "Acesso venoso periférico se indicação de analgesia IV ou exames contrastados",
+          "Avaliação neurológica direcionada (Glasgow, pupilas, pares cranianos, sinais meníngeos)"
         ]
       },
       {
         "id": "sin",
-        "t": "Analgesia inespecífica",
+        "t": "Analgesia de resgate e sintomáticos",
         "it": [
-          "Dipirona 2 g EV agora",
-          "Cetoprofeno 100 mg EV agora (ou outro AINE)",
-          "Dexametasona 10 mg EV agora se suspeita de cefaleia migranosa",
-          "Metoclopramida 10 mg IV",
-          "Hidratação EV parcimoniosa se sinais de desidratação"
+          "Dipirona 1–2 g IV lento",
+          "Cetoprofeno 100 mg IV ou Tenoxicam 20 mg IV (se ausência de sinais de alarme para HSA/AVCh)",
+          "Metoclopramida 10 mg IV ou Ondansetrona 8 mg IV se náuseas ou vômitos"
         ]
       },
       {
         "id": "inv",
-        "t": "Investigação",
+        "t": "Investigação diagnóstica",
         "it": [
-          "TC de crânio sem contraste em < 1h se ≥ 1 sinal de alarme (SNNOOP10)",
-          "Punção lombar após TC normal se HSA suspeita (especialmente > 6h do início)",
-          "Laboratório de admissão completo para triagem de disfunções orgânicas; coagulograma e culturas se suspeita de meningite ou sepse",
-          "AngioTC se TC normal mas suspeita persistente de HSA, dissecção ou TVC",
-          "Glicemia capilar",
-          "Considerar NS1 se clínica sugestiva de dengue"
+          "TC de crânio sem contraste em < 1h se presença de sinais de alarme (início súbito/thunderclap, déficit focal, febre, imunossupressão, neoplasia)",
+          "Punção lombar após TC sem contraste normal se persistência de suspeita de HSA ou meningite",
+          "Glicemia capilar imediata"
         ]
       },
       {
         "id": "dsp",
         "t": "Disposição",
         "it": [
-          "Alta médica após melhora da queixa",
-          "Observação 4–6h se alarme isolado com TC negativa, melhora parcial ou dúvida diagnóstica",
-          "Internação se Glasgow alterado, déficit focal, suspeita de HSA / meningite / TVC / dissecção ou dor refratária",
-          "Encaminhamento à neurologia ambulatorial se ≥ 4 crises/mês, cefaleia diária persistente, padrão atípico ou primeira crise > 50 anos",
-          "Retorno imediato se cefaleia que piora, febre, déficit novo ou alteração de consciência",
-          "Orientar diário de cefaleia, identificação de gatilhos e uso racional de analgésicos"
+          "Alta orientada após resolução completa da dor em cefaleias sem sinais de alarme",
+          "Observação monitorizada ou internação se dor refratária, alteração do nível de consciência ou necessidade de investigação invasiva"
         ]
       }
     ]
@@ -4789,27 +4823,45 @@ const CT_NEUROLOGICO = {
     "l": "Suspeita de cefaleia primária",
     "s": [
       {
-        "id": "esp",
-        "t": "Terapia direcionada",
+        "id": "sup",
+        "t": "Suporte e acomodação",
         "it": [
-          "Sumatriptano 6 mg SC ou 50–100 mg VO se enxaqueca provável e sem contraindicações",
-          "Clorpromazina 12,5–25 mg EV em 100 mL SF em 30 min",
-          "O₂ 100% por máscara não-reinalante 12–15 L/min por 15–20 min",
-          "Bloqueio do nervo occipital maior com lidocaína 2% (2–3 mL bilateral)",
-          "Considerar bloqueio do gânglio esfenopalatino"
+          "Alocar em ambiente calmo, com pouca luz e sem ruídos",
+          "Acesso venoso periférico se náuseas/vômitos ou medicação IV indicada",
+          "Monitorar intensidade da dor (escala EVA) antes e 30-60 min após medicação"
+        ]
+      },
+      {
+        "id": "sin",
+        "t": "Analgesia escalonada e antieméticos",
+        "it": [
+          "Dipirona 2 g IV lento agora",
+          "Cetoprofeno 100 mg IV lento agora (ou outro AINE)",
+          "Metoclopramida 10 mg IV (ou Ondansetrona 8 mg IV)",
+          "Dexametasona 10 mg IV agora se crise migranosa prolongada (reduz taxa de recorrência em 72h)"
+        ]
+      },
+      {
+        "id": "esp",
+        "t": "Terapia direcionada / Específica",
+        "it": [
+          "Sumatriptano 6 mg SC ou 50–100 mg VO se enxaqueca provável e sem contraindicações coronarianas",
+          "Clorpromazina 12,5–25 mg IV em 100 mL SF em 30 min se refratária",
+          "O₂ 100% por máscara não-reinalante 12–15 L/min por 15–20 min se suspeita de cefaleia em salvas",
+          "Bloqueio do nervo occipital maior com lidocaína 2% (2–3 mL bilateral)"
         ]
       },
       {
         "id": "dsp",
         "t": "Alta e orientação",
         "it": [
+          "Alta médica após melhora da queixa com prescrição de resgate para casa",
           "Receita de analgésico de resgate (paracetamol 750 mg ou ibuprofeno 400 mg até 8/8h por ≤ 2–3 dias)",
           "Receita de antiemético VO/SL (metoclopramida ou ondansetrona) se vômitos",
           "Receita de triptano de resgate VO se padrão migranoso recorrente",
           "Orientar diário de cefaleia (frequência, intensidade, gatilhos, resposta)",
-          "Limitar analgésicos a < 10–15 dias/mês para evitar cefaleia por uso excessivo",
-          "Encaminhar à neurologia ambulatorial se ≥ 4 crises/mês, refratariedade ou indicação de profilaxia",
-          "Medidas não farmacológicas: sono regular, hidratação, manejo de estresse, evitar gatilhos"
+          "Limitar analgésicos a < 10–15 dias/mês para evitar cefaleia por uso excessivo de analgésicos",
+          "Encaminhar à neurologia ambulatorial se crises frequentes ou refratárias"
         ]
       }
     ]
@@ -5050,6 +5102,10 @@ const CT_ABDOMINAL = {
     "l": "Síndrome abdominal aguda",
     "subExcl": [
       {
+        "id": "dab_ind",
+        "l": "Abdome agudo indiferenciado / Em elucidação"
+      },
+      {
         "id": "dab_perf",
         "l": "Perfurativo (Úlcera péptica rota, Perfuração de víscera, Colecistite rota)"
       },
@@ -5088,59 +5144,47 @@ const CT_ABDOMINAL = {
         "l": "Náuseas e vômitos incoercíveis"
       }
     ],
+    "s": []
+  },
+  "dab_ind": {
+    "l": "Abdome agudo indiferenciado / Em elucidação",
     "s": [
       {
         "id": "sup",
-        "t": "Triagem de gravidade & Suporte hemodinâmico",
+        "t": "Triagem e suporte hemodinâmico",
         "it": [
           "Monitorização multiparamétrica contínua (ECG, SpO₂, PANI a cada 5–15 min)",
           "Dois acessos venosos periféricos calibrosos (16–18G) imediatos",
           "Jejum absoluto (NPO) rigoroso",
-          "Ressuscitação volêmica: Ringer Lactato 1.000 mL IV em bólus agora",
-          "Sonda Nasogástrica calibrosa (16–18F) aberta com drenagem livre em sifonagem",
-          "Vigilância de via aérea: baixo limiar para IOT se rebaixamento, exaustão ventilatória ou acidose grave"
+          "Hidratação volêmica inicial com Ringer Lactato 500–1.000 mL IV",
+          "Passagem de SNG aberta em sifonagem se vômitos incoercíveis ou distensão gástrica"
         ]
       },
       {
         "id": "sin",
         "t": "Analgesia precoce multimodal & Antieméticos",
         "it": [
-          "Dipirona 1 a 2 g IV a cada 6h se dor ou febre",
-          "Morfina 2–4 mg IV fracionada ou Fentanil 50–100 mcg IV se dor intensa (EVA ≥ 7)",
-          "Escopolamina 20 mg IV se cólica biliar ou renal pura",
-          "Ondansetrana 4–8 mg IV se náuseas ou vômitos associados"
-        ]
-      },
-      {
-        "id": "esp",
-        "t": "Terapia antimicrobiana & Conduta cirúrgica",
-        "it": [
-          "Ceftriaxona 2 g IV dose única diária + Metronidazol 500 mg IV 8/8h (iniciar na 1ª hora)",
-          "Piperacilina-Tazobactam 4,5 g IV 6/6h (esquema alternativo para choque séptico de foco abdominal)",
-          "Norepinefrina em AVP transitório (titular em BIC para PAM alvo ≥ 65 mmHg)",
-          "Baixo limiar para associar Vasopressina 0,03 U/min + Hidrocortisona 200 mg/dia se choque séptico refratário",
-          "Omeprazol 80 mg IV em bólus"
+          "Dipirona 1 a 2 g IV a cada 6h",
+          "Morfina 2–4 mg IV fracionada se dor intensa (EVA ≥ 7) sem mascarar abdome cirúrgico",
+          "Ondansetrana 4–8 mg IV se náuseas ou vômitos"
         ]
       },
       {
         "id": "inv",
         "t": "Investigação diagnóstica urgente",
         "it": [
-          "TC de abdome total com contraste venoso em caráter de urgência",
-          "POCUS abdominal na emergência (pesquisa de pneumoperitônio e líquido em espaço de Morrison)",
-          "Rotina de abdome agudo: RX de tórax em cúpulas e RX de abdome em 2 posições",
-          "Coleta de 2 pares de hemoculturas de sítios venosos distintos antes do antimicrobiano",
-          "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa) + Lactato sérico seriado, Amilase e Lipase",
+          "TC de abdome total com contraste venoso em caráter de urgência (ou USG se cólica biliar/criança/gestante)",
+          "Rotina radiológica de abdome agudo no leito (tórax cúpulas + abdome)",
+          "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa, amilase e lipase",
           "β-hCG sérico ou urinário em mulheres em idade fértil"
         ]
       },
       {
         "id": "dsp",
-        "t": "Disposição & Encaminhamentos",
+        "t": "Disposição & Conduta cirúrgica",
         "it": [
-          "Acionamento imediato da equipe de Cirurgia Geral de plantão para avaliação cirúrgica emergencial",
-          "Regulação urgente de vaga / transferência hospitalar via CROSS / NIR (Vaga Zero para UTI / Centro Cirúrgico)",
-          "Encaminhamento direto ao Centro Cirúrgico para laparotomia exploradora se peritonite difusa ou perfuração"
+          "Avaliação prioritária da Cirurgia Geral de plantão",
+          "Internação em leito cirúrgico monitorizado ou UTI se instabilidade"
         ]
       }
     ]
@@ -5346,6 +5390,10 @@ const CT_ABDOMINAL = {
     "l": "Hemorragia digestiva",
     "subExcl": [
       {
+        "id": "hdg_ind",
+        "l": "Hemorragia digestiva indiferenciada (alta vs. baixa)"
+      },
+      {
         "id": "hda",
         "l": "HDA — Hemorragia Digestiva Alta"
       },
@@ -5360,41 +5408,53 @@ const CT_ABDOMINAL = {
         "l": "Choque hemorrágico / Instabilidade associada"
       }
     ],
+    "s": []
+  },
+  "hdg_ind": {
+    "l": "Hemorragia digestiva indiferenciada (alta vs. baixa)",
     "s": [
       {
         "id": "sup",
-        "t": "Ressuscitação e estabilização inicial (ACG 2021 / ESGE 2022)",
+        "t": "Ressuscitação e estabilização inicial (ACG/ESGE)",
         "it": [
-          "Monitorização multiparamétrica contínua (ECG, oximetria de pulso, PANI a cada 5–15 min)",
-          "Dois acessos venosos periféricos de grosso calibre (14–16G) ou cateter venoso central / introdutor se acesso periférico difícil",
+          "Monitorização multiparamétrica contínua (ECG, SpO₂, PANI a cada 5–15 min)",
+          "Dois acessos venosos periféricos de grosso calibre (14–16G) imediatos",
           "Jejum absoluto (NPO) rigoroso",
-          "Estratégia transfusional restritiva: meta de hemoglobina entre 7,0 e 8,0 g/dL (transfundir concentrado de hemácias se Hb < 7,0 g/dL; meta Hb > 8,0 g/dL se síndrome coronariana aguda ou cardiopatia isquêmica grave)",
-          "Controle térmico ativo: manter normotermia para prevenir a tríade letal da coagulopatia"
+          "Estratégia transfusional restritiva: meta de Hb entre 7,0 e 8,0 g/dL (Hb > 8,0 g/dL se coronariopatia grave)",
+          "Controle térmico ativo: manter normotermia"
         ]
       },
       {
         "id": "sin",
-        "t": "Manejo de sintomas e suporte",
+        "t": "Sintomáticos",
         "it": [
-          "Dipirona 1 g IV se dor epigástrica ou abdominal associada (CONTRAINDICADO o uso de anti-inflamatórios não esteroidais — AINEs)",
-          "Ondansetrana 4–8 mg IV se náuseas ou vômitos incoercíveis"
+          "Dipirona 1 g IV se dor (CONTRAINDICADO o uso de AINEs)",
+          "Ondansetrana 4–8 mg IV se náuseas ou vômitos"
+        ]
+      },
+      {
+        "id": "esp",
+        "t": "Manejo farmacológico inicial",
+        "it": [
+          "Omeprazol 80 mg IV em bólus seguido de infusão contínua 8 mg/h (ou 40 mg 12/12h)",
+          "Terlipressina 2 mg IV em bólus (ou Octreotida 50 mcg bólus + 50 mcg/h) se suspeita de hipertensão portal / cirrose"
         ]
       },
       {
         "id": "inv",
-        "t": "Investigação diagnóstica e estratificação de risco",
+        "t": "Investigação diagnóstica e estratificação",
         "it": [
           "Cálculo do Escore de Glasgow-Blatchford na admissão",
-          "Tipagem sanguínea ABO/Rh, prova cruzada e reserva prioritária de concentrado de hemácias",
-          "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa)"
+          "Tipagem sanguínea ABO/Rh, prova cruzada e reserva de concentrado de hemácias",
+          "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos, glicemia, coagulograma (TP/INR, TTPa)"
         ]
       },
       {
         "id": "dsp",
         "t": "Disposição",
         "it": [
-          "Alta médica orientada com agendamento de EDA ambulatorial em 24–48h (apenas se Glasgow-Blatchford 0–1 e estável)",
-          "Internação prioritária em leito de UTI / Semi-intensiva (se instabilidade, hemotransfusão ou sangramento ativo)"
+          "Endoscopia Digestiva Alta (EDA) de urgência em < 24h (< 12h se choque/sangramento ativo volumoso)",
+          "Internação em leito monitorizado ou UTI conforme Glasgow-Blatchford e estabilidade"
         ]
       }
     ]
@@ -5530,6 +5590,10 @@ const CT_ABDOMINAL = {
     "l": "Icterícia / Insuficiência Hepática Aguda",
     "subExcl": [
       {
+        "id": "ict_ind",
+        "l": "Icterícia indiferenciada / Hepatopatia aguda em investigação"
+      },
+      {
         "id": "ict_iha",
         "l": "Insuficiência Hepática Aguda (IHA / Falência Fulminante)"
       },
@@ -5552,47 +5616,38 @@ const CT_ABDOMINAL = {
         "l": "HDA varicosa / Sangramento digestivo associado"
       }
     ],
+    "s": []
+  },
+  "ict_ind": {
+    "l": "Icterícia indiferenciada / Hepatopatia aguda em investigação",
     "s": [
       {
         "id": "sup",
-        "t": "Avaliação de gravidade e suporte precoce (EASL Guidelines)",
+        "t": "Avaliação de gravidade e suporte",
         "it": [
-          "Avaliação estrita da presença de Encefalopatia Hepática (EH): asterixe / flapping, confusão mental, sonolência patológica ou agitação psicomotora",
-          "Glicemia capilar horária na sala de emergência",
-          "Monitorização multiparamétrica de sinais vitais e diurese horária (pesquisar precocemente Síndrome Hepatorrenal e choque vasoplégico)",
-          "Jejum e via aérea protegida: intubação traqueal de sequência rápida precoce se Encefalopatia Hepática grau 3 ou 4 (Glasgow ≤ 8) para controle de PaCO₂ e prevenção de broncoaspiração"
-        ]
-      },
-      {
-        "id": "esp",
-        "t": "Terapia farmacológica específica e neuroproteção (EASL)",
-        "it": [
-          "N-acetilcisteína (NAC) precoce IV: protocolo de 21 horas (150 mg/kg em 200 mL SG5% em 1h, depois 50 mg/kg em 500 mL SG5% em 4h e 100 mg/kg em 1.000 mL SG5% em 16h)",
-          "Manejo de Encefalopatia Hepática no cirrótico: Lactulose 20–30 mL VO/SNG a cada 2–4 horas até evacuação inicial, depois titular para 2–3 evacuações pastosas/dia + Rifaximina 550 mg VO 12/12h como adjuvante",
-          "Colangite Aguda (Tríade de Charcot / Pêntade de Reynolds): antibioticoterapia IV imediata (Ceftriaxona 2 g IV 1×/dia + Metronidazol 500 mg IV 8/8h OU Piperacilina-Tazobactam 4,5 g IV 6/6h) + Descompressão biliar urgente por CPRE em < 12–24h",
-          "Prevenção e controle de Edema Cerebral / Hipertensão Intracraniana na IHA grave: Salina Hipertônica a 3% contínua (alvo Na sérico 145–150 mEq/L), cabeceira a 30° e normocarbia (PaCO₂ 35–40 mmHg)",
-          "Suspensão imediata de todos os fármacos potencialmente hepatotóxicos (paracetamol, sedativos, AINEs, antibióticos hepatotóxicos)"
+          "Avaliação de Encefalopatia Hepática (flapping, desorientação, sonolência)",
+          "Glicemia capilar de 2/2h a 4/4h (alto risco de hipoglicemia grave por falência hepática)",
+          "Monitorização de sinais vitais e diurese horária",
+          "Suspensão imediata de fármacos potencialmente hepatotóxicos (paracetamol, AINEs, sedativos)"
         ]
       },
       {
         "id": "inv",
-        "t": "Investigação complementar etiológica",
+        "t": "Investigação diagnóstica e etiológica",
         "it": [
-          "Perfil hepático e colestático completo: Bilirrubinas total e frações, TGO/AST, TGP/ALT, FA, GGT e Albumina sérica",
-          "Laboratório de urgência: Hemograma completo com plaquetas, Glicemia imediata, Função renal (Ureia e Creatinina), Eletrólitos e Gasometria com dosagem de lactato",
-          "Coagulograma urgente: TP/INR, TTPa, Fibrinogênio e dosagem de Fator V sérico",
-          "Amônia sérica venosa ou arterial (nível > 150–200 mcmol/L prediz risco iminente de herniação cerebral)",
-          "Painel viral agudo: Anti-HAV IgM, HBsAg, Anti-HBc IgM, Anti-HCV, Anti-HEV IgM",
-          "USG de abdome com Doppler de vasos hepáticos no leito: avaliar desobstrução de via biliar e perviedade vascular"
+          "Perfil hepático e colestático: Bilirrubinas total e frações, TGO/AST, TGP/ALT, FA, GGT e Albumina",
+          "Coagulograma urgente: TP/INR (marcador precoce de falência de síntese hepática)",
+          "USG de abdome com Doppler de vasos hepáticos no leito (avaliar dilatação de vias biliares e trombose portal)",
+          "Painel viral agudo: Anti-HAV IgM, HBsAg, Anti-HBc IgM, Anti-HCV",
+          "Função renal (ureia, creatinina), eletrólitos e gasometria com lactato"
         ]
       },
       {
         "id": "dsp",
-        "t": "Critérios de King's College e disposição",
+        "t": "Disposição",
         "it": [
-          "Internação prioritária em UTI / Centro de Referência em Hepatologia com vaga zero para Transplante Hepático de Emergência",
-          "Avaliação dos Critérios de King's College para Paracetamol (pH arterial < 7,30 ou INR > 6,5 + Creatinina > 3,4 mg/dL + Encefalopatia)",
-          "Avaliação dos Critérios de King's College para Não-Paracetamol (INR > 6,5 isolado OU pelo menos 3 de: etiologia desfavorável, icterícia > 7 dias antes da encefalopatia, idade < 10 ou > 40 anos, INR > 3,5, bilirrubina > 17,5 mg/dL)"
+          "Internação em leito monitorizado ou UTI se encefalopatia, alargamento de INR ou disfunção renal",
+          "Avaliação conjunta da Gastroenterologia / Cirurgia do Aparelho Digestivo"
         ]
       }
     ]
@@ -5722,6 +5777,10 @@ const CT_SISTEMICO = {
     "l": "Choque indiferenciado",
     "subExcl": [
       {
+        "id": "cho_ind",
+        "l": "Choque indiferenciado / Suporte e triagem inicial (MOMENTO ZERO)"
+      },
+      {
         "id": "cho_sep",
         "l": "Choque séptico / vasoplégico"
       },
@@ -5756,54 +5815,47 @@ const CT_SISTEMICO = {
         "l": "Hemorragia digestiva ativa"
       }
     ],
+    "s": []
+  },
+  "cho_ind": {
+    "l": "Choque indiferenciado / Suporte e triagem inicial (MOMENTO ZERO)",
     "s": [
       {
         "id": "sup",
         "t": "MOMENTO ZERO: Suporte vital & Exame físico focado de perfusão",
         "it": [
           "Monitorização multiparamétrica contínua: ECG, oximetria de pulso contínua, PANI a cada 3–5 min",
-          "Acesso vascular imediato: 2 acessos venosos periféricos calibrosos 16–18G (< 2 min); se insucesso, punção intraóssea (IO) imediata em tíbia ou úmero proximal",
-          "Exame físico focado da macro e microcirculação: Tempo de Enchimento Capilar (TEC — meta ≤ 3 segundos) + gradiente térmico e perfusão cutânea (mottling score / livedo reticular)",
-          "Avaliação seriada do nível de consciência (Escala de Coma de Glasgow / agitação / sonolência patológica), frequência respiratória e sinais de esforço ventilatório",
-          "Cateter vesical de demora (Foley) para monitorização horária estrita de débito urinário (meta ≥ 0,5 mL/kg/h)",
-          "Oxigenoterapia com alvo SpO₂ 92–96% (evitar hiperóxia iatrogênica; titular VNI ou IOT com hemodinâmica protegida se exaustão respiratória)"
+          "Acesso vascular imediato: 2 acessos venosos periféricos calibrosos 16–18G (< 2 min) ou punção intraóssea (IO)",
+          "Exame físico focado de perfusão: Tempo de Enchimento Capilar (TEC — meta ≤ 3s), gradiente térmico e livedo",
+          "Cateter vesical de demora (Foley) para monitorização horária de débito urinário (meta ≥ 0,5 mL/kg/h)",
+          "Oxigenoterapia com alvo SpO₂ 92–96%"
         ]
       },
       {
         "id": "inv",
-        "t": "MOMENTO ZERO: POCUS protocolar & Investigação laboratorial de entrada",
+        "t": "POCUS protocolar & Investigação laboratorial de entrada",
         "it": [
-          "POCUS protocolar à beira-leito — Débito e causas obstrutivas óbvias: contratilidade de VE, sinais de TEP maciço (Sinal de McConnell / dilatação aguda de VD), tamponamento cardíaco (derrame pericárdico com colapso de câmaras direitas) e pneumotórax hipertensivo (ausência de lung sliding)",
-          "POCUS protocolar — Avaliação inferencial de PVC e congestão venosa sistêmica: aferição do diâmetro e colapsabilidade da VCI + Doppler venoso de veias jugulares e femorais (pesquisa de padrão pulsátil congestivo retrógrado estilo VExUS)",
-          "Coleta imediata de gasometria com dosagem de lactato sérico na admissão e controle seriado em 2–4 horas (tendência de queda indica melhora da perfusão; não constitui meta isolada para volume ou vasopressor)",
-          "Laboratório de triagem imediata: hemograma completo, plaquetas, função renal (ureia, creatinina), eletrólitos, coagulograma (TP/INR, TTPa) e troponina"
+          "POCUS protocolar à beira-leito (Protocolo RUSH): avaliar contratilidade de VE, dilatação de VD (TEP), tamponamento pericárdico e pneumotórax",
+          "Avaliação de VCI e congestão venosa retrógrada",
+          "Coleta imediata de gasometria com dosagem de lactato sérico na admissão",
+          "Laboratório de triagem imediata: hemograma completo, plaquetas, função renal, eletrólitos, coagulograma (TP/INR, TTPa) e troponina"
         ]
       },
       {
         "id": "esp",
-        "t": "MOMENTO ZERO: Protocolo de falha diagnóstica inicial (Choque críptico sem causa óbvia)",
+        "t": "Manejo empírico inicial do choque indiferenciado",
         "it": [
-          "Coleta imediata de 2 pares de hemoculturas de sítios venosos distintos (antes de iniciar o antibiótico, sem atrasar infusão)",
-          "Antibioticoterapia empírica de amplo espectro na 1ª hora — Opção A: Piperacilina-Tazobactam 4,5 g IV 6/6h (cobertura ampla nosocomial e Pseudomonas)",
-          "Antibioticoterapia empírica de amplo espectro na 1ª hora — Opção B: Ceftriaxona 2 g IV 12/12h ou 24/24h + Vancomicina 15–20 mg/kg IV 12/12h (cobertura combinada para comunitário grave e MRSA)",
-          "ECG de 12 derivações com derivações direitas/posteriores na busca ativa de Síndrome Coronariana Aguda oculta ou equivalente isquêmico",
-          "Vasopressor inicial precoce: Norepinefrina 0,05–0,5 mcg/kg/min em BIC para restaurar PAM alvo ≥ 65 mmHg e recrutar volume estressado"
-        ]
-      },
-      {
-        "id": "sin",
-        "t": "MOMENTO ZERO: Medidas de conforto e controle térmico",
-        "it": [
-          "Controle térmico ativo/passivo: aquecimento se temperatura central < 36°C (hipotermia piora coagulopatia e disfunção ventricular)",
-          "Analgesia parcimoniosa com Dipirona 1 g IV se dor (evitar AINEs e doses altas de sedativos/opioides que deprimem o tônus simpático compensatório)"
+          "Vasopressor inicial: Norepinefrina 0,05–0,5 mcg/kg/min em BIC se hipotensão com má perfusão enquanto investiga etiologia",
+          "ECG de 12 derivações na busca ativa de síndrome coronariana aguda ou arritmias",
+          "Coleta de hemoculturas e início de antimicrobiano empírico na 1ª hora se suspeita infecciosa"
         ]
       },
       {
         "id": "dsp",
-        "t": "MOMENTO ZERO: Disposição e alocação",
+        "t": "Disposição e vaga intensiva",
         "it": [
-          "Internação prioritária imediata em leito de Unidade de Terapia Intensiva (UTI) com vaga zero / prioridade 1",
-          "Instalação precoce de Linha Arterial (PAI) para monitorização invasiva contínua de PAM e coleta seriada de gasometria"
+          "Internação prioritária imediata em leito de Unidade de Terapia Intensiva (UTI)",
+          "Instalação de Linha Arterial (PAI) para monitorização invasiva contínua"
         ]
       }
     ]
@@ -6056,6 +6108,10 @@ const CT_SISTEMICO = {
     "l": "Dor lombar aguda",
     "subExcl": [
       {
+        "id": "dlb_ind",
+        "l": "Dor lombar indiferenciada / Triagem de Red Flags"
+      },
+      {
         "id": "dlb_mec",
         "l": "Lombalgia Mecânica / Lombociatalgia Aguda"
       },
@@ -6090,51 +6146,46 @@ const CT_SISTEMICO = {
         "l": "Rebaixamento de consciência / Delirium"
       }
     ],
+    "s": []
+  },
+  "dlb_ind": {
+    "l": "Dor lombar indiferenciada / Triagem de Red Flags",
     "s": [
       {
         "id": "sup",
         "t": "Rastreio sistemático de Red Flags (Sinais de Alarme)",
         "it": [
-          "Avaliação neurológica focada em membros inferiores: força motora (L4-extensão do joelho, L5-dorsiflexão do hálux, S1-flexão plantar), sensibilidade de dermátomos e reflexos patelar e aquileu",
+          "Avaliação neurológica focada em membros inferiores: força motora, reflexos e sensibilidade",
           "Pesquisa de anestesia em sela e palpação de globo vesical (retenção urinária aguda)",
-          "Palpação cuidadosa do abdome: busca ativa de massa aórtica pulsátil em pacientes com mais de 50 anos",
-          "Aferição de temperatura axilar e sinais vitais completos"
+          "Palpação abdominal cuidadosa (busca de massa aórtica pulsátil em > 50 anos)",
+          "Aferição de sinais vitais e temperatura axilar"
         ]
       },
       {
         "id": "sin",
-        "t": "Analgesia multimodal e orientações na lombalgia mecânica",
+        "t": "Analgesia de resgate",
         "it": [
-          "Dipirona 1 a 2 g IV a cada 6h OU Paracetamol 750–1.000 mg VO a cada 6h",
-          "Anti-inflamatório Não Esteroidal (AINE): Cetoprofeno 100 mg IV 12/12h ou Ibuprofeno 600 mg VO 8/8h por curto período (3 a 5 dias), se função renal preservada e sem risco hemorrágico",
-          "Relaxante muscular adjuvante se espasmo paravertebral intenso: Ciclobenzaprina 5 a 10 mg VO à noite por 5 a 7 dias",
-          "Aplicação de calor local úmido na região lombar por 15 a 20 minutos várias vezes ao dia"
-        ]
-      },
-      {
-        "id": "esp",
-        "t": "Conduta e intervenção específica",
-        "it": [
-          "Lombalgia mecânica simples sem red flags: analgesia oral ambulatorial, orientações ergonômicas e desmistificação do quadro",
-          "Suspeita de Cauda Equina ou Abscesso Epidural: NPO absoluto, leito monitorizado e acionamento emergencial da Neurocirurgia / Ortopedia de coluna",
-          "Suspeita de Aneurisma de Aorta Abdominal roto ou sintomático: acionamento imediato da Cirurgia Vascular com hipotensão permissiva e reposição com hemoderivados"
+          "Dipirona 1 a 2 g IV lento",
+          "Cetoprofeno 100 mg IV ou Tenoxicam 20 mg IV se função renal normal",
+          "Ciclobenzaprina 5 a 10 mg VO à noite se espasmo muscular associado",
+          "Morfina 2–4 mg IV se dor intratável refratária"
         ]
       },
       {
         "id": "inv",
-        "t": "Investigação complementar racional",
+        "t": "Investigação complementar",
         "it": [
-          "Ressonância Magnética (RM) de coluna lombossacra de emergência: exame padrão-ouro indicado imediatamente se suspeita de Cauda Equina, déficit neurológico focal progressivo ou infecção espinhal",
-          "Tomografia Computadorizada (TC) de coluna ou abdome: indicada se RM contraindicada ou para avaliar trauma ósseo / cólica renal / aneurisma aórtico",
-          "Laboratório na suspeita de alarme: Hemograma completo, Função renal (Ureia e Creatinina) e Urina tipo 1 (sedimento urinário)"
+          "RM de coluna lombossacra urgente se sinais de cauda equina, déficit motor ou febre com dor espinhal",
+          "TC ou USG de abdome se suspeita vascular ou cólica nefrética",
+          "EAS / Urina tipo 1, hemograma e PCR"
         ]
       },
       {
         "id": "dsp",
         "t": "Disposição",
         "it": [
-          "Cauda Equina / Abscesso Epidural / AAA roto: encaminhamento cirúrgico imediato e internação hospitalar/UTI",
-          "Lombalgia mecânica sem critérios de alarme: alta médica orientada com analgésicos orais, manutenção da marcha e orientação formal de retorno se retenção urinária, anestesia em sela, febre ou fraqueza nas pernas"
+          "Alta orientada com analgésicos e retorno formal se sinais de alarme em lombalgias mecânicas sem déficit",
+          "Internação imediata / parecer da Neurocirurgia se cauda equina ou abscesso epidural"
         ]
       }
     ]
@@ -6305,6 +6356,10 @@ const CT_SISTEMICO = {
     "l": "Edema / Dor em Membros Inferiores",
     "subExcl": [
       {
+        "id": "emmi_ind",
+        "l": "Edema / Dor em MMII indiferenciado (triagem inicial)"
+      },
+      {
         "id": "emmi_tvp",
         "l": "Trombose Venosa Profunda (TVP de MMII)"
       },
@@ -6343,51 +6398,44 @@ const CT_SISTEMICO = {
         "l": "Edema agudo de pulmão / IC associada"
       }
     ],
+    "s": []
+  },
+  "emmi_ind": {
+    "l": "Edema / Dor em MMII indiferenciado (triagem inicial)",
     "s": [
       {
         "id": "sup",
-        "t": "Avaliação sistemática e diagnóstico diferencial vascular",
+        "t": "Avaliação inicial e exame físico comparativo",
         "it": [
-          "Exame físico comparativo bilateral minucioso: palpação de pulsos periféricos (femoral, poplíteo, tibial posterior e pedioso dorsal)",
-          "Medição da circunferência das panturrilhas com fita métrica a 10 cm abaixo da tuberosidade tibial (assimetria ≥ 3 cm é sugestiva de TVP)",
-          "Avaliação de temperatura local, perfusão capilar distal, coloração cutânea (palidez, cianose, eritema), presença de bolhas e empastamento muscular"
+          "Exame físico comparativo bilateral minucioso: pulsos periféricos (femoral, poplíteo, tibial posterior e pedioso)",
+          "Medição da circunferência das panturrilhas com fita métrica (10 cm abaixo da tuberosidade tibial)",
+          "Avaliação de temperatura local, perfusão distal, eritema, empastamento e sinais de compartimento",
+          "Manter membro na horizontal sem compressão até definição etiológica"
         ]
       },
       {
         "id": "sin",
-        "t": "Analgesia e posicionamento adequado",
+        "t": "Analgesia",
         "it": [
-          "Elevação do membro a 30° se TVP ou celulite/insuficiência venosa (facilita o retorno venoso e reduz o edema)",
-          "Manter membro na horizontal ou levemente pendente se suspeita de isquemia arterial aguda",
-          "Dipirona 1 g IV a cada 6h + Morfina 2–4 mg IV se dor isquêmica aguda severa"
-        ]
-      },
-      {
-        "id": "esp",
-        "t": "Diretriz de intervenção por etiologia",
-        "it": [
-          "Suspeita de TVP com escore de Wells provável (≥ 2): iniciar anticoagulação plena enquanto aguarda confirmação ultrassonográfica, se sem contraindicações hemorrágicas",
-          "Isquemia arterial aguda: heparinização sistêmica imediata com Heparina Não Fracionada (HNF) bolus e acionamento vascular emergencial",
-          "Infecção necrosante de partes moles: desbridamento cirúrgico de emergência e antibioticoterapia tripla imediata"
+          "Dipirona 1 g IV a cada 6h",
+          "Morfina 2–4 mg IV se dor isquêmica intensa"
         ]
       },
       {
         "id": "inv",
-        "t": "Investigação complementar escalonada",
+        "t": "Investigação diagnóstica",
         "it": [
-          "Ultrassonografia com Doppler venoso de compressão de MMII: padrão-ouro para TVP (incompressibilidade da veia, ausência de fluxo fásico)",
-          "D-dímero de alta sensibilidade com ponto de corte ajustado pela idade (idade × 10 mcg/L se > 50 anos): utilizar APENAS se probabilidade de TVP improvável (Wells ≤ 1) para exclusão diagnóstica",
-          "Doppler arterial de MMII ou Angiotomografia arterial se suspeita de oclusão arterial aguda",
-          "Escore LRINEC (Laboratory Risk Indicator for Necrotizing Fasciitis) se sinais atípicos, bolhas ou crepitação: hemograma, PCR, sódio, glicose, creatinina"
+          "USG com Doppler vascular de MMII (venoso ou arterial conforme suspeita clínica)",
+          "D-dímero se Wells baixo/intermediário para TVP",
+          "Hemograma completo, PCR, eletrólitos, função renal e lactato"
         ]
       },
       {
         "id": "dsp",
         "t": "Disposição",
         "it": [
-          "Isquemia arterial aguda e infecção necrosante: centro cirúrgico de emergência e UTI pós-operatória",
-          "TVP proximal não complicada de baixo risco com suporte adequado: elegível para anticoagulação domiciliar com DOAC oral seguro e acompanhamento ambulatorial",
-          "Edema bilateral por IC descompensada, sepse de partes moles ou flebite complicada: internação hospitalar"
+          "Internação / parecer cirúrgico imediato se isquemia arterial aguda ou suspeita de infecção necrosante",
+          "Manejo clínico ambulatorial ou em enfermaria conforme gravidade"
         ]
       }
     ]
@@ -6587,6 +6635,10 @@ const CT_TRAUMA_TOX = {
     "l": "Intoxicação exógena",
     "subExcl": [
       {
+        "id": "int_ind",
+        "l": "Intoxicação exógena indiferenciada (manejo inicial)"
+      },
+      {
         "id": "int_opi",
         "l": "Toxídrome Opioide (Fentanil, Morfina, Metadona)"
       },
@@ -6637,42 +6689,46 @@ const CT_TRAUMA_TOX = {
         "l": "Arritmias cardíacas associadas"
       }
     ],
+    "s": []
+  },
+  "int_ind": {
+    "l": "Intoxicação exógena indiferenciada (manejo inicial)",
     "s": [
       {
         "id": "sup",
         "t": "Abordagem inicial e segurança (ABCDE toxicológico)",
         "it": [
-          "Vigilância de proteção e patência de VA para necessidade de IOT se associada a hipoventilação/insuficiência respiratória, perda de reflexos protetores ou risco iminente de broncoaspiração (Glasgow isolado não indica intubação mandatória)",
+          "Vigilância de via aérea: IOT precoce com balonete se hipoventilação, perda de reflexos ou risco de broncoaspiração",
           "Glicemia capilar IMEDIATA na admissão (< 5 min)",
-          "Monitorização contínua de sinais vitais com atenção especial à TEMPERATURA CENTRAL (risco de hipertermia letal em simpaticomiméticos/serotoninérgica ou hipotermia em opioides/sedativos)",
-          "ECG de 12 derivações precoce: mensurar complexo QRS (alargamento > 100 ms indica bloqueio de canal de sódio) e intervalo QTc (> 500 ms indica risco de Torsades)"
+          "Monitorização contínua de sinais vitais com atenção especial à TEMPERATURA CENTRAL (risco de hipertermia letal)",
+          "ECG de 12 derivações: avaliar QRS (> 100 ms) e QTc (> 500 ms)"
         ]
       },
       {
         "id": "esp",
-        "t": "Medidas gerais de descontaminação e suporte",
+        "t": "Medidas gerais de suporte e descontaminação",
         "it": [
-          "Carvão Ativado 1 g/kg (máx 50 g) VO ou por SNG: indicado SOMENTE se ingestão há menos de 1 hora de substância adsorvível E paciente vigil e cooperativo ou com via aérea protegida por tubo orotraqueal com balonete insuflado",
-          "Descontaminação cutânea: despir o paciente, descartar roupas contaminadas em sacos plásticos vedados e lavar a pele com água morna e sabão abundante",
-          "Hidratação balanceada com cristaloides (Ringer Lactato) para manutenção de débito urinário adequado"
+          "Carvão Ativado 1 g/kg (máx 50 g) VO/SNG: SOMENTE se ingestão há menos de 1 hora E paciente vigil e cooperativo com via aérea protegida",
+          "Descontaminação cutânea: despir o paciente, descartar roupas em saco vedado e lavar com água morna e sabão",
+          "Hidratação com cristaloides balanceados para manutenção de débito urinário"
         ]
       },
       {
         "id": "inv",
-        "t": "Investigação complementar toxicológica",
+        "t": "Investigação complementar",
         "it": [
-          "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa) + Lactato sérico seriado, Transaminases e Bilirrubinas",
-          "Dosagem sérica quantitativa de Paracetamol: mandatória em qualquer tentativa de autoextermínio com histórico impreciso de medicação",
-          "Painel toxicológico urinário qualitativo (confirma classes de drogas de abuso expostas)"
+          "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria e coagulograma",
+          "Dosagem sérica quantitativa de Paracetamol em qualquer tentativa de autoextermínio",
+          "Painel toxicológico urinário qualitativo"
         ]
       },
       {
         "id": "dsp",
-        "t": "Disposição e observação",
+        "t": "Disposição",
         "it": [
-          "Tentativa de autoextermínio: internação obrigatória com vigilância e avaliação psiquiátrica antes de qualquer alta hospitalar",
-          "Período mínimo de observação na emergência: 6 a 8 horas para toxinas de liberação imediata (e mínimo de 24 horas para formulações de liberação controlada/retard)",
-          "Instabilidade ventilatória, cardiovascular ou neurológica: internação obrigatória em leito de Terapia Intensiva (UTI)"
+          "Período mínimo de observação na emergência de 6–8 horas (24h para liberação retard)",
+          "Internação em UTI se instabilidade clínica ou necessidade de antídoto contínuo",
+          "Avaliação psiquiátrica obrigatória antes da alta em tentativas de autoextermínio"
         ]
       }
     ]
@@ -11403,13 +11459,31 @@ function suggestSindFromABC(){
  if(sat&&sat<90&&a.esf&&(a.esf.includes('Dispneia')||a.esf.includes('Uso de musculatura acessória')||a.esf.includes('Uso musc. acessória')))return {id:'dsp',l:'Dispneia',hint:'Hipoxemia + esforço respiratório — DPOC/asma/EAP/TEP'};
  return null;
 }
-function applySindSuggestion(id){if(!id)return;S.sind=id;S.chk={};S.nts={};S.subsind=null;S.subsinds=[];S.syndromeGridCollapsed=true;render();}
+function applySindSuggestion(id){
+ if(!id)return;
+ S.sind=id;
+ S.chk={};
+ S.nts={};
+ const T = CT[id];
+ const indSub = (T && T.subExcl) ? (T.subExcl.find(s=>s.id.endsWith('_ind')) || T.subExcl[0]) : null;
+ S.subsind=indSub ? indSub.id : null;
+ S.subsinds=[];
+ S.syndromeGridCollapsed=true;
+ render();
+}
 function s4ImpHeader(){
  const sug=suggestSindFromABC();
  const sugHtml=(sug&&!S.sind)?`<div class="abox aw" style="margin-bottom:12px;font-size:13px"><i class="ti ti-bulb" aria-hidden="true"></i> <strong>Sugestão do ABCDE:</strong> ${esc(sug.l)}. ${esc(sug.hint)}${sug.id?` <button class="xbtn" style="margin-left:6px;padding:3px 8px;font-size:12px" onclick="applySindSuggestion('${sug.id}')">Aplicar sugestão</button>`:''}</div>`:'';
  return `<div id="step-4" class="card"><div class="st"><i class="ti ti-clipboard-check" aria-hidden="true"></i> Impressão clínica e síndrome</div>${sugHtml}<div style="margin-bottom:12px"><label>Impressão clínica livre</label><textarea oninput="S.imp=this.value" placeholder="Descreva sua impressão diagnóstica...">${esc(S.imp)}</textarea></div>`;
 }
-function s4Grid(){return `${s4ImpHeader()}<div class="sl">Síndrome clínica suspeita:</div><div class="sgrid" id="syndrome-grid">${SLIST.map(s=>`<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};S.subsind=null;S.subsinds=[];S.syndromeGridCollapsed=true;render()">${s.l}</button>`).join('')}</div></div>`;}
+function s4Grid(){
+ return `${s4ImpHeader()}<div class="sl">Síndrome clínica suspeita:</div><div class="sgrid" id="syndrome-grid">${SLIST.map(s=>{
+  const T = CT[s.id];
+  const indSub = (T && T.subExcl) ? (T.subExcl.find(x=>x.id.endsWith('_ind')) || T.subExcl[0]) : null;
+  const defSubId = indSub ? indSub.id : '';
+  return `<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};S.subsind=S.sind?'${defSubId}':null;if(!S.subsind)S.subsind=null;S.subsinds=[];S.syndromeGridCollapsed=true;render()">${s.l}</button>`;
+ }).join('')}</div></div>`;
+}
 function s4ResetBtn(){return `<div style="margin-bottom:10px"><button class="xbtn" onclick="S.syndromeGridCollapsed=false;render()" style="width:100%;padding:8px;font-size:13px"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar ao seletor</button></div>`;}
 function s4SubExcl(T){
  const isM2=MOMENTO_2_SYNDROMES.includes(S.sind);
@@ -11600,14 +11674,14 @@ function rUnifiedConductsBoard(T){
    }
   });
 
-  const subEntries=[];
+   const subEntries=[];
   macro.secIds.forEach(secId=>{
    const sec=subT&&subT.s?subT.s.find(s=>s.id===secId):null;
    if(sec&&sec.it){
     sec.it.forEach((item,idx)=>{
      const sk = getSemanticConductKey(item);
      const ck = getCanonicalConductKey(item);
-     if(secId === 'sup' && (ck || isGenericVitalSupportItem(item))){
+     if(motherEntries.length > 0 && secId === 'sup' && (ck || isGenericVitalSupportItem(item))){
       if(sk && !boardSeenKeys.has(sk)) boardSeenKeys.add(sk);
       return;
      }
@@ -11691,18 +11765,20 @@ function rUnifiedConductsBoard(T){
       </div>`:''}
 
      ${subEntries.length?`
-      <div style="margin-top:10px;margin-bottom:8px;padding-top:8px;border-top:1px dashed var(--color-border)">
+      <div style="${motherEntries.length?'margin-top:10px;margin-bottom:8px;padding-top:8px;border-top:1px dashed var(--color-border)':'margin-bottom:8px'}">
+       ${motherEntries.length?`
        <div style="font-size:12px;font-weight:600;color:#991b1b;margin-bottom:6px;display:flex;align-items:center;gap:6px">
         <i class="ti ti-target" aria-hidden="true"></i> Conduta Específica — ${esc(subT.l)}:
-       </div>
+       </div>`:''}
        ${subEntries.map(({item,idx,secId})=>{
         const k=subId+'_'+secId+'_'+idx;
         const cl=ccls(k);
         const hl=itemHasVitalHl(item)?' hl':'';
+        const tagPrefix=motherEntries.length?`<span style="display:inline-block;padding:1px 5px;background:#fcebeb;color:#991b1b;border-radius:4px;font-size:11px;font-weight:600;margin-right:6px">[${esc(subT.l)}]</span>`:'';
         return `
          <div class="chk ${cl}${hl}" onclick="cyc('${k}')">
           <div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div>
-          <div class="ctx"><span style="display:inline-block;padding:1px 5px;background:#fcebeb;color:#991b1b;border-radius:4px;font-size:11px;font-weight:600;margin-right:6px">[${esc(subT.l)}]</span>${item}</div>
+          <div class="ctx">${tagPrefix}${item}</div>
          </div>`;
        }).join('')}
       </div>`:''}
@@ -11739,17 +11815,22 @@ function rUnifiedConductsBoard(T){
    <div class="st" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
     <span style="display:flex;align-items:center;gap:7px">
      <i class="ti ti-clipboard-list" style="color:#2563eb" aria-hidden="true"></i>
-     <span><strong>Prescrição & Condutas por Macro-Seções — ${esc(T.l)}</strong></span>
+     <span><strong>Prescrição & Condutas — ${esc(T.l)}${subT?` (${esc(subT.l)})`:''}</strong></span>
     </span>
     <span class="sb sok" style="font-size:11px;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe">
      ${totSel?`${totSel} ite${totSel>1?'ns':'m'} selecionado${totSel>1?'s':''}`:'Seleção Direta de 1 Clique'}
     </span>
    </div>
    <div class="sl" style="margin-top:-2px;margin-bottom:10px;font-size:12px;color:var(--color-text-secondary)">
-    <i class="ti ti-info-circle" aria-hidden="true"></i> Condutas consolidadas em 3 macro-seções práticas de emergência (Suporte Imediato, Prescrição & Tratamento, Propedêutica & Destino). Ícone <i class="ti ti-info-circle" style="color:#2563eb"></i> exibe diretriz e evidência clínica on-demand.
+    <i class="ti ti-info-circle" aria-hidden="true"></i> Condutas consolidadas em 3 macro-seções práticas de emergência (Suporte Imediato, Prescrição & Tratamento, Propedêutica & Destino).
    </div>
    ${alertsHtml}
-   ${renderedSections}
+   ${renderedSections || `
+    <div class="abox ai" style="margin:16px 0;font-size:13px">
+     <i class="ti ti-hand-click" aria-hidden="true"></i>
+     <span><strong>Selecione uma apresentação clínica / diagnóstico de trabalho acima</strong> para visualizar as condutas imediatas e prescrição direcionada.</span>
+    </div>
+   `}
   </div>
  `;
 }
@@ -11757,6 +11838,11 @@ function rUnifiedConductsBoard(T){
 function s4SyndromeFull(T){
  const parts=[];
  const isMomento2=MOMENTO_2_SYNDROMES.includes(S.sind);
+
+ if(T && T.subExcl && T.subExcl.length && !S.subsind){
+  const indSub = T.subExcl.find(s=>s.id.endsWith('_ind')) || T.subExcl[0];
+  if(indSub) S.subsind = indSub.id;
+ }
 
  if(T.subExcl)parts.push(s4SubExcl(T));
  

@@ -4,6 +4,10 @@ const CT_NEUROLOGICO = {
     "l": "Síndrome neurovascular (AVC / AIT)",
     "subExcl": [
       {
+        "id": "neu_ind",
+        "l": "Déficit neurológico focal agudo / Suspeita de AVC em triagem"
+      },
+      {
         "id": "avc_isq",
         "l": "AVC Isquêmico Agudo (AVCi)"
       },
@@ -26,26 +30,30 @@ const CT_NEUROLOGICO = {
         "l": "Crise convulsiva associada"
       }
     ],
+    "s": []
+  },
+  "neu_ind": {
+    "l": "Déficit neurológico focal agudo / Suspeita de AVC em triagem",
     "s": [
       {
         "id": "sup",
         "t": "Triagem imediata e protocolo código AVC (AHA/ASA 2026)",
         "it": [
           "Ativação imediata do Código AVC e determinação estrita da UVVB (Última Vez Visto Bem)",
-          "Acionamento prioritário da equipe de Neuroimagem / Radiologia para meta porta-TC < 20 minutos",
+          "Acionamento prioritário da Neuroimagem para meta porta-TC < 20 minutos",
           "Glicemia capilar imediata na admissão (< 5 min)",
-          "Avaliação e registro formal do escore NIHSS completo para determinar elegibilidade terapêutica",
-          "Acesso venoso calibroso (18G) exclusivo, monitorização cardíaca contínua e oximetria de pulso (manter SpO₂ ≥ 94%)",
-          "Jejum absoluto (NPO) rigoroso e teste formal de deglutição à beira-leito antes de qualquer oferta oral"
+          "Avaliação e registro formal do escore NIHSS completo",
+          "Acesso venoso calibroso (18G) exclusivo, monitorização cardíaca contínua e oximetria de pulso (SpO₂ ≥ 94%)",
+          "Jejum absoluto (NPO) rigoroso até teste de deglutição"
         ]
       },
       {
         "id": "sin",
         "t": "Manejo de suporte e neuroproteção",
         "it": [
-          "Posicionamento no leito: manter cabeceira a 0° se AVCi sem sinais de hipertensão intracraniana (otimiza fluxo cerebral penumbral); elevar a 30° se suspeita de AVCh, vômitos ou risco de broncoaspiração",
-          "Controle estrito de temperatura: tratar febre (Temp ≥ 37,5°C) imediatamente com Dipirona 1 g IV ou Paracetamol 1 g IV (hipertermia acelera a apoptose neuronal isquêmica)",
-          "Controle glicêmico rigoroso: manter glicemia entre 140–180 mg/dL com insulina regular conforme escala; tratar hipoglicemia imediatamente (< 70 mg/dL)"
+          "Posicionamento inicial: cabeceira elevada a 30° se vômitos/risco de aspiração ou suspeita de hemorragia; cabeceira a 0° se suspeita de isquemia pura sem HIC",
+          "Controle estrito de temperatura: tratar febre (Temp ≥ 37,5°C) imediatamente com Dipirona 1 g IV",
+          "Controle glicêmico rigoroso: manter glicemia entre 140–180 mg/dL"
         ]
       },
       {
@@ -53,17 +61,17 @@ const CT_NEUROLOGICO = {
         "t": "Investigação complementar urgente",
         "it": [
           "TC de crânio sem contraste imediata: excluir sangramento intracraniano e avaliar precocemente o escore ASPECTS",
-          "Angiotomografia arterial de crânio e vasos cervicais (AngioTC) em < 30 min se candidato a Trombectomia Mecânica (pesquisa de oclusão de grande vaso: carótida interna e ACM-M1)",
+          "Angiotomografia arterial de crânio e vasos cervicais (AngioTC) em < 30 min se janela terapêutica",
           "Hemograma completo, plaquetas, coagulograma (TP/INR, TTPa), glicemia e função renal",
-          "ECG de 12 derivações na admissão: pesquisar fibrilação atrial aguda, isquemia miocárdica concomitante ou arritmias"
+          "ECG de 12 derivações na admissão"
         ]
       },
       {
         "id": "dsp",
         "t": "Disposição",
         "it": [
-          "Internação obrigatória em Unidade de Cuidado Integral ao AVC (Unidade de AVC / UTI Neurológica)",
-          "Acionamento urgente da Neurologia Vascular e da equipe de Neurorradiologia Intervencionista / Neurocirurgia"
+          "Internação em Unidade de AVC (Stroke Unit) ou UTI conforme achado da neuroimagem",
+          "Definição imediata de conduta (trombólise/trombectomia vs neurocirurgia) após TC de crânio"
         ]
       }
     ]
@@ -200,6 +208,10 @@ const CT_NEUROLOGICO = {
     "l": "Rebaixamento de consciência / Coma",
     "subExcl": [
       {
+        "id": "rnc_ind",
+        "l": "Coma / Rebaixamento indiferenciado (manejo inicial)"
+      },
+      {
         "id": "rnc_met",
         "l": "Encefalopatia Tóxico-Metabólica (Uremia, Hepática, Hipoglicemia)"
       },
@@ -226,45 +238,47 @@ const CT_NEUROLOGICO = {
         "l": "Foco infeccioso / Sepse associada"
       }
     ],
+    "s": []
+  },
+  "rnc_ind": {
+    "l": "Coma / Rebaixamento indiferenciado (manejo inicial)",
     "s": [
       {
         "id": "sup",
-        "t": "MOMENTO ZERO: Manejo inicial do coma e proteção de via aérea (NCS)",
+        "t": "Manejo inicial do coma e proteção de via aérea (NCS)",
         "it": [
-          "Posicionamento e aspiração de vias aéreas: decúbito lateral se sem suspeita de trauma cervical; cabeceira a 30° se suspeita de hipertensão intracraniana",
-          "Vigilância de proteção e patência de VA para necessidade de IOT se RNC associada a HIC OU disfagia intensa OU insuficiência respiratória (Glasgow isolado não indica intubação mandatória em coma não-traumático)",
+          "Posicionamento e aspiração de vias aéreas: decúbito lateral se sem trauma; cabeceira a 30° se suspeita de HIC",
+          "Vigilância de proteção e patência de VA para necessidade de IOT se perda de reflexos protetores ou insuficiência respiratória",
           "Glicemia capilar IMEDIATA na admissão (< 5 min)",
-          "Monitorização contínua: oximetria de pulso (meta SpO₂ ≥ 94%), ECG contínuo, PA não invasiva a cada 5–15 min e temperatura central",
-          "Coleta imediata de gasometria arterial e lactato sérico (pesquisar acidose metabólica grave com gap aumentado, hipóxia ou hipercapnia)"
+          "Monitorização contínua: SpO₂ ≥ 94%, ECG contínuo, PA não invasiva e temperatura central",
+          "Coleta de gasometria arterial e lactato sérico"
         ]
       },
       {
         "id": "esp",
-        "t": "MOMENTO ZERO: Terapêutica empírica reversível e neuroproteção inicial",
+        "t": "Terapêutica empírica de reversão imediata",
         "it": [
-          "Hipoglicemia confirmada (Glicemia < 70 mg/dL): Tiamina 100 mg IV lento SEGUIDA IMEDIATAMENTE de Glicose a 50% 50 mL IV (25 g de glicose) em bólus; reavaliar dextro em 15 min",
-          "Suspeita de toxídrome opioide (miose puntiforme + depressão respiratória + coma): Naloxona 0,04 a 0,4 mg IV/IM/IN, repetindo a cada 2–3 min até restauração do drive respiratório (dose de até 2 mg se parada iminente)",
-          "Hipertensão Intracraniana (HIC) aguda / herniação iminente (anisocoria, tríade de Cushing, postura de descerebração): Salina Hipertônica 3% 150–250 mL IV em 15 min OU Manitol 20% 0,5–1 g/kg IV",
-          "Suspeita de meningoencefalite (febre + rigidez de nuca + coma): Ceftriaxona 2 g IV 12/12h + Ampicilina 2 g IV 4/4h (se > 50 anos ou imunossuprimido) + Vancomicina 15–20 mg/kg 12/12h + Dexametasona 10 mg IV (iniciar ANTES ou junto do 1º ATB)"
+          "Hipoglicemia (Glicemia < 70 mg/dL): Tiamina 100 mg IV lento seguida de Glicose a 50% 50 mL IV em bólus",
+          "Suspeita de toxídrome opioide: Naloxona 0,04 a 0,4 mg IV/IM/IN, repetindo a cada 2–3 min até restauração do drive respiratório",
+          "Hipertensão Intracraniana aguda / herniação: Salina Hipertônica 3% 150–250 mL IV OU Manitol 20% 0,5–1 g/kg IV"
         ]
       },
       {
         "id": "inv",
-        "t": "MOMENTO ZERO: Investigação complementar urgente",
+        "t": "Investigação complementar urgente",
         "it": [
-          "TC de crânio sem contraste em < 30 minutos: descartar hemorragia intracraniana, efeito de massa, hidrocefalia aguda e edema cerebral difuso",
-          "Painel laboratorial completo: eletrólitos (Na, K, Ca ionizado, Mg), função renal (ureia, creatinina), função hepática e amônia sérica (encefalopatia hepática)",
-          "Screening toxicológico urinário e sérico (álcool, benzodiazepínicos, opioides, antidepressivos, cocaína)",
-          "Eletroencefalograma (EEG) urgente: mandatório se coma inexplicado sem lesão estrutural na TC para descartar Estado de Mal Epiléptico Não Convulsivo (EMENC)",
-          "Punção lombar (PL) para análise bioquímica, citológica e microbiológica do líquor (realizar após TC descartar lesão expansiva com desvio de linha média)"
+          "TC de crânio sem contraste em < 30 minutos: descartar hemorragia, efeito de massa ou edema difuso",
+          "Painel laboratorial completo: eletrólitos (Na, K, Ca ionizado, Mg), função renal (ureia, creatinina), amônia sérica",
+          "Screening toxicológico urinário e sérico",
+          "Eletroencefalograma (EEG) urgente se TC normal para descartar EMENC"
         ]
       },
       {
         "id": "dsp",
-        "t": "MOMENTO ZERO: Disposição e leito monitorizado",
+        "t": "Disposição",
         "it": [
           "Internação imediata em leito de Terapia Intensiva (UTI geral ou neurocrítica)",
-          "Acionamento prioritário da Neurologia / Neurocirurgia"
+          "Acionamento prioritário da Neurologia / Neurocirurgia conforme achados"
         ]
       }
     ]
@@ -399,6 +413,10 @@ const CT_NEUROLOGICO = {
     "l": "Cefaleia",
     "subExcl": [
       {
+        "id": "cef_ind",
+        "l": "Cefaleia aguda em investigação / Triagem inicial"
+      },
+      {
         "id": "cef_prim",
         "l": "Suspeita de cefaleia primária"
       },
@@ -443,51 +461,44 @@ const CT_NEUROLOGICO = {
         "l": "Neuralgia do trigêmeo"
       }
     ],
+    "s": []
+  },
+  "cef_ind": {
+    "l": "Cefaleia aguda em investigação / Triagem inicial",
     "s": [
       {
         "id": "sup",
-        "t": "Triagem / monitorização",
+        "t": "Triagem e monitorização",
         "it": [
-          "Monitor de sinais vitais e EVA na chegada",
-          "Documentar escala de dor e resposta à analgesia a cada 30 minutos",
-          "Acesso venoso periférico se houver indicação de medicação IV ou exames com contraste",
-          "Avaliação neurológica focada (Glasgow, pupilas, força, fala, marcha)",
-          "Alocar em ambiente calmo, com pouca luz e sem ruídos, se hipótese de cefaleia migranosa"
+          "Monitor de sinais vitais e EVA na admissão",
+          "Acesso venoso periférico se indicação de analgesia IV ou exames contrastados",
+          "Avaliação neurológica direcionada (Glasgow, pupilas, pares cranianos, sinais meníngeos)"
         ]
       },
       {
         "id": "sin",
-        "t": "Analgesia inespecífica",
+        "t": "Analgesia de resgate e sintomáticos",
         "it": [
-          "Dipirona 2 g EV agora",
-          "Cetoprofeno 100 mg EV agora (ou outro AINE)",
-          "Dexametasona 10 mg EV agora se suspeita de cefaleia migranosa",
-          "Metoclopramida 10 mg IV",
-          "Hidratação EV parcimoniosa se sinais de desidratação"
+          "Dipirona 1–2 g IV lento",
+          "Cetoprofeno 100 mg IV ou Tenoxicam 20 mg IV (se ausência de sinais de alarme para HSA/AVCh)",
+          "Metoclopramida 10 mg IV ou Ondansetrona 8 mg IV se náuseas ou vômitos"
         ]
       },
       {
         "id": "inv",
-        "t": "Investigação",
+        "t": "Investigação diagnóstica",
         "it": [
-          "TC de crânio sem contraste em < 1h se ≥ 1 sinal de alarme (SNNOOP10)",
-          "Punção lombar após TC normal se HSA suspeita (especialmente > 6h do início)",
-          "Laboratório de admissão completo para triagem de disfunções orgânicas; coagulograma e culturas se suspeita de meningite ou sepse",
-          "AngioTC se TC normal mas suspeita persistente de HSA, dissecção ou TVC",
-          "Glicemia capilar",
-          "Considerar NS1 se clínica sugestiva de dengue"
+          "TC de crânio sem contraste em < 1h se presença de sinais de alarme (início súbito/thunderclap, déficit focal, febre, imunossupressão, neoplasia)",
+          "Punção lombar após TC sem contraste normal se persistência de suspeita de HSA ou meningite",
+          "Glicemia capilar imediata"
         ]
       },
       {
         "id": "dsp",
         "t": "Disposição",
         "it": [
-          "Alta médica após melhora da queixa",
-          "Observação 4–6h se alarme isolado com TC negativa, melhora parcial ou dúvida diagnóstica",
-          "Internação se Glasgow alterado, déficit focal, suspeita de HSA / meningite / TVC / dissecção ou dor refratária",
-          "Encaminhamento à neurologia ambulatorial se ≥ 4 crises/mês, cefaleia diária persistente, padrão atípico ou primeira crise > 50 anos",
-          "Retorno imediato se cefaleia que piora, febre, déficit novo ou alteração de consciência",
-          "Orientar diário de cefaleia, identificação de gatilhos e uso racional de analgésicos"
+          "Alta orientada após resolução completa da dor em cefaleias sem sinais de alarme",
+          "Observação monitorizada ou internação se dor refratária, alteração do nível de consciência ou necessidade de investigação invasiva"
         ]
       }
     ]
@@ -496,27 +507,45 @@ const CT_NEUROLOGICO = {
     "l": "Suspeita de cefaleia primária",
     "s": [
       {
-        "id": "esp",
-        "t": "Terapia direcionada",
+        "id": "sup",
+        "t": "Suporte e acomodação",
         "it": [
-          "Sumatriptano 6 mg SC ou 50–100 mg VO se enxaqueca provável e sem contraindicações",
-          "Clorpromazina 12,5–25 mg EV em 100 mL SF em 30 min",
-          "O₂ 100% por máscara não-reinalante 12–15 L/min por 15–20 min",
-          "Bloqueio do nervo occipital maior com lidocaína 2% (2–3 mL bilateral)",
-          "Considerar bloqueio do gânglio esfenopalatino"
+          "Alocar em ambiente calmo, com pouca luz e sem ruídos",
+          "Acesso venoso periférico se náuseas/vômitos ou medicação IV indicada",
+          "Monitorar intensidade da dor (escala EVA) antes e 30-60 min após medicação"
+        ]
+      },
+      {
+        "id": "sin",
+        "t": "Analgesia escalonada e antieméticos",
+        "it": [
+          "Dipirona 2 g IV lento agora",
+          "Cetoprofeno 100 mg IV lento agora (ou outro AINE)",
+          "Metoclopramida 10 mg IV (ou Ondansetrona 8 mg IV)",
+          "Dexametasona 10 mg IV agora se crise migranosa prolongada (reduz taxa de recorrência em 72h)"
+        ]
+      },
+      {
+        "id": "esp",
+        "t": "Terapia direcionada / Específica",
+        "it": [
+          "Sumatriptano 6 mg SC ou 50–100 mg VO se enxaqueca provável e sem contraindicações coronarianas",
+          "Clorpromazina 12,5–25 mg IV em 100 mL SF em 30 min se refratária",
+          "O₂ 100% por máscara não-reinalante 12–15 L/min por 15–20 min se suspeita de cefaleia em salvas",
+          "Bloqueio do nervo occipital maior com lidocaína 2% (2–3 mL bilateral)"
         ]
       },
       {
         "id": "dsp",
         "t": "Alta e orientação",
         "it": [
+          "Alta médica após melhora da queixa com prescrição de resgate para casa",
           "Receita de analgésico de resgate (paracetamol 750 mg ou ibuprofeno 400 mg até 8/8h por ≤ 2–3 dias)",
           "Receita de antiemético VO/SL (metoclopramida ou ondansetrona) se vômitos",
           "Receita de triptano de resgate VO se padrão migranoso recorrente",
           "Orientar diário de cefaleia (frequência, intensidade, gatilhos, resposta)",
-          "Limitar analgésicos a < 10–15 dias/mês para evitar cefaleia por uso excessivo",
-          "Encaminhar à neurologia ambulatorial se ≥ 4 crises/mês, refratariedade ou indicação de profilaxia",
-          "Medidas não farmacológicas: sono regular, hidratação, manejo de estresse, evitar gatilhos"
+          "Limitar analgésicos a < 10–15 dias/mês para evitar cefaleia por uso excessivo de analgésicos",
+          "Encaminhar à neurologia ambulatorial se crises frequentes ou refratárias"
         ]
       }
     ]

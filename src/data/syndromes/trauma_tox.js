@@ -4,6 +4,10 @@ const CT_TRAUMA_TOX = {
     "l": "Intoxicação exógena",
     "subExcl": [
       {
+        "id": "int_ind",
+        "l": "Intoxicação exógena indiferenciada (manejo inicial)"
+      },
+      {
         "id": "int_opi",
         "l": "Toxídrome Opioide (Fentanil, Morfina, Metadona)"
       },
@@ -54,42 +58,46 @@ const CT_TRAUMA_TOX = {
         "l": "Arritmias cardíacas associadas"
       }
     ],
+    "s": []
+  },
+  "int_ind": {
+    "l": "Intoxicação exógena indiferenciada (manejo inicial)",
     "s": [
       {
         "id": "sup",
         "t": "Abordagem inicial e segurança (ABCDE toxicológico)",
         "it": [
-          "Vigilância de proteção e patência de VA para necessidade de IOT se associada a hipoventilação/insuficiência respiratória, perda de reflexos protetores ou risco iminente de broncoaspiração (Glasgow isolado não indica intubação mandatória)",
+          "Vigilância de via aérea: IOT precoce com balonete se hipoventilação, perda de reflexos ou risco de broncoaspiração",
           "Glicemia capilar IMEDIATA na admissão (< 5 min)",
-          "Monitorização contínua de sinais vitais com atenção especial à TEMPERATURA CENTRAL (risco de hipertermia letal em simpaticomiméticos/serotoninérgica ou hipotermia em opioides/sedativos)",
-          "ECG de 12 derivações precoce: mensurar complexo QRS (alargamento > 100 ms indica bloqueio de canal de sódio) e intervalo QTc (> 500 ms indica risco de Torsades)"
+          "Monitorização contínua de sinais vitais com atenção especial à TEMPERATURA CENTRAL (risco de hipertermia letal)",
+          "ECG de 12 derivações: avaliar QRS (> 100 ms) e QTc (> 500 ms)"
         ]
       },
       {
         "id": "esp",
-        "t": "Medidas gerais de descontaminação e suporte",
+        "t": "Medidas gerais de suporte e descontaminação",
         "it": [
-          "Carvão Ativado 1 g/kg (máx 50 g) VO ou por SNG: indicado SOMENTE se ingestão há menos de 1 hora de substância adsorvível E paciente vigil e cooperativo ou com via aérea protegida por tubo orotraqueal com balonete insuflado",
-          "Descontaminação cutânea: despir o paciente, descartar roupas contaminadas em sacos plásticos vedados e lavar a pele com água morna e sabão abundante",
-          "Hidratação balanceada com cristaloides (Ringer Lactato) para manutenção de débito urinário adequado"
+          "Carvão Ativado 1 g/kg (máx 50 g) VO/SNG: SOMENTE se ingestão há menos de 1 hora E paciente vigil e cooperativo com via aérea protegida",
+          "Descontaminação cutânea: despir o paciente, descartar roupas em saco vedado e lavar com água morna e sabão",
+          "Hidratação com cristaloides balanceados para manutenção de débito urinário"
         ]
       },
       {
         "id": "inv",
-        "t": "Investigação complementar toxicológica",
+        "t": "Investigação complementar",
         "it": [
-          "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa) + Lactato sérico seriado, Transaminases e Bilirrubinas",
-          "Dosagem sérica quantitativa de Paracetamol: mandatória em qualquer tentativa de autoextermínio com histórico impreciso de medicação",
-          "Painel toxicológico urinário qualitativo (confirma classes de drogas de abuso expostas)"
+          "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria e coagulograma",
+          "Dosagem sérica quantitativa de Paracetamol em qualquer tentativa de autoextermínio",
+          "Painel toxicológico urinário qualitativo"
         ]
       },
       {
         "id": "dsp",
-        "t": "Disposição e observação",
+        "t": "Disposição",
         "it": [
-          "Tentativa de autoextermínio: internação obrigatória com vigilância e avaliação psiquiátrica antes de qualquer alta hospitalar",
-          "Período mínimo de observação na emergência: 6 a 8 horas para toxinas de liberação imediata (e mínimo de 24 horas para formulações de liberação controlada/retard)",
-          "Instabilidade ventilatória, cardiovascular ou neurológica: internação obrigatória em leito de Terapia Intensiva (UTI)"
+          "Período mínimo de observação na emergência de 6–8 horas (24h para liberação retard)",
+          "Internação em UTI se instabilidade clínica ou necessidade de antídoto contínuo",
+          "Avaliação psiquiátrica obrigatória antes da alta em tentativas de autoextermínio"
         ]
       }
     ]

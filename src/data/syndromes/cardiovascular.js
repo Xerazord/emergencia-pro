@@ -4,6 +4,10 @@ const CT_CARDIOVASCULAR = {
     "l": "Dor torácica",
     "subExcl": [
       {
+        "id": "dt_ind",
+        "l": "Dor torácica indiferenciada / Em investigação"
+      },
+      {
         "id": "sca_oca",
         "l": "SCA — OCA (Oclusão / Equivalente STEMI)"
       },
@@ -50,10 +54,14 @@ const CT_CARDIOVASCULAR = {
         "l": "Dispepsia / Refluxo gastroesofágico"
       }
     ],
+    "s": []
+  },
+  "dt_ind": {
+    "l": "Dor torácica indiferenciada / Em investigação",
     "s": [
       {
         "id": "sup",
-        "t": "Monitorização e suporte inicial (comum)",
+        "t": "Monitorização e suporte inicial",
         "it": [
           "Monitorização cardíaca contínua (ECG, SatO₂, PA não-invasiva)",
           "ECG de 12 derivações realizado e interpretado em < 10 min da admissão",
@@ -68,8 +76,7 @@ const CT_CARDIOVASCULAR = {
         "it": [
           "Dipirona 1–2 g IV lento se dor leve a moderada",
           "Nitrato SL (Isossorbida 5 mg) se dor isquêmica persistente e PAS > 100 mmHg [CONTRAINDICADO se uso de inibidor de PDE-5 em 24–48h ou suspeita de IAM de VD]",
-          "Morfina 2–4 mg IV titulada apenas para dor intensa refratária [atenção: retarda absorção de antiplaquetários orais]",
-          "Evitar AINEs em suspeita coronariana (risco aumentado de eventos adversos e rotura miocárdica)"
+          "Morfina 2–4 mg IV titulada apenas para dor intensa refratária [atenção: retarda absorção de antiplaquetários orais]"
         ]
       },
       {
@@ -86,8 +93,8 @@ const CT_CARDIOVASCULAR = {
         "id": "dsp",
         "t": "Estratificação de risco e disposição",
         "it": [
-          "Calcular escores de risco na admissão (apenas se ausência de supra de ST ou equivalentes de OCA): HEART Score e EDACS",
-          "Dor torácica sem OCA: HEART ≤ 3 + hs-cTn normal em 0h/1h indica baixo risco para MACE (< 1%), elegível para alta e seguimento em 72h",
+          "Calcular escores de risco na admissão: HEART Score e EDACS",
+          "Dor torácica sem OCA: HEART ≤ 3 + hs-cTn normal em 0h/1h indica baixo risco para MACE (< 1%), observação e seguimento ambulatorial",
           "Dor torácica sem OCA: HEART 4–6 indica risco intermediário, observação monitorizada por 6–12h com troponina seriada",
           "Dor torácica sem OCA: HEART ≥ 7 ou troponina dinâmica positiva indica alto risco, internação em leito monitorizado/UTI e coronariografia"
         ]
@@ -481,6 +488,10 @@ const CT_CARDIOVASCULAR = {
     "l": "Palpitações / Arritmias",
     "subExcl": [
       {
+        "id": "pal_ind",
+        "l": "Arritmia / Palpitação indiferenciada (estabilização inicial)"
+      },
+      {
         "id": "pal_tsv",
         "l": "TSV (Reentrada Nodal / Via Acessória)"
       },
@@ -519,6 +530,10 @@ const CT_CARDIOVASCULAR = {
         "l": "Edema agudo de pulmão / IC associada"
       }
     ],
+    "s": []
+  },
+  "pal_ind": {
+    "l": "Arritmia / Palpitação indiferenciada (estabilização inicial)",
     "s": [
       {
         "id": "sup",

@@ -130,13 +130,31 @@ function suggestSindFromABC(){
  if(sat&&sat<90&&a.esf&&(a.esf.includes('Dispneia')||a.esf.includes('Uso de musculatura acessória')||a.esf.includes('Uso musc. acessória')))return {id:'dsp',l:'Dispneia',hint:'Hipoxemia + esforço respiratório — DPOC/asma/EAP/TEP'};
  return null;
 }
-function applySindSuggestion(id){if(!id)return;S.sind=id;S.chk={};S.nts={};S.subsind=null;S.subsinds=[];S.syndromeGridCollapsed=true;render();}
+function applySindSuggestion(id){
+ if(!id)return;
+ S.sind=id;
+ S.chk={};
+ S.nts={};
+ const T = CT[id];
+ const indSub = (T && T.subExcl) ? (T.subExcl.find(s=>s.id.endsWith('_ind')) || T.subExcl[0]) : null;
+ S.subsind=indSub ? indSub.id : null;
+ S.subsinds=[];
+ S.syndromeGridCollapsed=true;
+ render();
+}
 function s4ImpHeader(){
  const sug=suggestSindFromABC();
  const sugHtml=(sug&&!S.sind)?`<div class="abox aw" style="margin-bottom:12px;font-size:13px"><i class="ti ti-bulb" aria-hidden="true"></i> <strong>Sugestão do ABCDE:</strong> ${esc(sug.l)}. ${esc(sug.hint)}${sug.id?` <button class="xbtn" style="margin-left:6px;padding:3px 8px;font-size:12px" onclick="applySindSuggestion('${sug.id}')">Aplicar sugestão</button>`:''}</div>`:'';
  return `<div id="step-4" class="card"><div class="st"><i class="ti ti-clipboard-check" aria-hidden="true"></i> Impressão clínica e síndrome</div>${sugHtml}<div style="margin-bottom:12px"><label>Impressão clínica livre</label><textarea oninput="S.imp=this.value" placeholder="Descreva sua impressão diagnóstica...">${esc(S.imp)}</textarea></div>`;
 }
-function s4Grid(){return `${s4ImpHeader()}<div class="sl">Síndrome clínica suspeita:</div><div class="sgrid" id="syndrome-grid">${SLIST.map(s=>`<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};S.subsind=null;S.subsinds=[];S.syndromeGridCollapsed=true;render()">${s.l}</button>`).join('')}</div></div>`;}
+function s4Grid(){
+ return `${s4ImpHeader()}<div class="sl">Síndrome clínica suspeita:</div><div class="sgrid" id="syndrome-grid">${SLIST.map(s=>{
+  const T = CT[s.id];
+  const indSub = (T && T.subExcl) ? (T.subExcl.find(x=>x.id.endsWith('_ind')) || T.subExcl[0]) : null;
+  const defSubId = indSub ? indSub.id : '';
+  return `<button class="xbtn ${S.sind===s.id?'on':''}" onclick="S.sind=S.sind==='${s.id}'?null:'${s.id}';S.chk={};S.nts={};S.subsind=S.sind?'${defSubId}':null;if(!S.subsind)S.subsind=null;S.subsinds=[];S.syndromeGridCollapsed=true;render()">${s.l}</button>`;
+ }).join('')}</div></div>`;
+}
 function s4ResetBtn(){return `<div style="margin-bottom:10px"><button class="xbtn" onclick="S.syndromeGridCollapsed=false;render()" style="width:100%;padding:8px;font-size:13px"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar ao seletor</button></div>`;}
 function s4SubExcl(T){
  const isM2=MOMENTO_2_SYNDROMES.includes(S.sind);
@@ -327,14 +345,14 @@ function rUnifiedConductsBoard(T){
    }
   });
 
-  const subEntries=[];
+   const subEntries=[];
   macro.secIds.forEach(secId=>{
    const sec=subT&&subT.s?subT.s.find(s=>s.id===secId):null;
    if(sec&&sec.it){
     sec.it.forEach((item,idx)=>{
      const sk = getSemanticConductKey(item);
      const ck = getCanonicalConductKey(item);
-     if(secId === 'sup' && (ck || isGenericVitalSupportItem(item))){
+     if(motherEntries.length > 0 && secId === 'sup' && (ck || isGenericVitalSupportItem(item))){
       if(sk && !boardSeenKeys.has(sk)) boardSeenKeys.add(sk);
       return;
      }
@@ -418,18 +436,20 @@ function rUnifiedConductsBoard(T){
       </div>`:''}
 
      ${subEntries.length?`
-      <div style="margin-top:10px;margin-bottom:8px;padding-top:8px;border-top:1px dashed var(--color-border)">
+      <div style="${motherEntries.length?'margin-top:10px;margin-bottom:8px;padding-top:8px;border-top:1px dashed var(--color-border)':'margin-bottom:8px'}">
+       ${motherEntries.length?`
        <div style="font-size:12px;font-weight:600;color:#991b1b;margin-bottom:6px;display:flex;align-items:center;gap:6px">
         <i class="ti ti-target" aria-hidden="true"></i> Conduta Específica — ${esc(subT.l)}:
-       </div>
+       </div>`:''}
        ${subEntries.map(({item,idx,secId})=>{
         const k=subId+'_'+secId+'_'+idx;
         const cl=ccls(k);
         const hl=itemHasVitalHl(item)?' hl':'';
+        const tagPrefix=motherEntries.length?`<span style="display:inline-block;padding:1px 5px;background:#fcebeb;color:#991b1b;border-radius:4px;font-size:11px;font-weight:600;margin-right:6px">[${esc(subT.l)}]</span>`:'';
         return `
          <div class="chk ${cl}${hl}" onclick="cyc('${k}')">
           <div class="cico"><i class="ti ${cico(k)}" aria-hidden="true"></i></div>
-          <div class="ctx"><span style="display:inline-block;padding:1px 5px;background:#fcebeb;color:#991b1b;border-radius:4px;font-size:11px;font-weight:600;margin-right:6px">[${esc(subT.l)}]</span>${item}</div>
+          <div class="ctx">${tagPrefix}${item}</div>
          </div>`;
        }).join('')}
       </div>`:''}
@@ -466,17 +486,22 @@ function rUnifiedConductsBoard(T){
    <div class="st" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
     <span style="display:flex;align-items:center;gap:7px">
      <i class="ti ti-clipboard-list" style="color:#2563eb" aria-hidden="true"></i>
-     <span><strong>Prescrição & Condutas por Macro-Seções — ${esc(T.l)}</strong></span>
+     <span><strong>Prescrição & Condutas — ${esc(T.l)}${subT?` (${esc(subT.l)})`:''}</strong></span>
     </span>
     <span class="sb sok" style="font-size:11px;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe">
      ${totSel?`${totSel} ite${totSel>1?'ns':'m'} selecionado${totSel>1?'s':''}`:'Seleção Direta de 1 Clique'}
     </span>
    </div>
    <div class="sl" style="margin-top:-2px;margin-bottom:10px;font-size:12px;color:var(--color-text-secondary)">
-    <i class="ti ti-info-circle" aria-hidden="true"></i> Condutas consolidadas em 3 macro-seções práticas de emergência (Suporte Imediato, Prescrição & Tratamento, Propedêutica & Destino). Ícone <i class="ti ti-info-circle" style="color:#2563eb"></i> exibe diretriz e evidência clínica on-demand.
+    <i class="ti ti-info-circle" aria-hidden="true"></i> Condutas consolidadas em 3 macro-seções práticas de emergência (Suporte Imediato, Prescrição & Tratamento, Propedêutica & Destino).
    </div>
    ${alertsHtml}
-   ${renderedSections}
+   ${renderedSections || `
+    <div class="abox ai" style="margin:16px 0;font-size:13px">
+     <i class="ti ti-hand-click" aria-hidden="true"></i>
+     <span><strong>Selecione uma apresentação clínica / diagnóstico de trabalho acima</strong> para visualizar as condutas imediatas e prescrição direcionada.</span>
+    </div>
+   `}
   </div>
  `;
 }
@@ -484,6 +509,11 @@ function rUnifiedConductsBoard(T){
 function s4SyndromeFull(T){
  const parts=[];
  const isMomento2=MOMENTO_2_SYNDROMES.includes(S.sind);
+
+ if(T && T.subExcl && T.subExcl.length && !S.subsind){
+  const indSub = T.subExcl.find(s=>s.id.endsWith('_ind')) || T.subExcl[0];
+  if(indSub) S.subsind = indSub.id;
+ }
 
  if(T.subExcl)parts.push(s4SubExcl(T));
  

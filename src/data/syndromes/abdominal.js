@@ -4,6 +4,10 @@ const CT_ABDOMINAL = {
     "l": "Síndrome abdominal aguda",
     "subExcl": [
       {
+        "id": "dab_ind",
+        "l": "Abdome agudo indiferenciado / Em elucidação"
+      },
+      {
         "id": "dab_perf",
         "l": "Perfurativo (Úlcera péptica rota, Perfuração de víscera, Colecistite rota)"
       },
@@ -42,59 +46,47 @@ const CT_ABDOMINAL = {
         "l": "Náuseas e vômitos incoercíveis"
       }
     ],
+    "s": []
+  },
+  "dab_ind": {
+    "l": "Abdome agudo indiferenciado / Em elucidação",
     "s": [
       {
         "id": "sup",
-        "t": "Triagem de gravidade & Suporte hemodinâmico",
+        "t": "Triagem e suporte hemodinâmico",
         "it": [
           "Monitorização multiparamétrica contínua (ECG, SpO₂, PANI a cada 5–15 min)",
           "Dois acessos venosos periféricos calibrosos (16–18G) imediatos",
           "Jejum absoluto (NPO) rigoroso",
-          "Ressuscitação volêmica: Ringer Lactato 1.000 mL IV em bólus agora",
-          "Sonda Nasogástrica calibrosa (16–18F) aberta com drenagem livre em sifonagem",
-          "Vigilância de via aérea: baixo limiar para IOT se rebaixamento, exaustão ventilatória ou acidose grave"
+          "Hidratação volêmica inicial com Ringer Lactato 500–1.000 mL IV",
+          "Passagem de SNG aberta em sifonagem se vômitos incoercíveis ou distensão gástrica"
         ]
       },
       {
         "id": "sin",
         "t": "Analgesia precoce multimodal & Antieméticos",
         "it": [
-          "Dipirona 1 a 2 g IV a cada 6h se dor ou febre",
-          "Morfina 2–4 mg IV fracionada ou Fentanil 50–100 mcg IV se dor intensa (EVA ≥ 7)",
-          "Escopolamina 20 mg IV se cólica biliar ou renal pura",
-          "Ondansetrana 4–8 mg IV se náuseas ou vômitos associados"
-        ]
-      },
-      {
-        "id": "esp",
-        "t": "Terapia antimicrobiana & Conduta cirúrgica",
-        "it": [
-          "Ceftriaxona 2 g IV dose única diária + Metronidazol 500 mg IV 8/8h (iniciar na 1ª hora)",
-          "Piperacilina-Tazobactam 4,5 g IV 6/6h (esquema alternativo para choque séptico de foco abdominal)",
-          "Norepinefrina em AVP transitório (titular em BIC para PAM alvo ≥ 65 mmHg)",
-          "Baixo limiar para associar Vasopressina 0,03 U/min + Hidrocortisona 200 mg/dia se choque séptico refratário",
-          "Omeprazol 80 mg IV em bólus"
+          "Dipirona 1 a 2 g IV a cada 6h",
+          "Morfina 2–4 mg IV fracionada se dor intensa (EVA ≥ 7) sem mascarar abdome cirúrgico",
+          "Ondansetrana 4–8 mg IV se náuseas ou vômitos"
         ]
       },
       {
         "id": "inv",
         "t": "Investigação diagnóstica urgente",
         "it": [
-          "TC de abdome total com contraste venoso em caráter de urgência",
-          "POCUS abdominal na emergência (pesquisa de pneumoperitônio e líquido em espaço de Morrison)",
-          "Rotina de abdome agudo: RX de tórax em cúpulas e RX de abdome em 2 posições",
-          "Coleta de 2 pares de hemoculturas de sítios venosos distintos antes do antimicrobiano",
-          "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa) + Lactato sérico seriado, Amilase e Lipase",
+          "TC de abdome total com contraste venoso em caráter de urgência (ou USG se cólica biliar/criança/gestante)",
+          "Rotina radiológica de abdome agudo no leito (tórax cúpulas + abdome)",
+          "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa, amilase e lipase",
           "β-hCG sérico ou urinário em mulheres em idade fértil"
         ]
       },
       {
         "id": "dsp",
-        "t": "Disposição & Encaminhamentos",
+        "t": "Disposição & Conduta cirúrgica",
         "it": [
-          "Acionamento imediato da equipe de Cirurgia Geral de plantão para avaliação cirúrgica emergencial",
-          "Regulação urgente de vaga / transferência hospitalar via CROSS / NIR (Vaga Zero para UTI / Centro Cirúrgico)",
-          "Encaminhamento direto ao Centro Cirúrgico para laparotomia exploradora se peritonite difusa ou perfuração"
+          "Avaliação prioritária da Cirurgia Geral de plantão",
+          "Internação em leito cirúrgico monitorizado ou UTI se instabilidade"
         ]
       }
     ]
@@ -300,6 +292,10 @@ const CT_ABDOMINAL = {
     "l": "Hemorragia digestiva",
     "subExcl": [
       {
+        "id": "hdg_ind",
+        "l": "Hemorragia digestiva indiferenciada (alta vs. baixa)"
+      },
+      {
         "id": "hda",
         "l": "HDA — Hemorragia Digestiva Alta"
       },
@@ -314,41 +310,53 @@ const CT_ABDOMINAL = {
         "l": "Choque hemorrágico / Instabilidade associada"
       }
     ],
+    "s": []
+  },
+  "hdg_ind": {
+    "l": "Hemorragia digestiva indiferenciada (alta vs. baixa)",
     "s": [
       {
         "id": "sup",
-        "t": "Ressuscitação e estabilização inicial (ACG 2021 / ESGE 2022)",
+        "t": "Ressuscitação e estabilização inicial (ACG/ESGE)",
         "it": [
-          "Monitorização multiparamétrica contínua (ECG, oximetria de pulso, PANI a cada 5–15 min)",
-          "Dois acessos venosos periféricos de grosso calibre (14–16G) ou cateter venoso central / introdutor se acesso periférico difícil",
+          "Monitorização multiparamétrica contínua (ECG, SpO₂, PANI a cada 5–15 min)",
+          "Dois acessos venosos periféricos de grosso calibre (14–16G) imediatos",
           "Jejum absoluto (NPO) rigoroso",
-          "Estratégia transfusional restritiva: meta de hemoglobina entre 7,0 e 8,0 g/dL (transfundir concentrado de hemácias se Hb < 7,0 g/dL; meta Hb > 8,0 g/dL se síndrome coronariana aguda ou cardiopatia isquêmica grave)",
-          "Controle térmico ativo: manter normotermia para prevenir a tríade letal da coagulopatia"
+          "Estratégia transfusional restritiva: meta de Hb entre 7,0 e 8,0 g/dL (Hb > 8,0 g/dL se coronariopatia grave)",
+          "Controle térmico ativo: manter normotermia"
         ]
       },
       {
         "id": "sin",
-        "t": "Manejo de sintomas e suporte",
+        "t": "Sintomáticos",
         "it": [
-          "Dipirona 1 g IV se dor epigástrica ou abdominal associada (CONTRAINDICADO o uso de anti-inflamatórios não esteroidais — AINEs)",
-          "Ondansetrana 4–8 mg IV se náuseas ou vômitos incoercíveis"
+          "Dipirona 1 g IV se dor (CONTRAINDICADO o uso de AINEs)",
+          "Ondansetrana 4–8 mg IV se náuseas ou vômitos"
+        ]
+      },
+      {
+        "id": "esp",
+        "t": "Manejo farmacológico inicial",
+        "it": [
+          "Omeprazol 80 mg IV em bólus seguido de infusão contínua 8 mg/h (ou 40 mg 12/12h)",
+          "Terlipressina 2 mg IV em bólus (ou Octreotida 50 mcg bólus + 50 mcg/h) se suspeita de hipertensão portal / cirrose"
         ]
       },
       {
         "id": "inv",
-        "t": "Investigação diagnóstica e estratificação de risco",
+        "t": "Investigação diagnóstica e estratificação",
         "it": [
           "Cálculo do Escore de Glasgow-Blatchford na admissão",
-          "Tipagem sanguínea ABO/Rh, prova cruzada e reserva prioritária de concentrado de hemácias",
-          "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos (Na, K, Mg), glicemia, gasometria venosa e coagulograma (TP/INR, TTPa)"
+          "Tipagem sanguínea ABO/Rh, prova cruzada e reserva de concentrado de hemácias",
+          "Painel Laboratorial de Emergência: Hemograma completo, creatinina, ureia, eletrólitos, glicemia, coagulograma (TP/INR, TTPa)"
         ]
       },
       {
         "id": "dsp",
         "t": "Disposição",
         "it": [
-          "Alta médica orientada com agendamento de EDA ambulatorial em 24–48h (apenas se Glasgow-Blatchford 0–1 e estável)",
-          "Internação prioritária em leito de UTI / Semi-intensiva (se instabilidade, hemotransfusão ou sangramento ativo)"
+          "Endoscopia Digestiva Alta (EDA) de urgência em < 24h (< 12h se choque/sangramento ativo volumoso)",
+          "Internação em leito monitorizado ou UTI conforme Glasgow-Blatchford e estabilidade"
         ]
       }
     ]
@@ -484,6 +492,10 @@ const CT_ABDOMINAL = {
     "l": "Icterícia / Insuficiência Hepática Aguda",
     "subExcl": [
       {
+        "id": "ict_ind",
+        "l": "Icterícia indiferenciada / Hepatopatia aguda em investigação"
+      },
+      {
         "id": "ict_iha",
         "l": "Insuficiência Hepática Aguda (IHA / Falência Fulminante)"
       },
@@ -506,47 +518,38 @@ const CT_ABDOMINAL = {
         "l": "HDA varicosa / Sangramento digestivo associado"
       }
     ],
+    "s": []
+  },
+  "ict_ind": {
+    "l": "Icterícia indiferenciada / Hepatopatia aguda em investigação",
     "s": [
       {
         "id": "sup",
-        "t": "Avaliação de gravidade e suporte precoce (EASL Guidelines)",
+        "t": "Avaliação de gravidade e suporte",
         "it": [
-          "Avaliação estrita da presença de Encefalopatia Hepática (EH): asterixe / flapping, confusão mental, sonolência patológica ou agitação psicomotora",
-          "Glicemia capilar horária na sala de emergência",
-          "Monitorização multiparamétrica de sinais vitais e diurese horária (pesquisar precocemente Síndrome Hepatorrenal e choque vasoplégico)",
-          "Jejum e via aérea protegida: intubação traqueal de sequência rápida precoce se Encefalopatia Hepática grau 3 ou 4 (Glasgow ≤ 8) para controle de PaCO₂ e prevenção de broncoaspiração"
-        ]
-      },
-      {
-        "id": "esp",
-        "t": "Terapia farmacológica específica e neuroproteção (EASL)",
-        "it": [
-          "N-acetilcisteína (NAC) precoce IV: protocolo de 21 horas (150 mg/kg em 200 mL SG5% em 1h, depois 50 mg/kg em 500 mL SG5% em 4h e 100 mg/kg em 1.000 mL SG5% em 16h)",
-          "Manejo de Encefalopatia Hepática no cirrótico: Lactulose 20–30 mL VO/SNG a cada 2–4 horas até evacuação inicial, depois titular para 2–3 evacuações pastosas/dia + Rifaximina 550 mg VO 12/12h como adjuvante",
-          "Colangite Aguda (Tríade de Charcot / Pêntade de Reynolds): antibioticoterapia IV imediata (Ceftriaxona 2 g IV 1×/dia + Metronidazol 500 mg IV 8/8h OU Piperacilina-Tazobactam 4,5 g IV 6/6h) + Descompressão biliar urgente por CPRE em < 12–24h",
-          "Prevenção e controle de Edema Cerebral / Hipertensão Intracraniana na IHA grave: Salina Hipertônica a 3% contínua (alvo Na sérico 145–150 mEq/L), cabeceira a 30° e normocarbia (PaCO₂ 35–40 mmHg)",
-          "Suspensão imediata de todos os fármacos potencialmente hepatotóxicos (paracetamol, sedativos, AINEs, antibióticos hepatotóxicos)"
+          "Avaliação de Encefalopatia Hepática (flapping, desorientação, sonolência)",
+          "Glicemia capilar de 2/2h a 4/4h (alto risco de hipoglicemia grave por falência hepática)",
+          "Monitorização de sinais vitais e diurese horária",
+          "Suspensão imediata de fármacos potencialmente hepatotóxicos (paracetamol, AINEs, sedativos)"
         ]
       },
       {
         "id": "inv",
-        "t": "Investigação complementar etiológica",
+        "t": "Investigação diagnóstica e etiológica",
         "it": [
-          "Perfil hepático e colestático completo: Bilirrubinas total e frações, TGO/AST, TGP/ALT, FA, GGT e Albumina sérica",
-          "Laboratório de urgência: Hemograma completo com plaquetas, Glicemia imediata, Função renal (Ureia e Creatinina), Eletrólitos e Gasometria com dosagem de lactato",
-          "Coagulograma urgente: TP/INR, TTPa, Fibrinogênio e dosagem de Fator V sérico",
-          "Amônia sérica venosa ou arterial (nível > 150–200 mcmol/L prediz risco iminente de herniação cerebral)",
-          "Painel viral agudo: Anti-HAV IgM, HBsAg, Anti-HBc IgM, Anti-HCV, Anti-HEV IgM",
-          "USG de abdome com Doppler de vasos hepáticos no leito: avaliar desobstrução de via biliar e perviedade vascular"
+          "Perfil hepático e colestático: Bilirrubinas total e frações, TGO/AST, TGP/ALT, FA, GGT e Albumina",
+          "Coagulograma urgente: TP/INR (marcador precoce de falência de síntese hepática)",
+          "USG de abdome com Doppler de vasos hepáticos no leito (avaliar dilatação de vias biliares e trombose portal)",
+          "Painel viral agudo: Anti-HAV IgM, HBsAg, Anti-HBc IgM, Anti-HCV",
+          "Função renal (ureia, creatinina), eletrólitos e gasometria com lactato"
         ]
       },
       {
         "id": "dsp",
-        "t": "Critérios de King's College e disposição",
+        "t": "Disposição",
         "it": [
-          "Internação prioritária em UTI / Centro de Referência em Hepatologia com vaga zero para Transplante Hepático de Emergência",
-          "Avaliação dos Critérios de King's College para Paracetamol (pH arterial < 7,30 ou INR > 6,5 + Creatinina > 3,4 mg/dL + Encefalopatia)",
-          "Avaliação dos Critérios de King's College para Não-Paracetamol (INR > 6,5 isolado OU pelo menos 3 de: etiologia desfavorável, icterícia > 7 dias antes da encefalopatia, idade < 10 ou > 40 anos, INR > 3,5, bilirrubina > 17,5 mg/dL)"
+          "Internação em leito monitorizado ou UTI se encefalopatia, alargamento de INR ou disfunção renal",
+          "Avaliação conjunta da Gastroenterologia / Cirurgia do Aparelho Digestivo"
         ]
       }
     ]
