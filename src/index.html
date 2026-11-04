@@ -180,6 +180,10 @@
    <span>Apoio à Decisão</span>
    <span class="badge-n" id="hdrConflictCount" style="display:none;background:#dc2626;color:#fff;margin-left:3px">0</span>
   </button>
+  <button class="hdr-action-btn" style="background:#065f46;color:#fff;border-color:#059669" onclick="togglePortaGuideModal()" title="Guia Rápido de Porta & Ambulatório (Alt + G)">
+   <i class="ti ti-door-enter" aria-hidden="true"></i>
+   <span>Porta</span>
+  </button>
   <a href="neuro_emergencia.html" class="hdr-action-btn hdr-btn-crunch" title="Protocolos Táticos (Crunch Time + Pitfalls)">
    <i class="ti ti-flame" aria-hidden="true"></i>
    <span>Crunch Time</span>
@@ -285,6 +289,33 @@
  </div>
 </div>
 <div id="pacEditArea"></div>
+
+<div class="login-overlay" id="porta-guide-overlay" style="display:none;z-index:9999;align-items:center;justify-content:center;padding:16px;background:rgba(15,23,42,0.75);backdrop-filter:blur(4px)">
+ <div class="modal-shell" style="max-width:1150px;width:100%;max-height:92vh;background:var(--color-background-primary,#ffffff);border-radius:12px;box-shadow:0 20px 25px -5px rgba(0,0,0,0.2);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--color-border,#e2e8f0)">
+  <div class="modal-hdr" style="padding:12px 18px;border-bottom:1px solid var(--color-border,#e2e8f0);display:flex;align-items:center;justify-content:space-between;background:var(--color-background-secondary,#f8fafc)">
+   <div style="display:flex;align-items:center;gap:10px">
+    <div style="width:36px;height:36px;border-radius:8px;background:#059669;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px">
+     <i class="ti ti-door-enter" aria-hidden="true"></i>
+    </div>
+    <div>
+     <div style="font-size:16px;font-weight:700;color:var(--color-text-primary,#0f172a);display:flex;align-items:center;gap:8px">
+      Guia Rápido de Porta & Ambulatório
+      <span class="sb" style="font-size:10.5px;background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:4px">20 Patologias</span>
+     </div>
+     <div style="font-size:11.5px;color:var(--color-text-secondary,#64748b)">Consulta beira-leito, prescrição SUS e gerador de atestado médico (Alt + G)</div>
+    </div>
+   </div>
+   <div style="display:flex;align-items:center;gap:12px">
+    <div style="position:relative;width:260px">
+     <i class="ti ti-search" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:14px"></i>
+     <input type="text" id="porta-search-input" placeholder="Buscar queixa, CID ou sintoma..." oninput="onPortaSearch(this.value)" style="width:100%;padding:6px 10px 6px 30px;font-size:12px;border:1px solid var(--color-border,#cbd5e1);border-radius:6px;background:var(--color-background-primary,#fff)">
+    </div>
+    <button class="modal-close" onclick="closePortaGuideModal()" aria-label="Fechar Guia de Porta" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--color-text-secondary)">&times;</button>
+   </div>
+  </div>
+  <div id="porta-guide-modal-body" style="padding:16px;overflow:hidden;flex:1"></div>
+ </div>
+</div>
 
 <!-- Floating Action Button (FAB) para Mobile / Consulta Rápida -->
 <button class="fab-report-btn" id="fabReportBtn" onclick="toggleFabDrawer()" aria-label="Ver relatório de admissão" title="Ver relatório de admissão">

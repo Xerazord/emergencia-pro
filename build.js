@@ -156,6 +156,13 @@ for (const file of generatorFiles) {
   }
 }
 
+// 8.1 Carrega o catálogo de patologias de porta
+const portaCatalogFile = path.join(SRC, 'data', 'porta_catalog.js');
+let portaCatalogBundle = '';
+if (fs.existsSync(portaCatalogFile)) {
+  portaCatalogBundle = `\n/* ─── Porta Catalog: porta_catalog.js ─── */\n` + fs.readFileSync(portaCatalogFile, 'utf8') + '\n';
+}
+
 // 9. Carrega módulos de visualização (Views) e ciclo de renderização
 const viewFiles = [
   path.join(SRC, 'views', 'stepper.js'),
@@ -165,6 +172,7 @@ const viewFiles = [
   path.join(SRC, 'views', 'step3_exame.js'),
   path.join(SRC, 'views', 'step4_conduta.js'),
   path.join(SRC, 'views', 'step5_relatorio.js'),
+  path.join(SRC, 'views', 'porta_view.js'),
   path.join(SRC, 'views', 'index.js'),
   path.join(SRC, 'core', 'render.js')
 ];
@@ -202,6 +210,7 @@ const jsBundle = [
   coreBundle,
   syndromesBundle,
   complaintsBundle,
+  portaCatalogBundle,
   cdsBundle,
   calculatorsBundle,
   generatorsBundle,
@@ -213,17 +222,90 @@ const jsBundle = [
 html = html.replace('/* CSS_BUNDLE */', () => cssBundle);
 html = html.replace('/* SCRIPT_BUNDLE */', () => jsBundle);
 
-// 14. Grava os arquivos finais
+// 14. Grava os arquivos finais do app principal
 const distAppHtml = path.join(DIST, 'app.html');
 const rootAppHtml = path.join(ROOT, 'app.html');
 
 fs.writeFileSync(distAppHtml, html, 'utf8');
 fs.writeFileSync(rootAppHtml, html, 'utf8');
 
+// 15. Gera a versão standalone 100% offline do Guia de Porta (porta.html)
+const portaViewFile = path.join(SRC, 'views', 'porta_view.js');
+const portaViewContent = fs.existsSync(portaViewFile) ? fs.readFileSync(portaViewFile, 'utf8') : '';
+
+const standalonePortaHtml = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia Rápido de Porta & Ambulatório — Emergência Pro</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none'%3E%3Crect width='40' height='40' rx='10' fill='%23059669'/%3E%3Cpath d='M12 28V12L24 8V24M24 24L12 28M24 24V32M16 20V21' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+${cssBundle}
+body { background: #0f172a; margin: 0; padding: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+.porta-standalone-shell { max-width: 1200px; margin: 0 auto; background: var(--color-background-primary, #ffffff); border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; display: flex; flex-direction: column; height: calc(100vh - 24px); border: 1px solid var(--color-border, #e2e8f0); }
+.porta-standalone-hdr { padding: 12px 18px; border-bottom: 1px solid var(--color-border, #e2e8f0); display: flex; align-items: center; justify-content: space-between; background: var(--color-background-secondary, #f8fafc); }
+</style>
+</head>
+<body>
+<div class="porta-standalone-shell">
+  <div class="porta-standalone-hdr">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:36px;height:36px;border-radius:8px;background:#059669;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px">
+        <i class="ti ti-door-enter" aria-hidden="true"></i>
+      </div>
+      <div>
+        <div style="font-size:16px;font-weight:700;color:var(--color-text-primary,#0f172a);display:flex;align-items:center;gap:8px">
+          Guia Rápido de Porta & Ambulatório
+          <span class="sb" style="font-size:10.5px;background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:4px">20 Patologias</span>
+        </div>
+        <div style="font-size:11.5px;color:var(--color-text-secondary,#64748b)">Consulta beira-leito, prescrição SUS e gerador de atestado médico (Standalone Offline)</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="position:relative;width:280px">
+        <i class="ti ti-search" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:14px"></i>
+        <input type="text" id="porta-search-input" placeholder="Buscar queixa, CID ou sintoma..." oninput="onPortaSearch(this.value)" style="width:100%;padding:6px 10px 6px 30px;font-size:12px;border:1px solid var(--color-border,#cbd5e1);border-radius:6px;background:var(--color-background-primary,#fff)">
+      </div>
+      <a href="app.html" class="btns" style="padding:6px 10px;font-size:12px;text-decoration:none;display:flex;align-items:center;gap:4px">
+        <i class="ti ti-arrow-left"></i> Emergência Pro
+      </a>
+    </div>
+  </div>
+  <div id="porta-guide-modal-body" style="padding:16px;overflow:hidden;flex:1"></div>
+</div>
+<div id="toast" style="position:fixed;bottom:20px;right:20px;background:#1e293b;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;display:none;z-index:99999;box-shadow:0 10px 15px -3px rgba(0,0,0,0.3)"></div>
+<script>
+function esc(s){ return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function showToast(msg){
+  const t = document.getElementById('toast');
+  if(!t) return;
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(()=>{ t.style.display = 'none'; }, 2500);
+}
+${portaCatalogBundle}
+${portaViewContent}
+document.addEventListener('DOMContentLoaded', ()=>{
+  renderPortaGuideContent();
+});
+</script>
+</body>
+</html>`;
+
+const distPortaHtml = path.join(DIST, 'porta.html');
+const rootPortaHtml = path.join(ROOT, 'porta.html');
+
+fs.writeFileSync(distPortaHtml, standalonePortaHtml, 'utf8');
+fs.writeFileSync(rootPortaHtml, standalonePortaHtml, 'utf8');
+
 const endTime = process.hrtime.bigint();
 const durationMs = Number(endTime - startTime) / 1e6;
 const sizeKb = (Buffer.byteLength(html, 'utf8') / 1024).toFixed(1);
+const portaSizeKb = (Buffer.byteLength(standalonePortaHtml, 'utf8') / 1024).toFixed(1);
 
 console.log(`⚡ Build modular concluído com sucesso em ${durationMs.toFixed(2)} ms!`);
 console.log(`📦 dist/app.html gerado (${sizeKb} KB)`);
-console.log(`🔄 app.html sincronizado na raiz.`);
+console.log(`📦 dist/porta.html gerado (${portaSizeKb} KB - Standalone Offline)`);
+console.log(`🔄 app.html e porta.html sincronizados na raiz.`);

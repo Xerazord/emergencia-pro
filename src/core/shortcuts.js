@@ -57,6 +57,7 @@ if(typeof window !== 'undefined' && !window._globalKeydownAttached){
    closeFabDrawer();
    closeCockpitDecisionPanel();
    closeDecisionDrawer();
+   closePortaGuideModal();
    closeModalArea();
    const sm = document.getElementById('shiftModal'); if (sm && sm.style.display === 'flex') closeShiftModal();
    const am = document.getElementById('adminModal'); if (am && am.style.display === 'flex') closeAdminModal();
@@ -95,6 +96,11 @@ if(typeof window !== 'undefined' && !window._globalKeydownAttached){
    if (e.key === 'd' || e.key === 'D') {
     e.preventDefault();
     toggleCockpitDecisionPanel();
+    return;
+   }
+   if (e.key === 'g' || e.key === 'G') {
+    e.preventDefault();
+    togglePortaGuideModal();
     return;
    }
    if (e.key === 's' || e.key === 'S') {

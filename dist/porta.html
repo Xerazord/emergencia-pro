@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia Rápido de Porta & Ambulatório — Emergência Pro</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none'%3E%3Crect width='40' height='40' rx='10' fill='%23059669'/%3E%3Cpath d='M12 28V12L24 8V24M24 24L12 28M24 24V32M16 20V21' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+
+/* ─── File: variables.css ─── */
+/* ==========================================================================
+   Design Tokens & Variables — Emergência Pro
+   ========================================================================== */
+
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'SFMono-Regular', 'Courier New', Courier, monospace;
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f3f4f6;
+  --color-border-tertiary: #e5e7eb;
+  --color-border-secondary: #d1d5db;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+}
+
+body {
+  background: #f3f4f6;
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+input, select, textarea {
+  padding: 7px 10px;
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 14px;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: #a32d2d;
+}
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* ─── Modo Noturno Tático (OLED Black / Slate) para Plantão ─── */
+body.high-contrast-night {
+  --color-background-primary: #0b0f17;
+  --color-background-secondary: #05070b;
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-border-primary: #334155;
+  --color-border-secondary: #1f2937;
+  --color-border-tertiary: #111827;
+  background-color: #05070b !important;
+  color: #f8fafc !important;
+}
+body.high-contrast-night .card,
+body.high-contrast-night .rel-col-inner,
+body.high-contrast-night .sticky-clinical-cockpit,
+body.high-contrast-night .cockpit-decision-panel,
+body.high-contrast-night .hdr {
+  background: #0f172a !important;
+  border-color: #1f2937 !important;
+  color: #f8fafc !important;
+}
+body.high-contrast-night .cockpit-decision-hdr {
+  background: linear-gradient(135deg, #020617 0%, #0f172a 100%) !important;
+  border-bottom: 1px solid #1f2937;
+}
+body.high-contrast-night .cockpit-search-input {
+  background: #090d16 !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+body.high-contrast-night .cockpit-chip {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+  color: #cbd5e1 !important;
+}
+body.high-contrast-night .cockpit-chip.active {
+  background: #38bdf8 !important;
+  color: #090d16 !important;
+  border-color: #0284c7 !important;
+  font-weight: 700;
+}
+body.high-contrast-night .cockpit-pinned-alert {
+  background: #172554 !important;
+  border-color: #3b82f6 !important;
+  color: #93c5fd !important;
+}
+body.high-contrast-night .cockpit-pitfall-banner {
+  background: #451a03 !important;
+  border-color: #f59e0b !important;
+  color: #fde68a !important;
+}
+body.high-contrast-night .cockpit-empty-slot {
+  background: #111827 !important;
+  border-color: #1f2937 !important;
+  color: #64748b !important;
+}
+body.high-contrast-night .decision-card {
+  background: #131b26 !important;
+  border-color: #1f2937 !important;
+  color: #e2e8f0 !important;
+}
+body.high-contrast-night .rel-col-textarea {
+  background: #020617 !important;
+  color: #f1f5f9 !important;
+  border-color: #334155 !important;
+}
+body.high-contrast-night input,
+body.high-contrast-night select,
+body.high-contrast-night textarea {
+  background: #111827 !important;
+  color: #f8fafc !important;
+  border-color: #475569 !important;
+}
+body.high-contrast-night .rel-section-copy-overlay {
+  background: rgba(15,23,42,0.92) !important;
+  border-color: rgba(255,255,255,0.18) !important;
+}
+body.high-contrast-night .pep-copy-btn {
+  color: #e2e8f0 !important;
+}
+body.high-contrast-night .tg {
+  background: #1e293b !important;
+  border-color: #475569 !important;
+  color: #cbd5e1 !important;
+}
+body.high-contrast-night .tg.on {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+  border-color: #3b82f6 !important;
+}
+body.high-contrast-night .hdr-divider { background: #334155 !important; }
+body.high-contrast-night .hdr-action-btn.hdr-btn-icon { background: #1e293b !important; border-color: #334155 !important; color: #cbd5e1 !important; }
+body.high-contrast-night .hdr-action-btn.hdr-btn-icon:hover { background: #334155 !important; color: #f8fafc !important; }
+body.high-contrast-night .steps { background: #0f172a !important; border-color: #1e293b !important; }
+body.high-contrast-night .step { background: #1e293b !important; border-color: #334155 !important; color: #cbd5e1 !important; }
+body.high-contrast-night .step:hover { background: #334155 !important; color: #f8fafc !important; }
+body.high-contrast-night .step.active { background: #450a0a !important; border-color: #dc2626 !important; color: #fca5a5 !important; }
+body.high-contrast-night .step.done { background: #052e16 !important; border-color: #16a34a !important; color: #86efac !important; }
+
+/* Animações Globais */
+@keyframes cockpitPulseRed {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+@keyframes slideUpDrawer {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+
+/* ─── File: layout.css ─── */
+/* ==========================================================================
+   Layout & Grid Architecture — Emergência Pro
+   ========================================================================== */
+
+.app {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 1rem 0;
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+}
+
+/* Header & Barra Superior */
+.hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+}
+.hdr-brand-bar, .hdr-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hdr-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hdr-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.hdr-badge-status {
+  font-size: 10px;
+  color: #15803d;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 2px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+}
+.hdr-badge-status i {
+  font-size: 8px;
+  color: #16a34a;
+}
+.hdr-subtitle {
+  font-size: 12.5px;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+.hdr-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+.hdr-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--color-border-secondary, #e2e8f0);
+  margin: 0 3px;
+  flex-shrink: 0;
+}
+.hdr-action-btn {
+  padding: 6px 12px;
+  border-radius: 18px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: inherit;
+  text-decoration: none;
+  border: 0.5px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  color: var(--color-text-secondary);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.hdr-action-btn:hover {
+  background: var(--color-background-secondary);
+  color: var(--color-text-primary);
+}
+.hdr-action-btn:active {
+  transform: scale(0.96);
+}
+.hdr-action-btn i {
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.hdr-action-btn.hdr-btn-icon {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  padding: 0;
+  border-radius: 8px;
+  justify-content: center;
+}
+.hdr-action-btn.hdr-btn-icon span {
+  display: none;
+}
+.hdr-action-btn.hdr-btn-icon i {
+  font-size: 16px;
+  margin: 0;
+}
+.hdr-btn-decision { background: #fffbeb; border-color: #fde68a; color: #b45309; font-weight: 600; }
+.hdr-btn-decision:hover { background: #fef3c7; color: #92400e; border-color: #fcd34d; }
+.hdr-btn-decision i { color: #d97706; }
+.hdr-btn-crunch { background: #fff7ed; border-color: #fed7aa; color: #c2410c; font-weight: 600; }
+.hdr-btn-crunch:hover { background: #ffedd5; color: #9a3412; border-color: #fdba74; }
+.hdr-btn-crunch i { color: #ea580c; }
+.hdr-btn-home { background: #f8fafc; border-color: #e2e8f0; color: #475569; }
+.hdr-btn-home:hover { background: #f1f5f9; color: #1e293b; }
+.hdr-btn-shift { background: #f0fdf4; border-color: #bbf7d0; color: #15803d; font-weight: 500; }
+.hdr-btn-shift:hover { background: #dcfce7; color: #166534; }
+.hdr-btn-shift i { color: #16a34a; }
+.hdr-btn-admin { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; font-weight: 500; }
+.hdr-btn-admin:hover { background: #dbeafe; color: #1e40af; }
+.hdr-btn-admin i { color: #2563eb; }
+.hdr-btn-shortcut { background: #f8fafc; border-color: #e2e8f0; color: #475569; }
+.hdr-btn-shortcut:hover { background: #f1f5f9; color: #1e293b; }
+.hdr-btn-reset { background: #f8fafc; border-color: #e2e8f0; color: #64748b; }
+.hdr-btn-reset:hover { background: #fee2e2; border-color: #fca5a5; color: #b91c1c; }
+.hdr-btn-night { background: #0f172a; border-color: #334155; color: #f8fafc; font-weight: 500; }
+.hdr-btn-night:hover { background: #1e293b; color: #38bdf8; border-color: #475569; }
+.hdr-btn-night.active { background: #38bdf8; color: #0f172a; border-color: #0284c7; }
+.hdr-btn-night i { color: #f59e0b; }
+.hdr-btn-logout { background: #fcebeb; border-color: #f09595; color: #a32d2d; font-weight: 500; }
+.hdr-btn-logout:hover { background: #fad4d4; color: #7f1d1d; }
+
+.hico {
+  width: 40px;
+  height: 40px;
+  background: #f8fafc;
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.hico img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hico i { font-size: 20px; color: #a32d2d; }
+
+/* Barra de Etapas (Dock Segmentado) */
+.steps {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+  overflow-x: auto;
+  background: var(--color-background-primary);
+  padding: 6px;
+  border-radius: 14px;
+  border: 1px solid var(--color-border-tertiary);
+  box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+  scrollbar-width: none;
+}
+.steps::-webkit-scrollbar { display: none; }
+.step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 0.5px solid var(--color-border-tertiary);
+  cursor: pointer;
+  white-space: nowrap;
+  background: var(--color-background-primary);
+  color: var(--color-text-secondary);
+  transition: all 0.18s ease;
+  user-select: none;
+}
+.step:hover {
+  background: var(--color-background-secondary);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-secondary);
+  transform: translateY(-1px);
+}
+.step:active { transform: translateY(0); }
+.step.active {
+  background: #fcebeb;
+  border-color: #e24b4a;
+  color: #a32d2d;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(163,45,45,0.1);
+}
+.step.done {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #15803d;
+}
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(0,0,0,0.06);
+  margin-right: 2px;
+}
+.step.active .step-num { background: #a32d2d; color: #fff; }
+.step.done .step-num { background: #16a34a; color: #fff; }
+
+.card[id^="step-"], #step-0, #step-1, #step-2, #step-3, #step-4, #step-5 {
+  scroll-margin-top: 72px;
+}
+
+/* Two-column desktop layout & Split Screen */
+.two-col-wrap { display: block; }
+.col-rel { display: none; }
+.btn-split {
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 6px;
+}
+.btn-split:hover, .btn-split.active {
+  background: #2563eb;
+  color: #fff;
+  border-color: #1d4ed8;
+}
+
+@media(min-width: 1024px) {
+  .app { max-width: 1800px; padding: 1rem; }
+  .two-col-wrap { display: grid; grid-template-columns: 1fr 440px; gap: 1rem; align-items: start; }
+  .two-col-wrap.split-50-50 { grid-template-columns: 1fr 1fr !important; }
+  .col-rel { display: flex; flex-direction: column; position: sticky; top: 1rem; height: calc(100vh - 90px); }
+  .rel-col-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+  }
+  .rel-col-hdr {
+    padding: 0.65rem 1rem;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+  }
+  .rel-col-textarea {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    resize: none;
+    border: none;
+    border-radius: 0;
+    background: var(--color-background-secondary);
+    font-family: var(--font-mono);
+    font-size: 13px !important;
+    line-height: 1.55;
+    padding: 1rem;
+    color: var(--color-text-primary);
+    transition: background-color 0.3s ease;
+  }
+  .rel-col-actions {
+    padding: 0.5rem 1rem;
+    border-top: 0.5px solid var(--color-border-tertiary);
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .rel-col-actions .btng { padding: 7px 14px; font-size: 13px; }
+  .desktop-hide-relcard { display: none; }
+}
+
+.rel-col-txt-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.rel-col-txt-wrap.live-diff-highlight {
+  box-shadow: 0 0 0 2px #10b981, 0 4px 12px rgba(16,185,129,0.18) !important;
+  border-color: #10b981 !important;
+}
+.rel-col-textarea.live-diff-highlight {
+  background-color: rgba(16,185,129,0.06) !important;
+}
+
+/* Responsividade Mobile e Geral */
+.mobile-only { display: none !important; }
+@media(max-width: 768px) {
+  .hdr { flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 1rem; padding-bottom: 0.75rem; }
+  .hdr-brand-bar { justify-content: space-between; width: 100%; }
+  .hdr-title { font-size: 16px; }
+  .mobile-only { display: inline-flex !important; }
+  .desktop-only-logout { display: none !important; }
+  .hdr-divider { display: none !important; }
+  .hdr-actions { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 4px 2px 6px; gap: 7px; width: 100%; scrollbar-width: none; }
+  .hdr-actions::-webkit-scrollbar { display: none; }
+  .hdr-action-btn { height: 36px; padding: 0 12px; font-size: 12px; border-radius: 18px; flex-shrink: 0; }
+  .hdr-action-btn.hdr-btn-icon { width: 34px !important; height: 34px !important; min-width: 34px !important; padding: 0 !important; border-radius: 8px !important; }
+}
+@media(max-width: 640px) { .hide-mobile { display: none !important; } }
+@media(max-width: 480px) { .hide-mobile-tab-text { display: none; } }
+
+/* Impressão Limpa */
+@media print {
+  body { background: #fff !important; color: #000 !important; font-size: 11pt !important; }
+  .top-banner, .app-hdr, .nav, .btns, .btng, .btnp, .xbtn, .fab-btn, .fab-drawer-overlay, 
+  .admin-overlay, .modal-bg, .app-footer, .rg, #shortcutModal, #toast, .desktop-hide-relcard,
+  #step-0, #step-1, #step-2, #step-3, #step-4, .psm, .abox {
+    display: none !important;
+  }
+  .app-body { display: block !important; padding: 0 !important; margin: 0 !important; }
+  .col-main { display: none !important; }
+  .col-rel { display: block !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
+  .rel-col-inner { border: none !important; box-shadow: none !important; padding: 0 !important; background: transparent !important; }
+  .rel-col-hdr, .rel-col-actions { display: none !important; }
+  .rel-col-textarea { 
+    display: block !important;
+    border: none !important; 
+    height: auto !important; 
+    min-height: 100vh !important;
+    overflow: visible !important; 
+    font-family: monospace !important; 
+    font-size: 10pt !important; 
+    line-height: 1.5 !important;
+    white-space: pre-wrap !important;
+    color: #000 !important;
+    background: transparent !important;
+    resize: none !important;
+  }
+}
+
+
+/* ─── File: components.css ─── */
+/* ==========================================================================
+   UI Components & Clinical Controls — Emergência Pro
+   ========================================================================== */
+
+/* Cartões e Títulos */
+.card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+.st {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.st::before {
+  content: '';
+  width: 3.5px;
+  height: 14px;
+  border-radius: 2px;
+  background: #a32d2d;
+  flex-shrink: 0;
+}
+.st i { font-size: 16px; color: #a32d2d; }
+.sl { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 4px; }
+
+/* Grids e Formas */
+.r2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.r5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 8px; }
+label { display: block; font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+
+/* Botões do Sistema */
+.btnp { padding: 9px 18px; background: #a32d2d; color: #fff; border: none; border-radius: var(--border-radius-md); font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: inherit; transition: background 0.15s; }
+.btnp:hover { background: #791f1f; }
+.btns { padding: 9px 16px; background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); color: var(--color-text-primary); border-radius: var(--border-radius-md); font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: inherit; transition: all 0.15s; }
+.btns:hover { background: var(--color-background-secondary); }
+.btng { padding: 9px 16px; background: #15803d; color: #fff; border: none; border-radius: var(--border-radius-md); font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: inherit; transition: background 0.15s; }
+.btng:hover { background: #166534; }
+.xbtn { padding: 9px 11px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-primary); font-size: 13px; cursor: pointer; text-align: left; color: var(--color-text-primary); line-height: 1.4; transition: all 0.15s; }
+.xbtn:hover { background: var(--color-background-secondary); border-color: var(--color-border-secondary); }
+.xbtn.on { background: #fee2e2; border-color: #f87171; color: #991b1b; font-weight: 600; }
+
+.btn-clean-patient { background: #dc2626 !important; color: #fff !important; border: none !important; font-weight: 600; }
+.btn-clean-patient:hover { background: #b91c1c !important; }
+
+/* Drums de Idade */
+.age-drums { display: flex; align-items: center; gap: 5px; }
+.drum { display: flex; flex-direction: column; align-items: center; background: var(--color-background-secondary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); overflow: hidden; width: 40px; }
+.drum-btn { width: 100%; padding: 3px 0; border: none; background: none; cursor: pointer; color: var(--color-text-secondary); display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.drum-btn:hover { background: var(--color-border-tertiary); }
+.drum-dig { font-size: 22px; font-weight: 500; padding: 4px 0; text-align: center; line-height: 1; color: var(--color-text-primary); }
+.drum-unit { font-size: 12px; color: var(--color-text-secondary); margin-left: 2px; }
+
+/* Seletor de Queixas (qgrid) */
+.qgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+.qcat { margin-bottom: 12px; }
+.qcat:last-child { margin-bottom: 0; }
+.qcat-lbl { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--color-text-secondary); margin-bottom: 6px; padding-left: 2px; }
+.qcat-critica .qcat-lbl { color: #a32d2d; }
+.qcat-externa .qcat-lbl { color: #a26b1f; }
+.qcat-cardio .qcat-lbl { color: #dc2626; }
+.qcat-cardio .qbtn { border-color: #fecaca; background: #fff5f5; }
+.qcat-cardio .qbtn:hover { background: #fee2e2; border-color: #ef4444; color: #991b1b; font-weight: 500; }
+.qcat-resp .qcat-lbl { color: #0284c7; }
+.qcat-resp .qbtn { border-color: #bae6fd; background: #f0f9ff; }
+.qcat-resp .qbtn:hover { background: #e0f2fe; border-color: #0ea5e9; color: #0369a1; font-weight: 500; }
+.qcat-neuro .qcat-lbl { color: #7c3aed; }
+.qcat-neuro .qbtn { border-color: #ddd6fe; background: #f5f3ff; }
+.qcat-neuro .qbtn:hover { background: #ede9fe; border-color: #8b5cf6; color: #6d28d9; font-weight: 500; }
+.qcat-digest .qcat-lbl { color: #059669; }
+.qcat-digest .qbtn { border-color: #a7f3d0; background: #f0fdf4; }
+.qcat-digest .qbtn:hover { background: #dcfce7; border-color: #10b981; color: #047857; font-weight: 500; }
+.qcat-geral .qcat-lbl { color: #d97706; }
+.qcat-geral .qbtn { border-color: #fde68a; background: #fffbeb; }
+.qcat-geral .qbtn:hover { background: #fef3c7; border-color: #f59e0b; color: #b45309; font-weight: 500; }
+.qcat-trauma .qcat-lbl { color: #ea580c; }
+.qcat-trauma .qbtn { border-color: #fed7aa; background: #fff7ed; }
+.qbtn { padding: 9px 12px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); font-size: 13px; cursor: pointer; text-align: left; color: var(--color-text-primary); transition: all 0.15s; }
+.qbtn.on { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; font-weight: 600; }
+
+/* Tags, Radio Group & Pílulas */
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { padding: 5px 10px; border-radius: 16px; border: 0.5px solid var(--color-border-secondary); font-size: 12px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); transition: all 0.15s; user-select: none; }
+.tag:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
+.tag.on { background: #e0f2fe; border-color: #38bdf8; color: #0369a1; font-weight: 600; }
+.rg { display: flex; flex-wrap: wrap; gap: 6px; }
+.ro { padding: 5px 11px; border-radius: 16px; border: 0.5px solid var(--color-border-secondary); font-size: 12px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); transition: all 0.15s; user-select: none; }
+.ro:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
+.ro.on { background: #fee2e2; border-color: #f87171; color: #991b1b; font-weight: 600; }
+
+/* Acordeões e ABCDE */
+.abcs { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); margin-bottom: 7px; overflow: hidden; }
+.abch { padding: 9px 13px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: var(--color-background-secondary); font-size: 14px; font-weight: 500; transition: background 0.15s ease; }
+.abch:hover { background: #f1f5f9; }
+.abcb { padding: 12px; border-top: 0.5px solid var(--color-border-tertiary); display: none; }
+.abcb.open {
+  display: block;
+}
+.abcb.open.anim-open {
+  animation: accSlideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes accSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.abcde-badge { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 5px; background: #7c3aed; color: #fff; font-weight: 700; font-size: 11px; margin-right: 6px; flex-shrink: 0; }
+
+/* Telemetry HUD — Sinais Vitais Compactos */
+.vital-hud-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.vital-hud-card {
+  background: var(--color-background-primary);
+  border: 1px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.18s ease;
+  border-left: 3.5px solid #cbd5e1;
+}
+.vital-hud-card:focus-within {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  border-color: #93c5fd;
+}
+.vital-hud-card.vok {
+  border-left-color: #22c55e !important;
+}
+.vital-hud-card.vw {
+  border-left-color: #f59e0b !important;
+  background: #fffbeb !important;
+}
+.vital-hud-card.vc {
+  border-left-color: #ef4444 !important;
+  background: #fef2f2 !important;
+  box-shadow: 0 0 0 1px #fecaca;
+}
+.vital-hud-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 3px;
+}
+.vital-hud-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.vital-hud-unit {
+  font-size: 10.5px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+.vital-hud-input {
+  width: 100%;
+  border: none !important;
+  background: transparent !important;
+  padding: 2px 0 !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: var(--color-text-primary) !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-family: inherit;
+}
+.vital-hud-input::placeholder {
+  color: #cbd5e1;
+  font-weight: 400;
+  font-size: 13px;
+}
+
+/* Segmented HUD Controls — Exame Físico ABCDE */
+.seg-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.seg-row:last-child {
+  border-bottom: none;
+}
+.seg-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  min-width: 110px;
+  flex-shrink: 0;
+}
+.seg-control {
+  display: inline-flex;
+  align-items: center;
+  background: #f1f5f9;
+  border-radius: 6px;
+  padding: 2px;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+.seg-btn {
+  border: none;
+  background: transparent;
+  padding: 4px 9px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #475569;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  font-family: inherit;
+}
+.seg-btn:hover {
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.6);
+}
+.seg-btn.on {
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.seg-btn.on.alert {
+  background: #fee2e2;
+  color: #991b1b;
+  box-shadow: 0 0 0 1px #f87171;
+}
+.seg-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.seg-tag-btn {
+  border: 1px solid var(--color-border-tertiary);
+  background: var(--color-background-primary);
+  padding: 3px 8px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+.seg-tag-btn:hover {
+  background: var(--color-background-secondary);
+  color: var(--color-text-primary);
+}
+.seg-tag-btn.on {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #991b1b;
+  font-weight: 600;
+}
+
+/* Vitals & Scores */
+.sgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 10px; }
+.srow { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 0.5px solid var(--color-border-tertiary); gap: 10px; }
+.slbl { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+.sdsc { font-size: 11px; color: var(--color-text-secondary); }
+.sopts { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+.sopt { padding: 3px 9px; border-radius: 20px; border: 0.5px solid var(--color-border-tertiary); font-size: 12px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-primary); }
+.sopt.on { background: #e6f1fb; border-color: #378add; color: #185fa5; font-weight: 500; }
+.sopt.auto { background: #eaf3de; border-color: #639922; color: #3b6d11; font-weight: 500; cursor: default; }
+
+/* Cockpit Clínico & Apoio Beira-Leito */
+.sticky-clinical-cockpit {
+  position: sticky;
+  top: 0;
+  z-index: 85;
+  background: var(--color-background-primary, #ffffff);
+  border: 1px solid var(--color-border-tertiary, #e5e7eb);
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.cockpit-info { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; font-weight: 600; color: var(--color-text-primary, #111827); }
+.cockpit-meta { color: var(--color-text-secondary, #4b5563); font-size: 12px; font-weight: 500; }
+.cockpit-badges { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.cockpit-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+.cockpit-badge.badge-stable { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+.cockpit-badge.badge-unstable { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; animation: cockpitPulseRed 2s infinite ease-in-out; }
+.cockpit-badge.badge-allergy { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+
+.cockpit-decision-panel {
+  background: var(--color-background-primary, #ffffff);
+  border: 1px solid var(--color-border-secondary, #cbd5e1);
+  border-radius: 12px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  overflow: hidden;
+  transition: all 0.25s ease-in-out;
+}
+.cockpit-decision-hdr {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  color: #ffffff;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.cockpit-decision-title { font-weight: 700; font-size: 13.5px; display: flex; align-items: center; gap: 8px; letter-spacing: -0.2px; }
+.cockpit-decision-controls { display: flex; align-items: center; gap: 8px; }
+.cockpit-close-btn { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #ffffff; border-radius: 6px; padding: 4px 9px; font-size: 11.5px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: background 0.15s ease; }
+.cockpit-close-btn:hover { background: rgba(255,255,255,0.22); }
+.cockpit-decision-body { padding: 12px 14px; max-height: 480px; overflow-y: auto; }
+.cockpit-search-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; position: relative; }
+.cockpit-search-input { width: 100%; padding: 7px 30px 7px 11px; font-size: 12.5px; border: 1px solid var(--color-border-secondary, #cbd5e1); border-radius: 8px; background: var(--color-background-primary, #ffffff); color: var(--color-text-primary, #111827); outline: none; box-sizing: border-box; }
+.cockpit-search-input:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.15); }
+.cockpit-search-clear { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: none; background: none; font-size: 16px; color: #94a3b8; cursor: pointer; line-height: 1; }
+.cockpit-chips-scroll { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; -webkit-overflow-scrolling: touch; }
+.cockpit-chip { flex-shrink: 0; padding: 4px 10px; font-size: 11.5px; font-weight: 600; border-radius: 20px; border: 1px solid var(--color-border-tertiary, #e2e8f0); background: var(--color-background-secondary, #f8fafc); color: var(--color-text-secondary, #475569); cursor: pointer; display: inline-flex; align-items: center; gap: 5px; transition: all 0.15s ease; }
+.cockpit-chip:hover { border-color: #94a3b8; color: var(--color-text-primary, #0f172a); }
+.cockpit-chip.active { background: #0f172a; color: #ffffff; border-color: #0f172a; box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+.cockpit-pinned-alert { background: #eff6ff; border-left: 4px solid #2563eb; border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; font-size: 12px; color: #1e40af; display: flex; align-items: center; justify-content: space-between; }
+.cockpit-pitfall-banner { background: #fffbeb; border: 1.5px dashed #f59e0b; border-radius: 8px; padding: 10px 12px; margin: 10px 0; font-size: 12.5px; line-height: 1.55; color: #92400e; }
+.cockpit-pitfall-title { font-weight: 700; font-size: 12.5px; color: #b45309; display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+.cockpit-empty-slot { padding: 8px 12px; background: var(--color-background-secondary, #f8fafc); border-radius: 6px; border: 1px dashed var(--color-border-tertiary, #e2e8f0); font-size: 12px; color: var(--color-text-secondary, #64748b); margin: 6px 0; }
+
+.decision-card { border: 1px solid var(--color-border-secondary); border-radius: 14px; background: #ffffff; padding: 14px; display: flex; flex-direction: column; gap: 9px; box-shadow: 0 2px 8px rgba(15,23,42,0.03); transition: transform 0.15s, box-shadow 0.15s; }
+.decision-card-title { font-size: 13.5px; font-weight: 700; color: var(--color-text-primary); display: flex; align-items: center; gap: 8px; }
+.decision-meta-item { display: flex; align-items: flex-start; gap: 9px; font-size: 12.5px; line-height: 1.55; color: #334155; }
+.decision-meta-bullet { width: 6px; height: 6px; border-radius: 50%; background: #d97706; margin-top: 7px; flex-shrink: 0; }
+.formula-callout { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 8px 10px; margin: 6px 0; color: #9a3412; font-size: 12px; }
+
+/* Condutas: Seções e Tags */
+.csec { border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); margin-bottom: 8px; background: var(--color-background-primary); overflow: hidden; }
+.csh { padding: 10px 14px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: var(--color-background-primary); font-size: 13.5px; font-weight: 600; color: var(--color-text-primary); }
+.csb { padding: 10px 14px; border-top: 0.5px solid var(--color-border-tertiary); display: none; background: var(--color-background-primary); }
+.csb.open { display: block; }
+.chk { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: var(--border-radius-md); cursor: pointer; font-size: 13px; line-height: 1.45; margin-bottom: 3px; transition: all 0.12s ease; border-left: 3px solid transparent; }
+.chk:hover { background: var(--color-background-secondary); }
+.chk.on, .chk.done { background: #f0fdf4 !important; color: #14532d !important; font-weight: 500; border-left: 3px solid #16a34a !important; }
+.chk.rec { background: #fef2f2 !important; color: #991b1b !important; text-decoration: line-through; border-left: 3px solid #dc2626 !important; }
+.cico { width: 18px; height: 18px; border-radius: 4px; border: 1.5px solid var(--color-border-secondary); display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; background: var(--color-background-primary); transition: all 0.12s ease; }
+.chk.on .cico, .chk.done .cico { background: #16a34a !important; border-color: #16a34a !important; color: #fff !important; }
+.chk.rec .cico { background: #dc2626 !important; border-color: #dc2626 !important; color: #fff !important; }
+
+.csec-sup { border-left: 4px solid #dc2626; }
+.csec-inv { border-left: 4px solid #16a34a; }
+.csec-sin { border-left: 4px solid #0284c7; }
+.csec-esp { border-left: 4px solid #9f1239; }
+.csec-dsp { border-left: 4px solid #64748b; }
+
+.csec-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; padding: 2px 7px; border-radius: 10px; display: inline-block; }
+.csec-tag-sup { background: #fee2e2; color: #b91c1c; border: 0.5px solid #fca5a5; }
+.csec-tag-inv { background: #dcfce7; color: #15803d; border: 0.5px solid #86efac; }
+.csec-tag-sin { background: #e0f2fe; color: #0369a1; border: 0.5px solid #7dd3fc; }
+.csec-tag-esp { background: #ffe4e6; color: #9f1239; border: 0.5px solid #fda4af; }
+.csec-tag-dsp { background: #f1f5f9; color: #475569; border: 0.5px solid #cbd5e1; }
+
+/* NEWS2 */
+.news2-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; margin-top: 10px; }
+.news2-badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.news2-badge-baixo { background: #eaf3de; color: #2e7d32; border: 0.5px solid #a5d6a7; }
+.news2-badge-medio { background: #fff8e1; color: #b45309; border: 0.5px solid #fde68a; }
+.news2-badge-alto { background: #fee2e2; color: #b91c1c; border: 0.5px solid #fca5a5; }
+
+/* PEP Copy Bar & Botoes */
+.s5-pep-copy-bar { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+.pep-copy-btn {
+  background: transparent;
+  border: none;
+  padding: 3px 7px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #374151;
+  border-radius: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.pep-copy-btn:hover { background: #eff6ff; color: #1d4ed8; }
+.pep-copy-btn-all { background: #f0fdf4; color: #15803d; }
+.pep-copy-btn-all:hover { background: #dcfce7; color: #166534; }
+.rel-section-copy-overlay {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  display: flex;
+  gap: 4px;
+  z-index: 10;
+  opacity: 0.38;
+  transition: opacity 0.2s ease, box-shadow 0.2s ease;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 3px 6px;
+  border-radius: 20px;
+  border: 0.5px solid rgba(0,0,0,0.12);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.rel-col-txt-wrap:hover .rel-section-copy-overlay,
+.rel-col-txt-wrap:focus-within .rel-section-copy-overlay,
+.rel-section-copy-overlay:hover {
+  opacity: 1;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.14);
+}
+
+.kbd { display: inline-block; padding: 2px 6px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; line-height: 1.4; color: #1f2937; background-color: #f3f4f6; border: 1px solid #d1d5db; border-radius: 4px; box-shadow: inset 0 -1px 0 #cbd5e1; }
+
+/* ─── Header & Toolbar do Prontuário (.col-rel) ─── */
+.rel-col-hdr {
+  padding: 8px 12px;
+  background: var(--color-background-primary);
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-shrink: 0;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+.rel-col-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.rel-col-badge-live {
+  font-size: 10px;
+  font-weight: 700;
+  color: #15803d;
+  background: #dcfce7;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  letter-spacing: 0.04em;
+}
+.rel-col-badge-live i { font-size: 9px; }
+.rel-col-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+.btn-split {
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border-secondary);
+  color: var(--color-text-secondary);
+  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  transition: all 0.15s ease;
+}
+.btn-split:hover, .btn-split.active {
+  background: #2563eb;
+  border-color: #1d4ed8;
+  color: #ffffff;
+}
+.rel-mode-toggle {
+  display: flex;
+  background: var(--color-background-secondary);
+  border-radius: 8px;
+  padding: 2px;
+  border: 0.5px solid var(--color-border-secondary);
+  gap: 2px;
+}
+.rel-mode-pill {
+  background: transparent;
+  border: none;
+  padding: 3px 9px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+}
+.rel-mode-pill:hover {
+  color: var(--color-text-primary);
+}
+.rel-mode-pill.on {
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* Toolbar de Cópia Seletiva para o PEP */
+.pep-action-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  background: #f8fafc;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  flex-wrap: wrap;
+}
+.pep-toolbar-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 2px;
+}
+.pep-tool-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 4px 8px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #334155;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.12s ease;
+  white-space: nowrap;
+}
+.pep-tool-btn:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  color: #1d4ed8;
+}
+.pep-tool-btn:active {
+  transform: scale(0.97);
+}
+.pep-tool-btn-all {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #15803d;
+  font-weight: 600;
+}
+.pep-tool-btn-all:hover {
+  background: #dcfce7;
+  border-color: #4ade80;
+  color: #166534;
+}
+
+
+/* ─── File: overlays.css ─── */
+/* ==========================================================================
+   Modals, Auth & Overlays — Emergência Pro
+   ========================================================================== */
+
+.login-overlay { position: fixed; inset: 0; background: #f3f4f6; display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
+.login-box { background: #fff; border-radius: 12px; padding: 2rem; width: 100%; max-width: 360px; border: 0.5px solid #e5e7eb; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+.login-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
+.login-hico { width: 44px; height: 44px; background: #f8fafc; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+.login-hico img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.login-hico i { font-size: 22px; color: #a32d2d; }
+.login-fl { margin-bottom: 12px; }
+.login-fl label { display: block; font-size: 12px; color: #6b7280; margin-bottom: 4px; font-weight: 500; }
+.login-fl input { width: 100%; padding: 9px 12px; border: 0.5px solid #d1d5db; border-radius: 8px; font-size: 14px; }
+.login-btn { width: 100%; padding: 10px; background: #a32d2d; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; margin-top: 4px; font-family: inherit; }
+.login-btn:hover { background: #791f1f; }
+.login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.login-err { color: #a32d2d; font-size: 12px; margin-top: 8px; display: none; }
+.login-loading { text-align: center; color: #6b7280; font-size: 12px; padding: 6px 0; display: none; }
+.login-link { display: block; text-align: center; font-size: 12px; color: #a32d2d; margin-top: 10px; cursor: pointer; background: none; border: none; width: 100%; font-family: inherit; }
+.login-link:hover { text-decoration: underline; }
+
+.signup-box { background: #fff; border-radius: 12px; padding: 2rem; width: 100%; max-width: 480px; border: 0.5px solid #e5e7eb; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+.kyc-box { background: #fff; border-radius: 12px; padding: 2rem; width: 100%; max-width: 560px; border: 0.5px solid #e5e7eb; box-shadow: 0 4px 24px rgba(0,0,0,0.08); max-height: 90vh; overflow-y: auto; }
+.pending-box { background: #fff; border-radius: 12px; padding: 2rem; width: 100%; max-width: 440px; border: 0.5px solid #e5e7eb; box-shadow: 0 4px 24px rgba(0,0,0,0.08); text-align: center; }
+.pwd-rules { font-size: 11px; margin-top: 6px; color: #6b7280; line-height: 1.6; }
+.pwd-rules li { list-style: none; display: flex; align-items: center; gap: 6px; }
+.pwd-rules li.ok { color: #3b6d11; }
+.pwd-rules li.fail { color: #a32d2d; }
+.kyc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.kyc-upload { display: block; border: 1px dashed #d1d5db; border-radius: 8px; padding: 14px; text-align: center; cursor: pointer; background: #f9fafb; font-size: 13px; color: #6b7280; transition: border-color 0.15s; }
+.kyc-upload:hover { border-color: #a32d2d; color: #a32d2d; }
+.kyc-upload.has-file { border-style: solid; border-color: #3b6d11; background: #eaf3de; color: #3b6d11; }
+.kyc-upload input { display: none; }
+.cf-turnstile-wrap { margin: 14px 0; display: flex; justify-content: center; min-height: 65px; }
+.pending-icon { width: 64px; height: 64px; border-radius: 50%; background: #faeeda; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+.pending-icon i { font-size: 32px; color: #854f0b; }
+
+/* Drawers & Bottom Sheet Mobile */
+.fab-report-btn { position: fixed; right: 16px; bottom: max(18px, env(safe-area-inset-bottom)); background: #a32d2d; color: #fff; border: none; border-radius: 24px; padding: 10px 16px; font-size: 12.5px; font-weight: 600; box-shadow: 0 4px 18px rgba(163,45,45,0.4); cursor: pointer; display: flex; align-items: center; gap: 7px; z-index: 120; transition: transform 0.15s, background 0.15s, box-shadow 0.15s; font-family: inherit; -webkit-tap-highlight-color: transparent; }
+.fab-report-btn:hover { background: #791f1f; transform: translateY(-2px); box-shadow: 0 6px 22px rgba(163,45,45,0.5); }
+.fab-report-btn:active { transform: scale(0.96); }
+.fab-report-btn i { font-size: 16px; }
+@media(min-width: 1024px) { .fab-report-btn { display: none; } }
+
+.fab-decision-btn { position: fixed; left: 16px; right: auto; bottom: max(18px, env(safe-area-inset-bottom)); background: #d97706; color: #fff; border: none; border-radius: 24px; padding: 10px 16px; font-size: 12.5px; font-weight: 600; box-shadow: 0 4px 18px rgba(217,119,6,0.4); cursor: pointer; display: flex; align-items: center; gap: 7px; z-index: 120; transition: transform 0.15s, background 0.15s, box-shadow 0.15s; font-family: inherit; -webkit-tap-highlight-color: transparent; }
+.fab-decision-btn:hover { background: #b45309; transform: translateY(-2px); box-shadow: 0 6px 22px rgba(217,119,6,0.5); }
+.fab-decision-btn:active { transform: scale(0.96); }
+.fab-decision-btn i { font-size: 16px; }
+@media(min-width: 1024px) { .fab-decision-btn { display: none; } }
+
+.fab-drawer-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.45); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 180; display: flex; align-items: flex-end; justify-content: center; }
+.fab-drawer-box { background: var(--color-background-primary); width: 100%; max-width: 700px; border-radius: 20px 20px 0 0; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 -6px 28px rgba(0,0,0,0.25); animation: slideUpDrawer 0.26s cubic-bezier(0.32,0.72,0,1); }
+.fab-drawer-hdr { padding: 0.85rem 1.25rem; border-bottom: 0.5px solid var(--color-border-tertiary); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.fab-drawer-body { flex: 1; min-height: 0; padding: 1rem; display: flex; flex-direction: column; }
+.fab-drawer-textarea { flex: 1; min-height: 280px; resize: none; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-secondary); font-family: var(--font-mono); font-size: 12px; line-height: 1.8; padding: 0.85rem; color: var(--color-text-primary); }
+.fab-drawer-footer { padding: 0.75rem 1.25rem; border-top: 0.5px solid var(--color-border-tertiary); display: flex; gap: 8px; flex-shrink: 0; justify-content: flex-end; }
+
+/* Drawer de Apoio à Decisão */
+.decision-drawer-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.45); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 190; display: flex; align-items: stretch; justify-content: flex-end; }
+.decision-drawer { background: var(--color-background-primary); width: 100%; max-width: 520px; display: flex; flex-direction: column; box-shadow: -6px 0 32px rgba(15,23,42,0.22); animation: slideInRight 0.22s cubic-bezier(0.16,1,0.3,1); overflow: hidden; }
+.decision-sheet-handle-wrap { display: none; }
+.decision-drawer-hdr { padding: 0.9rem 1.25rem; border-bottom: 1px solid var(--color-border-tertiary); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; background: var(--color-background-primary); }
+.decision-hdr-icon { width: 36px; height: 36px; border-radius: 10px; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; font-size: 19px; flex-shrink: 0; }
+.decision-hdr-title { font-size: 15px; font-weight: 700; color: var(--color-text-primary); line-height: 1.2; }
+.decision-hdr-sub { font-size: 11.5px; color: var(--color-text-secondary); line-height: 1.3; margin-top: 2px; }
+.decision-sheet-close { width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; border: none; color: #64748b; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.decision-sheet-close:hover { background: #e2e8f0; color: #0f172a; }
+.decision-drawer-tabs { display: flex; border-bottom: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); flex-shrink: 0; padding: 4px; }
+.decision-tab { flex: 1; padding: 9px 6px; text-align: center; font-size: 12px; font-weight: 600; border: none; background: transparent; color: var(--color-text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; border-radius: 8px; transition: all 0.18s cubic-bezier(0.4,0,0.2,1); font-family: inherit; -webkit-tap-highlight-color: transparent; }
+.decision-tab:hover { color: var(--color-text-primary); background: rgba(0,0,0,0.03); }
+.decision-tab.active { color: #b45309; background: #ffffff; box-shadow: 0 1px 4px rgba(0,0,0,0.08); font-weight: 700; }
+.decision-drawer-body { flex: 1; min-height: 0; overflow-y: auto; padding: 1.15rem; display: flex; flex-direction: column; gap: 12px; }
+
+@media(max-width: 768px) {
+  .decision-drawer-overlay { align-items: flex-end; justify-content: center; }
+  .decision-drawer { max-width: 100%; border-radius: 22px 22px 0 0; max-height: 90vh; animation: slideUpDrawer 0.26s cubic-bezier(0.32,0.72,0,1); box-shadow: 0 -8px 36px rgba(15,23,42,0.28); }
+  .decision-sheet-handle-wrap { display: flex; justify-content: center; align-items: center; padding: 10px 0 4px; cursor: pointer; flex-shrink: 0; background: var(--color-background-primary); }
+  .decision-sheet-handle { width: 42px; height: 5px; border-radius: 3px; background: #cbd5e1; }
+  .decision-drawer-hdr { padding: 0.5rem 1.15rem 0.75rem 1.15rem; border-bottom: none; }
+  .decision-drawer-tabs { margin: 0 14px 10px 14px; background: #f1f5f9; border-radius: 12px; border: 1px solid #e2e8f0; padding: 3px; }
+  .decision-drawer-body { padding: 0.5rem 1rem max(28px, env(safe-area-inset-bottom)) 1rem; }
+}
+
+/* Modais Genéricos & Atalhos */
+.modal-backdrop, .admin-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.5); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.modal-box { background: var(--color-background-primary); border-radius: 14px; padding: 1.5rem; width: 100%; max-width: 580px; border: 0.5px solid var(--color-border-secondary); box-shadow: 0 10px 30px rgba(0,0,0,0.15); max-height: 90vh; overflow-y: auto; }
+.modal-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.modal-close { background: none; border: none; font-size: 20px; color: var(--color-text-secondary); cursor: pointer; padding: 4px; border-radius: 4px; }
+.modal-close:hover { color: var(--color-text-primary); }
+
+.toast { position: fixed; bottom: 20px; right: 20px; background: #1f2937; color: #fff; padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; box-shadow: 0 4px 14px rgba(0,0,0,0.18); z-index: 9999; display: none; align-items: center; gap: 8px; }
+
+
+body { background: #0f172a; margin: 0; padding: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+.porta-standalone-shell { max-width: 1200px; margin: 0 auto; background: var(--color-background-primary, #ffffff); border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; display: flex; flex-direction: column; height: calc(100vh - 24px); border: 1px solid var(--color-border, #e2e8f0); }
+.porta-standalone-hdr { padding: 12px 18px; border-bottom: 1px solid var(--color-border, #e2e8f0); display: flex; align-items: center; justify-content: space-between; background: var(--color-background-secondary, #f8fafc); }
+</style>
+</head>
+<body>
+<div class="porta-standalone-shell">
+  <div class="porta-standalone-hdr">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:36px;height:36px;border-radius:8px;background:#059669;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px">
+        <i class="ti ti-door-enter" aria-hidden="true"></i>
+      </div>
+      <div>
+        <div style="font-size:16px;font-weight:700;color:var(--color-text-primary,#0f172a);display:flex;align-items:center;gap:8px">
+          Guia Rápido de Porta & Ambulatório
+          <span class="sb" style="font-size:10.5px;background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:4px">20 Patologias</span>
+        </div>
+        <div style="font-size:11.5px;color:var(--color-text-secondary,#64748b)">Consulta beira-leito, prescrição SUS e gerador de atestado médico (Standalone Offline)</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="position:relative;width:280px">
+        <i class="ti ti-search" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:14px"></i>
+        <input type="text" id="porta-search-input" placeholder="Buscar queixa, CID ou sintoma..." oninput="onPortaSearch(this.value)" style="width:100%;padding:6px 10px 6px 30px;font-size:12px;border:1px solid var(--color-border,#cbd5e1);border-radius:6px;background:var(--color-background-primary,#fff)">
+      </div>
+      <a href="app.html" class="btns" style="padding:6px 10px;font-size:12px;text-decoration:none;display:flex;align-items:center;gap:4px">
+        <i class="ti ti-arrow-left"></i> Emergência Pro
+      </a>
+    </div>
+  </div>
+  <div id="porta-guide-modal-body" style="padding:16px;overflow:hidden;flex:1"></div>
+</div>
+<div id="toast" style="position:fixed;bottom:20px;right:20px;background:#1e293b;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;display:none;z-index:99999;box-shadow:0 10px 15px -3px rgba(0,0,0,0.3)"></div>
+<script>
+function esc(s){ return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function showToast(msg){
+  const t = document.getElementById('toast');
+  if(!t) return;
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(()=>{ t.style.display = 'none'; }, 2500);
+}
+
+/* ─── Porta Catalog: porta_catalog.js ─── */
+/* ─── Catálogo de Patologias de Porta / Baixa e Moderada Complexidade ─── */
+/* Estrutura arquitetural com slots limpos para preenchimento de conteúdo clínico pelo médico-usuário */
+
+const PORTA_CATEGORIES = [
+  { id: 'todos', label: 'Todas as Queixas', icon: 'ti-grid-dots' },
+  { id: 'urinario', label: 'Urinário & Ginecológico', icon: 'ti-droplet' },
+  { id: 'respiratorio', label: 'Otorrino & Respiratório', icon: 'ti-lungs' },
+  { id: 'infeccioso', label: 'Infecciosas & Tropicais', icon: 'ti-virus' },
+  { id: 'gastro', label: 'Gastrointestinal', icon: 'ti-stomach' },
+  { id: 'osteomuscular', label: 'Osteomuscular & Trauma Leve', icon: 'ti-bone' },
+  { id: 'cardiopsq', label: 'Cardiovascular & Psíquico', icon: 'ti-heartbeat' },
+  { id: 'dermatooft', label: 'Dermatologia & Oftalmo', icon: 'ti-eye' }
+];
+
+const PORTA_CATALOG = [
+  // ─── Urinário & Ginecológico ───
+  {
+    id: 'cistite',
+    title: 'Cistite Aguda Não Complicada',
+    cid10: 'N30.0',
+    category: 'urinario',
+    categoryLabel: 'Urinário & Ginecológico',
+    icon: 'ti-droplet',
+    searchKeywords: ['itu', 'infeccao urinaria', 'disuria', 'bexiga', 'polaciuria', 'ardor para urinar'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 1
+    }
+  },
+  {
+    id: 'colica_renal',
+    title: 'Cólica Nefrética Não Complicada (Urolitíase)',
+    cid10: 'N23',
+    category: 'urinario',
+    categoryLabel: 'Urinário & Ginecológico',
+    icon: 'ti-ripple',
+    searchKeywords: ['colica renal', 'calculo renal', 'pedra nos rins', 'dor lombar em colica', 'hematuria'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 1
+    }
+  },
+  {
+    id: 'uretrite',
+    title: 'Uretrite Masculina / Corrimento Uretral',
+    cid10: 'N34.1',
+    category: 'urinario',
+    categoryLabel: 'Urinário & Ginecológico',
+    icon: 'ti-shield-alert',
+    searchKeywords: ['ist', 'gonorreia', 'clamidia', 'corrimento uretral', 'disuria masculina', 'secrecao peniana'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 0
+    }
+  },
+  {
+    id: 'vulvovaginite',
+    title: 'Vulvovaginite Aguda (Candidíase / Vaginose / Tricomoníase)',
+    cid10: 'N76.0',
+    category: 'urinario',
+    categoryLabel: 'Urinário & Ginecológico',
+    icon: 'ti-shield-check',
+    searchKeywords: ['corrimento vaginal', 'candidiase', 'vaginose bacteriana', 'prurido vulvar', 'leucorreia'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 0
+    }
+  },
+
+  // ─── Otorrino & Respiratório ───
+  {
+    id: 'faringite',
+    title: 'Faringoamigdalite Aguda',
+    cid10: 'J03.9',
+    category: 'respiratorio',
+    categoryLabel: 'Otorrino & Respiratório',
+    icon: 'ti-temperature',
+    searchKeywords: ['dor de garganta', 'amigdalite', 'faringite', 'centor', 'placas na garganta', 'pus na garganta'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 2
+    }
+  },
+  {
+    id: 'sinusite',
+    title: 'Rinossinusite Aguda',
+    cid10: 'J01.9',
+    category: 'respiratorio',
+    categoryLabel: 'Otorrino & Respiratório',
+    icon: 'ti-headset',
+    searchKeywords: ['sinusite', 'congestao nasal', 'pressao facial', 'secrecao nasal purulenta', 'dor de cabeca'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 2
+    }
+  },
+  {
+    id: 'otite',
+    title: 'Otite Média Aguda / Otite Externa',
+    cid10: 'H66.9',
+    category: 'respiratorio',
+    categoryLabel: 'Otorrino & Respiratório',
+    icon: 'ti-volume',
+    searchKeywords: ['dor de ouvido', 'otalgia', 'otite externa', 'otite media', 'secrecao no ouvido'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 1
+    }
+  },
+  {
+    id: 'bronquite',
+    title: 'Bronquite Aguda / Tosse Pós-Infecciosa',
+    cid10: 'J20.9',
+    category: 'respiratorio',
+    categoryLabel: 'Otorrino & Respiratório',
+    icon: 'ti-lungs',
+    searchKeywords: ['tosse seca', 'tosse produtiva', 'catarro', 'bronquite', 'peito cheio'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 2
+    }
+  },
+  {
+    id: 'sindrome_gripal',
+    title: 'Síndrome Gripal / COVID-19 Leve',
+    cid10: 'J11.1',
+    category: 'respiratorio',
+    categoryLabel: 'Otorrino & Respiratório',
+    icon: 'ti-mask',
+    searchKeywords: ['gripe', 'resfriado', 'covid', 'coriza', 'mialgia', 'febre e tosse'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 3
+    }
+  },
+
+  // ─── Infecciosas & Tropicais ───
+  {
+    id: 'dengue_leve',
+    title: 'Dengue sem Sinais de Alarme (Grupo A / B)',
+    cid10: 'A90',
+    category: 'infeccioso',
+    categoryLabel: 'Infecciosas & Tropicais',
+    icon: 'ti-virus',
+    searchKeywords: ['dengue', 'arbovirose', 'febre alta', 'dor retroorbitaria', 'prova do laco', 'mialgia intensa'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 3
+    }
+  },
+
+  // ─── Gastrointestinal ───
+  {
+    id: 'geca',
+    title: 'Gastroenterite Aguda (GECA) / Diarreia Aguda',
+    cid10: 'A09',
+    category: 'gastro',
+    categoryLabel: 'Gastrointestinal',
+    icon: 'ti-stomach',
+    searchKeywords: ['diarreia', 'vomito', 'intoxicacao alimentar', 'gastroenterite', 'desidratacao'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 2
+    }
+  },
+  {
+    id: 'dispepsia',
+    title: 'Dispepsia Aguda / DRGE Agudizada',
+    cid10: 'K30',
+    category: 'gastro',
+    categoryLabel: 'Gastrointestinal',
+    icon: 'ti-flame',
+    searchKeywords: ['queimacao no estomago', 'azia', 'refluxo', 'gastrite', 'dor epigastrica'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 1
+    }
+  },
+  {
+    id: 'hemorroida',
+    title: 'Crise Hemorroidária Externa Leve',
+    cid10: 'K64.0',
+    category: 'gastro',
+    categoryLabel: 'Gastrointestinal',
+    icon: 'ti-circle-dot',
+    searchKeywords: ['hemorroida', 'dor anal', 'trombose hemorroidaria', 'sangramento anal'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 2
+    }
+  },
+
+  // ─── Osteomuscular & Trauma Leve ───
+  {
+    id: 'lombalgia',
+    title: 'Lombalgia Mecânica Aguda / Lombociatalgia',
+    cid10: 'M54.5',
+    category: 'osteomuscular',
+    categoryLabel: 'Osteomuscular & Trauma Leve',
+    icon: 'ti-bone',
+    searchKeywords: ['dor nas costas', 'dor lombar', 'ciatico', 'travou a coluna', 'lombalgia'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 2
+    }
+  },
+  {
+    id: 'entorse_tornozelo',
+    title: 'Entorse de Tornozelo Leve / Moderada',
+    cid10: 'S93.4',
+    category: 'osteomuscular',
+    categoryLabel: 'Osteomuscular & Trauma Leve',
+    icon: 'ti-walk',
+    searchKeywords: ['virou o pe', 'entorse', 'tornozelo inchado', 'ottawa', 'pisou em falso'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 3
+    }
+  },
+  {
+    id: 'cervicalgia',
+    title: 'Cervicalgia Aguda / Torcicolo',
+    cid10: 'M54.2',
+    category: 'osteomuscular',
+    categoryLabel: 'Osteomuscular & Trauma Leve',
+    icon: 'ti-user-exclamation',
+    searchKeywords: ['torcicolo', 'dor no pescoco', 'cervicalgia', 'espásmo muscular'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 1
+    }
+  },
+
+  // ─── Cardiovascular & Psíquico ───
+  {
+    id: 'pseudocrise_pa',
+    title: 'Pseudocrise Hipertensiva / Hipertensão Assintomática',
+    cid10: 'I10',
+    category: 'cardiopsq',
+    categoryLabel: 'Cardiovascular & Psíquico',
+    icon: 'ti-heartbeat',
+    searchKeywords: ['pressao alta', 'pa elevada', 'pseudocrise', 'pressao subiu', 'hipertensao assintomatica'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 0
+    }
+  },
+  {
+    id: 'ansiedade_panico',
+    title: 'Crise de Ansiedade Aguda / Ataque de Pânico',
+    cid10: 'F41.0',
+    category: 'cardiopsq',
+    categoryLabel: 'Cardiovascular & Psíquico',
+    icon: 'ti-activity',
+    searchKeywords: ['panico', 'ansiedade', 'falta de ar ansiosa', 'palpitacao ansiosa', 'angustia'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 1
+    }
+  },
+
+  // ─── Dermatologia & Oftalmo ───
+  {
+    id: 'celulite_leve',
+    title: 'Erisipela / Celulite Leve Não Complicada',
+    cid10: 'A46',
+    category: 'dermatooft',
+    categoryLabel: 'Dermatologia & Oftalmo',
+    icon: 'ti-bandage',
+    searchKeywords: ['perna vermelha', 'erisipela', 'celulite infecciosa', 'calor local', 'porta de entrada'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 3
+    }
+  },
+  {
+    id: 'conjuntivite',
+    title: 'Conjuntivite Aguda (Viral / Bacteriana)',
+    cid10: 'H10.9',
+    category: 'dermatooft',
+    categoryLabel: 'Dermatologia & Oftalmo',
+    icon: 'ti-eye',
+    searchKeywords: ['olho vermelho', 'secrecao ocular', 'conjuntivite', 'remela', 'prurido ocular'],
+    diagnosticCriteria: [],
+    redFlags: [],
+    prescription: {
+      firstLine: [],
+      secondLine: [],
+      symptomatic: []
+    },
+    nonPharm: [],
+    discharge: {
+      alarmCriteria: '',
+      defaultCertDays: 3
+    }
+  }
+];
+
+
+/* ─── Guia de Consulta Rápida de Porta / Ambulatório (Adultos) ─── */
+
+let _isPortaModalOpen = false;
+let _selectedPortaId = 'cistite';
+let _portaSearchQuery = '';
+let _selectedPortaCategory = 'todos';
+let _portaCertDays = {};
+
+function openPortaGuideModal(){
+  _isPortaModalOpen = true;
+  const overlay = document.getElementById('porta-guide-overlay');
+  if(overlay){
+    overlay.style.display = 'flex';
+    overlay.setAttribute('aria-hidden', 'false');
+    renderPortaGuideContent();
+    const input = document.getElementById('porta-search-input');
+    if(input) input.focus();
+  }
+}
+
+function closePortaGuideModal(){
+  _isPortaModalOpen = false;
+  const overlay = document.getElementById('porta-guide-overlay');
+  if(overlay){
+    overlay.style.display = 'none';
+    overlay.setAttribute('aria-hidden', 'true');
+  }
+}
+
+function togglePortaGuideModal(){
+  if(_isPortaModalOpen) closePortaGuideModal();
+  else openPortaGuideModal();
+}
+
+function selectPortaPathology(id){
+  _selectedPortaId = id;
+  renderPortaGuideContent();
+  const cardElem = document.getElementById('porta-active-card');
+  if(cardElem) cardElem.scrollTop = 0;
+}
+
+function setPortaCategory(catId){
+  _selectedPortaCategory = catId;
+  const filtered = getFilteredPortaList();
+  if(filtered.length > 0 && !filtered.some(p => p.id === _selectedPortaId)){
+    _selectedPortaId = filtered[0].id;
+  }
+  renderPortaGuideContent();
+}
+
+function onPortaSearch(q){
+  _portaSearchQuery = (q || '').trim().toLowerCase();
+  const filtered = getFilteredPortaList();
+  if(filtered.length > 0 && !filtered.some(p => p.id === _selectedPortaId)){
+    _selectedPortaId = filtered[0].id;
+  }
+  renderPortaGuideContent();
+}
+
+function clearPortaSearch(){
+  _portaSearchQuery = '';
+  const input = document.getElementById('porta-search-input');
+  if(input){ input.value = ''; input.focus(); }
+  renderPortaGuideContent();
+}
+
+function setPortaCertDays(id, days){
+  _portaCertDays[id] = parseInt(days, 10) || 1;
+  renderPortaGuideContent();
+}
+
+function getFilteredPortaList(){
+  let list = PORTA_CATALOG;
+  if(_selectedPortaCategory && _selectedPortaCategory !== 'todos'){
+    list = list.filter(p => p.category === _selectedPortaCategory);
+  }
+  if(_portaSearchQuery){
+    const q = _portaSearchQuery;
+    list = list.filter(p => {
+      const matchTitle = (p.title || '').toLowerCase().includes(q);
+      const matchCid = (p.cid10 || '').toLowerCase().includes(q);
+      const matchCat = (p.categoryLabel || '').toLowerCase().includes(q);
+      const matchKeys = (p.searchKeywords || []).some(k => k.toLowerCase().includes(q));
+      return matchTitle || matchCid || matchCat || matchKeys;
+    });
+  }
+  return list;
+}
+
+function copyPortaPrescription(id){
+  const p = PORTA_CATALOG.find(x => x.id === id);
+  if(!p) return;
+  const lines = [`# PRESCRIÇÃO MÉDICA AMBULATORIAL — ${p.title} (CID-10: ${p.cid10})`];
+  
+  if(p.prescription.firstLine && p.prescription.firstLine.length){
+    lines.push('\n[1ª Linha / Preferencial]');
+    p.prescription.firstLine.forEach(it => {
+      lines.push(`- ${it.drug || it}: ${it.regimen || ''} ${it.duration ? '('+it.duration+')' : ''}`.trim());
+    });
+  }
+  if(p.prescription.secondLine && p.prescription.secondLine.length){
+    lines.push('\n[2ª Linha / Alternativa]');
+    p.prescription.secondLine.forEach(it => {
+      lines.push(`- ${it.drug || it}: ${it.regimen || ''} ${it.duration ? '('+it.duration+')' : ''}`.trim());
+    });
+  }
+  if(p.prescription.symptomatic && p.prescription.symptomatic.length){
+    lines.push('\n[Sintomáticos & Controle de Sintomas]');
+    p.prescription.symptomatic.forEach(it => {
+      lines.push(`- ${it.drug || it}: ${it.regimen || ''} ${it.duration ? '('+it.duration+')' : ''}`.trim());
+    });
+  }
+  if(!p.prescription.firstLine?.length && !p.prescription.secondLine?.length && !p.prescription.symptomatic?.length){
+    lines.push('\n(Prescrição em aguardo de compilação pelo médico)');
+  }
+
+  const text = lines.join('\n');
+  navigator.clipboard.writeText(text).then(() => {
+    showToast(`Prescrição de ${p.title} copiada para a área de transferência!`);
+  });
+}
+
+function copyPortaOrientations(id){
+  const p = PORTA_CATALOG.find(x => x.id === id);
+  if(!p) return;
+  const lines = [`# ORIENTAÇÕES AO PACIENTE — ${p.title}`];
+  if(p.nonPharm && p.nonPharm.length){
+    lines.push('\n[Medidas e Cuidados Gerais]');
+    p.nonPharm.forEach(m => lines.push(`- ${m}`));
+  }
+  if(p.discharge && p.discharge.alarmCriteria){
+    lines.push('\n[SINAIS DE ALARME / QUANDO RETORNAR AO PRONTO-ATENDIMENTO]');
+    lines.push(p.discharge.alarmCriteria);
+  }
+  if(!p.nonPharm?.length && !p.discharge?.alarmCriteria){
+    lines.push('\n(Orientações em aguardo de compilação pelo médico)');
+  }
+
+  const text = lines.join('\n');
+  navigator.clipboard.writeText(text).then(() => {
+    showToast(`Orientações ao paciente copiadas!`);
+  });
+}
+
+function copyPortaCertificate(id){
+  const p = PORTA_CATALOG.find(x => x.id === id);
+  if(!p) return;
+  const days = _portaCertDays[id] !== undefined ? _portaCertDays[id] : (p.discharge.defaultCertDays || 1);
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('pt-BR');
+  
+  const text = `ATESTADO MÉDICO\n\nAtesto para os devidos fins que o(a) paciente esteve sob meus cuidados médicos no dia de hoje (${dateStr}), necessitando de ${days} (${days === 1 ? 'um dia' : days + ' dias'}) de repouso por motivo de saúde.\n\nCID-10: ${p.cid10} (${p.title})`;
+  
+  navigator.clipboard.writeText(text).then(() => {
+    showToast(`Atestado de ${days} dia(s) copiado com sucesso!`);
+  });
+}
+
+function renderPortaGuideContent(){
+  const body = document.getElementById('porta-guide-modal-body');
+  if(!body) return;
+
+  const filtered = getFilteredPortaList();
+  const activePathology = PORTA_CATALOG.find(p => p.id === _selectedPortaId) || filtered[0] || PORTA_CATALOG[0];
+  const certDays = _portaCertDays[activePathology.id] !== undefined ? _portaCertDays[activePathology.id] : (activePathology.discharge.defaultCertDays || 1);
+
+  body.innerHTML = `
+    <!-- Top Filter Bar: Categories Chips -->
+    <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;margin-bottom:12px;border-bottom:1px solid var(--color-border,#e2e8f0);white-space:nowrap" class="scrollbar-thin">
+      ${PORTA_CATEGORIES.map(cat => {
+        const isActive = _selectedPortaCategory === cat.id;
+        const count = cat.id === 'todos' ? PORTA_CATALOG.length : PORTA_CATALOG.filter(x => x.category === cat.id).length;
+        return `
+          <button type="button" class="xbtn ${isActive ? 'on' : ''}" style="padding:4px 10px;font-size:11.5px;display:flex;align-items:center;gap:5px;border-radius:16px" onclick="setPortaCategory('${cat.id}')">
+            <i class="ti ${cat.icon}" aria-hidden="true"></i>
+            <span>${cat.label}</span>
+            <span class="sb" style="font-size:10px;padding:1px 5px;background:${isActive ? '#fff' : 'var(--color-background-primary)'};color:${isActive ? '#2563eb' : 'var(--color-text-secondary)'};border-radius:10px">${count}</span>
+          </button>
+        `;
+      }).join('')}
+    </div>
+
+    <!-- Main Content Area: Split View -->
+    <div style="display:grid;grid-template-columns:300px 1fr;gap:16px;height:calc(85vh - 140px);overflow:hidden" id="porta-split-container">
+      
+      <!-- Left Column: Pathology Navigation List -->
+      <div style="overflow-y:auto;padding-right:6px;border-right:1px solid var(--color-border,#e2e8f0)" class="scrollbar-thin">
+        ${filtered.length === 0 ? `
+          <div style="text-align:center;padding:30px 10px;color:var(--color-text-secondary)">
+            <i class="ti ti-search-off" style="font-size:28px;display:block;margin-bottom:6px"></i>
+            <strong>Nenhuma queixa encontrada</strong>
+            <p style="font-size:11.5px;margin-top:4px">Tente buscar por outro termo ou limpe o filtro.</p>
+            <button type="button" class="xbtn" style="margin-top:8px;font-size:11px;padding:3px 8px" onclick="clearPortaSearch()">Limpar busca</button>
+          </div>
+        ` : filtered.map(p => {
+          const isSelected = p.id === activePathology.id;
+          const hasPrescription = (p.prescription.firstLine?.length || p.prescription.secondLine?.length);
+          return `
+            <div onclick="selectPortaPathology('${p.id}')" style="cursor:pointer;padding:10px 12px;margin-bottom:6px;border-radius:8px;transition:all 0.15s ease;border:1px solid ${isSelected ? '#3b82f6' : 'var(--color-border,#e2e8f0)'};background:${isSelected ? '#eff6ff' : 'var(--color-background-primary,#ffffff)'}">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                <span style="font-size:11px;font-weight:700;color:${isSelected ? '#1d4ed8' : '#64748b'};display:flex;align-items:center;gap:4px">
+                  <i class="ti ${p.icon}"></i> ${esc(p.categoryLabel)}
+                </span>
+                <span class="sb" style="font-size:10px;background:#f1f5f9;color:#475569;padding:1px 6px;border-radius:4px">CID ${esc(p.cid10)}</span>
+              </div>
+              <strong style="font-size:13px;display:block;color:${isSelected ? '#1e3a8a' : 'var(--color-text-primary,#0f172a)'}">${esc(p.title)}</strong>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+                <span style="font-size:10.5px;color:${hasPrescription ? '#15803d' : '#94a3b8'}">
+                  <i class="ti ${hasPrescription ? 'ti-check' : 'ti-dots'}"></i> ${hasPrescription ? 'Prescrição ativa' : 'Aguardando compilação'}
+                </span>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+
+      <!-- Right Column: Active Card Display -->
+      <div style="overflow-y:auto;padding-right:8px" class="scrollbar-thin" id="porta-active-card">
+        
+        <!-- Header Card -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:14px">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <span class="sb" style="background:#dbeafe;color:#1e40af;font-size:11px;padding:2px 8px;border-radius:12px;font-weight:600">
+                <i class="ti ${activePathology.icon}"></i> ${esc(activePathology.categoryLabel)}
+              </span>
+              <span class="sb" style="background:#f1f5f9;color:#334155;font-size:11px;padding:2px 8px;border-radius:12px">
+                CID-10: ${esc(activePathology.cid10)}
+              </span>
+            </div>
+            <h2 style="font-size:17px;font-weight:700;margin:0;color:#0f172a">${esc(activePathology.title)}</h2>
+          </div>
+          
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button type="button" class="btng" style="padding:6px 10px;font-size:12px;background:#059669;display:flex;align-items:center;gap:5px" onclick="copyPortaPrescription('${activePathology.id}')">
+              <i class="ti ti-clipboard"></i> Copiar Receita
+            </button>
+            <button type="button" class="btng" style="padding:6px 10px;font-size:12px;background:#2563eb;display:flex;align-items:center;gap:5px" onclick="copyPortaOrientations('${activePathology.id}')">
+              <i class="ti ti-file-text"></i> Copiar Orientações
+            </button>
+          </div>
+        </div>
+
+        <!-- 1. Critérios Diagnósticos Práticos (Azul) -->
+        <div style="margin-bottom:14px;border:1px solid #bfdbfe;border-radius:8px;background:#f0f9ff;padding:12px">
+          <div style="font-size:12.5px;font-weight:700;color:#1d4ed8;margin-bottom:6px;display:flex;align-items:center;gap:6px">
+            <i class="ti ti-zoom-check"></i> 1. Critérios Diagnósticos Práticos & Escores Beira-Leito:
+          </div>
+          ${activePathology.diagnosticCriteria && activePathology.diagnosticCriteria.length ? `
+            <ul style="margin:0;padding-left:18px;font-size:12.5px;line-height:1.55;color:#1e3a8a">
+              ${activePathology.diagnosticCriteria.map(c => `<li>${esc(c)}</li>`).join('')}
+            </ul>
+          ` : `
+            <div style="font-size:12px;color:#64748b;font-style:italic;padding:4px 0">
+              <i class="ti ti-pencil"></i> (Aguardando inserção de critérios diagnósticos e escores pelo especialista)
+            </div>
+          `}
+        </div>
+
+        <!-- 2. Red Flags / O que NÃO tratar na porta (Âmbar/Vermelho) -->
+        <div style="margin-bottom:14px;border:1px solid #fecaca;border-radius:8px;background:#fef2f2;padding:12px">
+          <div style="font-size:12.5px;font-weight:700;color:#b91c1c;margin-bottom:6px;display:flex;align-items:center;gap:6px">
+            <i class="ti ti-alert-triangle"></i> 2. Sinais de Alarme (Red Flags) — Quando NÃO tratar na Porta / Encaminhar:
+          </div>
+          ${activePathology.redFlags && activePathology.redFlags.length ? `
+            <ul style="margin:0;padding-left:18px;font-size:12.5px;line-height:1.55;color:#991b1b">
+              ${activePathology.redFlags.map(rf => `<li><strong>${esc(rf)}</strong></li>`).join('')}
+            </ul>
+          ` : `
+            <div style="font-size:12px;color:#b45309;font-style:italic;padding:4px 0">
+              <i class="ti ti-pencil"></i> (Aguardando inserção de sinais de alarme e critérios de desvio de fluxo pelo especialista)
+            </div>
+          `}
+        </div>
+
+        <!-- 3. Prescrição SUS / RENAME (Verde) -->
+        <div style="margin-bottom:14px;border:1px solid #bbf7d0;border-radius:8px;background:#f0fdf4;padding:12px">
+          <div style="font-size:12.5px;font-weight:700;color:#15803d;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
+            <span style="display:flex;align-items:center;gap:6px"><i class="ti ti-pill"></i> 3. Prescrição Ambulatorial Padrão (SUS / RENAME):</span>
+            <button type="button" class="btns" style="padding:2px 8px;font-size:11px" onclick="copyPortaPrescription('${activePathology.id}')">
+              <i class="ti ti-copy"></i> Copiar
+            </button>
+          </div>
+          
+          <!-- 1a Linha -->
+          <div style="margin-bottom:8px">
+            <strong style="font-size:11.5px;color:#166534;text-transform:uppercase;letter-spacing:0.5px">1ª Linha / Esquema Preferencial:</strong>
+            ${activePathology.prescription.firstLine && activePathology.prescription.firstLine.length ? `
+              <ul style="margin:4px 0 0 18px;padding:0;font-size:12.5px;line-height:1.5;color:#14532d">
+                ${activePathology.prescription.firstLine.map(it => `<li><strong>${esc(it.drug || it)}</strong> — ${esc(it.regimen || '')} ${it.duration ? `<em>(${esc(it.duration)})</em>` : ''}</li>`).join('')}
+              </ul>
+            ` : `
+              <div style="font-size:12px;color:#64748b;font-style:italic;margin-top:2px">
+                (Aguardando compilação da 1ª linha terapêutica)
+              </div>
+            `}
+          </div>
+
+          <!-- 2a Linha -->
+          <div style="margin-bottom:8px;padding-top:6px;border-top:1px dashed #dcfce7">
+            <strong style="font-size:11.5px;color:#166534;text-transform:uppercase;letter-spacing:0.5px">2ª Linha / Alternativa (Alergias ou Intolerância):</strong>
+            ${activePathology.prescription.secondLine && activePathology.prescription.secondLine.length ? `
+              <ul style="margin:4px 0 0 18px;padding:0;font-size:12.5px;line-height:1.5;color:#14532d">
+                ${activePathology.prescription.secondLine.map(it => `<li>${esc(it.drug || it)} — ${esc(it.regimen || '')} ${it.duration ? `<em>(${esc(it.duration)})</em>` : ''}</li>`).join('')}
+              </ul>
+            ` : `
+              <div style="font-size:12px;color:#64748b;font-style:italic;margin-top:2px">
+                (Aguardando compilação da 2ª linha / alternativas)
+              </div>
+            `}
+          </div>
+
+          <!-- Sintomaticos -->
+          <div style="padding-top:6px;border-top:1px dashed #dcfce7">
+            <strong style="font-size:11.5px;color:#166534;text-transform:uppercase;letter-spacing:0.5px">Sintomáticos & Controle de Sintomas:</strong>
+            ${activePathology.prescription.symptomatic && activePathology.prescription.symptomatic.length ? `
+              <ul style="margin:4px 0 0 18px;padding:0;font-size:12.5px;line-height:1.5;color:#14532d">
+                ${activePathology.prescription.symptomatic.map(it => `<li>${esc(it.drug || it)}: ${esc(it.regimen || '')}</li>`).join('')}
+              </ul>
+            ` : `
+              <div style="font-size:12px;color:#64748b;font-style:italic;margin-top:2px">
+                (Aguardando compilação de sintomáticos de resgate)
+              </div>
+            `}
+          </div>
+        </div>
+
+        <!-- 4. Medidas Nao Farmacologicas & Orientacoes (Cinza/Roxo) -->
+        <div style="margin-bottom:14px;border:1px solid #e2e8f0;border-radius:8px;background:#f8fafc;padding:12px">
+          <div style="font-size:12.5px;font-weight:700;color:#334155;margin-bottom:6px;display:flex;align-items:center;gap:6px">
+            <i class="ti ti-shield"></i> 4. Medidas Não Farmacológicas & Orientações de Alta:
+          </div>
+          ${activePathology.nonPharm && activePathology.nonPharm.length ? `
+            <ul style="margin:0 0 8px 18px;padding:0;font-size:12.5px;line-height:1.5;color:#475569">
+              ${activePathology.nonPharm.map(m => `<li>${esc(m)}</li>`).join('')}
+            </ul>
+          ` : `
+            <div style="font-size:12px;color:#64748b;font-style:italic;margin-bottom:6px">
+              (Aguardando compilação das medidas não farmacológicas)
+            </div>
+          `}
+          ${activePathology.discharge && activePathology.discharge.alarmCriteria ? `
+            <div style="font-size:12px;padding:8px;background:#fff;border-radius:6px;border:1px solid #e2e8f0;color:#1e293b">
+              <strong>Critérios de retorno imediato ao pronto-atendimento:</strong> ${esc(activePathology.discharge.alarmCriteria)}
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- 5. Modulo Interativo de Atestado Medico -->
+        <div style="border:1px solid #e9d5ff;border-radius:8px;background:#faf5ff;padding:12px">
+          <div style="font-size:12.5px;font-weight:700;color:#7e22ce;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
+            <span style="display:flex;align-items:center;gap:6px"><i class="ti ti-certificate"></i> 5. Gerador de Atestado Médico / Declaração:</span>
+            <button type="button" class="btng" style="padding:3px 9px;font-size:11.5px;background:#7e22ce" onclick="copyPortaCertificate('${activePathology.id}')">
+              <i class="ti ti-copy"></i> Copiar Atestado
+            </button>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+            <span style="font-size:12px;color:#6b21a8;font-weight:600">Período de repouso:</span>
+            ${[0, 1, 2, 3, 5, 7].map(d => `
+              <button type="button" class="xbtn ${certDays === d ? 'on' : ''}" style="padding:2px 8px;font-size:11px;border-radius:12px" onclick="setPortaCertDays('${activePathology.id}', ${d})">
+                ${d === 0 ? 'Apenas horas' : `${d} dia${d > 1 ? 's' : ''}`}
+              </button>
+            `).join('')}
+          </div>
+          <div style="background:#fff;border:1px dashed #d8b4fe;border-radius:6px;padding:8px 12px;font-size:12px;line-height:1.45;color:#3b0764">
+            <em>"Atesto para os devidos fins que o(a) paciente necessita de <strong>${certDays} dia(s)</strong> de repouso por motivo de saúde a partir desta data. CID-10: <strong>${esc(activePathology.cid10)} (${esc(activePathology.title)})</strong>."</em>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  `;
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  renderPortaGuideContent();
+});
+</script>
+</body>
+</html>
